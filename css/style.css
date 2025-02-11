@@ -417,15 +417,17 @@
 
 .header-carousel .header-carousel-item .carousel-caption {
     width: 100%;
-    height: 10%;
+    height: 100%; /* Ubah height agar sesuai dengan tinggi carousel */
     top: 0;
     left: 0;
-    padding: 10px 0;
+    padding: 0; /* Buang padding agar elemen tetap di tengah */
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center; /* Pusatkan vertikal */
+    justify-content: center; /* Pusatkan horizontal */
     background: rgba(0, 0, 0, .5);
+    text-align: center; /* Pusatkan teks */
 }
+
 
 .header-carousel .header-carousel-item .carousel-caption .carousel-caption-content {
     position: relative;
