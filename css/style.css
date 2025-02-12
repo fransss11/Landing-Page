@@ -1,31 +1,69 @@
 
 /*** Spinner Start ***/
 /*** Spinner ***/
-#spinner {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
-    z-index: 99999;
-}
-
-#spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
-    visibility: visible;
-    opacity: 1;
-}
-/*** Spinner End ***/
-
-.back-to-top {
+/* Spinner Container */
+.spinner-container {
     position: fixed;
-    right: 30px;
-    bottom: 30px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9); /* Efek transparan */
     display: flex;
-    width: 45px;
-    height: 45px;
     align-items: center;
     justify-content: center;
-    transition: 0.5s;
-    z-index: 99;
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+/* Animasi Circle Border */
+.circle-border {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #000000;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animasi Core */
+.circle-core {
+    width: 30px;
+    height: 30px;
+    background: #8400ff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Animasi Loading Text */
+.loading-text {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #8400ff;
+    animation: fadeIn 0.5s infinite alternate;
+}
+
+/* Keyframes Animasi */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+}
+
+/* Hilangkan Spinner Setelah Selesai Loading */
+.spinner-container.hide {
+    opacity: 0;
+    visibility: hidden;
 }
 
 /*** Button Start ***/
@@ -91,6 +129,82 @@
 .btn-hover:hover {
     color: var(--bs-secondary) !important;
 }
+
+
+
+/* Curved Divider */
+.curved-divider {
+    position: relative;
+    width: 100%;
+    height: 60px;
+    background: white;
+    border-bottom-left-radius: 50% 20px;
+    border-bottom-right-radius: 50% 20px;
+}
+
+
+/* Atur section agar lebih rapi */
+.client-reviews-section {
+    background-color: #7B30F0; /* Warna ungu */
+    padding: 60px 20px;
+    text-align: center;
+}
+
+/* Atur ukuran gambar agar seragam */
+.client-reviews .reviewer-thumb img {
+    width: 100%; /* Pastikan gambar memenuhi kontainer */
+    height: 180px; /* Tinggi seragam */
+    object-fit: contain; /* Pastikan gambar tidak terdistorsi */
+    display: block;
+    margin: 0 auto; /* Pusatkan gambar */
+}
+
+/* Atur kontainer gambar agar sama ukuran */
+.client-reviews .single-review {
+    width: 250px; /* Ukuran tetap untuk semua item */
+    height: 200px; /* Pastikan semua seimbang */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white; /* Tambahkan background putih agar rapi */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
+}
+
+
+
+.back-to-top {
+    position: fixed;
+    right: 20px;  /* Posisi di pojok kanan */
+    bottom: 20px; /* Tetap di bagian bawah */
+    width: 50px;
+    height: 50px;
+    background: #007bff; /* Warna biru */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: opacity 0.3s, transform 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0; /* Default tersembunyi */
+    visibility: hidden;
+}
+
+.back-to-top:hover {
+    background: #0056b3;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
 
 /*** Section Title Start ***/
 .section-title {
@@ -323,6 +437,42 @@
     .navbar-light .navbar-nav .nav-link.nav-contact::before {
         display: none;
     }
+
+    .contact-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #7B30F0; /* Warna ungu */
+        color: #fff;
+        padding: 1px 4px;
+        font-size: 16px;
+        font-weight: 200;
+        border-radius: 30px;
+        border: 2px solid #fff;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 10px rgba(123, 48, 240, 0.4);
+    }
+    
+    .contact-button i {
+        font-size: 18px;
+    }
+    
+    .contact-button:hover {
+        background: #5A1BB0; /* Warna lebih gelap saat hover */
+        box-shadow: 0 6px 14px rgba(90, 27, 176, 0.6);
+    }
+    
+
+    /* Active link styling */
+    .navbar .nav-item .nav-link.active {
+    color: #a200ff !important; /* Warna teks saat aktif */
+    font-weight: bold; /* Teks tebal */
+    border-bottom: 2px solid #ae00ff; /* Garis bawah saat aktif */
+    transition: all 0.3s ease-in-out; /* Animasi transisi */
+}
+
+
 }
 /*** Carousel Hero Header Start ***/
 .header-carousel {
@@ -428,6 +578,19 @@
     text-align: center; /* Pusatkan teks */
 }
 
+/* Sembunyikan caption secara default */
+.header-carousel .header-carousel-item .carousel-caption {
+    opacity: 0; /* Sembunyikan caption */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateY(20px); /* Efek naik ke atas saat muncul */
+}
+
+/* Tampilkan caption saat hover */
+.header-carousel .header-carousel-item:hover .carousel-caption {
+    opacity: 1; /* Munculkan caption */
+    transform: translateY(0); /* Hilangkan efek naik */
+}
+
 
 .header-carousel .header-carousel-item .carousel-caption .carousel-caption-content {
     position: relative;
@@ -439,7 +602,7 @@
 
 /*** Single Page Hero Header Start ***/
 .bg-breadcrumb {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/carousel-2.jpg);
+    background: linear-gradient(rgba(174, 0, 255, 0.445), rgba(48, 47, 47, 0.5)), url(../img/carousel-2.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -534,24 +697,14 @@
 /*** About Start ***/
 .about .about-img {
     position: relative;
-    overflow: hidden;
     height: 100%;
     border-radius: 10px;
 }
 
-.about .about-img .about-img-inner {
-    position: absolute;
-    left: 0; 
-    bottom: 0; 
-    border: 10px solid; 
-    border-color: var(--bs-white) var(--bs-white) var(--bs-white) var(--bs-white);
-    border-radius: 50%;
-
-}
 
 .about .about-img .about-experience {
     position: absolute;
-    top: 125px; 
+    top: 100px; 
     left: -125px; 
     transform: rotate(-90deg);
     background: transparent;
@@ -1055,7 +1208,7 @@
 
 /*** Contact Start ***/
 .contact {
-    background: linear-gradient(rgba(21, 185, 217, 0.9), rgba(21, 185, 217, 0.9)), url(../img/carousel-1.jpg);
+    background: linear-gradient(rgba(141, 141, 141, 0.9), rgba(73, 73, 73, 0.9)), url(../img/carousel-1.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;

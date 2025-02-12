@@ -2,14 +2,12 @@
     "use strict";
 
     // Spinner
-    var spinner = function () {
+    $(document).ready(function () {
         setTimeout(function () {
-            if ($('#spinner').length > 0) {
-                $('#spinner').removeClass('show');
-            }
-        }, 1);
-    };
-    spinner(0);
+            $("#spinner").addClass("hide"); // Tambahkan class 'hide' agar spinner hilang dengan efek transisi
+        }, 10); // Spinner akan hilang setelah 1.5 detik
+    });
+    
     
     
     // Initiate the wowjs
@@ -114,15 +112,17 @@
    // Back to top button
    $(window).scroll(function () {
     if ($(this).scrollTop() > 300) {
-        $('.back-to-top').fadeIn('slow');
+        $('.back-to-top').addClass('show');
     } else {
-        $('.back-to-top').fadeOut('slow');
+        $('.back-to-top').removeClass('show');
     }
     });
+
     $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        $('html, body').animate({scrollTop: 0}, 800);
         return false;
     });
+
 
 
 })(jQuery);
