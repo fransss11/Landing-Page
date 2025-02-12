@@ -1333,3 +1333,57 @@
     background: var(--bs-dark) !important;
 }
 /*** copyright end ***/
+
+
+/* Section untuk Our Client */
+.client-section {
+    background-color: #6600cc; /* Warna ungu sesuai dengan contoh */
+    padding: 50px 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 1 rem;
+    font-weight: bold;
+    color: #929191; /* Warna putih untuk teks */
+    margin-bottom: 30px;
+}
+
+/* Container utama klien */
+.clients-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0 40px;
+    justify-items: center;
+}
+
+/* Kartu klien */
+.client-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    max-width: 280px;
+}
+
+.client-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Gambar klien */
+.client-card img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+/* Nama klien */
+.client-card p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
