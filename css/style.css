@@ -105,7 +105,7 @@
 }
 
 .btn.btn-primary {
-    box-shadow: inset 0 0 0 0 var(--bs-primary);
+    box-shadow: inset 0 0 12px 4px #b79e9e;
 }
 
 .btn.btn-primary:hover {
@@ -114,7 +114,7 @@
 }
 
 .btn.btn-light {
-    box-shadow: inset 0 0 0 0 var(--bs-primary);
+    box-shadow: inset 0 0 12px 4px #6e00ff;
 }
 
 .btn.btn-light:hover {
@@ -130,22 +130,9 @@
     color: var(--bs-secondary) !important;
 }
 
-
-
-/* Curved Divider */
-.curved-divider {
-    position: relative;
-    width: 100%;
-    height: 60px;
-    background: white;
-    border-bottom-left-radius: 50% 20px;
-    border-bottom-right-radius: 50% 20px;
-}
-
-
 /* Atur section agar lebih rapi */
 .client-reviews-section {
-    background-color: #7B30F0; /* Warna ungu */
+    background: -webkit-radial-gradient(50% 50%, circle closest-side, #af52ed 0%, #8830df 100%);
     padding: 60px 20px;
     text-align: center;
 }
@@ -181,7 +168,7 @@
     bottom: 20px; /* Tetap di bagian bawah */
     width: 50px;
     height: 50px;
-    background: #007bff; /* Warna biru */
+    background: #5800ff; /* Warna biru */
     color: white;
     border-radius: 50%;
     display: flex;
@@ -192,6 +179,7 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     opacity: 0; /* Default tersembunyi */
     visibility: hidden;
+    z-index: 9999; /* Pastikan ada di depan elemen lain */
 }
 
 .back-to-top:hover {
@@ -229,7 +217,7 @@
     transform: translateY(-50%);
     margin-top: 8px;
     margin-left: -100px;
-    border: 1px solid var(--bs-primary) !important;
+    border: 1px solid #000000 !important;
 }
 
 .section-title .sub-style::after {
@@ -241,14 +229,14 @@
     transform: translateY(-50%);
     margin-bottom: 5px;
     margin-left: -50px;
-    border: 1px solid var(--bs-primary) !important;
+    border: 1px solid #000000 !important;
 }
 
 .sub-title {
     position: relative;
     display: inline-block;
     text-transform: uppercase;
-    color: var(--bs-primary);
+    color: #000000de;
 }
 
 .sub-title::before {
@@ -260,7 +248,7 @@
     transform: translateY(-50%);
     margin-top: 8px;
     margin-right: -100px;
-    border: 1px solid var(--bs-primary) !important;
+    border: 1px solid #000000de !important;
 }
 
 .sub-title::after {
@@ -272,7 +260,7 @@
     transform: translateY(-50%);
     margin-bottom: 8px;
     margin-right: -50px;
-    border: 1px solid var(--bs-primary) !important;
+    border: 1px solid #000000de !important;
 }
 
 
@@ -475,6 +463,64 @@
 
 }
 /*** Carousel Hero Header Start ***/
+
+
+/* === Hero Carousel Styling === */
+.hero-carousel {
+    position: relative;
+    background-color: white; 
+    color: white;
+    padding-bottom: 50px; /* Memberikan ruang di bawah sebelum wave */
+    overflow: hidden;
+}
+
+/* === Gambar Carousel === */
+.banner-image {
+    width: 100%;
+    height: 600px; /* Pastikan tinggi gambar konsisten */
+    object-fit: cover;
+}
+
+/* === Caption Styling === */
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+}
+
+/* === Responsif Mobile === */
+@media (max-width: 768px) {
+    .banner-image {
+        height: 200px; /* Kurangi tinggi gambar untuk mobile */
+    }
+
+    .carousel-caption {
+        width: 90%;
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .carousel-caption h1 {
+        font-size: 24px;
+    }
+
+    .carousel-caption h3 {
+        font-size: 18px;
+    }
+
+    .wave-container {
+        bottom: -5px; /* Sesuaikan jika masih menutupi gambar */
+    }
+}
+
+
+
+/*batas hero*/
+
+
 .header-carousel {
     position: relative; 
 }
@@ -487,7 +533,7 @@
     left: 20px;
     transform: translateY(-50%);
     border-radius: 50%;
-    background: var(--bs-primary);
+    background: #634589eb;
     color: var(--bs-white);
     font-size: 30px;
     display: flex;
@@ -504,7 +550,7 @@
     right: 20px;
     transform: translateY(-50%);
     border-radius: 50%;
-    background: var(--bs-primary);
+    background: #634589eb;
     color: var(--bs-white);
     font-size: 30px;
     display: flex;
@@ -541,12 +587,76 @@
 .header-carousel .header-carousel-item img {
     position: relative;
     width: 100%;
-    height: 700px;
+    height: 400px;
     margin-top: 95px;
     display: block;
     object-fit: cover;
     transition: 0.5s;
 
+}
+
+/* Responsive untuk layar kecil */
+@media (max-width: 768px) {
+    .header-carousel .header-carousel-item,
+    .header-carousel .header-carousel-item img {
+        height: 400px; /* Atur tinggi agar tidak terlalu besar di mobile */
+        max-height: 400px;
+    }
+
+    /* Atur ukuran caption agar tetap proporsional */
+    .header-carousel .header-carousel-item .carousel-caption {
+        height: auto;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.6); /* Transparansi lebih pekat di layar kecil */
+    }
+
+    .header-carousel .header-carousel-item .carousel-caption .carousel-caption-content {
+        width: 90% !important;
+        font-size: 14px; /* Perkecil ukuran teks agar tetap pas */
+    }
+
+    .header-carousel .header-carousel-item .carousel-caption h1 {
+        font-size: 18px; /* Kurangi ukuran teks di mobile */
+    }
+
+    .header-carousel .header-carousel-item .carousel-caption h3 {
+        font-size: 16px; /* Tambahkan ukuran teks kecil */
+    }
+}
+
+/* Navigasi Owl Carousel - Sesuaikan untuk layar kecil */
+.header-carousel .owl-nav .owl-prev,
+.header-carousel .owl-nav .owl-next {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    border-radius: 50%;
+    background: #634589eb;
+    color: var(--bs-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+}
+
+/* Atur posisi tombol navigasi untuk layar kecil */
+@media (max-width: 576px) {
+    .header-carousel .owl-nav .owl-prev {
+        left: 10px;
+    }
+
+    .header-carousel .owl-nav .owl-next {
+        right: 10px;
+    }
+
+    /* Sesuaikan tombol agar lebih kecil */
+    .header-carousel .owl-nav .owl-prev,
+    .header-carousel .owl-nav .owl-next {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
 }
 
 @media (max-width: 992px) {
@@ -602,7 +712,7 @@
 
 /*** Single Page Hero Header Start ***/
 .bg-breadcrumb {
-    background: linear-gradient(rgba(174, 0, 255, 0.445), rgba(48, 47, 47, 0.5)), url(../img/carousel-2.jpg);
+    background: -webkit-radial-gradient(50% 50%, circle closest-side, #af52ed 0%, #8830df 100%);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -704,12 +814,12 @@
 
 .about .about-img .about-experience {
     position: absolute;
-    top: 100px; 
-    left: -125px; 
+    top: 50px; 
+    left: -99px; 
     transform: rotate(-90deg);
     background: transparent;
-    color: var(--bs-primary);
-    font-size: 20px;
+    color: #000000;
+    font-size: 15px;
     font-weight: 600;
     letter-spacing: 4px;
 }
@@ -952,7 +1062,7 @@
 
 /*** testimonial Start ***/
 .testimonial {
-    background: linear-gradient(rgba(21, 185, 217, 0.9), rgba(21, 185, 217, 0.9)), url(../img/carousel-1.jpg);
+    background: -webkit-radial-gradient(50% 50%, circle closest-side, #af52ed 0%, #040304 130%);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -992,7 +1102,7 @@
     justify-content: center;
     font-size: 20px;
     background: var(--bs-light);
-    color: var(--bs-primary);
+    color: #000000;
     transition: 0.5s;
 }
 
@@ -1009,7 +1119,7 @@
     justify-content: center;
     font-size: 20px;
     background: var(--bs-light);
-    color: var(--bs-primary);
+    color: #000000;
     transition: 0.5s;
 }
 
@@ -1017,7 +1127,7 @@
 .testimonial .testimonial-carousel .owl-nav .owl-prev:hover,
 .testimonial .testimonial-carousel .owl-nav .owl-next:hover {
     box-shadow: inset 100px 0 0 0 var(--bs-primary) !important;
-    color: var(--bs-white) !important;
+    color:#5900ffde !important;
 }
 
 
@@ -1208,7 +1318,7 @@
 
 /*** Contact Start ***/
 .contact {
-    background: linear-gradient(rgba(141, 141, 141, 0.9), rgba(73, 73, 73, 0.9)), url(../img/carousel-1.jpg);
+    background: white;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1228,7 +1338,7 @@
 .contact .contact-form .form-floating input,
 .contact .contact-form .form-floating textarea,
 .contact .contact-form .form-floating label {
-    color: var(--bs-light);
+    color: black;
 }
 
 
@@ -1256,7 +1366,7 @@
     transform: translateY(-50%);
     margin-top: 8px;
     margin-left: -100px;
-    border: 1px solid var(--bs-white) !important;
+    border: 1px solid #000000 !important;
 }
 
 .contact .section-title .sub-style::after {
@@ -1268,7 +1378,7 @@
     transform: translateY(-50%);
     margin-bottom: 5px;
     margin-left: -50px;
-    border: 1px solid var(--bs-white) !important;
+    border: 1px solid #000000 !important;
 }
 
 .contact .section-title .sub-title {
@@ -1287,7 +1397,7 @@
     transform: translateY(-50%);
     margin-top: 8px;
     margin-right: -100px;
-    border: 1px solid var(--bs-white) !important;
+    border: 1px solid #000000 !important;
 }
 
 .contact .section-title .sub-title::after {
@@ -1299,21 +1409,21 @@
     transform: translateY(-50%);
     margin-bottom: 8px;
     margin-right: -50px;
-    border: 1px solid var(--bs-white) !important;
+    border:1px solid #000000 !important;
 }
 /*** Contact End ***/
 
 
 /*** Footer Start ***/
 .footer {
-    background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(../img/carousel-2.jpg);
+    background: -webkit-radial-gradient(50% 50%, circle closest-side, #af52ed 0%, #8830df 100%);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 .footer .footer-item a {
     line-height: 35px;
-    color: var(--bs-body);
+    color: var(--bs-white);
     transition: 0.5s;
 }
 
@@ -1337,7 +1447,7 @@
 
 /* Section untuk Our Client */
 .client-section {
-    background-color: #6600cc; /* Warna ungu sesuai dengan contoh */
+    background-color: #ffffff;
     padding: 50px 0;
 }
 
@@ -1345,7 +1455,7 @@
     text-align: center;
     font-size: 1 rem;
     font-weight: bold;
-    color: #929191; /* Warna putih untuk teks */
+    color: #020202d9; /* Warna putih untuk teks */
     margin-bottom: 30px;
 }
 
@@ -1360,7 +1470,7 @@
 
 /* Kartu klien */
 .client-card {
-    background-color: #fff;
+    background: -webkit-radial-gradient(50% 50%, circle closest-side, #af52ed 0%, #8830df 100%);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
