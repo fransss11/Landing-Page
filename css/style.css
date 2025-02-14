@@ -294,6 +294,91 @@
 
 
 /*** Navbar ***/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    background: white;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(128, 0, 255, 0.7); /* Warna ungu transparan */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.hero p {
+    font-size: 1rem;
+    margin: 20px 0;
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn {
+    border: 2px solid white;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: white;
+    color: purple;
+}
+
+/* Lengkungan SVG di bagian bawah */
+.wave-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Gambar orang */
+.person {
+    /* position: absolute; */
+    bottom: 0;
+    right: 10%;
+    /* z-index: 2; */
+    width: 300px; /* Sesuaikan ukuran */
+}
+
+
+
+
+
 .navbar-light .navbar-nav .nav-link {
     font-family: 'Open Sans', sans-serif;
     position: relative;
@@ -878,7 +963,7 @@
 
 /*** Appointment Start ***/
 .appointment {
-    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url(../img/carousel-2.jpg);
+    background: linear-gradient(rgba(255, 251, 251, 0.9), rgba(192, 192, 192, 0.9));
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1006,6 +1091,31 @@
 
 
 /*** Team Start ***/
+.team-item {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+}
+
+.team-img {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-img img {
+    object-fit: contain; /* Memastikan gambar tidak terpotong */
+    height: 100%;
+    width: auto;
+}
+
+
+
+
+
+
+
 .team .team-item .team-img {
     position: relative;
     overflow: hidden;
