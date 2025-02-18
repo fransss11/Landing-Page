@@ -138,7 +138,7 @@
 }
 
 .text-center a {
-    color: black; /* Warna teks hitam */
+    color: rgb(255, 254, 254); /* Warna teks hitam */
     font-family: Arial, sans-serif; /* Font Arial */
     text-decoration: none; /* Menghilangkan garis bawah */
     font-weight: bold; /* (Opsional) Membuat teks lebih tebal */
@@ -1111,7 +1111,7 @@
 
 .team-img img {
     object-fit: contain; /* Memastikan gambar tidak terpotong */
-    height: 100%;
+    height: 70%;
     width: auto;
 }
 
@@ -1671,3 +1671,47 @@
     background-color: #0056b3;
 } */
 /* end detail galery */
+
+/* berita */
+        /* Animasi Fade In */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Efek hover untuk gambar */
+        .card-img-top {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card-img-top:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animasi WOW.js */
+        .wow {
+            visibility: hidden;
+        }
+
+        /* Animasi hover tombol */
+        .btn-primary {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background-color: #0056b3;
+        }
+
+        /* Container fade-in */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        /* akhir berita */
