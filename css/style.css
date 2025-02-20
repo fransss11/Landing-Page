@@ -213,7 +213,7 @@
     position: relative;
     display: inline-block;
     text-transform: uppercase;
-    color: var(--bs-primary);
+    color: #000000de;
 }
 
 .section-title .sub-style::before {
@@ -816,15 +816,33 @@
 
 
 /*** Service Start ***/
+/* Pastikan semua kartu memiliki tinggi yang sama */
 .service .service-item {
-    box-shadow: 0 0 45px rgba(0, 0, 0, .2) ;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Semua kartu memiliki tinggi yang seragam */
 }
 
-.service .service-item .service-img {
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
+/* Buat gambar memiliki ukuran tetap */
+.service .service-item .service-img img {
+    width: 100%;
+    height: 120px; /* Sesuaikan tinggi gambar */
+    object-fit: cover; /* Pastikan gambar tidak terdistorsi */
 }
+
+/* Pastikan konten berada di tengah dan tombol "Read More" selalu sejajar */
+.service .service-item .service-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Tambahkan batas bawah agar tombol tidak terlalu mepet */
+.service .service-item .service-content .btn {
+    margin-top: auto;
+}
+
 
 .service .service-item .service-img img {
     transition: 0.5s;
@@ -846,11 +864,11 @@
 
 .service .service-item:hover .service-img::before {
     height: 100%;
-    background: rgba(21, 185, 217, .3);
+    /* background: rgba(21, 185, 217, .3); */
 }
 
 .service .service-item .service-img:hover img {
-    transform: scale(1.3);
+    transform: scale(1.1);
 }
 
 .service .service-item .service-content {
@@ -890,6 +908,14 @@
 }
 .service .service-item:hover .service-content .service-content-inner h5 {
     color: var(--bs-secondary);
+}
+
+/* Pastikan tanggal berada di bawah */
+.service .service-item .service-content .service-date {
+    margin-top: auto; /* Mendorong tanggal ke bawah */
+    text-align: left; /* Pastikan rata kiri */
+    font-size: 14px; /* Ukuran font lebih kecil agar lebih rapi */
+    color: #6c757d; /* Warna abu-abu agar tidak terlalu mencolok */
 }
 
 /*** Service End ***/
