@@ -1,10 +1,18 @@
 <?php
 include 'database.php';
 
-// Fetch data from the 'about' table
-$sql = "SELECT * FROM about ORDER BY id DESC LIMIT 1";
+// Fetch data from the 'media' table
+$sql = "SELECT id, galery, file_name, uploaded_on FROM media WHERE status = '1'";
 $result = $conn->query($sql);
-$about = $result->fetch_assoc();
+
+$images = array();
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $images[] = $row;
+    }
+}
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +43,54 @@ $about = $result->fetch_assoc();
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        /* Animasi Fade In */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animasi untuk setiap gambar */
+        .gallery-item {
+            animation: fadeIn 1s ease-in-out;
+            opacity: 1;
+        }
+
+        /* Efek hover untuk gambar */
+        .gallery-item img {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .gallery-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animasi WOW.js */
+        .wow {
+            visibility: hidden;
+        }
+
+        /* Animasi untuk tombol */
+        .btn-primary {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
@@ -52,33 +108,30 @@ $about = $result->fetch_assoc();
     <!-- Navbar End -->
 
     <!-- Header Start -->
-    <?php 
-    $pageTitle = "About Us";
-    include 'includes/header.php'; 
+    <?php
+    $pageTitle = "Galery";
+    include 'includes/header.php';
     ?>
     <!-- Header End -->
 
-    <!-- About Start -->
-    <div class="container-fluid about bg-light py-5">
-        <div class="container py-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-5 wow fadeInLeft" data-wow-delay="0.2s">
-                    <div class="about-img pb-5 ps-5">
-                        <img src="img/<?php echo $about['img']; ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
+    <!-- Gallery Start -->
+    <div class="container py-5">
+        <div class="row text-center">
+            <div class="row">
+                <?php foreach ($images as $index => $image): ?>
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="gallery-item p-3 bg-light rounded shadow wow fadeInUp" data-wow-delay="<?php echo $index * 0.2; ?>s">
+                            <a href="detail.php?id=<?php echo $image['id']; ?>">
+                                <img src="img/<?php echo $image['galery']; ?>" class="img-fluid" alt="<?php echo $image['file_name']; ?>">
+                            </a>
+                            <h6 class="mt-2"><?php echo $image['file_name']; ?></h6>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-7 wow fadeInRight" data-wow-delay="0.4s">
-                    <div class="section-title text-start mb-5">
-                        <!-- <h4 class="sub-title pe-3 mb-0">About Us</h4> -->
-                        <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
-                        <p class="mb-4"><?php echo $about['descrip']; ?></p>
-                        <a href="<?php echo $about['url']; ?>" class="btn btn-primary rounded-pill text-white py-3 px-5">Our Service</a>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
-    <!-- About End -->
+    <!-- Gallery End -->
 
     <!-- Footer Start -->
     <?php include 'includes/footer.php'; ?>
@@ -102,15 +155,10 @@ $about = $result->fetch_assoc();
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-
+    
+    <!-- Inisialisasi WOW.js -->
     <script>
-    // Hilangkan spinner setelah halaman sepenuhnya dimuat
-    window.addEventListener("load", function() {
-        var spinner = document.getElementById("spinner");
-        if (spinner) {
-            spinner.classList.remove("show"); // Menghilangkan spinner
-        }
-    });
+        new WOW().init();
     </script>
 
 </body>

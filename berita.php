@@ -43,82 +43,22 @@ $conn->close();
 <body>
 
     <!-- Spinner Start -->
-    <div id="spinner" class="spinner-container show bg-white position-fixed w-100 vh-100 d-flex align-items-center justify-content-center">
-        <div class="spinner-box">
-            <div class="circle-border">
-                <div class="circle-core"></div>
-            </div>
-            <p class="loading-text">Loading...</p>
-        </div>
-    </div>
-    <!-- Spinner End -->    
+    <?php include 'includes/spinner.php'; ?>
+    <!-- Spinner End -->
 
     <!-- Topbar Start -->
-    <div class="container-fluid bg-dark px-5 d-none d-lg-block">
-        <div class="row gx-0 align-items-center" style="height: 45px;">
-            <div class="col-lg-8 text-center text-lg-start mb-lg-0">
-                <div class="d-flex flex-wrap">
-                    <a href="#" class="text-light me-4"><i class="fas fa-map-marker-alt text-primary me-2"></i>Find A Location</a>
-                    <a href="#" class="text-light me-4"><i class="fas fa-phone-alt text-primary me-2"></i>+89(0)2354 5470091</a>
-                    <a href="#" class="text-light me-0"><i class="fas fa-envelope text-primary me-2"></i>Example@gmail.com</a>
-                </div>
-            </div>
-            <div class="col-lg-4 text-center text-lg-end">
-                <div class="d-flex align-items-center justify-content-end">
-                    <a href="#" class="btn btn-light btn-square border rounded-circle nav-fill me-3"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="btn btn-light btn-square border rounded-circle nav-fill me-3"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="btn btn-light btn-square border rounded-circle nav-fill me-3"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/6282276463021" class="btn btn-light btn-square border rounded-circle nav-fill me-0"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php include 'includes/topbar.php'; ?>
     <!-- Topbar End -->
 
     <!-- Navbar & Hero Start -->
-    <div class="container-fluid position-relative p-0">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0">
-            <a href="index.html" class="navbar-brand p-0">
-                <img src="img/logo.png" alt="Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-0">
-                    <a href="index.html" class="nav-item nav-link">Home</a>
-                    <a href="about.html" class="nav-item nav-link">About Us</a>
-                    <a href="service.html" class="nav-item nav-link">Services</a>
-                    <a href="portofolio.html" class="nav-item nav-link">Portofolio</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Informasi</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="klien.html" class="dropdown-item">Our Client</a>
-                            <a href="team.html" class="dropdown-item">Our Team</a>
-                        </div>
-                    </div>
-                    <a href="galery.html" class="nav-item nav-link">Galery</a>
-                    <a href="berita.html" class="nav-item nav-link active">Berita</a>
-                </div>
-                <a href="contact.html" class="contact-button">
-                    <i class="fas fa-paper-plane"></i> Contact Us
-                </a>    
-            </div>
-        </nav>
-    </div>
+    <?php include 'includes/navbar.php'; ?>
     <!-- Navbar End -->
 
     <!-- Header Start -->
-    <div class="container-fluid bg-breadcrumb">
-        <div class="container text-center py-5">
-            <h3 class="text-white display-3 mb-4 wow fadeInDown" data-wow-delay="0.3s">Berita</h3>
-            <ol class="breadcrumb justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.5s">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="contact.html">Contact Us</a></li>
-                <li class="breadcrumb-item active text-primary">Berita</li>
-            </ol>
-        </div>
-    </div>
+    <?php
+    $pageTitle = "Berita";
+    include 'includes/header.php';
+    ?>
     <!-- Header End -->
 
     <!-- Daftar Berita -->
@@ -132,17 +72,17 @@ $conn->close();
         document.addEventListener("DOMContentLoaded", function () {
             let beritaContainer = document.getElementById("berita-container");
             const beritaList = <?php echo json_encode($beritaList); ?>;
-    
+
             beritaList.forEach((berita, index) => {
                 beritaContainer.innerHTML += `
-                    <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${index * 0.2}s">
+                    <div class="col-md-6 col-lg-4 d-flex align-items-stretch wow fadeInUp" data-wow-delay="${index * 0.2}s">
                         <div class="card shadow-lg">
                             <img src="img/${berita.img}" class="card-img-top" alt="${berita.title}">
                             <div class="card-body">
-                                <h4>${berita.title}</h4>
+                                <h4 class="card-title">${berita.title}</h4>
                                 <p class="text-muted"><i class="fa fa-calendar-alt text-primary"></i> ${berita.date}</p>
-                                <h5>${berita.category}</h5>
-                                <p>${berita.descrip}</p>
+                                <h5 class="card-category">${berita.category}</h5>
+                                <p class="card-text">${berita.descrip}</p>
                                 <a href="${berita.url}" class="btn btn-primary">Read More</a>
                             </div>
                         </div>
@@ -154,76 +94,17 @@ $conn->close();
     <!-- end berita -->
 
     <!-- Footer Start -->
-    <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="footer-item d-flex flex-column">
-                        <h4 class="text-white mb-4">Lisa Mitra Mandiri</h4>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-share fa-2x text-white me-2"></i>
-                            <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i class="fab fa-whatsapp"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="footer-item d-flex flex-column">
-                        <h4 class="mb-4 text-white">Quick Links</h4>
-                        <a href="about.html"><i class="fas fa-angle-right me-2"></i> About Us</a>
-                        <a href="service.html"><i class="fas fa-angle-right me-2"></i> Service</a>
-                        <a href="portofolio.html"><i class="fas fa-angle-right me-2"></i> Portofolio</a>
-                        <a href="galery.html"><i class="fas fa-angle-right me-2"></i> Galery</a>
-                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contact Us</a>
-                        <a href="berita.html"><i class="fas fa-angle-right me-2"></i> Berita</a>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="footer-item d-flex flex-column">
-                        <h4 class="mb-4 text-white">Informasi</h4>
-                        <a href="klien.html"><i class="fas fa-angle-right me-2"></i> Our Client</a>
-                        <a href="team.html"><i class="fas fa-angle-right me-2"></i> Our Team</a>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="footer-item d-flex flex-column">
-                        <h4 class="mb-4 text-white">Contact Info</h4>
-                        <a href=""><i class="fa fa-map-marker-alt me-2"></i> 123 Street, New York, USA</a>
-                        <a href=""><i class="fas fa-envelope me-2"></i> info@example.com</a>
-                        <a href=""><i class="fas fa-envelope me-2"></i> info@example.com</a>
-                        <a href=""><i class="fas fa-phone me-2"></i> +012 345 67890</a>
-                        <a href="" class="mb-3"><i class="fas fa-print me-2"></i> +012 345 67890</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php include 'includes/footer.php'; ?>
     <!-- Footer End -->
-    
+
     <!-- Copyright Start -->
-    <div class="container-fluid copyright py-4">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-md-6 text-center text-md-start mb-md-0">
-                    <span class="text-white"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
-                </div>
-                <div class="col-md-6 text-center text-md-end text-white">
-                    <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-                    <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-                    <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                    Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php include 'includes/copyright.php'; ?>
     <!-- Copyright End -->
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>   
+    <?php include 'includes/back_to_top.php'; ?>
+    <!-- Back to Top End -->
 
-    
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -231,7 +112,6 @@ $conn->close();
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>

@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('designation')->nullable();
             $table->string('descrip', 10000)->nullable();
             $table->string('img', 100)->nullable();
+            $table->string('facebook', 255)->nullable();
+            $table->string('twitter', 255)->nullable();
+            $table->string('instagram', 255)->nullable();
+            $table->string('linkedin', 255)->nullable();
+            $table->string('whatsapp', 50)->nullable();
             $table->string('url')->nullable();
             $table->string('date', 100)->nullable();
             $table->string('status', 10)->nullable();

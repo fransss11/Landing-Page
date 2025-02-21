@@ -1,10 +1,18 @@
 <?php
 include 'database.php';
 
-// Fetch data from the 'about' table
-$sql = "SELECT * FROM about ORDER BY id DESC LIMIT 1";
+// Fetch data from the 'portofolio' table
+$sql = "SELECT pict, nama, detail FROM portofolio";
 $result = $conn->query($sql);
-$about = $result->fetch_assoc();
+
+$portfolios = array();
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $portfolios[] = $row;
+    }
+}
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -53,32 +61,39 @@ $about = $result->fetch_assoc();
 
     <!-- Header Start -->
     <?php 
-    $pageTitle = "About Us";
+    $pageTitle = "Portofolio";
     include 'includes/header.php'; 
     ?>
     <!-- Header End -->
 
-    <!-- About Start -->
-    <div class="container-fluid about bg-light py-5">
+    <!-- Portofolio Start -->
+    <div class="container-fluid service py-5">
         <div class="container py-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-5 wow fadeInLeft" data-wow-delay="0.2s">
-                    <div class="about-img pb-5 ps-5">
-                        <img src="img/<?php echo $about['img']; ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
+            <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="sub-style">
+                    <h4 class="sub-title px-3 mb-0">Portofolio</h4>
+                </div>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <?php foreach ($portfolios as $portfolio): ?>
+                <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-item rounded">
+                        <div class="service-img rounded-top">
+                            <img src="img/<?php echo $portfolio['pict']; ?>" class="img-fluid rounded-top w-100" alt="<?php echo $portfolio['nama']; ?>">
+                        </div>
+                        <div class="service-content rounded-bottom bg-light p-4">
+                            <div class="service-content-inner">
+                                <h5 class="mb-4"><?php echo $portfolio['nama']; ?></h5>
+                                <p class="mb-4"><?php echo $portfolio['detail']; ?></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-7 wow fadeInRight" data-wow-delay="0.4s">
-                    <div class="section-title text-start mb-5">
-                        <!-- <h4 class="sub-title pe-3 mb-0">About Us</h4> -->
-                        <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
-                        <p class="mb-4"><?php echo $about['descrip']; ?></p>
-                        <a href="<?php echo $about['url']; ?>" class="btn btn-primary rounded-pill text-white py-3 px-5">Our Service</a>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
-    <!-- About End -->
+    <!-- Portofolio End -->
 
     <!-- Footer Start -->
     <?php include 'includes/footer.php'; ?>
@@ -102,17 +117,7 @@ $about = $result->fetch_assoc();
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-
-    <script>
-    // Hilangkan spinner setelah halaman sepenuhnya dimuat
-    window.addEventListener("load", function() {
-        var spinner = document.getElementById("spinner");
-        if (spinner) {
-            spinner.classList.remove("show"); // Menghilangkan spinner
-        }
-    });
-    </script>
-
+    
 </body>
 
 </html>

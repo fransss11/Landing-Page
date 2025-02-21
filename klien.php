@@ -1,10 +1,18 @@
 <?php
 include 'database.php';
 
-// Fetch data from the 'about' table
-$sql = "SELECT * FROM about ORDER BY id DESC LIMIT 1";
+// Fetch data from the 'klien' table
+$sql = "SELECT klien, gambar FROM klien";
 $result = $conn->query($sql);
-$about = $result->fetch_assoc();
+
+$clients = array();
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $clients[] = $row;
+    }
+}
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -53,32 +61,31 @@ $about = $result->fetch_assoc();
 
     <!-- Header Start -->
     <?php 
-    $pageTitle = "About Us";
+    $pageTitle = "Our Client";
     include 'includes/header.php'; 
     ?>
     <!-- Header End -->
 
-    <!-- About Start -->
-    <div class="container-fluid about bg-light py-5">
+
+    <!-- Our Client Start -->
+    <div class="container-fluid team py-5">
         <div class="container py-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-5 wow fadeInLeft" data-wow-delay="0.2s">
-                    <div class="about-img pb-5 ps-5">
-                        <img src="img/<?php echo $about['img']; ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
-                    </div>
+            <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="sub-style">
+                    <h2 class="sub-title px-3 mb-0">Our Client</h2>
                 </div>
-                <div class="col-lg-7 wow fadeInRight" data-wow-delay="0.4s">
-                    <div class="section-title text-start mb-5">
-                        <!-- <h4 class="sub-title pe-3 mb-0">About Us</h4> -->
-                        <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
-                        <p class="mb-4"><?php echo $about['descrip']; ?></p>
-                        <a href="<?php echo $about['url']; ?>" class="btn btn-primary rounded-pill text-white py-3 px-5">Our Service</a>
+            </div>
+            <div class="clients-container">
+                <?php foreach ($clients as $client): ?>
+                    <div class="client-card">
+                        <img src="img/<?php echo $client['gambar']; ?>" alt="<?php echo $client['klien']; ?>">
+                        <p><?php echo $client['klien']; ?></p>
                     </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
-    <!-- About End -->
+    <!-- Our Client End -->
 
     <!-- Footer Start -->
     <?php include 'includes/footer.php'; ?>
@@ -102,17 +109,11 @@ $about = $result->fetch_assoc();
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-
+    
+    <!-- Inisialisasi WOW.js -->
     <script>
-    // Hilangkan spinner setelah halaman sepenuhnya dimuat
-    window.addEventListener("load", function() {
-        var spinner = document.getElementById("spinner");
-        if (spinner) {
-            spinner.classList.remove("show"); // Menghilangkan spinner
-        }
-    });
+        new WOW().init();
     </script>
-
 </body>
 
 </html>
