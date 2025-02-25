@@ -61,7 +61,7 @@ $conn->close();
 
     <!-- Header Start -->
     <?php 
-    $pageTitle = "Our Client";
+    $pageTitle = "Klien Kami";
     include 'includes/header.php'; 
     ?>
     <!-- Header End -->
@@ -72,7 +72,7 @@ $conn->close();
         <div class="container py-5">
             <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="sub-style">
-                    <h2 class="sub-title px-3 mb-0">Our Client</h2>
+                    <h2 class="sub-title px-3 mb-0">Klien Kami</h2>
                 </div>
             </div>
             <div class="clients-container">

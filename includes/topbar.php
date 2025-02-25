@@ -19,6 +19,7 @@ $social = $result->fetch_assoc();
                 <?php if (!empty($info['lokasi'])): ?>
                     <a href="<?php echo $info['lokasi']; ?>" class="text-light me-4"><i class="fas fa-map-marker-alt text-primary me-2"></i>Lokasi</a>
                 <?php endif; ?>
+                <a href="#" class="text-light me-4"><i class="fas fa-phone-alt text-primary me-2"></i>031 843 7854</a></a>
                 <?php if (!empty($info['gmail'])): ?>
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" 
                     target="_blank" 
@@ -45,6 +46,7 @@ $social = $result->fetch_assoc();
                 <?php if (!empty($social['whatsapp'])): ?>
                     <a href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-0"><i class="fab fa-whatsapp"></i></a>
                 <?php endif; ?>
+                <!-- <a href="admin/index.php" class="btn btn-light btn-square border rounded-circle nav-fill"><i class="fas fa-user-shield"></i></a> -->
             </div>
         </div>
     </div>

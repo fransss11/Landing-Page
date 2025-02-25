@@ -109,7 +109,7 @@ $conn->close();
 
     <!-- Header Start -->
     <?php
-    $pageTitle = "Galery";
+    $pageTitle = "Galeri";
     include 'includes/header.php';
     ?>
     <!-- Header End -->

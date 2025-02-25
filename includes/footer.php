@@ -40,26 +40,26 @@ $info = $result->fetch_assoc();
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="footer-item d-flex flex-column">
-                    <h4 class="mb-4 text-white">Quick Links</h4>
-                    <a href="index.php"><i class="fas fa-angle-right me-2"></i> Home</a>
-                    <a href="about.php"><i class="fas fa-angle-right me-2"></i> About Us</a>
-                    <a href="service.php"><i class="fas fa-angle-right me-2"></i> Service</a>
+                    <h4 class="mb-4 text-white">Link Cepat</h4>
+                    <a href="index.php"><i class="fas fa-angle-right me-2"></i> Beranda</a>
+                    <a href="about.php"><i class="fas fa-angle-right me-2"></i> Tentang Kami</a>
+                    <a href="service.php"><i class="fas fa-angle-right me-2"></i> Layanan</a>
                     <a href="portofolio.php"><i class="fas fa-angle-right me-2"></i> Portofolio</a>
-                    <a href="galery.php"><i class="fas fa-angle-right me-2"></i> Galery</a>
-                    <a href="contact.php"><i class="fas fa-angle-right me-2"></i> Contact Us</a>
+                    <a href="galery.php"><i class="fas fa-angle-right me-2"></i> Galeri</a>
+                    <a href="contact.php"><i class="fas fa-angle-right me-2"></i> Kontak</a>
                     <a href="berita.php"><i class="fas fa-angle-right me-2"></i> Berita</a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="footer-item d-flex flex-column">
                     <h4 class="mb-4 text-white">Informasi</h4>
-                    <a href="klien.php"><i class="fas fa-angle-right me-2"></i> Our Client</a>
-                    <a href="team.php"><i class="fas fa-angle-right me-2"></i> Our Team</a>
+                    <a href="klien.php"><i class="fas fa-angle-right me-2"></i> Klien Kami</a>
+                    <a href="team.php"><i class="fas fa-angle-right me-2"></i> Tim Kami</a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="footer-item d-flex flex-column">
-                    <h4 class="mb-4 text-white">Contact Info</h4>
+                    <h4 class="mb-4 text-white">Info Kontak</h4>
                     <?php if (!empty($info['lokasi'])): ?>
                         <a href="<?php echo $info['lokasi']; ?>"><i class="fa fa-map-marker-alt me-2"></i>Lokasi</a>
                     <?php endif; ?>
@@ -68,6 +68,8 @@ $info = $result->fetch_assoc();
                     target="_blank">
                     <i class="fas fa-envelope me-2"></i>Email</a>
                     <?php endif; ?>
+                    <a href=""><i class="fas fa-phone me-2"></i>031 843 7854</a>
+                    <!-- <a href="admin/index.php"><i class="fas fa-user-shield me-2"></i>admin</a> -->
                 </div>
             </div>
         </div>

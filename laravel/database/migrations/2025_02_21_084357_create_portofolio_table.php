@@ -12,10 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('portofolio', function (Blueprint $table) {
-            $table->id('id_portofolio'); // Primary key
-            $table->string('pict', 255)->nullable();
-            $table->string('nama', 255)->nullable();
-            $table->string('detail', 255)->nullable();
+            $table->id('id_por'); // Primary key
+            $table->string('pdf', 255)->nullable(); // Tambahkan kolom pdf
             $table->timestamps(); // created_at & updated_at
         });
     }

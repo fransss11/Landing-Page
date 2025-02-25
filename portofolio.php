@@ -1,8 +1,8 @@
 <?php
 include 'database.php';
 
-// Fetch data from the 'portofolio' table
-$sql = "SELECT pict, nama, detail FROM portofolio";
+// Fetch data from the 'proposal' table
+$sql = "SELECT pdf FROM proposal";
 $result = $conn->query($sql);
 
 $portfolios = array();
@@ -68,30 +68,12 @@ $conn->close();
 
     <!-- Portofolio Start -->
     <div class="container-fluid service py-5">
-        <div class="container py-5">
-            <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.2s">
-                <div class="sub-style">
-                    <h4 class="sub-title px-3 mb-0">Portofolio</h4>
-                </div>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <?php foreach ($portfolios as $portfolio): ?>
-                <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item rounded">
-                        <div class="service-img rounded-top">
-                            <img src="img/<?php echo $portfolio['pict']; ?>" class="img-fluid rounded-top w-100" alt="<?php echo $portfolio['nama']; ?>">
-                        </div>
-                        <div class="service-content rounded-bottom bg-light p-4">
-                            <div class="service-content-inner">
-                                <h5 class="mb-4"><?php echo $portfolio['nama']; ?></h5>
-                                <p class="mb-4"><?php echo $portfolio['detail']; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
+        <?php foreach ($portfolios as $portfolio): ?>
+            <?php if (!empty($portfolio['pdf'])): ?>
+                <iframe src="pdf/<?php echo urlencode($portfolio['pdf']); ?>" 
+                        style="width:100%; height:600px;" frameborder="0"></iframe>
+            <?php endif; ?>
+        <?php endforeach; ?>
     </div>
     <!-- Portofolio End -->
 

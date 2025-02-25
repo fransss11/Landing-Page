@@ -71,11 +71,11 @@ $conn->close();
     <!-- Header -->
     <div class="container-fluid bg-breadcrumb">
         <div class="container text-center py-5">
-            <h3 class="text-white display-3 mb-4 wow fadeInDown" data-wow-delay="0.1s">Service Details</h3>
+            <h3 class="text-white display-3 mb-4 wow fadeInDown" data-wow-delay="0.1s">Detail Layanan</h3>
             <ol class="breadcrumb justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
-                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                <li class="breadcrumb-item"><a href="service.php">Services</a></li>
-                <li class="breadcrumb-item active text-primary">Detail Service</li>
+                <li class="breadcrumb-item"><a href="index.php">Beranda</a></li>
+                <li class="breadcrumb-item"><a href="service.php">Layanan</a></li>
+                <li class="breadcrumb-item active text-primary">Detail Layanan</li>
             </ol>
         </div>
     </div>
@@ -94,7 +94,7 @@ $conn->close();
                             <h2 id="judul-service" class="wow fadeInUp" data-wow-delay="0.3s"></h2>
                             <p class="text-muted"><i class="fa fa-calendar-alt text-primary"></i> <span id="tanggal-service"></span></p>
                             <p id="konten-service" class="wow fadeInUp" data-wow-delay="0.5s"></p>
-                            <a href="service.php" class="btn btn-primary">Back to Services</a>
+                            <a href="service.php" class="btn btn-primary">Kembali Ke Layanan</a>
                         </div>
                     </div>
                 </div>

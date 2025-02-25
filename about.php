@@ -53,7 +53,7 @@ $about = $result->fetch_assoc();
 
     <!-- Header Start -->
     <?php 
-    $pageTitle = "About Us";
+    $pageTitle = "Tentang Kami";
     include 'includes/header.php'; 
     ?>
     <!-- Header End -->

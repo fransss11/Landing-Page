@@ -59,7 +59,7 @@ $social = $result->fetch_assoc();
 
     <!-- Header Start -->
     <?php
-    $pageTitle = "Contact Us";
+    $pageTitle = "Kontak";
     include 'includes/header.php';
     ?>
     <!-- Header End -->
@@ -69,7 +69,7 @@ $social = $result->fetch_assoc();
         <div class="container py-5">
             <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="sub-style mb-4">
-                    <h4 class="sub-title text-white px-3 mb-0">Contact Us</h4>
+                    <h4 class="sub-title text-white px-3 mb-0">Kontak</h4>
                 </div>
                 <p class="mb-0 text-black-50">Jika ada yang mau ditanyakan, silahkan hubungi kami!</p>
             </div>
@@ -81,25 +81,25 @@ $social = $result->fetch_assoc();
                                 <div class="col-lg-12 col-xl-6">
                                     <div class="form-floating">
                                         <input type="text" class="form-control bg-transparent border border-white" id="name" name="name" placeholder="Your Name" required>
-                                        <label for="name">Your Name</label>
+                                        <label for="name">Nama Anda</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-xl-6">
                                     <div class="form-floating">
                                         <input type="email" class="form-control bg-transparent border border-white" id="email" name="email" placeholder="Your Email" required>
-                                        <label for="email">Your Email</label>
+                                        <label for="email">Email Anda</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-xl-6">
                                     <div class="form-floating">
                                         <input type="phone" class="form-control bg-transparent border border-white" id="phone" name="phone" placeholder="Phone" required>
-                                        <label for="phone">Your Phone</label>
+                                        <label for="phone">Telepon Anda</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-xl-6">
                                     <div class="form-floating">
                                         <input type="text" class="form-control bg-transparent border border-white" id="project" name="project" placeholder="Project" required>
-                                        <label for="project">Your Project</label>
+                                        <label for="project">Projek Anda</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -111,11 +111,11 @@ $social = $result->fetch_assoc();
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <textarea class="form-control bg-transparent border border-white" placeholder="Leave a message here" id="message" name="message" style="height: 160px" required></textarea>
-                                        <label for="message">Message</label>
+                                        <label for="message">Pesan</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-light text-primary w-100 py-3" type="submit">Send Message</button>
+                                    <button class="btn btn-light text-primary w-100 py-3" type="submit">Kirim Pesan</button>
                                 </div>
                             </div>
                         </form>
@@ -126,7 +126,7 @@ $social = $result->fetch_assoc();
                             <a href="<?php echo $info['lokasi']; ?>" class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;">
                                 <i class="fa fa-map-marker-alt fa-2x text-primary"></i>
                             </a>
-                            <a href="<?php echo $info['lokasi']; ?>" class="mb-0 text-white"><h4 class="text-dark">Addresses</h4></a>
+                            <a href="<?php echo $info['lokasi']; ?>" class="mb-0 text-white"><h4 class="text-dark">Lokasi</h4></a>
                         </div>
                         <div class="d-flex flex-column align-items-center text-center">
                             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;">
@@ -135,6 +135,11 @@ $social = $result->fetch_assoc();
                             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" class="mb-0 text-white">
                                 <h4 class="text-dark">Email</h4>
                             </a>
+                        </div>
+                        <div class="d-flex flex-column align-items-center text-center mb-4">
+                            <div class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;"><i class="fa fa-phone-alt fa-2x text-primary"></i></div>
+                            <h4 class="text-dark">Telepon</h4>
+                            <p class="mb-0 text-white">031 843 7854</p>
                         </div>
                     </div>
                 </div>

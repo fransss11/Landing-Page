@@ -24,6 +24,25 @@ if ($result->num_rows > 0) {
 }
 
 $conn->close();
+
+function formatTanggalIndonesia($tanggal) {
+    $bulanIndo = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    $hariIndo = [
+        "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
+    ];
+
+    $dateObj = strtotime($tanggal);
+    $hari = $hariIndo[date('w', $dateObj)];
+    $tanggalNum = date('j', $dateObj);
+    $bulan = $bulanIndo[date('n', $dateObj) - 1];
+    $tahun = date('Y', $dateObj);
+
+    return "$hari, $tanggalNum $bulan $tahun";
+}
 ?>
 
 <!DOCTYPE html>
@@ -72,21 +91,21 @@ $conn->close();
 
     <!-- Header Start -->
     <?php
-    $pageTitle = "Service";
+    $pageTitle = "Layanan";
     include 'includes/header.php';
     ?>
     <!-- Header End -->
 
     <!-- Services Start -->
-        <div class="container-fluid service py-5">
-            <div class="container py-5">
-                <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.2s">
-                    <div class="sub-style">
-                        <h4 class="sub-title px-3 mb-0">Our Service</h4>
-                    </div>
+    <div class="container-fluid service py-5">
+        <div class="container py-5">
+            <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="sub-style">
+                    <h4 class="sub-title px-3 mb-0">Layanan</h4>
                 </div>
-                <div class="row g-4 justify-content-center" id="services-container">
-                    <?php foreach ($services as $service): ?>
+            </div>
+            <div class="row g-4 justify-content-center" id="services-container">
+                <?php foreach ($services as $service) : ?>
                     <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="service-item rounded">
                             <div class="service-img rounded-top">
@@ -95,51 +114,60 @@ $conn->close();
                             <div class="service-content rounded-bottom bg-light p-4 d-flex flex-column">
                                 <h5 class="mb-4"><?php echo $service['title']; ?></h5>
                                 <p class="mb-4"><?php echo $service['descrip']; ?></p>
-                                
+
                                 <!-- Wadah untuk tanggal + tombol -->
                                 <div class="mt-auto text-center">
                                     <p class="text-muted mb-2">
-                                        <small><?php echo date('D, j F Y', strtotime($service['date'])); ?></small>
+                                        <small><?php echo formatTanggalIndonesia($service['date']); ?></small>
                                     </p>
-                                    <a href="detail_service.php?id=<?php echo $service['id']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">
-                                        Read More
+                                    <a href="<?php echo $service['url']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">
+                                        Detail
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <?php endforeach; ?>
+                <?php endforeach; ?>
+                <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.2s">
+                    <a class="btn btn-primary rounded-pill text-white py-3 px-5" href="service.php">Layanan Lainnya</a>
+                </div>
             </div>
         </div>
     </div>
     <!-- Services End -->
+
 
     <!-- Testimonial Start -->
     <div class="container-fluid testimonial py-5 wow zoomInDown" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="section-title mb-5">
                 <div class="sub-style">
-                    <h4 class="sub-title text-white px-3 mb-0">Testimonial</h4>
+                    <h4 class="sub-title text-white px-3 mb-0">Testimoni</h4>
                 </div>
-                <h1 class="display-3 mb-4">What Clients are Say</h1>
+                <h1 class="display-3 mb-4">Silahkan Lihat dan Berikan Testimoni Anda</h1>
             </div>
             <div class="testimonial-carousel owl-carousel">
-                <?php foreach ($testimonials as $testimonial): ?>
-                <div class="testimonial-item">
-                    <div class="testimonial-inner p-5">
-                        <div class="testimonial-inner-img mb-4">
-                            <img src="img/<?php echo $testimonial['img']; ?>" class="img-fluid rounded-circle" alt="">
-                        </div>
-                        <div class="text-center">
-                            <h5 class="mb-2"><?php echo $testimonial['title']; ?></h5>
-                            <p class="mb-2 text-white-50"><?php echo $testimonial['designation']; ?></p>
-                            <p class="text-muted"><small><?php echo date('D, j F Y', strtotime($testimonial['date'])); ?></small></p>
-                        </div>
-                        <p class="text-white fs-7"><?php echo $testimonial['descrip']; ?></p>
+                <?php foreach ($testimonials as $testimonial) : ?>
+                    <div class="testimonial-item">
+                        <div class="testimonial-inner p-5">
+                            <div class="testimonial-inner-img mb-4">
+                                <img src="img/<?php echo $testimonial['img']; ?>" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="text-center">
+                                <h5 class="mb-2"><?php echo $testimonial['title']; ?></h5>
+                                <p class="mb-2 text-white-50"><?php echo $testimonial['designation']; ?></p>
+                                <p class="text-mutedd"><small><?php echo formatTanggalIndonesia($testimonial['date']); ?></small></p>
+                            </div>
+                            <p class="text-white fs-7"><?php echo $testimonial['descrip']; ?></p>
                     </div>
                 </div>
                 <?php endforeach; ?>
             </div>
+            <!-- Berikan Testimoni Start -->
+            <div class="container-fluid py-5 text-center">
+                <a href="testimoni.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Berikan Testimoni</a>
+            </div>
+            <!-- Berikan Testimoni End -->
         </div>
     </div>
     <!-- Testimonial End -->
