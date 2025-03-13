@@ -2,155 +2,175 @@
 include 'conn.php';
 include 'auth.php';
 
-$a=1;
-
+// Ambil data admin dari database
+$query = "SELECT ad_name, ad_email FROM admin WHERE ad_id = 1";
+$result = mysqli_query($con, $query);
+$user = mysqli_fetch_assoc($result);
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <?php include"title.php"; ?>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bbootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dashboard Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- Custom Styles -->
+    <style>
+        @media (max-width: 768px) {
+            .small-box h3 {
+                font-size: 1.2rem;
+            }
+
+            .small-box p {
+                font-size: 0.9rem;
+            }
+
+            .navbar-nav .nav-item img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .nav-link span {
+                display: none;
+            }
+        }
+
+        .user-dropdown .dropdown-menu {
+            width: 200px;
+            text-align: center;
+        }
+
+        .user-dropdown img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .navbar-nav .nav-item .nav-link {
+            display: flex;
+            align-items: center;
+        }
+
+        .small-box-footer {
+            text-decoration: none;
+        }
+
+        .content-wrapper {
+            transition: all 0.3s ease-in-out;
+            margin-left: 250px; /* Sidebar default terbuka */
+            min-height: 100vh; /* Supaya tidak terpotong */
+        }
+
+        @media (max-width: 992px) {
+            .content-wrapper {
+                margin-left: 0; /* Sidebar tertutup otomatis */
+            }
+        }
+
+        .sidebar-collapsed .content-wrapper {
+            margin-left: 0 !important; /* Jika sidebar ditutup */
+        }
+
+
+        .sidebar-hidden .content-wrapper {
+            margin-left: 0 !important; /* Jika sidebar disembunyikan */
+        }
+
+        .wrapper {
+            min-height: 100vh; /* Supaya konten tidak terpotong */
+        }
+
+
+    </style>
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+    <div class="wrapper">
 
-  <!-- Navbar -->
-   <?php include"topbar.php"; ?>
-   
-  <!-- /.navbar -->
-
-  <!-- Main Sidebar Container -->
-  <?php include"sidebar.php"; ?>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-         
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-			<a href="add-blog.php" class="small-box-footer">
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3> Add Blog</h3>
-
-                <p>Add</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-             </div>
-			</a>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-			<a href="view-blog.php" class="small-box-footer">
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>View Blog</h3>
-
-                <p>View</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-             </div>
-			</a>
-          </div>
-          <!-- ./col -->
-        </div>
-        <!-- /.row -->
-        <!-- Main row -->
+        <!-- Navbar -->
+        <?php include"topbar.php"; ?>
         
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-   <?php include"footer.php"; ?>
+        <!-- /.navbar -->
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
+        <!-- Sidebar -->
+        <?php include "sidebar.php"; ?>
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Content Header -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <h1 class="m-0 text-dark text-center text-md-left">Dashboard</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Tambahkan Berita -->
+                        <div class="col-md-6 col-sm-12">
+                            <a href="add-blog.php" class="small-box-footer">
+                                <div class="small-box bg-warning">
+                                    <div class="inner text-center">
+                                        <h3>Tambahkan Berita</h3>
+                                        <p>Tambahkan</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-person-add"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Lihat Berita -->
+                        <div class="col-md-6 col-sm-12">
+                            <a href="view-blog.php" class="small-box-footer">
+                                <div class="small-box bg-danger">
+                                    <div class="inner text-center">
+                                        <h3>Lihat Berita</h3>
+                                        <p>Lihat</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-pie-graph"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <?php include "footer.php"; ?>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="dist/js/adminlte.js"></script>
+    <script>
+    $(document).ready(function () {
+            $("#sidebarToggle").click(function () {
+                $("body").toggleClass("sidebar-collapsed");
+            });
+        });
+    </script>
+
 </body>
+
 </html>

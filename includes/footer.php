@@ -1,13 +1,100 @@
 <?php
 include 'database.php';
 
+function getVisitorIP() {
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip_array = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        $ip = trim($ip_array[0]); 
+    } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP']; 
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];  
+    }
+    if ($ip == '::1') {
+        $ip = '127.0.0.1'; 
+    }
+    return $ip;
+}
+function getBrowser() {
+    $browser = "Unknown Browser";
+    $browser_array = array(
+        '/edg/i'        => 'Microsoft Edge', 
+        '/msie/i'       => 'Internet Explorer',
+        '/trident/i'    => 'Internet Explorer',
+        '/firefox/i'    => 'Mozilla Firefox',
+        '/chrome/i'     => 'Google Chrome',
+        '/safari/i'     => 'Apple Safari',
+        '/opera/i'      => 'Opera',
+        '/netscape/i'   => 'Netscape',
+        '/maxthon/i'    => 'Maxthon',
+        '/konqueror/i'  => 'Konqueror',
+        '/mobile/i'     => 'Mobile Browser',
+        '/ucbrowser/i'  => 'UC Browser',
+        '/vivaldi/i'    => 'Vivaldi',
+        '/yabrowser/i'  => 'Yandex Browser',
+        '/puffin/i'     => 'Puffin',
+        '/brave/i'      => 'Brave',
+        '/duckduckgo/i' => 'DuckDuckGo Privacy Browser',
+        '/seamonkey/i'  => 'SeaMonkey',
+        '/slimjet/i'    => 'Slimjet',
+        '/comodo/i'     => 'Comodo Dragon',
+        '/waterfox/i'   => 'Waterfox',
+        '/palemoon/i'   => 'Pale Moon',
+        '/lunascape/i'  => 'Lunascape',
+        '/avant/i'      => 'Avant Browser',
+        '/epic/i'       => 'Epic Privacy Browser',
+        '/midori/i'     => 'Midori',
+        '/torch/i'      => 'Torch Browser',
+        '/sleipnir/i'   => 'Sleipnir',
+        '/iridium/i'    => 'Iridium Browser',
+        '/falkon/i'     => 'Falkon',
+        '/otter/i'      => 'Otter Browser'
+    );
+    foreach ($browser_array as $regex => $value) {
+        if (preg_match($regex, $_SERVER['HTTP_USER_AGENT'])) {
+            $browser = $value;
+            break;
+        }
+    }
+    return $browser;
+}
+function getDevice() {
+    $device = "Unknown Device";
+    if (preg_match('/mobile/i', $_SERVER['HTTP_USER_AGENT'])) {
+        $device = "Mobile";
+    } elseif (preg_match('/tablet/i', $_SERVER['HTTP_USER_AGENT'])) {
+        $device = "Tablet";
+    } elseif (preg_match('/desktop|windows|macintosh|linux/i', $_SERVER['HTTP_USER_AGENT'])) {
+        $device = "Desktop";
+    }
+    return $device;
+}
+$today = date('Y-m-d');
+$visitor_ip = getVisitorIP();
+$browser = getBrowser();
+$device = getDevice();
+$query_check = "SELECT * FROM visitor WHERE visit_date = '$today' AND ip_address = '$visitor_ip' AND user_agent = '{$_SERVER['HTTP_USER_AGENT']}' AND browser = '$browser' AND device = '$device'";
+$result_check = mysqli_query($conn, $query_check);
+if (mysqli_num_rows($result_check) == 0) {
+    $query_insert = "INSERT INTO visitor (visit_date, ip_address, user_agent, browser, device) VALUES ('$today', '$visitor_ip', '{$_SERVER['HTTP_USER_AGENT']}', '$browser', '$device')";
+    mysqli_query($conn, $query_insert);
+}
+$query_today = "SELECT COUNT(*) AS today_visitors FROM visitor WHERE visit_date = '$today'";
+$result_today = mysqli_query($conn, $query_today);
+$row_today = mysqli_fetch_assoc($result_today);
+$today_visitors = $row_today['today_visitors'];
+$query_total = "SELECT COUNT(*) AS total_visitors FROM visitor";
+$result_total = mysqli_query($conn, $query_total);
+$row_total = mysqli_fetch_assoc($result_total);
+$total_visitors = $row_total['total_visitors'];
+
 // Fetch data from the 'social_table'
-$sql = "SELECT facebook, twitter, instagram, whatsapp, linkedin FROM social ORDER BY id DESC LIMIT 1";
+$sql = "SELECT * FROM social ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
 $social = $result->fetch_assoc();
 
 // Fetch data from the 'info' table
-$sql = "SELECT lokasi, gmail FROM info ORDER BY id_info DESC LIMIT 1";
+$sql = "SELECT * FROM info ORDER BY id_info DESC LIMIT 1";
 $result = $conn->query($sql);
 $info = $result->fetch_assoc();
 ?>
@@ -55,6 +142,7 @@ $info = $result->fetch_assoc();
                     <h4 class="mb-4 text-white">Informasi</h4>
                     <a href="klien.php"><i class="fas fa-angle-right me-2"></i> Klien Kami</a>
                     <a href="team.php"><i class="fas fa-angle-right me-2"></i> Tim Kami</a>
+                    <a href="projek.php"><i class="fas fa-angle-right me-2"></i> Projek Kami</a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">
@@ -68,8 +156,29 @@ $info = $result->fetch_assoc();
                     target="_blank">
                     <i class="fas fa-envelope me-2"></i>Email</a>
                     <?php endif; ?>
-                    <a href=""><i class="fas fa-phone me-2"></i>031 843 7854</a>
+                    <?php if (!empty($social['phone'])): ?>
+                        <a><i class="fas fa-phone me-2"></i><?php echo $social['phone']; ?></a>
+                    <?php endif; ?>
                     <!-- <a href="admin/index.php"><i class="fas fa-user-shield me-2"></i>admin</a> -->
+                </div>
+                <br></br>
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Jam Kerja</h4>
+                    <p style="color: white;">Kami bekerja 5 hari dalam seminggu. <br><br> Senin - Jumat: 08:00 - 17:00</p>
+                    <table style="width: auto" class="table text-center text-white" >
+                        <thead>
+                            <tr>
+                                <th>Pengunjung Hari Ini</th>
+                                <th>Total Pengunjung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="color: rgb(42, 42, 42);"><?php echo $today_visitors; ?> Orang</td>
+                                <td style="color: rgb(42, 42, 42);"><?php echo $total_visitors; ?> Orang</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -77,12 +77,14 @@ $conn->close();
             </div>
             <div class="clients-container">
                 <?php foreach ($clients as $client): ?>
-                    <div class="client-card">
-                        <img src="img/<?php echo $client['gambar']; ?>" alt="<?php echo $client['klien']; ?>">
-                        <p><?php echo $client['klien']; ?></p>
+                    <div class="client-card wow fadeInUp">
+                        <img src="admin/images/partnership/<?php echo htmlspecialchars($client['gambar']); ?>" 
+                            alt="<?php echo htmlspecialchars($client['klien']); ?>">
+                        <p><?php echo htmlspecialchars($client['klien']); ?></p>
                     </div>
                 <?php endforeach; ?>
             </div>
+
         </div>
     </div>
     <!-- Our Client End -->

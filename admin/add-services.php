@@ -1,161 +1,267 @@
 <?php
-
-// error_reporting(0);
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+error_reporting(0);
 include 'conn.php';
 include 'auth.php';
 
-$a=3;
+date_default_timezone_set('Asia/Kolkata');
+$today = date("Y-m-d H:i:s");
+
+// Check if 'edit' parameter exists in URL dan valid
+$edit = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
+
+// Ambil data jika mode edit
+if ($edit > 0) {
+    $resultt = mysqli_query($con, "SELECT * FROM services WHERE id = '$edit'");
+    $roww = mysqli_fetch_array($resultt);
+} else {
+    $roww = []; // mode insert, inisialisasi agar tidak error
+}
+
+if (isset($_POST['publise'])) {
+    // Sanitasi input menggunakan mysqli_real_escape_string
+    $title   = mysqli_real_escape_string($con, $_POST['title']);
+    $short   = mysqli_real_escape_string($con, $_POST['short']);
+    $descrip = mysqli_real_escape_string($con, $_POST['descrip']);
+
+    // Handle file upload
+    if (!empty($_FILES['lis_img']['name'])) {
+        // Buat nama file unik (mirip dengan add-about.php)
+        $newFileName = rand() . '_' . $_FILES['lis_img']['name'];
+        $tempFile    = $_FILES['lis_img']['tmp_name'];
+        $folder      = "images/services/" . $newFileName;
+
+        // Jika file ada, pindahkan ke folder tujuan
+        if (!empty($tempFile)) {
+            move_uploaded_file($tempFile, $folder);
+        }
+        $lis_img = $newFileName;
+    } else {
+        // Gunakan gambar lama jika ada
+        $lis_img = isset($roww["img"]) ? $roww["img"] : '';
+    }
+
+    // INSERT (tambah data baru)
+    if ($edit == 0) {
+        $insertdata = mysqli_query($con, 
+            "INSERT INTO services(title, short, descrip, img, date) 
+             VALUES('$title', '$short', '$descrip', '$lis_img', '$today')");
+
+        if ($insertdata) {
+            $_SESSION['msg'] = "Posted Successfully";
+            $_SESSION['msgClass'] = "alert-success";
+        } else {
+            $_SESSION['msg'] = "Error while posting the service.";
+            $_SESSION['msgClass'] = "alert-danger";
+        }
+        // Redirect ke halaman add-services.php tanpa parameter edit
+        header("Location: add-services.php");
+        exit;
+    }
+    // UPDATE (perbarui data)
+    else {
+        $insertdata = mysqli_query($con, 
+            "UPDATE services SET 
+                title='$title', 
+                short='$short', 
+                descrip='$descrip', 
+                img='$lis_img', 
+                date='$today' 
+             WHERE id=" . $edit);
+
+        if ($insertdata) {
+            $_SESSION['msg'] = "Updated Successfully";
+            $_SESSION['msgClass'] = "alert-success";
+        } else {
+            $_SESSION['msg'] = "Error while updating the service.";
+            $_SESSION['msgClass'] = "alert-danger";
+        }
+        // Redirect ke halaman edit dengan parameter edit sehingga data tetap muncul
+        header("Location: add-services.php?edit=" . $edit);
+        exit;
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<?php include"title.php"; ?>
-  <!-- Tell the browser to be responsive to screen width -->
+  <?php include "title.php"; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
+  <!-- Theme style (AdminLTE) -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- summernote -->
+  <!-- Summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
- <!-- Navbar -->
-   <?php include"topbar.php"; ?>
-  <!-- /.navbar -->
-
+  <!-- Navbar -->
+  <?php include "topbar.php"; ?>
   <!-- Main Sidebar Container -->
-  <?php include"sidebar.php"; ?>
-<?php
-date_default_timezone_set('Asia/Kolkata');
-$today = date("D d M Y");
-
-// Check if 'edit' parameter exists in URL
-$edit = isset($_GET['edit']) ? $_GET['edit'] : '';
-
-if ($edit) {
-    $resultt = mysqli_query($con, "SELECT * FROM services WHERE id=".$edit);
-    $roww = mysqli_fetch_array($resultt);
-}
-
-if(isset($_POST['publise'])){
-    $title1 = $_POST['title'];
-    $title2 = str_replace("'","\'", $title1);
-    $title = str_replace("&","\and", $title2);
-    $short1 = $_POST['short'];
-    $short = str_replace("'","\'", $short1);
-    $descrip1 = $_POST['descrip'];
-    $descrip = str_replace("'","\'", $descrip1);
-    $url = $_POST['url'];
-
-    // Handle file upload
-    if($_FILES['lis_img']['name'] != ''){
-        $lis_img = rand().$_FILES['lis_img']['name'];
-    } else {
-        $lis_img = $roww["img"];
-    }
-
-    $tempname = $_FILES['lis_img']['tmp_name'];
-    $folder = "images/services/".$lis_img;
-
-    if ($edit == '') {
-        // Insert new service
-        move_uploaded_file($tempname, $folder);
-        $insertdata = mysqli_query($con, "INSERT INTO services(title, short, descrip, img, date, status) VALUES('$title','$short','$descrip','$lis_img','$today','0')");
-        echo "<script>alert('Posted Successfully');</script>
-        <script>window.location.href = 'add-services.php'</script>";
-    } else {
-        // Update existing service
-        move_uploaded_file($tempname, $folder);
-        $insertdata = mysqli_query($con, "UPDATE services SET title='$title', short='$short', descrip='$descrip', img='$lis_img', date='$today' WHERE id=".$edit);
-        echo "<script>alert('Updated Successfully');</script>
-        <script>window.location.href = 'add-services.php'</script>";
-    }
-}
-?>
+  <?php include "sidebar.php"; ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+    <!-- Content Header -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add Services</h1>
+            <h1><?php echo ($edit > 0) ? 'Edit Services' : 'Add Services'; ?></h1>
           </div>
-           <div class="col-sm-6">
-          <a href="view-services.php" class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i>  View Services</a>
+          <div class="col-sm-6">
+            <a href="view-services.php" class="btn btn-success">
+              <i class="fa fa-eye" aria-hidden="true"></i> View Services
+            </a>
           </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-md-8">
-        <form action="" method="post" enctype="multipart/form-data">
-          <div class="card card-outline card-info">
-            <div class="card-header">
-                <div class="form-group">
-                    <label>Enter Title</label>
-                    <input name="title" value="<?php echo isset($roww["title"]) ? $roww["title"] : ''; ?>" type="text" class="form-control" placeholder="Enter ...">
-                </div>
-            </div>
-            
-            <div class="card-body pad">
-                <label>Short Description</label>
-                <div class="mb-3">
-                    <textarea name="short" placeholder="Short Description" style="width: 100%;" rows="5" cols="23"><?php echo isset($roww["short"]) ? $roww["short"] : ''; ?></textarea>
-                </div>
-            </div>
-            
-            <div class="card-body pad">
-                <label>Full Description</label>
-                <div class="mb-3">
-                    <textarea name="descrip" class="textarea" placeholder="Place some text here"
-                        style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo isset($roww["descrip"]) ? $roww["descrip"] : ''; ?></textarea>
-                </div>
-            </div>
-
-            <div class="card-header">
-                <div class="form-group">
-                    <label for="exampleInputFile">Select Img <span style="color:red;">(only compressed)</span></label>
-                    <p style="color:red;">img size 800px x 500px</p>
-                    <input name="lis_img" type="file">
-                    <?php echo isset($roww["img"]) ? $roww["img"] : ''; ?>
-                </div>
-            </div>
-
-            <div class="card-header">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <button type="submit" name="publise" class="btn btn-block btn-warning btn-lg">Post</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-        </form>
         </div>
       </div>
     </section>
+
+    <!-- Main Content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-8">
+          
+          <!-- Tampilkan alert jika ada pesan (menggunakan session) -->
+          <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
+            <div style="max-width: 600px; margin: 0 auto;">
+              <div class="alert <?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
+                <?php 
+                  echo $_SESSION['msg'];
+                  // Hapus session agar alert tidak muncul lagi setelah refresh
+                  unset($_SESSION['msg']); 
+                  unset($_SESSION['msgClass']);
+                ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          <?php endif; ?>
+
+          <!-- Form dengan validasi -->
+          <form id="serviceForm" action="" method="post" enctype="multipart/form-data" 
+                class="needs-validation" novalidate>
+            <div class="card card-outline card-info">
+              
+              <!-- Title -->
+              <div class="card-header">
+                <div class="form-group">
+                  <label>Enter Title <span class="text-danger">*</span></label>
+                  <input 
+                    name="title" 
+                    value="<?php echo isset($roww["title"]) ? htmlspecialchars($roww["title"]) : ''; ?>" 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Enter ..." 
+                    maxlength="100" 
+                    required
+                  >
+                  <div class="invalid-feedback">
+                    Please enter a title.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Short Description -->
+              <div class="card-body pad">
+                <div class="form-group">
+                  <label>Short Description <span class="text-danger">*</span></label>
+                  <textarea 
+                    name="short" 
+                    class="form-control" 
+                    placeholder="Short Description" 
+                    rows="3" 
+                    maxlength="200" 
+                    required
+                  ><?php echo isset($roww["short"]) ? htmlspecialchars($roww["short"]) : ''; ?></textarea>
+                  <div class="invalid-feedback">
+                    Please enter a short description.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Full Description (Summernote) -->
+              <div class="card-body pad">
+                <div class="form-group">
+                  <label>Full Description <span class="text-danger">*</span></label>
+                  <textarea 
+                    name="descrip" 
+                    class="form-control textarea" 
+                    placeholder="Place some text here" 
+                    rows="8" 
+                    maxlength="10000" 
+                    required
+                  ><?php echo isset($roww["descrip"]) ? htmlspecialchars($roww["descrip"]) : ''; ?></textarea>
+                  <div class="invalid-feedback">
+                    Please enter the full description.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Image Upload -->
+              <div class="card-header">
+                <div class="form-group">
+                  <label for="exampleInputFile">
+                    Select Image
+                    <?php 
+                      // Wajib upload jika data baru atau belum ada gambar
+                      if(empty($roww["img"])){ 
+                        echo '<span class="text-danger">*</span>'; 
+                      }
+                    ?>
+                  </label>                  
+                  <input 
+                    name="lis_img" 
+                    type="file" 
+                    id="fileUpload"
+                    class="form-control"
+                    accept="image/*"
+                    <?php echo empty($roww["img"]) ? 'required' : ''; ?>
+                  >
+                  <div class="invalid-feedback">
+                    Please upload an image.
+                  </div>
+
+                  <?php 
+                  if (!empty($roww["img"])) {
+                    $imagePath = "images/services/" . $roww["img"];
+                    if(file_exists($imagePath)) {
+                      echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Current Image" style="width:150px; margin-top:10px;">';
+                    } else {
+                      echo '<br><p>Image file not found</p>';
+                    }
+                  }
+                  ?>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="card-header">
+                <div class="form-group">
+                  <button type="submit" name="publise" class="btn btn-primary btn-lg">
+                    <?php echo ($edit) ? 'Update' : 'Publish Post'; ?>
+                  </button>
+                  <a href="view-services.php" class="btn btn-danger">Kembali</a>
+                </div>
+              </div>
+
+            </div><!-- /.card -->
+          </form>
+        </div><!-- /.col-md-8 -->
+      </div><!-- /.row -->
+    </section>
   </div>
 
-   <?php include"footer.php"; ?>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-  </aside>
+  <?php include "footer.php"; ?>
 </div>
 
 <!-- jQuery -->
@@ -164,14 +270,50 @@ if(isset($_POST['publise'])){
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
+
 <script>
   $(function () {
-    $('.textarea').summernote()
-  })
+    // Inisialisasi Summernote
+    $('.textarea').summernote({
+      height: 200
+    });
+
+    // Validasi manual saat form disubmit
+    $('#serviceForm').on('submit', function(event) {
+      var form = this;
+      var isValid = true; // Flag untuk validasi
+      
+      // Sinkronkan isi Summernote ke textarea sebelum validasi
+      var summernoteContent = $('.textarea').summernote('code');
+      $('textarea[name="descrip"]').val(summernoteContent);
+
+      // Cek jika Summernote kosong (termasuk HTML kosong seperti <p><br></p>)
+      if ($('.textarea').summernote('isEmpty') || 
+          summernoteContent.trim() === "" || 
+          summernoteContent === "<p><br></p>") {
+        isValid = false;
+        $('.note-editor').addClass('is-invalid'); // Tambahkan class error
+      } else {
+        $('.note-editor').removeClass('is-invalid'); // Hapus class error jika valid
+      }
+
+      // Jalankan validasi Bootstrap (untuk input lainnya)
+      if (!form.checkValidity()) {
+        isValid = false;
+      }
+
+      // Jika ada yang tidak valid, cegah submit
+      if (!isValid) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // Tambahkan class Bootstrap agar field ditandai sebagai error
+      form.classList.add('was-validated');
+    });
+  });
 </script>
 </body>
 </html>

@@ -2,12 +2,26 @@
 function getCurrentPage() {
     return basename($_SERVER['PHP_SELF']);
 }
+
+// Koneksi ke database dan ambil data logo
+include 'database.php';  // Pastikan koneksi database Anda sudah benar
+
+// Ambil data logo dari tabel info
+$info_result = mysqli_query($conn, "SELECT * FROM info WHERE id_info='1'");
+if (!$info_result) {
+    die("Error fetching info: " . mysqli_error($conn));
+}
+$info_row = mysqli_fetch_array($info_result);
+
+// Tentukan path logo, jika logo tidak ada di database maka gunakan logo default
+$logo = isset($info_row['logo']) && !empty($info_row['logo']) ? "admin/images/logo/" . $info_row['logo'] : "img/Logo LMM (Persigi Panjang Tanpa Alamat).png";
 ?>
 
 <div class="container-fluid position-relative p-0">
     <nav class="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0">
         <a href="index.php" class="navbar-brand p-0">
-            <img src="img/Logo LMM (Persigi Panjang Tanpa Alamat).png" alt="Logo">
+            <!-- Menggunakan logo yang diambil dari database -->
+            <img src="<?php echo $logo; ?>" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="fa fa-bars"></span>
@@ -23,6 +37,7 @@ function getCurrentPage() {
                     <div class="dropdown-menu m-0">
                         <a href="klien.php" class="dropdown-item <?php echo getCurrentPage() == 'klien.php' ? 'active' : ''; ?>">Klien Kami</a>
                         <a href="team.php" class="dropdown-item <?php echo getCurrentPage() == 'team.php' ? 'active' : ''; ?>">Tim Kami</a>
+                        <a href="projek.php" class="dropdown-item <?php echo getCurrentPage() == 'projek.php' ? 'active' : ''; ?>">Projek Kami</a>
                     </div>
                 </div>
                 <a href="galery.php" class="nav-item nav-link <?php echo getCurrentPage() == 'galery.php' ? 'active' : ''; ?>">Galeri</a>

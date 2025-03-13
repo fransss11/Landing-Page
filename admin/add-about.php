@@ -3,187 +3,229 @@ error_reporting(0);
 include 'conn.php';
 include 'auth.php';
 
-$a=11;
-?>
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<?php include"title.php"; ?>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-</head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
- <!-- Navbar -->
-   <?php include"topbar.php"; ?>
-  <!-- /.navbar -->
-
-  <!-- Main Sidebar Container -->
-  <?php include"sidebar.php"; ?>
-<?php
 date_default_timezone_set('Asia/Kolkata');
-$today = date("D d M Y");
+$today = date("Y-m-d H:i:s");
 
-$edit = $_GET['edit'];
+// Cek apakah di tabel 'about' sudah ada data
+$query  = "SELECT * FROM about LIMIT 1";
+$result = mysqli_query($con, $query);
+$roww   = mysqli_fetch_assoc($result);
 
-$stmt = $con->prepare("SELECT * FROM about where id=?");
-$stmt->bind_param("i", $edit);
-$stmt->execute();
-$resultt = $stmt->get_result();
+// Flag untuk mengetahui apakah data sudah ada atau belum
+$dataExists = ($roww) ? true : false;
 
-$stmt->close();
+// Jika form disubmit
+if (isset($_POST['save'])) {
+    $title   = mysqli_real_escape_string($con, $_POST['title']);
+    $descrip = mysqli_real_escape_string($con, $_POST['descrip']);
 
-$roww = mysqli_fetch_array($resultt);
+    // Jika ada data lama, gunakan gambar lama. Jika upload baru, pakai file baru
+    $lis_img = isset($roww['img']) ? $roww['img'] : '';
+    if (!empty($_FILES['lis_img']['name'])) {
+        $newFileName = rand() . '_' . $_FILES['lis_img']['name'];
+        $tempFile    = $_FILES['lis_img']['tmp_name'];
+        $folder      = "images/about/" . $newFileName;
 
-if(isset($_POST['publise'])){
-	
-$title1 = $_POST['title'];
-$title = str_replace("'","\'", $title1);
-$short1 = $_POST['short'];
-$short = str_replace("'","\'", $short1);
-$descrip1 = $_POST['descrip'];
-$descrip = str_replace("'","\'", $descrip1);
-$url = $_POST['url'];
+        // Validasi ekstensi (opsional)
+        $valid_ext = ['jpg', 'jpeg', 'png'];
+        $file_ext  = strtolower(pathinfo($newFileName, PATHINFO_EXTENSION));
+        if (in_array($file_ext, $valid_ext)) {
+            move_uploaded_file($tempFile, $folder);
+            $lis_img = $newFileName;
+        }
+    }
 
-if($_FILES['lis_img']['name']!=''){
-$lis_img = rand().$_FILES['lis_img']['name'];
+    // Jika data belum ada, lakukan INSERT. Jika sudah ada, lakukan UPDATE.
+    if (!$dataExists) {
+        // Insert data
+        $sql = "INSERT INTO about (title, descrip, img, date, status) 
+                VALUES ('$title', '$descrip', '$lis_img', '$today', '0')";
+        $exec = mysqli_query($con, $sql);
+
+        if ($exec) {
+            $_SESSION['msg'] = "Data berhasil ditambahkan.";
+            $_SESSION['msgClass'] = "alert-success";
+        } else {
+            $_SESSION['msg'] = "Terjadi kesalahan saat menambahkan data.";
+            $_SESSION['msgClass'] = "alert-danger";
+        }
+    } else {
+        // Update data
+        $sql = "UPDATE about SET 
+                    title   = '$title',
+                    descrip = '$descrip',
+                    img     = '$lis_img',
+                    date    = '$today'
+                WHERE id = '".$roww['id']."'";
+        $exec = mysqli_query($con, $sql);
+
+        if ($exec) {
+            $_SESSION['msg'] = "Data berhasil diperbarui.";
+            $_SESSION['msgClass'] = "alert-success";
+        } else {
+            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui data.";
+            $_SESSION['msgClass'] = "alert-danger";
+        }
+    }
+
+    // Redirect agar alert tidak muncul lagi setelah refresh
+    header("Location: add-about.php");
+    exit;
 }
-else{
-	$lis_img = $roww["img"];
-}
-
-$tempname = $_FILES['lis_img']['tmp_name'];
-
-$folder = "../images/about/".$lis_img;
-if($edit==''){
-
-move_uploaded_file($tempname, $folder);
-
-$insertdata = mysqli_query($con,"INSERT INTO about(title,descrip,img,date,status)VALUES('$title','$descrip','$lis_img','$today','0')");
-echo "<script>alert('Posted Successfully');</script>
-	<script>window.location.href = 'add-about.php'</script>";
-}
-else{
-move_uploaded_file($tempname, $folder);
-
-$insertdata = mysqli_query($con,"UPDATE about SET title='$title',short='$short',descrip='$descrip',img='$lis_img',date='$today' where id=".$edit."");
-echo "<script>alert('Updated Successfully');</script>
-	<script>window.location.href = 'add-about.php'</script>";
-}
-
-
-}
-
 ?>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Add About</h1>
-          </div>
-           <div class="col-sm-6">
-          
-          </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Tentang Kami</title>
+    <!-- Bootstrap & AdminLTE CSS -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- Summernote CSS -->
+    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <?php include "topbar.php"; ?>
+    <?php include "sidebar.php"; ?>
 
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>Edit Tentang Kami</h1>
+        </section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-md-8">
-		<form action="" method="post" enctype="multipart/form-data">
-          <div class="card card-outline card-info">
-            
-			 
-			<div class="card-header">
-             <div class="form-group">
-                  <label>Enter Title</label>
-                 <input name="title" value="<?php echo $roww["title"]; ?>" type="text" class="form-control" placeholder="Enter ...">
-                </div>
-            </div>
-           	
-			<div class="card-body pad">
-			<label>Full Description</label>
-              <div class="mb-3">
-                <textarea name="descrip" class="textarea" placeholder="Place some text here"
-                          style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo $roww["descrip"]; ?></textarea>
-              </div>
-            </div>
-			<div class="card-header">
-			<div class="form-group">
-                    <label for="exampleInputFile">Select Img<span style="color:red;">(only compresed)</span></label>
-					<p style="color:red;">img size 560px x 350px</p>
-                        <input name="lis_img" type="file">
-                     <img style="width:200; height:150px;" src="../images/about/<?php echo $roww["img"]; ?>">
-                  </div>
-			</div>
-			 
-			<div class="card-header">
-             <div class="form-group">
-					<div class="row">
-                    <div class="col-sm-6">
-                      <!-- text input -->
-                      <div class="form-group">
-				<button type="submit" name="publise" class="btn btn-block btn-warning btn-lg">Publish</button>
-                      </div>
+        <section class="content">
+            <div class="container">
+                <!-- Cek session untuk alert -->
+                <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
+                    <div class="alert <?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
+                        <?php 
+                            echo $_SESSION['msg'];
+                            // Hapus session agar hilang saat halaman di-refresh
+                            unset($_SESSION['msg']); 
+                            unset($_SESSION['msgClass']);
+                        ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                  </div>
-                </div>
+                <?php endif; ?>
+
+                <!-- Form Edit/Add About dengan Bootstrap Validation -->
+                <form action="" method="post" enctype="multipart/form-data" 
+                      class="row g-3 needs-validation" novalidate style="margin: 0;">
+                    
+                    <!-- Judul -->
+                    <div class="col-md-12">
+                        <label for="validationTitle" class="form-label">Judul</label>
+                        <input type="text" name="title" class="form-control" id="validationTitle"
+                               value="<?php echo ($dataExists) ? htmlspecialchars($roww['title']) : ''; ?>"
+                               placeholder="Judul..." required>
+                        <div class="invalid-feedback">
+                            Mohon isi judul.
+                        </div>
+                    </div>
+
+                    <!-- Isi Tentang Kami (Summernote) -->
+                    <div class="col-md-12">
+                        <label for="validationDescrip" class="form-label">Isi Tentang Kami</label>
+                        <textarea name="descrip" class="form-control textarea" 
+                                  id="validationDescrip" rows="8" required><?php 
+                            echo ($dataExists) ? htmlspecialchars($roww['descrip']) : ''; 
+                        ?></textarea>
+                        <div class="invalid-feedback">
+                            Mohon isi deskripsi.
+                        </div>
+                    </div>
+
+                    <!-- Gambar (opsional) -->
+                    <div class="col-md-12">
+                        <label for="validationImage" class="form-label">Gambar</label><br>
+                        <input type="file" name="lis_img" id="validationImage" class="form-control" 
+                               accept="image/*">
+                        <div class="invalid-feedback">
+                            Mohon unggah gambar (jpg/jpeg/png).
+                        </div>
+                        
+                        <?php
+                        if ($dataExists && !empty($roww['img'])) {
+                            $imagePath = "images/about/" . $roww['img'];
+                            if (file_exists($imagePath)) {
+                                echo '<br><img src="' . htmlspecialchars($imagePath) . '?v=' . time() . '" 
+                                           alt="Current Image" style="width: 200px; margin-top: 10px;">';
+                            }
+                        }
+                        ?>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="col-12">
+                        <button type="submit" name="save" class="btn btn-primary">Perbarui</button>
+                        <a href="add-about.php" class="btn btn-danger">Kembali</a>
+                    </div>
+                </form>
             </div>
-          </div>
-		  </form>
-        </div>
-        <!-- /.col-->
-      </div>
-      <!-- ./row -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-   <?php include"footer.php"; ?>
+        </section>
+    </div>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+    <?php include "footer.php"; ?>
 </div>
-<!-- ./wrapper -->
 
-<!-- jQuery -->
+<!-- jQuery, Bootstrap, AdminLTE JS -->
 <script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
+
 <script>
-  $(function () {
-    // Summernote
-    $('.textarea').summernote()
-  })
+  $(function() {
+    // Inisialisasi Summernote
+    $('.textarea').summernote({
+      height: 200
+    });
+
+    // Ketika form disubmit, copy isi Summernote ke <textarea> 
+    // dan lakukan pengecekan kosong
+    $('form.needs-validation').on('submit', function(event) {
+      // Ambil konten Summernote
+      var summernoteContent = $('.textarea').summernote('code');
+      $('textarea[name="descrip"]').val(summernoteContent);
+
+      // Periksa apakah summernote kosong
+      if ($('.textarea').summernote('isEmpty')) {
+        event.preventDefault();
+        event.stopPropagation();
+        $('.note-editor').addClass('is-invalid');
+      } else {
+        $('.note-editor').removeClass('is-invalid');
+      }
+
+      // Lanjutkan validasi bawaan Bootstrap
+      if (!this.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      this.classList.add('was-validated');
+    });
+  });
+
+  // Starter JavaScript untuk menonaktifkan submit jika form invalid (Bootstrap)
+  (function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+  })();
 </script>
 </body>
 </html>

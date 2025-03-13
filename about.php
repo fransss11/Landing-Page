@@ -64,7 +64,7 @@ $about = $result->fetch_assoc();
             <div class="row g-5 align-items-center">
                 <div class="col-lg-5 wow fadeInLeft" data-wow-delay="0.2s">
                     <div class="about-img pb-5 ps-5">
-                        <img src="img/<?php echo $about['img']; ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
+                    <img src="admin/images/about/<?php echo htmlspecialchars($about['img']); ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
                     </div>
                 </div>
                 <div class="col-lg-7 wow fadeInRight" data-wow-delay="0.4s">
@@ -72,7 +72,7 @@ $about = $result->fetch_assoc();
                         <!-- <h4 class="sub-title pe-3 mb-0">About Us</h4> -->
                         <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
                         <p class="mb-4"><?php echo $about['descrip']; ?></p>
-                        <a href="<?php echo $about['url']; ?>" class="btn btn-primary rounded-pill text-white py-3 px-5">Our Service</a>
+                        <!-- <a href="<?php echo $about['url']; ?>" class="btn btn-primary rounded-pill text-white py-3 px-5">Our Service</a> -->
                     </div>
                 </div>
             </div>

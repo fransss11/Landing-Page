@@ -2,13 +2,13 @@
 include 'database.php';
 
 // Fetch data from the 'media' table
-$sql = "SELECT id, galery, file_name, uploaded_on FROM media WHERE status = '1'";
+$sql = "SELECT id, galery, foto, kategori, uploaded_on FROM media WHERE status = '1'";
 $result = $conn->query($sql);
 
 $images = array();
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        $images[] = $row;
+        $images[$row['kategori']][] = $row;
     }
 }
 
@@ -116,20 +116,24 @@ $conn->close();
 
     <!-- Gallery Start -->
     <div class="container py-5">
-        <div class="row text-center">
+        <?php foreach ($images as $kategori => $kategori_images): ?>
+            <div class="row text-center mb-4">
+                <h3 style="background: #9300ff ;"><?php echo htmlspecialchars($kategori); ?></h3>
+            </div>
             <div class="row">
-                <?php foreach ($images as $index => $image): ?>
+                <?php foreach ($kategori_images as $index => $image): ?>
                     <div class="col-md-3 col-sm-6 mb-4">
-                        <div class="gallery-item p-3 bg-light rounded shadow wow fadeInUp" data-wow-delay="<?php echo $index * 0.2; ?>s">
-                            <a href="detail.php?id=<?php echo $image['id']; ?>">
-                                <img src="img/<?php echo $image['galery']; ?>" class="img-fluid" alt="<?php echo $image['file_name']; ?>">
+                        <div class="client-card wow fadeInUp" data-wow-delay="<?php echo $index * 0.2; ?>s">
+                            <!-- <a href="detail.php?id=<?php echo $image['id']; ?>"> -->
+                            <a>
+                                <img src="admin/uploads/<?php echo $image['foto']; ?>" class="img-fluid" alt="<?php echo $image['galery']; ?>">
                             </a>
-                            <h6 class="mt-2"><?php echo $image['file_name']; ?></h6>
+                            <h6 class="mt-2"><?php echo $image['galery']; ?></h6>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
-        </div>
+        <?php endforeach; ?>
     </div>
     <!-- Gallery End -->
 

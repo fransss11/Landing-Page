@@ -81,7 +81,7 @@ $conn->close();
                 <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="team-item rounded">
                         <div class="team-img rounded-top h-100">
-                            <img src="img/<?php echo $team['img']; ?>" class="img-fluid rounded-top w-100" alt="<?php echo $team['title']; ?>">
+                            <img src="admin/images/team/<?php echo $team['img']; ?>" class="img-fluid rounded-top w-100" alt="<?php echo $team['title']; ?>">
                             <div class="team-icon d-flex justify-content-center">
                                 <?php if (!empty($team['facebook'])): ?>
                                     <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>

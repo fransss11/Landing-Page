@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('galery');
-            $table->string('file_name');
-            $table->string('deskrip', 255)->nullable();
+            $table->string('foto');
+            $table->string('kategori');
             $table->dateTime('uploaded_on');
             $table->enum('status', ['1', '0'])->default('1');
         });

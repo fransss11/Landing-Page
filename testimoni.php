@@ -6,29 +6,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $designation = $_POST['designation'];
     $descrip = $_POST['descrip'];
     $img = $_FILES['img']['name'];
-    $target_dir = "img/";
+    $target_dir = "admin/images/testimonial/";
     $target_file = $target_dir . basename($img);
 
     // Upload file
     if (move_uploaded_file($_FILES['img']['tmp_name'], $target_file)) {
         // Insert data into database
-        $sql = "INSERT INTO testimonials (title, designation, descrip, img, date, status) VALUES ('$title', '$designation', '$descrip', '$img', NOW(), '1')";
+        $sql = "INSERT INTO testimonials (title, designation, descrip, img, date, status) 
+                VALUES ('$title', '$designation', '$descrip', '$img', NOW(), '1')";
         if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Testimoni berhasil dikirim.');</script>";
+            // Alihkan ke service.php pada bagian testimonial (misalnya dengan anchor #testimoni)
+            header("Location: service.php#testimoni");
+            exit();
         } else {
-            echo "<script>alert('Error: " . $sql . "<br>" . $conn->error . "');</script>";
+            $error = "Error: " . $sql . "<br>" . $conn->error;
         }
     } else {
-        echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
+        $error = "Sorry, there was an error uploading your file.";
     }
-
     $conn->close();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Lisa Mitra Mandiri</title>
@@ -80,22 +81,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Form Testimoni Start -->
     <div class="container py-5">
         <h2 class="text-center mb-4">Berikan Testimoni Anda</h2>
-        <form action="testimoni.php" method="post" enctype="multipart/form-data">
+        <!-- Jika ada error, tampilkan alert Bootstrap -->
+        <?php if (isset($error) && !empty($error)) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo $error; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        <form action="testimoni.php" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label for="title" class="form-label">Nama</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Enter your name" required>
+                <div class="invalid-feedback">
+                    Please enter your name.
+                </div>
             </div>
             <div class="mb-3">
                 <label for="designation" class="form-label">Jabatan</label>
-                <input type="text" class="form-control" id="designation" name="designation" required>
+                <input type="text" class="form-control" id="designation" name="designation" placeholder="Enter your designation" required>
+                <div class="invalid-feedback">
+                    Please enter your designation.
+                </div>
             </div>
             <div class="mb-3">
                 <label for="descrip" class="form-label">Testimoni</label>
-                <textarea class="form-control" id="descrip" name="descrip" rows="4" required></textarea>
+                <textarea class="form-control" id="descrip" name="descrip" rows="4" placeholder="Enter your testimonial" required></textarea>
+                <div class="invalid-feedback">
+                    Please enter your testimonial.
+                </div>
             </div>
             <div class="mb-3">
                 <label for="img" class="form-label">Foto</label>
                 <input type="file" class="form-control" id="img" name="img" required>
+                <div class="invalid-feedback">
+                    Please upload your photo.
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Kirim Testimoni</button>
         </form>
@@ -125,6 +145,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
+    <!-- Bootstrap Validation Script -->
+    <script>
+    (function () {
+      'use strict';
+      var forms = document.querySelectorAll('.needs-validation');
+      Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+    })();
+    </script>
 </body>
-
 </html>

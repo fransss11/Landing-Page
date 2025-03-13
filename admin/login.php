@@ -81,14 +81,17 @@ if (isset($_POST['submit'])) {
           <div class="col-12">
             <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
           </div>
+          <!-- <div class="col-6">
+            <a href="daftar.php" class="btn btn-secondary btn-block">Daftar</a>
+          </div> -->
         </div>
-         <div class="row pt-1">
+         <!-- <div class="row pt-1">
            <div class="col-12 text-center">
              <div class="icheck-primary">
                <a href="forgot-password.php">Forgot Password</a>
              </div>
            </div>
-         </div>
+         </div> -->
       </form>
     </div>
     <!-- /.login-card-body -->

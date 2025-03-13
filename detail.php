@@ -4,7 +4,7 @@ include 'database.php';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Fetch data from the 'media' table
-$sql = "SELECT galery, file_name, deskrip, uploaded_on FROM media WHERE id = $id AND status = '1'";
+$sql = "SELECT galery, uploaded_on FROM media WHERE id = $id AND status = '1'";
 $result = $conn->query($sql);
 
 $imageDetail = $result->fetch_assoc();
@@ -120,8 +120,8 @@ $conn->close();
         <h3 class="mb-4">Detail Gambar</h3>
         <div id="image-container">
             <?php if ($imageDetail): ?>
-                <img src="img/<?php echo $imageDetail['galery']; ?>" class="img-fluid mb-3" alt="<?php echo $imageDetail['file_name']; ?>">
-                <h5 class="mt-3"><?php echo $imageDetail['file_name']; ?></h5>
+                <img src="admin/uploads/?php echo $imageDetail['galery']; ?>" class="img-fluid mb-3" alt="<?php echo $imageDetail['id']; ?>">
+                <h5 class="mt-3"><?php echo $imageDetail['id']; ?></h5>
                 <p><?php echo $imageDetail['deskrip']; ?></p>
                 <h6 class="mt-2"><?php echo $imageDetail['uploaded_on']; ?></h6>
             <?php else: ?>

@@ -3,14 +3,39 @@ include 'database.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Fetch data from the 'services' table
+// Fungsi untuk format tanggal ke Bahasa Indonesia
+function formatTanggalIndonesia($tanggal) {
+    $bulanIndo = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    $hariIndo = [
+        "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
+    ];
+
+    $dateObj = strtotime($tanggal);
+    $hari = $hariIndo[date('w', $dateObj)];
+    $tanggalNum = date('j', $dateObj);
+    $bulan = $bulanIndo[date('n', $dateObj) - 1];
+    $tahun = date('Y', $dateObj);
+    $jam = date('H:i:s', $dateObj);
+
+    return "$hari, $tanggalNum $bulan $tahun $jam";
+}
+
+// Fetch data dari tabel 'services'
 $sql = "SELECT title, descrip, img, date FROM services WHERE id = $id";
 $result = $conn->query($sql);
-
 $serviceDetail = $result->fetch_assoc();
+
+if ($serviceDetail) {
+    $serviceDetail['date'] = formatTanggalIndonesia($serviceDetail['date']); // Ubah format tanggal
+}
 
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -82,25 +107,30 @@ $conn->close();
     <!-- Header End -->
 
     <!-- Detail Service Start -->
-    <div class="container py-5">
+    <div class="container detail-service-container">
         <div class="row">
             <div class="col-lg-8 mx-auto">
-                <div id="service-container">
-                    <div class="card shadow-lg wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="service-img">
-                            <img id="gambar-service" class="card-img-top" alt="Service Image">
+                <div id="detail-service-container">
+                    <div class="card detail-service-card">
+                        <div class="detail-service-img">
+                            <img id="detail-gambar-service" class="card-img-top" alt="Service Image">
                         </div>
-                        <div class="card-body">
-                            <h2 id="judul-service" class="wow fadeInUp" data-wow-delay="0.3s"></h2>
-                            <p class="text-muted"><i class="fa fa-calendar-alt text-primary"></i> <span id="tanggal-service"></span></p>
-                            <p id="konten-service" class="wow fadeInUp" data-wow-delay="0.5s"></p>
-                            <a href="service.php" class="btn btn-primary">Kembali Ke Layanan</a>
+                        <div class="card-body detail-service-content">
+                            <h2 id="detail-judul-service"></h2>
+                            <p class="text-muted">
+                                <i class="fa fa-calendar-alt text-primary"></i> 
+                                <span id="detail-tanggal-service"></span>
+                            </p>
+                            <p id="detail-konten-service"></p>
+                            <a href="service.php" class="detail-service-back-btn">Kembali Ke Layanan</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Detail Service End -->
+
 
     <!-- Script untuk Ambil ID dari URL & Tampilkan Detail -->
     <script>
@@ -108,15 +138,18 @@ $conn->close();
             const serviceDetail = <?php echo json_encode($serviceDetail); ?>;
             
             if (serviceDetail) {
-                document.getElementById("judul-service").innerText = serviceDetail.title;
-                document.getElementById("tanggal-service").innerText = serviceDetail.date;
-                document.getElementById("gambar-service").src = "img/" + serviceDetail.img;
-                document.getElementById("konten-service").innerText = serviceDetail.descrip;
+                document.getElementById("detail-judul-service").innerText = serviceDetail.title;
+                document.getElementById("detail-tanggal-service").innerText = serviceDetail.date; // Tanggal sudah dalam format Indonesia
+                document.getElementById("detail-gambar-service").src = "admin/images/services/" + serviceDetail.img;
+
+                // Gunakan innerHTML agar bisa mendukung format HTML dalam deskripsi
+                document.getElementById("detail-konten-service").innerHTML = serviceDetail.descrip;
             } else {
-                document.getElementById("service-container").innerHTML = `<h3 class="text-danger">Service not found!</h3>`;
+                document.getElementById("detail-service-container").innerHTML = `<h3 class="text-danger">Service not found!</h3>`;
             }
         });
     </script>
+    <!-- Detail Service End -->
 
     <!-- Footer -->
     <div class="container-fluid footer py-5 text-center">

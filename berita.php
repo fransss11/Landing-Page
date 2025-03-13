@@ -38,6 +38,7 @@ $conn->close();
 
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
 </head>
 
 <body>
@@ -73,17 +74,32 @@ $conn->close();
             let beritaContainer = document.getElementById("berita-container");
             const beritaList = <?php echo json_encode($beritaList); ?>;
 
+            // Jika hanya 1 berita, tambahkan kelas agar konten berada di tengah
+            if (beritaList.length === 1) {
+                beritaContainer.classList.add("d-flex", "justify-content-center");
+            }
+
             beritaList.forEach((berita, index) => {
+                let short = berita.descrip.replace(/(<([^>]+)>)/gi, ""); // Hapus tag HTML
+                if (short.length > 200) {
+                    let shortCut = short.substring(0, 200);
+                    short = shortCut.substring(0, shortCut.lastIndexOf(" ")) + "...";
+                }
+
+                // Jika hanya satu berita, kita bisa menambahkan 'mx-auto' agar card-nya benar-benar center
+                // (bisa dihilangkan jika sudah cukup dengan d-flex justify-content-center pada container)
                 beritaContainer.innerHTML += `
-                    <div class="col-md-6 col-lg-4 d-flex align-items-stretch wow fadeInUp" data-wow-delay="${index * 0.2}s">
+                    <div class="col-md-6 col-lg-4 ${beritaList.length === 1 ? 'mx-auto' : ''} d-flex align-items-stretch wow fadeInUp" data-wow-delay="${index * 0.2}s">
                         <div class="card shadow-lg">
-                            <img src="img/${berita.img}" class="card-img-top" alt="${berita.title}">
+                            <img src="admin/images/blog/${berita.img}" class="card-img-top" alt="${berita.title}">
                             <div class="card-body">
                                 <h4 class="card-title">${berita.title}</h4>
-                                <p class="text-muted"><i class="fa fa-calendar-alt text-primary"></i> ${berita.date}</p>
+                                <p class="text-muted">
+                                    <i class="fa fa-calendar-alt text-primary"></i> ${berita.date}
+                                </p>
                                 <h5 class="card-category">${berita.category}</h5>
-                                <p class="card-text">${berita.descrip}</p>
-                                <a href="${berita.url}" class="btn btn-primary">Read More</a>
+                                <p class="card-text">${short}</p>
+                                <a href="detail_berita.php?id=${berita.id}" class="btn btn-primary">Detail</a>
                             </div>
                         </div>
                     </div>

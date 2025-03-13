@@ -1,0 +1,111 @@
+/* animasi untuk layanan  */
+/* Animasi overlay biru pada service-content */
+.service-content {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: background-color 0.5s ease;
+}
+.service-content::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 157, 255);
+    transform: translateY(100%);
+    transition: transform 0.7s ease-in-out;
+    z-index: -1;
+}
+.service-item:hover .service-content::after {
+    transform: translateY(0);
+}
+.service-item:hover .service-content {
+    background-color: rgba(0, 157, 255, 0.7);
+    color: #fff;
+}
+
+/* Animasi khusus hanya untuk gambar agar tombol detail tidak terpengaruh */
+.service-img {
+    transition: transform 0.5s ease;
+}
+.service-item:hover .service-img {
+    transform: scale(1.05);
+}
+
+/* Animasi fade in untuk konten (tidak mempengaruhi tombol detail) */
+.service-content h5,
+.service-content p,
+.service-content small {
+    opacity: 1;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.service-item:hover .service-content h5,
+.service-item:hover .service-content p,
+.service-item:hover .service-content small {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* end animasi untuk layanan */
+
+/* animasi untuk berita */
+
+        /* Pastikan .card punya posisi relative agar overlay bisa ditempatkan */
+        .card {
+            position: relative;
+            overflow: hidden; /* agar overlay tidak keluar dari card */
+            transition: color 0.5s ease;
+        }
+
+        /* Overlay biru yang akan muncul saat hover */
+        .card::after {
+            content: "";
+            position: absolute;
+            bottom: 0; /* Jika ingin muncul dari bawah */
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 157, 255, 0.8);
+            transform: translateY(100%); 
+            transition: transform 0.5s ease-in-out;
+            z-index: 1;
+        }
+        /* Saat hover, overlay naik menutupi card */
+        .card:hover::after {
+            transform: translateY(30%);
+        }
+
+        /* Pastikan elemen teks, gambar, tombol berada di atas overlay */
+        .card-body, 
+        .card-img-top,
+        .card-title,
+        .card-text,
+        .card-category,
+        .card p,
+        .card a {
+            position: relative;
+            z-index: 2;
+            transition: color 0.3s ease;
+        }
+
+        /* Saat hover, ubah warna teks jadi putih (agar kontras dengan overlay) */
+        .card:hover .card-title,
+        .card:hover .card-text,
+        .card:hover .card-category,
+        .card:hover .text-muted,
+        .card:hover p,
+        .card:hover h4,
+        .card:hover h5 {
+            color: #fff !important;
+        }
+
+        /* Jika ingin tombol ikut berubah warna, tambahkan di sini */
+        /* .card:hover .btn.btn-primary {
+            background-color: #fff;
+            color: #007bff; 
+            border-color: #fff;
+        } */
+
+        /* end animasi untuk berita */
