@@ -59,7 +59,7 @@ $conn->close();
 
         /* Animasi untuk setiap gambar */
         .gallery-item {
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 0.9s ease-in-out;
             opacity: 1;
         }
 
@@ -115,25 +115,32 @@ $conn->close();
     <!-- Header End -->
 
     <!-- Gallery Start -->
-    <div class="container py-5">
-        <?php foreach ($images as $kategori => $kategori_images): ?>
-            <div class="row text-center mb-4">
-                <h3 style="background: #9300ff ;"><?php echo htmlspecialchars($kategori); ?></h3>
+    <div class="container-fluid team py-5">
+        <div class="container py-5">
+            <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="sub-style">
+                    <h2 class="sub-title px-3 mb-0">Galeri Kami</h2>
+                </div>
             </div>
-            <div class="row">
-                <?php foreach ($kategori_images as $index => $image): ?>
-                    <div class="col-md-3 col-sm-6 mb-4">
-                        <div class="client-card wow fadeInUp" data-wow-delay="<?php echo $index * 0.2; ?>s">
-                            <!-- <a href="detail.php?id=<?php echo $image['id']; ?>"> -->
-                            <a>
-                                <img src="admin/uploads/<?php echo $image['foto']; ?>" class="img-fluid" alt="<?php echo $image['galery']; ?>">
-                            </a>
-                            <h6 class="mt-2"><?php echo $image['galery']; ?></h6>
+            <?php foreach ($images as $kategori => $kategori_images): ?>
+                <div class="row text-center mb-4">
+                    <h3 style="background: #9300ff ;"><?php echo htmlspecialchars($kategori); ?></h3>
+                </div>
+                <div class="row">
+                    <?php foreach ($kategori_images as $index => $image): ?>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="client-card wow fadeInUp" data-wow-delay="<?php echo $index * 0.2; ?>s" data-wow-duration="0.8s">
+                                <!-- <a href="detail.php?id=<?php echo $image['id']; ?>"> -->
+                                <a>
+                                    <img src="admin/uploads/<?php echo $image['foto']; ?>" class="img-fluid" alt="<?php echo $image['galery']; ?>">
+                                </a>
+                                <h6 class="mt-2"><?php echo $image['galery']; ?></h6>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
     <!-- Gallery End -->
 

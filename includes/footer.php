@@ -164,7 +164,8 @@ $info = $result->fetch_assoc();
                 <br></br>
                 <div class="footer-item d-flex flex-column">
                     <h4 class="mb-4 text-white">Jam Kerja</h4>
-                    <p style="color: white;">Kami bekerja 5 hari dalam seminggu. <br><br> Senin - Jumat: 08:00 - 17:00</p>
+                    <p style="color: white;">Kami bekerja 5 hari dalam seminggu. </p>
+                    <p style="color: white;">Senin - Jumat: 08:00 - 17:00</p>
                     <table style="width: auto" class="table text-center text-white" >
                         <thead>
                             <tr>

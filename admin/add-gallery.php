@@ -66,34 +66,42 @@ if (isset($_POST['publise'])) {
     } else {
         // Mode tambah: multiple file upload
         if (isset($_FILES['gambar'])) {
-            $total_files = count($_FILES['gambar']['name']);
-            $inserted = false;
-            for ($i = 0; $i < $total_files; $i++) {
-                if (!empty($_FILES['gambar']['name'][$i])) {
-                    $image_name = rand() . $_FILES['gambar']['name'][$i];
-                    $tempname = $_FILES['gambar']['tmp_name'][$i];
-                    $folder = "uploads/" . $image_name;
-                    $valid_ext = array('png', 'jpeg', 'jpg');
-                    $file_extension = strtolower(pathinfo($folder, PATHINFO_EXTENSION));
-                    if (in_array($file_extension, $valid_ext)) {
-                        compressImage($tempname, $folder, 60);
-                        mysqli_query($con, "INSERT INTO media (galery, foto, kategori, uploaded_on, status) VALUES ('$nama', '$image_name', '$kategori', NOW(), '1')");
-                        $inserted = true;
-                    }
-                }
-            }
-            if ($inserted) {
-                $_SESSION['msg'] = "Posted Successfully";
-                $_SESSION['msgClass'] = "success";
-            } else {
-                $_SESSION['msg'] = "Error while updating the gallery.";
-                $_SESSION['msgClass'] = "danger";
-            }
-        } else {
-            $msg = "No images selected.";
-            $msgClass = "danger";
+          $total_files = count($_FILES['gambar']['name']);
+          $inserted = false;
+          for ($i = 0; $i < $total_files; $i++) {
+              if (!empty($_FILES['gambar']['name'][$i])) {
+                  $image_size = $_FILES['gambar']['size'][$i];
+                  $max_size = 500 * 1024; // 500KB dalam bytes
+      
+                  if ($image_size > $max_size) {
+                      $_SESSION['msg'] = "Error: One or more images exceed 500KB limit.";
+                      $_SESSION['msgClass'] = "danger";
+                      echo "<script>window.location.href = 'view-gallery.php';</script>";
+                      exit;
+                  }
+      
+                  $image_name = rand() . $_FILES['gambar']['name'][$i];
+                  $tempname = $_FILES['gambar']['tmp_name'][$i];
+                  $folder = "uploads/" . $image_name;
+                  $valid_ext = array('png', 'jpeg', 'jpg');
+                  $file_extension = strtolower(pathinfo($folder, PATHINFO_EXTENSION));
+      
+                  if (in_array($file_extension, $valid_ext)) {
+                      compressImage($tempname, $folder, 60);
+                      mysqli_query($con, "INSERT INTO media (galery, foto, kategori, uploaded_on, status) VALUES ('$nama', '$image_name', '$kategori', NOW(), '1')");
+                      $inserted = true;
+                  }
+              }
+          }
         }
-    }
+          if ($inserted) {
+              $_SESSION['msg'] = "Posted Successfully";
+              $_SESSION['msgClass'] = "success";
+          } else {
+              $_SESSION['msg'] = "Error while updating the gallery.";
+              $_SESSION['msgClass'] = "danger";
+          }
+      }      
     echo "<script>window.location.href = 'view-gallery.php';</script>";
 }
 
@@ -210,8 +218,16 @@ function compressImage($source, $destination, $quality) {
 
                   <div class="card-header">
                     <div class="form-group">
-                      <label for="validationImages">Select Gallery Images <span style="color:red;">(only compressed)</span></label>
-                      <p style="color:red;">Image size 800px x 800px</p>
+                    <label for="exampleInputFile">
+                        Select Image
+                        <?php 
+                        // Wajib upload jika data baru atau belum ada gambar
+                        if(empty($roww["img"])){ 
+                            echo '<span class="text-danger">*</span>'; 
+                        }
+                        ?>
+                        <p style="color:red;">Maksimal 500 KB</p>
+                    </label>
                       <?php 
                       if ($edit) {
                           // Mode edit: single file upload
@@ -225,12 +241,7 @@ function compressImage($source, $destination, $quality) {
                           <?php
                       }
                       ?>
-                      <div class="invalid-feedback">
-                        Please upload image(s).
-                      </div>
-                      <div class="valid-feedback">
-                        Looks good!
-                      </div>
+                    <div id="fileErrorBox" style="color: red; display: none;">File size must be less than 500KB.</div>
                       <?php
                       if ($edit && isset($roww["foto"]) && !empty($roww["foto"])) {
                           $imagePath = "uploads/" . $roww["foto"];
@@ -295,6 +306,24 @@ function compressImage($source, $destination, $quality) {
         }, false);
       });
   })();
+</script>
+<script>
+document.getElementById('validationImages').addEventListener('change', function () {
+    var files = this.files;
+    var maxSize = 500 * 1024; // 500KB dalam bytes
+    var errorBox = document.getElementById('fileErrorBox');
+
+    errorBox.style.display = 'none'; // Sembunyikan pesan error terlebih dahulu
+
+    for (var i = 0; i < files.length; i++) {
+        if (files[i].size > maxSize) {
+            errorBox.style.display = 'block';
+            errorBox.innerHTML = "Error: One or more images exceed 500KB limit.";
+            this.value = ""; // Kosongkan input file agar pengguna harus memilih ulang
+            break;
+        }
+    }
+});
 </script>
 </body>
 </html>

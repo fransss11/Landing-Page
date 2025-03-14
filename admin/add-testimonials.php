@@ -18,17 +18,13 @@ if (isset($_SESSION['msg'])) {
 date_default_timezone_set('Asia/Kolkata');
 $today = date("D d M Y");
 
-// Pastikan parameter 'edit' ada jika ingin mengedit
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : '';
-
-// Ambil data testimonial untuk mode edit
 $roww = [];
 if ($edit) {
     $resultt = mysqli_query($con, "SELECT * FROM testimonials WHERE id = '$edit'");
     $roww = mysqli_fetch_array($resultt);
 }
 if (!$roww) {
-    // Jika tidak ada data, inisialisasi dengan nilai kosong
     $roww = [
         "title"       => "",
         "designation" => "",
@@ -37,17 +33,22 @@ if (!$roww) {
     ];
 }
 
-// Handle form submission
 if (isset($_POST['publise'])) {
     $title       = mysqli_real_escape_string($con, $_POST['title']);
     $designation = mysqli_real_escape_string($con, $_POST['designation']);
     $comments    = mysqli_real_escape_string($con, $_POST['comments']);
 
-    // Gunakan gambar lama jika tidak ada file baru yang diupload
     $lis_img = $roww["img"];
 
     if (!empty($_FILES['lis_img']['name'])) {
-        // Buat nama file baru dengan rand() dan nama file aslinya
+        $maxFileSize = 500 * 1024; // 500KB
+        if ($_FILES['lis_img']['size'] > $maxFileSize) {
+            $_SESSION['msg'] = "File size must be less than 500KB.";
+            $_SESSION['msgClass'] = "alert-danger bg-danger text-white";
+            header("Location: add-testimonials.php" . ($edit ? "?edit=" . $edit : ""));
+            exit;
+        }
+        
         $lis_img = rand() . '_' . $_FILES['lis_img']['name'];
         $tempname = $_FILES['lis_img']['tmp_name'];
         $folder   = "images/testimonial/" . $lis_img;
@@ -59,22 +60,18 @@ if (isset($_POST['publise'])) {
     }
 
     if ($edit == '') {
-        // Insert data testimonial baru
         $insertdata = mysqli_query($con, "INSERT INTO testimonials (title, designation, descrip, img, date, status) 
             VALUES ('$title', '$designation', '$comments', '$lis_img', '$today', '0')");
         if ($insertdata) {
             $_SESSION['msg'] = "Posted Successfully";
-            // Tambahkan class tambahan agar background hijau dan teks putih tampil jelas
             $_SESSION['msgClass'] = "alert-success bg-success text-white";
         } else {
             $_SESSION['msg'] = "Error while posting the testimonial.";
             $_SESSION['msgClass'] = "alert-danger bg-danger text-white";
         }
-        // Redirect agar flash message hanya muncul sekali (dan form kosong)
         header("Location: add-testimonials.php");
         exit;
     } else {
-        // Update data testimonial
         $insertdata = mysqli_query($con, "UPDATE testimonials 
             SET title = '$title', designation = '$designation', descrip = '$comments', img = '$lis_img', date = '$today'
             WHERE id = '$edit'");
@@ -85,7 +82,6 @@ if (isset($_POST['publise'])) {
             $_SESSION['msg'] = "Error while updating the testimonial.";
             $_SESSION['msgClass'] = "alert-danger bg-danger text-white";
         }
-        // Redirect ke URL dengan parameter edit agar data update tetap muncul di form
         header("Location: add-testimonials.php?edit=$edit");
         exit;
     }
@@ -108,6 +104,7 @@ function compressImage($source, $destination, $quality) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -208,14 +205,22 @@ function compressImage($source, $destination, $quality) {
                                     </div>
                                 </div>
 
-                                <div class="card-header">
+                                <div class="card-header">   
                                     <div class="form-group">
-                                        <label for="validationImage" class="form-label">Select Img <span style="color:red;">(only compressed)</span></label>
-                                        <p style="color:red;">Image size 70px x 70px</p>
-                                        <input name="lis_img" type="file" class="form-control" id="validationImage" accept="image/*" <?php echo empty($roww["img"]) ? 'required' : ''; ?>>
-                                        <div class="invalid-feedback">
-                                            Please upload an image (if no existing image).
-                                        </div>
+                                        <label for="exampleInputFile">
+                                            Select Image
+                                            <?php 
+                                            // Wajib upload jika data baru atau belum ada gambar
+                                            if(empty($roww["img"])){ 
+                                                echo '<span class="text-danger">*</span>'; 
+                                            }
+                                            ?>
+                                            <p style="color:red;">Maksimal 500 KB</p>
+                                        </label>  
+                                        <input name="lis_img" type="file" class="form-control" id="imageUpload" accept="image/*" required>
+                                        <div id="fileError" class="text-danger mt-1" style="display: none;">File size must be less than 500KB.</div>
+                                        <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ File size is valid.</div>
+                                    </div>
                                         <?php 
                                         if (!empty($roww["img"])) {
                                             $imagePath = "images/testimonial/" . $roww["img"];
@@ -284,6 +289,21 @@ function compressImage($source, $destination, $quality) {
 })();
 </script>
 
+<script>
+    $(document).ready(function(){
+    $("#imageUpload").change(function(){
+        let file = this.files[0];
+        if (file.size > 500 * 1024) {
+            $("#fileError").show();
+            $("#fileSuccess").hide();
+            $(this).val('');
+        } else {
+            $("#fileError").hide();
+            $("#fileSuccess").show();
+        }
+    });
+});
+</script>
 <script>
     $(function () {
         $('.textarea').summernote();

@@ -24,10 +24,27 @@ if (isset($_POST['publise'])) {
     // Sanitasi input menggunakan mysqli_real_escape_string
     $title   = mysqli_real_escape_string($con, $_POST['title']);
     $short   = mysqli_real_escape_string($con, $_POST['short']);
-    $descrip = mysqli_real_escape_string($con, $_POST['descrip']);
+    // Mengambil konten dari Summernote
+    $descrip = $_POST['descrip'];
+
+    // Menghapus tag <p> tapi mempertahankan tag HTML lainnya
+    $descrip = preg_replace('/<p[^>]*>(.*?)<\/p>/is', '$1', $descrip);
+
+    // Sanitasi input untuk mencegah XSS
+    $descrip = mysqli_real_escape_string($con, $descrip);
+
 
     // Handle file upload
     if (!empty($_FILES['lis_img']['name'])) {
+        // Validasi ukuran file (maksimum 500KB)
+        $maxFileSize = 500 * 1024; // 500KB dalam byte
+        if ($_FILES['lis_img']['size'] > $maxFileSize) {
+            $_SESSION['msg'] = "File size must be less than 500KB.";
+            $_SESSION['msgClass'] = "alert-danger";
+            header("Location: add-services.php?edit=" . $edit);
+            exit;
+        }
+
         // Buat nama file unik (mirip dengan add-about.php)
         $newFileName = rand() . '_' . $_FILES['lis_img']['name'];
         $tempFile    = $_FILES['lis_img']['tmp_name'];
@@ -217,7 +234,8 @@ if (isset($_POST['publise'])) {
                       if(empty($roww["img"])){ 
                         echo '<span class="text-danger">*</span>'; 
                       }
-                    ?>
+                      ?>
+                      <p style="color:red;">Maksimal 500 KB</p>
                   </label>                  
                   <input 
                     name="lis_img" 
@@ -229,6 +247,11 @@ if (isset($_POST['publise'])) {
                   >
                   <div class="invalid-feedback">
                     Please upload an image.
+                  </div>
+
+                  <!-- Message box for file size error -->
+                  <div id="fileError" class="alert alert-danger" style="display: none;">
+                      File size must be less than 500KB.
                   </div>
 
                   <?php 
@@ -274,22 +297,54 @@ if (isset($_POST['publise'])) {
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
 
 <script>
-  $(function () {
-    // Inisialisasi Summernote
-    $('.textarea').summernote({
-      height: 200
-    });
+    $(document).ready(function() {
+      $('.textarea').summernote({
+        height: 200,
+        paragraph: false,  // Matikan paragraf otomatis
+        callbacks: {
+          onChange: function(contents, $editable) {
+            // Sesuaikan callback sesuai kebutuhan
+          }
+        }
+      });
 
+      // Validasi file upload saat file dipilih
+      $('#fileUpload').on('change', function() {
+          var fileInput = this;
+          var fileSize = fileInput.files[0] ? fileInput.files[0].size : 0;
+          var maxFileSize = 500 * 1024; // 500KB
+          
+          if (fileSize > maxFileSize) {
+              $('#fileError').show();
+              $(fileInput).val(''); // Reset input file
+          } else {
+              $('#fileError').hide();
+          }
+      });
     // Validasi manual saat form disubmit
     $('#serviceForm').on('submit', function(event) {
       var form = this;
       var isValid = true; // Flag untuk validasi
-      
+
+      // Validasi ukuran file upload (maksimum 500KB)
+      var fileInput = $('#fileUpload')[0];
+      var fileSize = fileInput.files[0] ? fileInput.files[0].size : 0;
+      var maxFileSize = 500 * 1024; // 500KB
+
+      if (fileSize > maxFileSize) {
+        isValid = false;
+        // Tampilkan pesan kesalahan di dalam message box
+        $('#fileError').show();
+      } else {
+        // Sembunyikan pesan kesalahan jika ukuran file valid
+        $('#fileError').hide();
+      }
+
       // Sinkronkan isi Summernote ke textarea sebelum validasi
       var summernoteContent = $('.textarea').summernote('code');
       $('textarea[name="descrip"]').val(summernoteContent);
 
-      // Cek jika Summernote kosong (termasuk HTML kosong seperti <p><br></p>)
+      // Cek jika Summernote kosong
       if ($('.textarea').summernote('isEmpty') || 
           summernoteContent.trim() === "" || 
           summernoteContent === "<p><br></p>") {

@@ -35,6 +35,15 @@ if (isset($_POST['publise'])) {
         $msgClass = "danger";
     } else {
         if ($_FILES['gambar']['name'] != '') {
+            $maxFileSize = 500 * 1024; // 500KB
+
+            if ($_FILES['gambar']['size'] > $maxFileSize) {
+                $msg = "File size must be less than 500KB.";
+                $msgClass = "danger";
+                echo "<div class='alert alert-danger'>".$msg."</div>";
+                exit;
+            }
+
             $gambar = rand() . $_FILES['gambar']['name'];
             $tempname = $_FILES['gambar']['tmp_name'];
             $folder = "images/partnership/" . $gambar;
@@ -173,15 +182,20 @@ function compressImage($source, $destination, $quality)
 
               <div class="card-header">
                 <div class="form-group">
-                  <label for="validationLogo">Select Client Logo <span style="color:red;">(only compressed)</span></label>
-                  <p style="color:red;">Logo size 800px x 800px</p>
-                  <input name="gambar" type="file" id="validationLogo" class="form-control" accept="image/*" <?php echo empty($roww['gambar']) ? 'required' : ''; ?>>
-                  <div class="invalid-feedback">
-                    Client logo is required.
-                  </div>
-                  <div class="valid-feedback">
-                    Looks good!
-                  </div>
+                    <label for="exampleInputFile">
+                        Select Image
+                        <?php 
+                        // Wajib upload jika data baru atau belum ada gambar
+                        if(empty($roww["img"])){ 
+                            echo '<span class="text-danger">*</span>'; 
+                        }
+                        ?>
+                        <p style="color:red;">Maksimal 500 KB</p>
+                    </label>  
+                    <input name="gambar" type="file" id="validationLogo" class="form-control" accept="image/*" <?php echo empty($roww['gambar']) ? 'required' : ''; ?>>
+                    <div id="fileErrorBox" style="color: red; display: none;">File size must be less than 500KB.</div>
+                    <!-- <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ File size is valid.</div> -->
+                </div>
                   <?php 
                   if (!empty($roww['gambar'])) {
                       $imagePath = "images/partnership/" . $roww['gambar'];
@@ -240,5 +254,21 @@ function compressImage($source, $destination, $quality)
     });
 })();
 </script>
+<script>
+document.getElementById('validationLogo').addEventListener('change', function () {
+    var file = this.files[0]; // Ambil file yang dipilih
+    var errorBox = document.getElementById('fileErrorBox'); // Ambil elemen pesan error
+    errorBox.style.display = 'none'; // Sembunyikan pesan error secara default
+
+    if (file) {
+        var maxSize = 500 * 1024; // 500KB dalam bytes
+        if (file.size > maxSize) {
+            errorBox.style.display = 'block'; // Tampilkan pesan error
+            this.value = ""; // Kosongkan input file agar pengguna harus memilih ulang
+        }
+    }
+});
+</script>
+
 </body>
 </html>

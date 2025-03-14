@@ -1,8 +1,17 @@
 <?php
 include 'database.php';
 
-// Fetch data from the 'klien' table
-$sql = "SELECT klien, gambar FROM klien";
+// Tentukan jumlah klien yang akan ditampilkan per halaman
+$clientsPerPage = 8;
+
+// Tentukan halaman saat ini dari URL atau default ke halaman 1
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
+// Tentukan offset untuk query SQL
+$offset = ($page - 1) * $clientsPerPage;
+
+// Query untuk mengambil data klien dengan paginasi
+$sql = "SELECT klien, gambar FROM klien LIMIT $clientsPerPage OFFSET $offset";
 $result = $conn->query($sql);
 
 $clients = array();
@@ -11,6 +20,12 @@ if ($result->num_rows > 0) {
         $clients[] = $row;
     }
 }
+
+// Menghitung jumlah total klien untuk paginasi
+$sqlCount = "SELECT COUNT(*) AS total FROM klien";
+$countResult = $conn->query($sqlCount);
+$totalRows = $countResult->fetch_assoc()['total'];
+$totalPages = ceil($totalRows / $clientsPerPage);
 
 $conn->close();
 ?>
@@ -66,7 +81,6 @@ $conn->close();
     ?>
     <!-- Header End -->
 
-
     <!-- Our Client Start -->
     <div class="container-fluid team py-5">
         <div class="container py-5">
@@ -84,7 +98,19 @@ $conn->close();
                     </div>
                 <?php endforeach; ?>
             </div>
-
+            <!-- Paginasi Start -->
+            <div class="pagination">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?php echo $page - 1; ?>" class="prev-btn">Prev</a>
+                <?php endif; ?>
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <a href="?page=<?php echo $i; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
+                <?php endfor; ?>
+                <?php if ($page < $totalPages): ?>
+                    <a href="?page=<?php echo $page + 1; ?>" class="next-btn">Next</a>
+                <?php endif; ?>
+            </div>
+            <!-- Paginasi End -->
         </div>
     </div>
     <!-- Our Client End -->

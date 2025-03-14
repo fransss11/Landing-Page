@@ -115,7 +115,7 @@ function formatTanggalIndonesia($tanggal) {
                             <div class="service-img rounded-top">
                                 <img src="admin/images/services/<?php echo $service['img']; ?>" 
                                      class="img-fluid rounded-top w-100" 
-                                     alt="<?php echo $service['title']; ?>">
+                                     alt="<?php echo $service['title']; ?>" loading="lazy">
                             </div>
                             <div class="service-content rounded-bottom bg-light p-4 d-flex flex-column">
                                 <h5 class="mb-4"><?php echo $service['title']; ?></h5>

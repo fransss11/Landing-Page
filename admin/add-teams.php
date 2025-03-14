@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $img_ext  = strtolower(pathinfo($img_name, PATHINFO_EXTENSION));
 
         $valid_ext = ['png', 'jpeg', 'jpg', 'webp'];
-        if (in_array($img_ext, $valid_ext) && $img_size <= 5000000) { // Maksimal 5MB
+        if (in_array($img_ext, $valid_ext) && $img_size <= 512000) { // Maksimal 500KB
             $lis_img = rand() . '_' . $img_name;
             $folder = "images/team/" . $lis_img;
             move_uploaded_file($img_tmp, $folder);
@@ -209,11 +209,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <!-- Image Upload -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label for="validationImage">Select Image <span style="color:red;">(Only compressed, max 5MB)</span> <?php echo ($edit == 0 ? '<span class="text-danger">*</span>' : ''); ?></label>
+                                    <label for="validationImage">Select Image <span style="color:red;">(Max 500KB, Only PNG, JPG, JPEG, WEBP)</span> <?php echo ($edit == 0 ? '<span class="text-danger">*</span>' : ''); ?></label>
                                     <input name="lis_img" type="file" id="validationImage" class="form-control" accept="image/*" <?php echo ($edit == 0 ? 'required' : ''); ?>>
-                                    <div class="invalid-feedback">
-                                        Please upload an image.
-                                    </div>
+                                    <small id="imageError" class="text-danger"></small> <!-- Pesan error akan muncul di sini -->
+                                    
                                     <?php 
                                     if (!empty($roww["img"])) {
                                         $imagePath = "images/team/" . $roww["img"];
@@ -226,6 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     ?>
                                 </div>
                             </div>
+
 
                             <!-- Submit Button -->
                             <div class="card-header">
@@ -278,5 +278,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       });
 })();
 </script>
+<script>
+document.getElementById("validationImage").addEventListener("change", function() {
+    var file = this.files[0];
+    var errorText = document.getElementById("imageError"); // Ambil elemen untuk menampilkan error
+
+    if (file) {
+        var fileSize = file.size; // Dapatkan ukuran file dalam byte
+        if (fileSize > 512000) { // 500KB = 512000 byte
+            errorText.textContent = "Ukuran gambar tidak boleh lebih dari 500KB!";
+            this.value = ""; // Kosongkan input jika file terlalu besar
+        } else {
+            errorText.textContent = ""; // Hapus pesan error jika ukuran sesuai
+        }
+    }
+});
+</script>
+
 </body>
 </html>

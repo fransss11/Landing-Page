@@ -41,7 +41,7 @@ if (isset($_POST['update'])) {
     }
 
     // Update data ke tabel social
-    $update_social = mysqli_query($con, "UPDATE social SET facebook='$facebook', twitter='$twitter', instagram='$instagram', linkedin='$linkedin', whatsapp='$whatsapp' WHERE id='1'");
+    $update_social = mysqli_query($con, "UPDATE social SET facebook='$facebook', twitter='$twitter', instagram='$instagram', linkedin='$linkedin', whatsapp='$whatsapp', phone='$phone' WHERE id='1'");
     if (!$update_social) {
         die("Error updating social data: " . mysqli_error($con));
     }
@@ -166,13 +166,13 @@ if (isset($_POST['update'])) {
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Whatsapp URL</label>
-                                        <input name="whatsapp" value="<?php echo $social_row['whatsapp']; ?>" type="text" class="form-control" placeholder="Enter Whatsapp URL">
+                                        <input name="whatsapp" value="<?php echo $social_row['whatsapp']; ?>" type="text" class="form-control" placeholder="Enter Whatsapp">
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Phone URL</label>
-                                        <input name="phone" value="<?php echo $social_row['phone']; ?>" type="text" class="form-control" placeholder="Enter Phone URL">
+                                        <input name="phone" value="<?php echo $social_row['phone']; ?>" type="text" class="form-control" placeholder="Enter Phone">
                                     </div>
                                 </div>
                             </div>

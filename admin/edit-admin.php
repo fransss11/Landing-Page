@@ -166,11 +166,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                     <div class="card-header">
                                         <div class="form-group">
-                                            <label for="validationAdImage">Gambar Profil (Kosongkan jika tidak ingin mengubah)</label>
+                                            <label for="validationAdImage">Gambar Profil (Maksimal 500KB)</label>
                                             <div class="custom-file">
                                                 <input type="file" name="ad_image" class="custom-file-input" id="validationAdImage" accept="image/*">
                                                 <label class="custom-file-label" for="validationAdImage">Pilih gambar...</label>
                                             </div>
+                                            <small id="imageError" class="text-danger"></small> <!-- Pesan error akan muncul di sini -->
+
                                             <?php if (!empty($admin['pict'])): ?>
                                                 <div class="mt-2">
                                                     <label>Gambar Profil Saat Ini:</label>
@@ -238,5 +240,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $(this).next('.custom-file-label').html(fileName);
         });
     </script>
+    <script>
+        document.getElementById("validationAdImage").addEventListener("change", function() {
+            var file = this.files[0]; // Ambil file yang diupload
+            var errorText = document.getElementById("imageError"); // Elemen pesan error
+            var fileInput = document.getElementById("validationAdImage"); // Input file
+
+            if (file) {
+                var fileSize = file.size; // Ukuran file dalam byte
+                if (fileSize > 512000) { // 500KB = 512000 byte
+                    errorText.textContent = "Ukuran gambar terlalu besar! Maksimal 500KB.";
+                    fileInput.value = ""; // Kosongkan input agar tidak bisa diunggah
+                } else {
+                    errorText.textContent = ""; // Hapus pesan error jika ukuran sesuai
+                }
+            }
+        });
+
+        // Mencegah form dikirim jika ada error
+        document.querySelector("form").addEventListener("submit", function(event) {
+            var errorText = document.getElementById("imageError").textContent;
+            if (errorText !== "") {
+                event.preventDefault(); // Batalkan submit jika ada error
+            }
+        });
+    </script>
+
 </body>
 </html>

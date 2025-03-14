@@ -33,7 +33,15 @@ if (isset($_POST['publise'])) {
     // Sanitasi input
     $judul   = mysqli_real_escape_string($con, $_POST['judul']);
     $tahun = mysqli_real_escape_string($con, $_POST['tahun']);
-    $deskrip = mysqli_real_escape_string($con, $_POST['deskrip']);
+    // Mengambil konten dari Summernote
+    $deskrip = $_POST['deskrip'];
+
+    // Menghapus tag <p> tapi mempertahankan tag HTML lainnya
+    $deskrip = preg_replace('/<p[^>]*>(.*?)<\/p>/is', '$1', $deskrip);
+
+    // Sanitasi input untuk mencegah XSS
+    $deskrip = mysqli_real_escape_string($con, $deskrip);
+    $url     = isset($_POST['url']) ? mysqli_real_escape_string($con, $_POST['url']) : '';
 
     // // Handle file upload
     // $lis_img = isset($roww["img"]) ? $roww["img"] : '';
@@ -286,11 +294,16 @@ if (isset($_POST['publise'])) {
 
 <!-- Validasi Bootstrap & Summernote -->
 <script>
-  $(function() {
-    // Inisialisasi Summernote
-    $('.textarea').summernote({
-      height: 200
-    });
+    $(document).ready(function() {
+      $('.textarea').summernote({
+        height: 200,
+        paragraph: false,  // Matikan paragraf otomatis
+        callbacks: {
+          onChange: function(contents, $editable) {
+            // Sesuaikan callback sesuai kebutuhan
+          }
+        }
+      });
 
     // Validasi khusus Summernote
     $('#projekForm').on('submit', function() {

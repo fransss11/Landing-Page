@@ -31,17 +31,33 @@ if ($edit) {
 // Handle form submission
 if (isset($_POST['publise'])) {
     // Sanitasi input
-    $title   = mysqli_real_escape_string($con, $_POST['title']);
+    $title    = mysqli_real_escape_string($con, $_POST['title']);
     $category = mysqli_real_escape_string($con, $_POST['category']);
-    $descrip = mysqli_real_escape_string($con, $_POST['descrip']);
-    $url     = isset($_POST['url']) ? mysqli_real_escape_string($con, $_POST['url']) : '';
+    // Mengambil konten dari Summernote
+    $descrip  = $_POST['descrip'];
+
+    // Menghapus tag <p> tapi mempertahankan tag HTML lainnya
+    $descrip  = preg_replace('/<p[^>]*>(.*?)<\/p>/is', '$1', $descrip);
+
+    // Sanitasi input untuk mencegah XSS
+    $descrip  = mysqli_real_escape_string($con, $descrip);
+    $url      = isset($_POST['url']) ? mysqli_real_escape_string($con, $_POST['url']) : '';
 
     // Handle file upload
     $lis_img = isset($roww["img"]) ? $roww["img"] : '';
     if (!empty($_FILES['lis_img']['name'])) {
-        $lis_img   = rand() . '_' . $_FILES['lis_img']['name'];
-        $tempname  = $_FILES['lis_img']['tmp_name'];
-        $folder    = "images/blog/" . $lis_img;
+        // Validasi ukuran file (maksimum 500KB)
+        $maxFileSize = 500 * 1024; // 500KB dalam byte
+        if ($_FILES['lis_img']['size'] > $maxFileSize) {
+            $_SESSION['msg'] = "File size must be less than 500KB.";
+            $_SESSION['msgClass'] = "alert-danger";
+            header("Location: add-blog.php" . ($edit ? "?edit=" . $edit : ""));
+            exit;
+        }
+        
+        $lis_img  = rand() . '_' . $_FILES['lis_img']['name'];
+        $tempname = $_FILES['lis_img']['tmp_name'];
+        $folder   = "images/blog/" . $lis_img;
 
         // Validasi ekstensi (opsional)
         $valid_ext = array('png', 'jpeg', 'jpg');
@@ -60,15 +76,12 @@ if (isset($_POST['publise'])) {
              VALUES ('$title', '$category', '$descrip', '$lis_img', '$url', '$today')"
         );
         if ($insertdata) {
-            // Simpan flash message ke session
             $_SESSION['msg'] = "Posted Successfully";
-            // Gunakan alert-success untuk warna hijau AdminLTE (bisa ditambah bg-success text-white)
             $_SESSION['msgClass'] = "alert-success";
         } else {
             $_SESSION['msg'] = "Error while posting the blog.";
             $_SESSION['msgClass'] = "alert-danger";
         }
-        // Redirect agar flash message hanya muncul sekali
         header("Location: add-blog.php");
         exit;
     } else {
@@ -90,7 +103,6 @@ if (isset($_POST['publise'])) {
             $_SESSION['msg'] = "Error while updating the blog.";
             $_SESSION['msgClass'] = "alert-danger";
         }
-        // Redirect agar data yang sudah diupdate tetap muncul di form
         header("Location: add-blog.php?edit=" . $edit);
         exit;
     }
@@ -155,7 +167,6 @@ function compressImage($source, $destination, $quality)
                     <!-- Tampilkan alert jika ada pesan -->
                     <?php if (!empty($msg)): ?>
                         <div style="max-width:600px; margin:0 auto;">
-                            <!-- Pastikan class "alert" dan "alert-success" (atau "alert-danger") -->
                             <div class="alert <?php echo $msgClass; ?> alert-dismissible fade show" role="alert">
                                 <?php echo $msg; ?>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -194,7 +205,6 @@ function compressImage($source, $destination, $quality)
                                     <select name="category" class="form-control" required>
                                         <option value="">Select...</option>
                                         <?php
-                                        // Contoh mengambil data kategori dari tabel 'category'
                                         $location = mysqli_query($con, "SELECT * FROM category");
                                         while ($location_ft = mysqli_fetch_array($location)) {
                                             $selected = (isset($roww["category"]) && $roww["category"] == $location_ft["cat_name"]) 
@@ -232,23 +242,20 @@ function compressImage($source, $destination, $quality)
                             <!-- Image Upload -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label>
-                                        Select Img <span style="color:red;">(only compressed)</span>
-                                        <?php if(empty($roww["img"])): ?>
-                                            <span class="text-danger">*</span>
-                                        <?php endif; ?>
-                                    </label>
-                                    <p style="color:red;">img size 800px x 500px</p>
-                                    <input 
-                                        name="lis_img" 
-                                        type="file" 
-                                        class="form-control"
-                                        accept="image/*"
-                                        <?php echo empty($roww["img"]) ? 'required' : ''; ?>
-                                    >
-                                    <div class="invalid-feedback">
-                                        Please upload an image.
-                                    </div>
+                                    <label for="exampleInputFile">
+                                        Select Image
+                                        <?php 
+                                        // Wajib upload jika data baru atau belum ada gambar
+                                        if(empty($roww["img"])){ 
+                                            echo '<span class="text-danger">*</span>'; 
+                                        }
+                                        ?>
+                                        <p style="color:red;">Maksimal 500 KB</p>
+                                    </label>  
+                                    <input name="klien" value="<?php echo htmlspecialchars($roww['klien']); ?>" type="text" class="form-control" required>
+                                    <div id="fileError" class="text-danger mt-1" style="display: none;">File size must be less than 500KB.</div>
+                                    <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ File size is valid.</div>
+                                </div>
                                     <?php 
                                     if (!empty($roww["img"])) {
                                         $imagePath = "images/blog/" . $roww["img"];
@@ -292,40 +299,77 @@ function compressImage($source, $destination, $quality)
 
 <!-- Validasi Bootstrap & Summernote -->
 <script>
-  $(function() {
-    // Inisialisasi Summernote
-    $('.textarea').summernote({
-      height: 200
-    });
-
-    // Validasi khusus Summernote
-    $('#blogForm').on('submit', function() {
-      var summernoteContent = $('.textarea').summernote('code');
-      if ($('.textarea').summernote('isEmpty') || 
-          summernoteContent.trim() === "" || 
-          summernoteContent.trim() === "<p><br></p>") {
-        $('.note-editor').addClass('is-invalid');
-      } else {
-        $('.note-editor').removeClass('is-invalid');
-      }
-    });
-  });
-
-  // Validasi Bootstrap 4
-  (function () {
-    'use strict';
-    var forms = document.querySelectorAll('.needs-validation');
-    Array.prototype.slice.call(forms)
-      .forEach(function (form) {
-        form.addEventListener('submit', function (event) {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
+    $(document).ready(function() {
+      $('.textarea').summernote({
+        height: 200,
+        paragraph: false,
+        callbacks: {
+          onChange: function(contents, $editable) {
+            // Callback sesuai kebutuhan
           }
-          form.classList.add('was-validated');
-        }, false);
+        }
       });
-  })();
+
+      $('input[name="lis_img"]').on('change', function() {
+        var file = this.files[0]; // Ambil file
+        var maxFileSize = 500 * 1024; // 500KB dalam bytes
+
+        if (file) {
+            if (file.size > maxFileSize) {
+                $('#fileError').show().text('File size must be less than 500KB.');
+                $(this).val(''); // Kosongkan input file
+            } else {
+                $('#fileError').hide(); // Sembunyikan pesan jika ukuran sesuai
+            }
+        }
+    });
+
+      // Validasi khusus untuk Summernote dan file size
+      $('#blogForm').on('submit', function(event) {
+        var isValid = true;
+        var summernoteContent = $('.textarea').summernote('code');
+        if ($('.textarea').summernote('isEmpty') || 
+            summernoteContent.trim() === "" || 
+            summernoteContent.trim() === "<p><br></p>") {
+          $('.note-editor').addClass('is-invalid');
+          isValid = false;
+        } else {
+          $('.note-editor').removeClass('is-invalid');
+        }
+        
+        // Validasi ukuran file upload (maksimum 500KB)
+        var fileInput = $('input[name="lis_img"]')[0];
+        if(fileInput && fileInput.files.length > 0) {
+            var fileSize = fileInput.files[0].size;
+            var maxFileSize = 500 * 1024; // 500KB
+            if (fileSize > maxFileSize) {
+                isValid = false;
+                $('#fileError').show().text('File size must be less than 500KB.');
+        }
+    }
+        
+        if (!isValid) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
+    });
+
+    // Validasi Bootstrap 4
+    (function () {
+      'use strict';
+      var forms = document.querySelectorAll('.needs-validation');
+      Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+    })();
 </script>
 </body>
 </html>

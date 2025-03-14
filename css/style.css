@@ -1740,6 +1740,38 @@
     animation-delay: 0.3s;
     animation-fill-mode: both;
 }
+
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination a {
+    padding: 10px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+.pagination .prev-btn, .pagination .next-btn {
+    padding: 10px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 /* end Our Client */
 
 
