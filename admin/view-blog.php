@@ -18,10 +18,10 @@ if (isset($_GET['delete_id'])) {
   $query_delete = "DELETE FROM blog WHERE id='" . $del . "'";
   $p = mysqli_query($con, $query_delete);
   if ($p) {
-      $_SESSION['msg'] = "Deleted Successfully";
+      $_SESSION['msg'] = "Berhasil Dihapus";
       $_SESSION['msgClass'] = "success";
   } else {
-      $_SESSION['msg'] = "Error while deleting the blog.";
+      $_SESSION['msg'] = "Terjadi kesalahan saat menghapus blog.";
       $_SESSION['msgClass'] = "danger";
   }
   header("Location: view-blog.php");
@@ -34,13 +34,13 @@ if (isset($_GET['delete_id'])) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <?php include "title.php"; ?>
-  <!-- Responsive meta -->
+  <!-- Meta Responsif -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
+  <!-- Tema -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
@@ -79,7 +79,10 @@ if (isset($_GET['delete_id'])) {
       text-align: center;
     }
 
-    table.dataTable thead>tr>th.dt-orderable-asc,table.dataTable thead>tr>th.dt-orderable-desc,table.dataTable thead>tr>td.dt-orderable-asc,table.dataTable thead>tr>td.dt-orderable-desc {
+    table.dataTable thead>tr>th.dt-orderable-asc,
+    table.dataTable thead>tr>th.dt-orderable-desc,
+    table.dataTable thead>tr>td.dt-orderable-asc,
+    table.dataTable thead>tr>td.dt-orderable-desc {
         text-align: center;
     }
 
@@ -102,34 +105,34 @@ if (isset($_GET['delete_id'])) {
 <div class="wrapper">
   <!-- Navbar -->
   <?php include "topbar.php"; ?>
-  <!-- Main Sidebar Container -->
+  <!-- Sidebar Utama -->
   <?php include "sidebar.php"; ?>
 
   <!-- Content Wrapper -->
   <div class="content-wrapper">
-    <!-- Content Header -->
+    <!-- Header Konten -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>All Blogs</h1>
+            <h1>Semua Berita</h1>
           </div>
           <div class="col-sm-6" style="text-align:right;">
               <a class="btn btn-primary" href="add-blog.php">
-                  <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                  <i class="fa fa-plus" aria-hidden="true"></i> Tambah Baru
               </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Main Content -->
+    <!-- Konten Utama -->
     <section class="content">
       <?php if (!empty($_SESSION['msg'])): ?>
         <div style="max-width:600px; margin:0 auto;">
           <div class="alert alert-<?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
             <?php echo $_SESSION['msg']; ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -142,7 +145,7 @@ if (isset($_GET['delete_id'])) {
 
       <div class="card card-info">
         <div class="card-header">
-          <h3 class="card-title">View</h3>
+          <h3 class="card-title">Lihat</h3>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -150,11 +153,11 @@ if (isset($_GET['delete_id'])) {
             <table id="myTable" class="table">
               <thead>
                 <tr>
-                  <th>Img</th>
-                  <th>Title</th>
-                  <th>Category</th>
-                  <th>Description</th>
-                  <th>Action</th>
+                  <th>Gambar</th>
+                  <th>Judul</th>
+                  <th>Kategori</th>
+                  <th>Deskripsi</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -178,7 +181,7 @@ if (isset($_GET['delete_id'])) {
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
+<!-- AdminLTE untuk demo -->
 <script src="dist/js/demo.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
@@ -187,6 +190,9 @@ if (isset($_GET['delete_id'])) {
 <script>
   // Inisialisasi DataTables dengan server-side processing
   let table = new DataTable('#myTable', {
+    language: {
+      search: "Cari :"
+    },
     serverSide: true,
     ajax: 'ajax.php?action=fetch_blog',
     order: [], // Nonaktifkan ordering default sehingga server akan mengurutkan berdasarkan id DESC

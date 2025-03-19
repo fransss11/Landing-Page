@@ -86,7 +86,7 @@ $conn->close();
         <div class="container py-5">
             <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="sub-style">
-                    <h2 class="sub-title px-3 mb-0">Klien Kami</h2>
+                    <h4 class="sub-title px-3 mb-0">Klien Kami</h4>
                 </div>
             </div>
             <div class="clients-container">
@@ -101,13 +101,13 @@ $conn->close();
             <!-- Paginasi Start -->
             <div class="pagination">
                 <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?>" class="prev-btn">Prev</a>
+                    <a href="?page=<?php echo $page - 1; ?>" class="prev-btn">Sebelumnya</a>
                 <?php endif; ?>
                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                     <a href="?page=<?php echo $i; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $totalPages): ?>
-                    <a href="?page=<?php echo $page + 1; ?>" class="next-btn">Next</a>
+                    <a href="?page=<?php echo $page + 1; ?>" class="next-btn">Selanjutnya</a>
                 <?php endif; ?>
             </div>
             <!-- Paginasi End -->

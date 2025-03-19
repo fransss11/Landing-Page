@@ -33,7 +33,7 @@ $logo = isset($info_row['logo']) && !empty($info_row['logo']) ? "admin/images/lo
                 <a href="service.php" class="nav-item nav-link <?php echo getCurrentPage() == 'service.php' ? 'active' : ''; ?>">Layanan</a>
                 <a href="portofolio.php" class="nav-item nav-link <?php echo getCurrentPage() == 'portofolio.php' ? 'active' : ''; ?>">Portofolio</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle <?php echo in_array(getCurrentPage(), ['klien.php', 'team.php']) ? 'active' : ''; ?>" data-bs-toggle="dropdown">Informasi</a>
+                    <a href="#" class="nav-link dropdown-toggle <?php echo in_array(getCurrentPage(), ['klien.php', 'team.php','projek.php']) ? 'active' : ''; ?>" data-bs-toggle="dropdown">Informasi</a>
                     <div class="dropdown-menu m-0">
                         <a href="klien.php" class="dropdown-item <?php echo getCurrentPage() == 'klien.php' ? 'active' : ''; ?>">Klien Kami</a>
                         <a href="team.php" class="dropdown-item <?php echo getCurrentPage() == 'team.php' ? 'active' : ''; ?>">Tim Kami</a>

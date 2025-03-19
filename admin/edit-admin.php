@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['ad_id'];
     $ad_name = htmlspecialchars($_POST['ad_name']);
     $ad_email = htmlspecialchars($_POST['ad_email']);
-    $ad_password = $admin['ad_password']; // Default password (if unchanged)
-    $ad_image = $admin['pict']; // Default image (if unchanged)
+    $ad_password = $admin['ad_password']; // Password default (jika tidak diubah)
+    $ad_image = $admin['pict']; // Gambar default (jika tidak diubah)
 
     // Cek apakah field password diisi
     if (!empty($_POST['ad_password'])) {
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $message = "Terjadi kesalahan saat mengupload gambar.";
             }
         } else {
-            $message = "Format gambar tidak valid. Harus berupa JPG, JPEG, PNG, GIF, WEBP.";
+            $message = "Format gambar tidak valid. Harus berupa JPG, JPEG, PNG, GIF, atau WEBP.";
         }
     }
 
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Admin</title>
+    <?php include "title.php"; ?>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Bootstrap -->
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <?php if (!empty($message)) { ?>
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <?php echo $message; ?>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -128,9 +128,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div class="card-header">
                                         <div class="form-group">
                                             <label for="validationAdName">Nama Admin</label>
-                                            <input name="ad_name" type="text" class="form-control" id="validationAdName" value="<?= htmlspecialchars($admin['ad_name']); ?>" placeholder="Enter admin name..." required>
+                                            <input name="ad_name" type="text" class="form-control" id="validationAdName" value="<?= htmlspecialchars($admin['ad_name']); ?>" placeholder="Masukkan nama admin..." required>
                                             <div class="invalid-feedback">
-                                                Please enter admin name.
+                                                Harap masukkan nama admin.
                                             </div>
                                         </div>
                                     </div>
@@ -138,9 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div class="card-header">
                                         <div class="form-group">
                                             <label for="validationAdEmail">Email Admin</label>
-                                            <input name="ad_email" type="email" class="form-control" id="validationAdEmail" value="<?= htmlspecialchars($admin['ad_email']); ?>" placeholder="Enter admin email..." required>
+                                            <input name="ad_email" type="email" class="form-control" id="validationAdEmail" value="<?= htmlspecialchars($admin['ad_email']); ?>" placeholder="Masukkan email admin..." required>
                                             <div class="invalid-feedback">
-                                                Please enter a valid email.
+                                                Harap masukkan email yang valid.
                                             </div>
                                         </div>
                                     </div>
@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <label for="validationAdPassword">Password (Kosongkan jika tidak ingin mengubah)</label>
                                             <!-- Input group dengan ikon mata untuk toggle password -->
                                             <div class="input-group">
-                                                <input name="ad_password" type="password" class="form-control" id="validationAdPassword" placeholder="Enter new password..."
+                                                <input name="ad_password" type="password" class="form-control" id="validationAdPassword" placeholder="Masukkan password baru..."
                                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-_]).{8,}$">
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
@@ -185,6 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div class="card-header">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary btn-lg">Perbarui Admin</button>
+                                            <a href="data_admin.php" class="btn btn-danger">Kembali</a>
                                         </div>
                                     </div>
                                 </div>
@@ -222,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             });
         })();
 
-        // Toggle show/hide password
+        // Toggle tampil/sembunyikan password
         $(document).on('click', '.toggle-password', function() {
             var input = $($(this).attr('data-toggle'));
             if (input.attr('type') === 'password') {
@@ -234,7 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         });
 
-        // Update file input label with selected file name
+        // Perbarui label input file dengan nama file yang dipilih
         $("#validationAdImage").change(function(e) {
             var fileName = e.target.files[0].name;
             $(this).next('.custom-file-label').html(fileName);
@@ -265,6 +266,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         });
     </script>
-
 </body>
 </html>

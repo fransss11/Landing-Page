@@ -43,7 +43,7 @@ if (isset($_POST['publise'])) {
     if (!empty($_FILES['lis_img']['name'])) {
         $maxFileSize = 500 * 1024; // 500KB
         if ($_FILES['lis_img']['size'] > $maxFileSize) {
-            $_SESSION['msg'] = "File size must be less than 500KB.";
+            $_SESSION['msg'] = "Ukuran file harus kurang dari 500KB.";
             $_SESSION['msgClass'] = "alert-danger bg-danger text-white";
             header("Location: add-testimonials.php" . ($edit ? "?edit=" . $edit : ""));
             exit;
@@ -63,10 +63,10 @@ if (isset($_POST['publise'])) {
         $insertdata = mysqli_query($con, "INSERT INTO testimonials (title, designation, descrip, img, date, status) 
             VALUES ('$title', '$designation', '$comments', '$lis_img', '$today', '0')");
         if ($insertdata) {
-            $_SESSION['msg'] = "Posted Successfully";
+            $_SESSION['msg'] = "Berhasil Diposting";
             $_SESSION['msgClass'] = "alert-success bg-success text-white";
         } else {
-            $_SESSION['msg'] = "Error while posting the testimonial.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memposting testimoni.";
             $_SESSION['msgClass'] = "alert-danger bg-danger text-white";
         }
         header("Location: add-testimonials.php");
@@ -76,10 +76,10 @@ if (isset($_POST['publise'])) {
             SET title = '$title', designation = '$designation', descrip = '$comments', img = '$lis_img', date = '$today'
             WHERE id = '$edit'");
         if ($insertdata) {
-            $_SESSION['msg'] = "Updated Successfully";
+            $_SESSION['msg'] = "Berhasil Diperbarui";
             $_SESSION['msgClass'] = "alert-success bg-success text-white";
         } else {
-            $_SESSION['msg'] = "Error while updating the testimonial.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui testimoni.";
             $_SESSION['msgClass'] = "alert-danger bg-danger text-white";
         }
         header("Location: add-testimonials.php?edit=$edit");
@@ -117,7 +117,7 @@ function compressImage($source, $destination, $quality) {
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Theme style (AdminLTE) -->
+    <!-- Tema (AdminLTE) -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- Summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
@@ -129,36 +129,36 @@ function compressImage($source, $destination, $quality) {
 <div class="wrapper">
     <!-- Navbar -->
     <?php include "topbar.php"; ?>
-    <!-- Main Sidebar Container -->
+    <!-- Sidebar Utama -->
     <?php include "sidebar.php"; ?>
 
-    <!-- Content Wrapper. Contains page content -->
+    <!-- Content Wrapper. Berisi konten halaman -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
+        <!-- Header Konten (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1><?php echo ($edit) ? 'Edit Testimonials' : 'Add Testimonials'; ?></h1>
+                        <h1><?php echo ($edit) ? 'Edit Testimoni' : 'Tambah Testimoni'; ?></h1>
                     </div>
                     <div class="col-sm-6">
                         <a href="view-testimonials.php" class="btn btn-success">
-                            <i class="fa fa-eye" aria-hidden="true"></i> View Testimonials
+                            <i class="fa fa-eye" aria-hidden="true"></i> Lihat Testimoni
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Main content -->
+        <!-- Konten Utama -->
         <section class="content">
             <div class="container-fluid">
-                <!-- Tampilkan alert jika ada pesan -->
+                <!-- Tampilkan pesan jika ada -->
                 <?php if (!empty($msg)): ?>
                     <div style="max-width: 250px;">
                         <div class="alert <?php echo $msgClass; ?> alert-dismissible fade show" role="alert">
                             <?php echo $msg; ?>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -172,35 +172,35 @@ function compressImage($source, $destination, $quality) {
                             <div class="card card-outline card-info">
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label for="validationTitle" class="form-label">Enter Name</label>
+                                        <label for="validationTitle" class="form-label">Masukkan Nama</label>
                                         <input name="title" type="text" class="form-control" id="validationTitle"
                                                value="<?php echo htmlspecialchars($roww["title"]); ?>" 
-                                               placeholder="Enter ..." required>
+                                               placeholder="Masukkan nama..." required>
                                         <div class="invalid-feedback">
-                                            Please provide a valid name.
+                                            Harap masukkan nama yang valid.
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label for="validationDesignation" class="form-label">Enter Designation</label>
+                                        <label for="validationDesignation" class="form-label">Masukkan Jabatan</label>
                                         <input name="designation" type="text" class="form-control" id="validationDesignation"
                                                value="<?php echo htmlspecialchars($roww["designation"]); ?>" 
-                                               placeholder="Enter ..." required>
+                                               placeholder="Masukkan jabatan..." required>
                                         <div class="invalid-feedback">
-                                            Please provide a valid designation.
+                                            Harap masukkan jabatan yang valid.
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="card-body pad">
-                                    <label for="validationComments" class="form-label">Comments</label>
+                                    <label for="validationComments" class="form-label">Komentar</label>
                                     <div class="mb-3">
                                         <textarea name="comments" class="form-control" id="validationComments" 
-                                                  placeholder="Comments" rows="5" required><?php echo htmlspecialchars($roww["descrip"]); ?></textarea>
+                                                  placeholder="Komentar" rows="5" required><?php echo htmlspecialchars($roww["descrip"]); ?></textarea>
                                         <div class="invalid-feedback">
-                                            Please provide some comments.
+                                            Harap masukkan komentar.
                                         </div>
                                     </div>
                                 </div>
@@ -208,7 +208,7 @@ function compressImage($source, $destination, $quality) {
                                 <div class="card-header">   
                                     <div class="form-group">
                                         <label for="exampleInputFile">
-                                            Select Image
+                                            Pilih Gambar
                                             <?php 
                                             // Wajib upload jika data baru atau belum ada gambar
                                             if(empty($roww["img"])){ 
@@ -217,21 +217,20 @@ function compressImage($source, $destination, $quality) {
                                             ?>
                                             <p style="color:red;">Maksimal 500 KB</p>
                                         </label>  
-                                        <input name="lis_img" type="file" class="form-control" id="imageUpload" accept="image/*" required>
-                                        <div id="fileError" class="text-danger mt-1" style="display: none;">File size must be less than 500KB.</div>
-                                        <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ File size is valid.</div>
+                                        <input name="lis_img" type="file" class="form-control" id="imageUpload" accept="image/*" <?php echo empty($roww["img"]) ? 'required' : ''; ?>>
+                                        <div id="fileError" class="text-danger mt-1" style="display: none;">Ukuran file harus kurang dari 500KB.</div>
+                                        <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ Ukuran file valid.</div>
                                     </div>
-                                        <?php 
+                                    <?php 
                                         if (!empty($roww["img"])) {
                                             $imagePath = "images/testimonial/" . $roww["img"];
                                             if (file_exists($imagePath)) {
-                                                echo '<br><img src="' . htmlspecialchars($imagePath) . '?v=' . time() . '" alt="Current Image" style="width:70px; margin-top:10px;">';
+                                                echo '<br><img src="' . htmlspecialchars($imagePath) . '?v=' . time() . '" alt="Gambar Saat Ini" style="width:70px; margin-top:10px;">';
                                             } else {
-                                                echo '<br><p>Image file not found</p>';
+                                                echo '<br><p>File gambar tidak ditemukan</p>';
                                             }
                                         }
-                                        ?>
-                                    </div>
+                                    ?>
                                 </div>
 
                                 <div class="card-header">
@@ -239,7 +238,7 @@ function compressImage($source, $destination, $quality) {
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <button type="submit" name="publise" class="btn btn-primary btn-lg">
-                                                    <?php echo ($edit) ? 'Update' : 'Publish'; ?>
+                                                    <?php echo ($edit) ? 'Perbarui' : 'Tambahkan'; ?>
                                                 </button>
                                                 <a href="view-testimonials.php" class="btn btn-danger">Kembali</a>
                                             </div>
@@ -271,7 +270,7 @@ function compressImage($source, $destination, $quality) {
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
 
-<!-- BOOTSTRAP VALIDATION SCRIPT -->
+<!-- VALIDASI BOOTSTRAP SCRIPT -->
 <script>
 (function () {
   'use strict';
@@ -291,18 +290,18 @@ function compressImage($source, $destination, $quality) {
 
 <script>
     $(document).ready(function(){
-    $("#imageUpload").change(function(){
-        let file = this.files[0];
-        if (file.size > 500 * 1024) {
-            $("#fileError").show();
-            $("#fileSuccess").hide();
-            $(this).val('');
-        } else {
-            $("#fileError").hide();
-            $("#fileSuccess").show();
-        }
+        $("#imageUpload").change(function(){
+            let file = this.files[0];
+            if (file.size > 500 * 1024) {
+                $("#fileError").show();
+                $("#fileSuccess").hide();
+                $(this).val('');
+            } else {
+                $("#fileError").hide();
+                $("#fileSuccess").show();
+            }
+        });
     });
-});
 </script>
 <script>
     $(function () {

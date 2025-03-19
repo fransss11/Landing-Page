@@ -3,7 +3,7 @@ include 'conn.php';
 include 'auth.php';
 
 date_default_timezone_set('Asia/Kolkata');
-$today = date("Y-m-d H:i:s");
+$today = date("Y-m-d H:i:s"); // Format tanggal standar
 
 // Ambil flash message dari session (jika ada)
 if (isset($_SESSION['msg'])) {
@@ -25,13 +25,13 @@ if ($edit) {
     $roww = mysqli_fetch_array($resultt);
 } else {
     // Mode baru (insert): set default kosong
-    $roww = ['judul' => '', 'tahun' => '', 'deskrip' => ''];
+    $roww = ['mitra' => '', 'tahun' => '', 'deskrip' => ''];
 }
 
 // Handle form submission
 if (isset($_POST['publise'])) {
     // Sanitasi input
-    $judul   = mysqli_real_escape_string($con, $_POST['judul']);
+    $mitra   = mysqli_real_escape_string($con, $_POST['mitra']);
     $tahun = mysqli_real_escape_string($con, $_POST['tahun']);
     // Mengambil konten dari Summernote
     $deskrip = $_POST['deskrip'];
@@ -63,16 +63,16 @@ if (isset($_POST['publise'])) {
     if ($edit == '') {
         // Insert
         $insertdata = mysqli_query($con, 
-            "INSERT INTO projek (judul, tahun, deskrip, upload)
-             VALUES ('$judul', '$tahun', '$deskrip', '$today')"
+            "INSERT INTO projek (mitra, tahun, deskrip, upload)
+             VALUES ('$mitra', '$tahun', '$deskrip', '$today')"
         );
         if ($insertdata) {
             // Simpan flash message ke session
-            $_SESSION['msg'] = "Posted Successfully";
+            $_SESSION['msg'] = "Berhasil Diposting";
             // Gunakan alert-success untuk warna hijau AdminLTE (bisa ditambah bg-success text-white)
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error while posting the projek.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memposting projek.";
             $_SESSION['msgClass'] = "alert-danger";
         }
         // Redirect agar flash message hanya muncul sekali
@@ -82,17 +82,17 @@ if (isset($_POST['publise'])) {
         // Update
         $insertdata = mysqli_query($con, 
             "UPDATE projek SET 
-                judul     = '$judul', 
+                mitra     = '$mitra', 
                 tahun  = '$tahun', 
                 deskrip   = '$deskrip', 
                 upload     = '$today' 
              WHERE id = '$edit'"
         );
         if ($insertdata) {
-            $_SESSION['msg'] = "Updated Successfully";
+            $_SESSION['msg'] = "Berhasil Diperbarui";
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error while updating the projek.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui projek.";
             $_SESSION['msgClass'] = "alert-danger";
         }
         // Redirect agar data yang sudah diupdate tetap muncul di form
@@ -123,10 +123,13 @@ if (isset($_POST['publise'])) {
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Add projek</title>
+    <title>Tambah Projek</title>
+    <?php include "title.php"; ?>
     <!-- AdminLTE & Bootstrap CSS -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
 </head>
@@ -142,11 +145,11 @@ if (isset($_POST['publise'])) {
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1><?php echo ($edit) ? 'Edit projek' : 'Add projek'; ?></h1>
+                        <h1><?php echo ($edit) ? 'Edit Projek' : 'Tambah Projek'; ?></h1>
                     </div>
                     <div class="col-sm-6">
                         <a href="view-projek.php" class="btn btn-success">
-                        <i class="fa fa-eye" aria-hidden="true"></i> View Projek
+                        <i class="fa fa-eye" aria-hidden="true"></i> Lihat Projek
                         </a>
                     </div>
                 </div>
@@ -163,7 +166,7 @@ if (isset($_POST['publise'])) {
                             <!-- Pastikan class "alert" dan "alert-success" (atau "alert-danger") -->
                             <div class="alert <?php echo $msgClass; ?> alert-dismissible fade show" role="alert">
                                 <?php echo $msg; ?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -174,101 +177,66 @@ if (isset($_POST['publise'])) {
                     <form id="projekForm" action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                         <div class="card card-outline card-info">
                             
-                            <!-- judul -->
+                            <!-- mitra -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label>Enter judul <span class="text-danger">*</span></label>
+                                    <label>Masukkan mitra <span class="text-danger">*</span></label>
                                     <input 
-                                        name="judul" 
-                                        value="<?php echo htmlspecialchars($roww["judul"]); ?>" 
+                                        name="mitra" 
+                                        value="<?php echo htmlspecialchars($roww["mitra"]); ?>" 
                                         type="text" 
                                         class="form-control" 
-                                        placeholder="Enter ..." 
+                                        placeholder="Masukkan ..." 
                                         required
                                     >
                                     <div class="invalid-feedback">
-                                        Please enter a judul.
+                                        Harap masukkan mitra.
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- tahun -->
+                            <!-- Tahun -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label>Enter Tahun <span class="text-danger">*</span></label>
+                                    <label>Masukkan Tahun <span class="text-danger">*</span></label>
                                     <input 
                                         name="tahun" 
                                         value="<?php echo htmlspecialchars($roww["tahun"]); ?>" 
                                         type="number" 
                                         class="form-control" 
-                                        placeholder="Enter Tahun" 
+                                        placeholder="Masukkan Tahun" 
                                         min="1900" 
-                                        max="2099" 
+                                        max="<?php echo date('Y'); ?>" 
                                         step="1" 
                                         required
                                     >
                                     <div class="invalid-feedback">
-                                        Please enter a valid Tahun.
+                                        Harap masukkan tahun yang valid.
                                     </div>
                                 </div>
                             </div>
-
-
-                            <!-- Deskription (Summernote) -->
+                            <!-- Deskripsi (Summernote) -->
                             <div class="card-body pad">
-                                <label>Enter Deskription <span class="text-danger">*</span></label>
+                                <label>Masukkan Deskripsi <span class="text-danger">*</span></label>
                                 <div class="mb-3">
                                     <textarea 
                                         name="deskrip" 
                                         class="textarea" 
-                                        placeholder="Place some text here" 
+                                        placeholder="Masukkan ..." 
                                         style="width: 100%; height: 200px; border: 1px solid #dddddd; padding: 10px;" 
                                         required
                                     ><?php echo htmlspecialchars($roww["deskrip"]); ?></textarea>
                                     <div class="invalid-feedback">
-                                        Please enter the deskription.
+                                        Harap masukkan deskripsi.
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Image Upload
-                            <div class="card-header">
-                                <div class="form-group">
-                                    <label>
-                                        Select Img <span style="color:red;">(only compressed)</span>
-                                        <?php if(empty($roww["img"])): ?>
-                                            <span class="text-danger">*</span>
-                                        <?php endif; ?>
-                                    </label>
-                                    <p style="color:red;">img size 800px x 500px</p>
-                                    <input 
-                                        name="lis_img" 
-                                        type="file" 
-                                        class="form-control"
-                                        accept="image/*"
-                                        <?php echo empty($roww["img"]) ? 'required' : ''; ?>
-                                    >
-                                    <div class="invalid-feedback">
-                                        Please upload an image.
-                                    </div>
-                                    <?php 
-                                    if (!empty($roww["img"])) {
-                                        $imagePath = "images/projek/" . $roww["img"];
-                                        if (file_exists($imagePath)) {
-                                            echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Current Image" style="width:150px; margin-top:10px;">';
-                                        } else {
-                                            echo '<br><p>Image file not found</p>';
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                            </div> -->
 
                             <!-- Submit Button -->
                             <div class="card-header">
                                 <div class="form-group">
                                     <button type="submit" name="publise" class="btn btn-primary btn-lg">
-                                        <?php echo ($edit) ? 'Update' : 'Publish Post'; ?>
+                                        <?php echo ($edit) ? 'Perbarui' : 'Tambahkan'; ?>
                                     </button>
                                     <a href="view-projek.php" class="btn btn-danger">Kembali</a>
                                 </div>
@@ -292,7 +260,7 @@ if (isset($_POST['publise'])) {
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
 
-<!-- Validasi Bootstrap & Summernote -->
+<!-- SCRIPT VALIDASI BOOTSTRAP -->
 <script>
     $(document).ready(function() {
       $('.textarea').summernote({

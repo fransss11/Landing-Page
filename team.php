@@ -73,8 +73,6 @@ $conn->close();
                 <div class="sub-style">
                     <h4 class="sub-title px-3 mb-0">Tim Kami</h4>
                 </div>
-                <!-- <h1 class="display-3 mb-4">Physiotherapy Services from Professional Therapist</h1>
-                <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat deleniti amet at atque sequi quibusdam cumque itaque repudiandae temporibus, eius nam mollitia voluptas maxime veniam necessitatibus saepe in ab? Repellat!</p> -->
             </div>
             <div class="row g-4 justify-content-center">
                 <?php foreach ($teamList as $team): ?>

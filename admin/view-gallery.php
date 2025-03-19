@@ -3,6 +3,9 @@ ob_start();
 include 'conn.php';
 include 'auth.php';
 
+date_default_timezone_set('Asia/Kolkata');
+$today = date("D d M Y");
+
 // Proses hapus data jika ada parameter delete_id
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
@@ -27,15 +30,15 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
     $stmtDelete = $con->prepare("DELETE FROM media WHERE id = ?");
     $stmtDelete->bind_param("i", $delete_id);
     if ($stmtDelete->execute()) {
-        $_SESSION['msg'] = "Deleted Successfully";
+        $_SESSION['msg'] = "Berhasil Dihapus";
         $_SESSION['msgClass'] = "success";
     } else {
-        $_SESSION['msg'] = "Error while deleting record.";
+        $_SESSION['msg'] = "Terjadi kesalahan saat menghapus data.";
         $_SESSION['msgClass'] = "danger";
     }
     $stmtDelete->close();
     
-    // Redirect agar mencegah reload mengulangi proses delete
+    // Redirect agar mencegah reload mengulangi proses hapus
     header("Location: view-gallery.php");
     exit();
 }
@@ -57,10 +60,10 @@ $result = mysqli_query($con, $query);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>All Gallery</title>
+  <?php include "title.php"; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <!-- CSS -->
@@ -82,12 +85,13 @@ $result = mysqli_query($con, $query);
         text-align: center;
         vertical-align: middle !important;
     }
-
-    table.dataTable thead>tr>th.dt-orderable-asc,table.dataTable thead>tr>th.dt-orderable-desc,table.dataTable thead>tr>td.dt-orderable-asc,table.dataTable thead>tr>td.dt-orderable-desc {
+    table.dataTable thead>tr>th.dt-orderable-asc,
+    table.dataTable thead>tr>th.dt-orderable-desc,
+    table.dataTable thead>tr>td.dt-orderable-asc,
+    table.dataTable thead>tr>td.dt-orderable-desc {
         cursor: pointer;
         text-align: center;
     }
-
     .table img {
         width: 100px;
         height: auto;
@@ -117,11 +121,11 @@ $result = mysqli_query($con, $query);
       <div class="container-fluid">
           <div class="row mb-2">
               <div class="col-sm-6">
-                  <h1>All Gallery</h1>
+                  <h1>Semua Galeri</h1>
               </div>
               <div class="col-sm-6" style="text-align:right;">
                   <a class="btn btn-primary" href="add-gallery.php">
-                      <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                      <i class="fa fa-plus" aria-hidden="true"></i> Tambah Baru
                   </a>
               </div>
           </div>
@@ -134,7 +138,7 @@ $result = mysqli_query($con, $query);
          <div style="max-width:600px; margin:20px auto;">
            <div class="alert alert-<?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
              <?php echo $_SESSION['msg']; ?>
-             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+             <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                <span aria-hidden="true">&times;</span>
              </button>
            </div>
@@ -147,28 +151,22 @@ $result = mysqli_query($con, $query);
 
       <div class="card card-info">
          <div class="card-header">
-           <h3 class="card-title">View</h3>
+           <h3 class="card-title">Lihat Galeri</h3>
          </div>
          <div class="card-body p-0">
            <div class="table-responsive">
              <table id="myTable" class="table table-bordered">
                <thead>
                  <tr>
-                   <th>Img</th>
-                   <th>Gallery Name</th>
-                   <th>Category</th>
-                   <th>Uploaded On</th>
-                   <th>Action</th>
+                   <th>Gambar</th>
+                   <th>Nama Galeri</th>
+                   <th>Kategori</th>
+                   <th>Tanggal Unggah</th>
+                   <th>Aksi</th>
                  </tr>
                </thead>
                <tbody>
                  <?php
-                 // Query data dari tabel media dengan join kategori_gal
-                 $query = "SELECT media.id, media.foto, media.galery, media.uploaded_on, kategori_gal.kat_gal 
-                           FROM media 
-                           LEFT JOIN kategori_gal ON media.kategori = kategori_gal.kat_gal 
-                           ORDER BY media.id DESC";
-                 $result = mysqli_query($con, $query);
                  while ($row = mysqli_fetch_assoc($result)) {
                      $id = $row['id'];
                      echo "<tr>";
@@ -178,10 +176,10 @@ $result = mysqli_query($con, $query);
                      echo "<td>" . htmlspecialchars($row['uploaded_on']) . "</td>";
                      echo "<td>
                              <div class='btn-group'>
-                               <a href='add-gallery.php?edit=" . $id . "' class='btn btn-info'>
+                               <a href='add-gallery.php?edit=" . $id . "' class='btn btn-info' onclick='return confirm(\"Anda yakin?\")'>
                                  <i class='fas fa-edit'></i>
                                </a>
-                               <a href='view-gallery.php?delete_id=" . $id . "' onclick='return confirm(\"Are you sure?\")' class='btn btn-danger'>
+                               <a href='view-gallery.php?delete_id=" . $id . "' onclick='return confirm(\"Anda yakin?\")' class='btn btn-danger'>
                                  <i class='fas fa-trash'></i>
                                </a>
                              </div>
@@ -196,7 +194,7 @@ $result = mysqli_query($con, $query);
       </div>
     </section>
   </div>
-  <!-- FOOTER -->
+  
   <?php include "footer.php"; ?>
 </div>
 
@@ -208,10 +206,9 @@ $result = mysqli_query($con, $query);
 
 <script>
   $(document).ready(function() {
-    // Inisialisasi DataTables tanpa AJAX, karena data sudah terisi di HTML
     $('#myTable').DataTable({
       language: {
-        search: "search :"
+        search: "Cari :"
       }
     });
   });

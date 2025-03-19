@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $whatsapp    = mysqli_real_escape_string($con, $_POST['whatsapp']);
     $url         = mysqli_real_escape_string($con, $_POST['url']);
 
-    // Jika ada data lama (mode edit), gunakan gambarnya, jika tidak, kosongkan
+    // Jika ada data lama (mode edit), gunakan gambarnya; jika tidak, kosongkan
     $lis_img = isset($roww["img"]) ? $roww["img"] : '';
 
     if (!empty($_FILES['lis_img']['name'])) {
@@ -59,10 +59,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (mysqli_stmt_execute($stmt)) {
-        $_SESSION['msg'] = ($edit > 0) ? "Updated Successfully" : "Posted Successfully";
+        $_SESSION['msg'] = ($edit > 0) ? "Berhasil Diperbarui" : "Berhasil Diposting";
         $_SESSION['msgClass'] = "success";
     } else {
-        $_SESSION['msg'] = ($edit > 0) ? "Error while updating the team." : "Error while posting the team.";
+        $_SESSION['msg'] = ($edit > 0) ? "Terjadi kesalahan saat memperbarui tim." : "Terjadi kesalahan saat memposting tim.";
         $_SESSION['msgClass'] = "danger";
     }
     mysqli_stmt_close($stmt);
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Theme style (AdminLTE) -->
+    <!-- Tema (AdminLTE) -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- Summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
@@ -100,30 +100,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php include "sidebar.php"; ?>
 
     <div class="content-wrapper">
-        <!-- Content Header -->
+        <!-- Header Konten -->
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1><?php echo ($edit > 0) ? 'Edit Teams' : 'Add Teams'; ?></h1>
+                        <h1><?php echo ($edit > 0) ? 'Edit Tim' : 'Tambah Tim'; ?></h1>
                     </div>
                     <div class="col-sm-6">
-                        <a href="view-teams.php" class="btn btn-success">View Teams</a>
+                        <a href="view-teams.php" class="btn btn-success">Lihat Tim</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Main content -->
+        <!-- Konten Utama -->
         <section class="content">
             <div class="row">
                 <div class="col-md-8">
-                    <!-- Tampilkan alert jika ada pesan, kemudian unset agar tidak muncul kembali setelah refresh -->
+                    <!-- Tampilkan pesan jika ada -->
                     <?php if (!empty($_SESSION['msg'])): ?>
                         <div class="alert-container">
                             <div class="alert alert-<?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
                                 <?php echo $_SESSION['msg']; ?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -140,10 +140,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <!-- Title -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label for="validationTitle">Enter Name <span class="text-danger">*</span></label>
-                                    <input name="title" value="<?php echo isset($roww["title"]) ? htmlspecialchars($roww["title"]) : ''; ?>" type="text" class="form-control" id="validationTitle" placeholder="Enter Name..." required>
+                                    <label for="validationTitle">Masukkan Nama <span class="text-danger">*</span></label>
+                                    <input name="title" value="<?php echo isset($roww["title"]) ? htmlspecialchars($roww["title"]) : ''; ?>" type="text" class="form-control" id="validationTitle" placeholder="Masukkan nama..." required>
                                     <div class="invalid-feedback">
-                                        Please enter a name.
+                                        Silahkan masukkan nama.
                                     </div>
                                 </div>
                             </div>
@@ -151,10 +151,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <!-- Designation -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label for="validationDesignation">Enter Designation <span class="text-danger">*</span></label>
-                                    <input name="designation" value="<?php echo isset($roww["designation"]) ? htmlspecialchars($roww["designation"]) : ''; ?>" type="text" class="form-control" id="validationDesignation" placeholder="Enter Designation..." required>
+                                    <label for="validationDesignation">Masukkan Jabatan <span class="text-danger">*</span></label>
+                                    <input name="designation" value="<?php echo isset($roww["designation"]) ? htmlspecialchars($roww["designation"]) : ''; ?>" type="text" class="form-control" id="validationDesignation" placeholder="Masukkan jabatan..." required>
                                     <div class="invalid-feedback">
-                                        Please enter a designation.
+                                        Silahkan masukkan jabatan.
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <div class="mb-3">
                                     <textarea name="Deskripsi" class="textarea" placeholder="Deskripsi" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo isset($roww["descrip"]) ? htmlspecialchars($roww["descrip"]) : ''; ?></textarea>
                                     <div class="invalid-feedback">
-                                        Please enter the description.
+                                        Silahkan masukkan deskripsi.
                                     </div>
                                 </div>
                             </div>
@@ -174,64 +174,71 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>Facebook</label>
-                                    <input name="facebook" value="<?php echo isset($roww["facebook"]) ? htmlspecialchars($roww["facebook"]) : ''; ?>" type="text" class="form-control" placeholder="Enter Facebook URL or Username...">
+                                    <input name="facebook" value="<?php echo isset($roww["facebook"]) ? htmlspecialchars($roww["facebook"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan URL atau username Facebook...">
                                 </div>
                             </div>
 
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>Twitter</label>
-                                    <input name="twitter" value="<?php echo isset($roww["twitter"]) ? htmlspecialchars($roww["twitter"]) : ''; ?>" type="text" class="form-control" placeholder="Enter Twitter URL or Username...">
+                                    <input name="twitter" value="<?php echo isset($roww["twitter"]) ? htmlspecialchars($roww["twitter"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan URL atau username Twitter...">
                                 </div>
                             </div>
 
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>Instagram</label>
-                                    <input name="instagram" value="<?php echo isset($roww["instagram"]) ? htmlspecialchars($roww["instagram"]) : ''; ?>" type="text" class="form-control" placeholder="Enter Instagram URL or Username...">
+                                    <input name="instagram" value="<?php echo isset($roww["instagram"]) ? htmlspecialchars($roww["instagram"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan URL atau username Instagram...">
                                 </div>
                             </div>
 
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>LinkedIn</label>
-                                    <input name="linkedin" value="<?php echo isset($roww["linkedin"]) ? htmlspecialchars($roww["linkedin"]) : ''; ?>" type="text" class="form-control" placeholder="Enter LinkedIn URL or Username...">
+                                    <input name="linkedin" value="<?php echo isset($roww["linkedin"]) ? htmlspecialchars($roww["linkedin"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan URL atau username LinkedIn...">
                                 </div>
                             </div>
 
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>WhatsApp</label>
-                                    <input name="whatsapp" value="<?php echo isset($roww["whatsapp"]) ? htmlspecialchars($roww["whatsapp"]) : ''; ?>" type="text" class="form-control" placeholder="Enter WhatsApp Number...">
+                                    <input name="whatsapp" value="<?php echo isset($roww["whatsapp"]) ? htmlspecialchars($roww["whatsapp"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan nomor WhatsApp...">
+                                </div>
+                            </div>
+
+                            <!-- URL -->
+                            <div class="card-header">
+                                <div class="form-group">
+                                    <label for="validationURL">Masukkan URL</label>
+                                    <input name="url" value="<?php echo isset($roww["url"]) ? htmlspecialchars($roww["url"]) : ''; ?>" type="text" class="form-control" id="validationURL" placeholder="Masukkan URL...">
                                 </div>
                             </div>
 
                             <!-- Image Upload -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label for="validationImage">Select Image <span style="color:red;">(Max 500KB, Only PNG, JPG, JPEG, WEBP)</span> <?php echo ($edit == 0 ? '<span class="text-danger">*</span>' : ''); ?></label>
+                                    <label for="validationImage">Pilih Gambar <span style="color:red;">(Maksimal 500KB, Hanya PNG, JPG, JPEG, WEBP)</span> <?php echo ($edit == 0 ? '<span class="text-danger">*</span>' : ''); ?></label>
                                     <input name="lis_img" type="file" id="validationImage" class="form-control" accept="image/*" <?php echo ($edit == 0 ? 'required' : ''); ?>>
-                                    <small id="imageError" class="text-danger"></small> <!-- Pesan error akan muncul di sini -->
+                                    <small id="imageError" class="text-danger"></small>
                                     
                                     <?php 
                                     if (!empty($roww["img"])) {
                                         $imagePath = "images/team/" . $roww["img"];
                                         if (file_exists($imagePath)) {
-                                            echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Current Image" style="width:150px; margin-top:10px;">';
+                                            echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Gambar Saat Ini" style="width:150px; margin-top:10px;">';
                                         } else {
-                                            echo '<br><p>Image file not found</p>';
+                                            echo '<br><p>File gambar tidak ditemukan</p>';
                                         }
                                     }
                                     ?>
                                 </div>
                             </div>
 
-
-                            <!-- Submit Button -->
+                            <!-- Tombol Submit -->
                             <div class="card-header">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-lg">
-                                        <?php echo ($edit > 0) ? 'Update' : 'Publish Post'; ?>
+                                        <?php echo ($edit > 0) ? 'Perbarui' : 'Publikasikan'; ?>
                                     </button>
                                     <a href="view-teams.php" class="btn btn-danger">Kembali</a>
                                 </div>
@@ -281,19 +288,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script>
 document.getElementById("validationImage").addEventListener("change", function() {
     var file = this.files[0];
-    var errorText = document.getElementById("imageError"); // Ambil elemen untuk menampilkan error
+    var errorText = document.getElementById("imageError");
 
     if (file) {
-        var fileSize = file.size; // Dapatkan ukuran file dalam byte
+        var fileSize = file.size;
         if (fileSize > 512000) { // 500KB = 512000 byte
             errorText.textContent = "Ukuran gambar tidak boleh lebih dari 500KB!";
-            this.value = ""; // Kosongkan input jika file terlalu besar
+            this.value = "";
         } else {
-            errorText.textContent = ""; // Hapus pesan error jika ukuran sesuai
+            errorText.textContent = "";
         }
     }
 });
 </script>
-
 </body>
 </html>

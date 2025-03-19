@@ -108,6 +108,10 @@
     box-shadow: inset 0 0 12px 4px #b79e9e;
 }
 
+.btn.btn-primaryy {
+    box-shadow: inset 0 0 12px 4px #ffffff;
+}
+
 .btn.btn-primary:hover {
     box-shadow: inset 300px 0 0 0 var(--bs-light) !important;
     color: var(--bs-primary) !important;
@@ -461,6 +465,8 @@
 .navbar-light .navbar-brand img {
     max-height: 50px;
     transition: .5s;
+    width: 110%;
+    margin-left: -6%;
 }
 
 .sticky-top.navbar-light .navbar-brand img {
@@ -1778,9 +1784,60 @@
 
 /* start Detail Galery */
 
+
 /* General Styling */
 body {
     overflow-x: hidden;
+}
+
+/* Animasi Fade In */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animasi untuk setiap gambar */
+.gallery-item {
+    animation: fadeIn 0.9s ease-in-out;
+    opacity: 1;
+}
+
+/* Efek hover untuk gambar */
+.gallery-item img {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Animasi WOW.js */
+.wow {
+    visibility: hidden;
+}
+
+/* Animasi untuk tombol */
+.btn-primary {
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    background-color: #0056b3;
+}
+.kategori-content {
+    display: none; /* Konten disembunyikan secara default */
+    flex-wrap: wrap;
 }
 
 /* Container Styling */

@@ -1,6 +1,10 @@
 <?php
 include 'database.php';
 
+// Set zona waktu ke Asia/Kolkata dan dapatkan tanggal-waktu saat ini
+date_default_timezone_set('Asia/Jakarta');
+$today = date("Y-m-d H:i:s");
+
 function getVisitorIP() {
     if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ip_array = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
@@ -15,6 +19,7 @@ function getVisitorIP() {
     }
     return $ip;
 }
+
 function getBrowser() {
     $browser = "Unknown Browser";
     $browser_array = array(
@@ -58,6 +63,7 @@ function getBrowser() {
     }
     return $browser;
 }
+
 function getDevice() {
     $device = "Unknown Device";
     if (preg_match('/mobile/i', $_SERVER['HTTP_USER_AGENT'])) {
@@ -69,20 +75,40 @@ function getDevice() {
     }
     return $device;
 }
-$today = date('Y-m-d');
+
 $visitor_ip = getVisitorIP();
 $browser = getBrowser();
 $device = getDevice();
-$query_check = "SELECT * FROM visitor WHERE visit_date = '$today' AND ip_address = '$visitor_ip' AND user_agent = '{$_SERVER['HTTP_USER_AGENT']}' AND browser = '$browser' AND device = '$device'";
+
+// Periksa apakah visitor sudah ada untuk hari ini berdasarkan IP, user agent, browser, dan device (bandingkan hanya tanggalnya)
+$query_check = "SELECT * FROM visitor 
+                WHERE DATE(visit_date) = CURDATE() 
+                  AND ip_address = '$visitor_ip' 
+                  AND user_agent = '{$_SERVER['HTTP_USER_AGENT']}' 
+                  AND browser = '$browser' 
+                  AND device = '$device'";
 $result_check = mysqli_query($conn, $query_check);
+
 if (mysqli_num_rows($result_check) == 0) {
-    $query_insert = "INSERT INTO visitor (visit_date, ip_address, user_agent, browser, device) VALUES ('$today', '$visitor_ip', '{$_SERVER['HTTP_USER_AGENT']}', '$browser', '$device')";
+    // Jika belum ada, insert record baru dengan current timestamp
+    $query_insert = "INSERT INTO visitor (visit_date, ip_address, user_agent, browser, device) 
+                     VALUES ('$today', '$visitor_ip', '{$_SERVER['HTTP_USER_AGENT']}', '$browser', '$device')";
     mysqli_query($conn, $query_insert);
+} else {
+    // Jika sudah ada, update record dengan current timestamp
+    $row = mysqli_fetch_assoc($result_check);
+    $id = $row['id_visitor'];
+    $query_update = "UPDATE visitor SET visit_date = '$today' WHERE id_visitor = '$id'";
+    mysqli_query($conn, $query_update);
 }
-$query_today = "SELECT COUNT(*) AS today_visitors FROM visitor WHERE visit_date = '$today'";
+
+// Ambil jumlah pengunjung hari ini (menggunakan DATE() agar hanya dihitung berdasarkan tanggal)
+$query_today = "SELECT COUNT(*) AS today_visitors FROM visitor WHERE DATE(visit_date) = CURDATE()";
 $result_today = mysqli_query($conn, $query_today);
 $row_today = mysqli_fetch_assoc($result_today);
 $today_visitors = $row_today['today_visitors'];
+
+// Ambil jumlah total pengunjung
 $query_total = "SELECT COUNT(*) AS total_visitors FROM visitor";
 $result_total = mysqli_query($conn, $query_total);
 $row_total = mysqli_fetch_assoc($result_total);
@@ -98,6 +124,7 @@ $sql = "SELECT * FROM info ORDER BY id_info DESC LIMIT 1";
 $result = $conn->query($sql);
 $info = $result->fetch_assoc();
 ?>
+
 
 <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
     <div class="container py-5">
@@ -133,8 +160,8 @@ $info = $result->fetch_assoc();
                     <a href="service.php"><i class="fas fa-angle-right me-2"></i> Layanan</a>
                     <a href="portofolio.php"><i class="fas fa-angle-right me-2"></i> Portofolio</a>
                     <a href="galery.php"><i class="fas fa-angle-right me-2"></i> Galeri</a>
-                    <a href="contact.php"><i class="fas fa-angle-right me-2"></i> Kontak</a>
                     <a href="berita.php"><i class="fas fa-angle-right me-2"></i> Berita</a>
+                    <a href="contact.php"><i class="fas fa-angle-right me-2"></i> Kontak</a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">

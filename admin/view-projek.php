@@ -3,6 +3,9 @@ error_reporting(0);
 include 'conn.php';
 include 'auth.php';
 
+date_default_timezone_set('Asia/Kolkata');
+$today = date("Y-m-d H:i:s"); // Format tanggal standar
+
 // Tangani penghapusan data sebelum output
 if (isset($_GET['delete_id'])) {
   $del = mysqli_real_escape_string($con, $_GET['delete_id']);
@@ -18,10 +21,10 @@ if (isset($_GET['delete_id'])) {
   $query_delete = "DELETE FROM projek WHERE id='" . $del . "'";
   $p = mysqli_query($con, $query_delete);
   if ($p) {
-      $_SESSION['msg'] = "Deleted Successfully";
+      $_SESSION['msg'] = "Berhasil Dihapus";
       $_SESSION['msgClass'] = "success";
   } else {
-      $_SESSION['msg'] = "Error while deleting the projek.";
+      $_SESSION['msg'] = "Terjadi kesalahan saat menghapus projek.";
       $_SESSION['msgClass'] = "danger";
   }
   header("Location: view-projek.php");
@@ -29,7 +32,7 @@ if (isset($_GET['delete_id'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,7 +40,7 @@ if (isset($_GET['delete_id'])) {
   <?php include "title.php"; ?>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- AdminLTE Style -->
+  <!-- Gaya AdminLTE -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
@@ -78,11 +81,11 @@ if (isset($_GET['delete_id'])) {
             white-space: nowrap;
         }
 
-        table.dataTable thead>tr>th.dt-orderable-asc,table.dataTable thead>tr>th.dt-orderable-desc,table.dataTable thead>tr>td.dt-orderable-asc,table.dataTable thead>tr>td.dt-orderable-desc {
+        table.dataTable thead>tr>th.dt-orderable-asc, table.dataTable thead>tr>th.dt-orderable-desc, table.dataTable thead>tr>td.dt-orderable-asc, table.dataTable thead>tr>td.dt-orderable-desc {
             text-align: center;
         }
 
-        table.dataTable th.dt-type-numeric,table.dataTable th.dt-type-date,table.dataTable td.dt-type-numeric,table.dataTable td.dt-type-date {
+        table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date, table.dataTable td.dt-type-numeric, table.dataTable td.dt-type-date {
             text-align: center;
         }
 
@@ -113,7 +116,6 @@ if (isset($_GET['delete_id'])) {
                 padding: 10px;
             }
         }
-
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -122,28 +124,28 @@ if (isset($_GET['delete_id'])) {
   <?php include "sidebar.php"; ?>
 
   <div class="content-wrapper">
-    <!-- Content Header -->
+    <!-- Header Konten -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>All Projek</h1>
+            <h1>Semua Projek</h1>
           </div>
           <div class="col-sm-6" style="text-align:right;">
               <a class="btn btn-primary" href="add-projek.php">
-                  <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                  <i class="fa fa-plus" aria-hidden="true"></i> Tambah Baru
               </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Main Content -->
+    <!-- Konten Utama -->
     <section class="content">
       <?php if (!empty($_SESSION['msg'])): ?>
         <div class="alert alert-<?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
             <?php echo $_SESSION['msg']; ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
               <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -155,18 +157,18 @@ if (isset($_GET['delete_id'])) {
 
       <div class="card card-info">
         <div class="card-header">
-          <h3 class="card-title">View Projek</h3>
+          <h3 class="card-title">Lihat Projek</h3>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
             <table id="myTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Judul</th>
+                  <th>mitra</th>
                   <th>Tahun</th>
                   <th>Deskripsi</th>
                   <th>Upload</th>
-                  <th>Action</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -192,6 +194,9 @@ if (isset($_GET['delete_id'])) {
 <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 <script>
   let table = new DataTable('#myTable', {
+    language: {
+      search: "Cari :"
+    },
     serverSide: true,
     ajax: 'ajax.php?action=fetch_projek',
     lengthChange: true,
@@ -199,7 +204,7 @@ if (isset($_GET['delete_id'])) {
     searching: true,
     order: [],
     columns: [
-      { data: 'judul' },
+      { data: 'mitra' },
       { data: 'tahun' },
       { 
         data: 'deskrip', 

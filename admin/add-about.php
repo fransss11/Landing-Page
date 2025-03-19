@@ -78,12 +78,14 @@ if (isset($_POST['save'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Tentang Kami</title>
+    <?php include "title.php"; ?>
     <!-- Bootstrap & AdminLTE CSS -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- Summernote CSS -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -129,7 +131,7 @@ if (isset($_POST['save'])) {
 
                     <!-- Isi Tentang Kami (Summernote) -->
                     <div class="col-md-12">
-                        <label for="validationDescrip" class="form-label">Isi Tentang Kami</label>
+                        <label for="validationDescrip" class="form-label">Isi Deskripsi Tentang Kami</label>
                         <textarea name="descrip" class="form-control textarea" 
                                   id="validationDescrip" rows="8" required><?php 
                             echo ($dataExists) ? htmlspecialchars($roww['descrip']) : ''; 

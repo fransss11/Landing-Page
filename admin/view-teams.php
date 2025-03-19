@@ -1,10 +1,11 @@
 <?php
+error_reporting(0);
 include 'conn.php';
 include 'auth.php';
 
 $a = 10;
 
-// Proses Delete Data (dijalankan sebelum output HTML)
+// Proses hapus data (dijalankan sebelum output HTML)
 if (isset($_GET['delete_id'])) {
     $del = intval($_GET['delete_id']);
     
@@ -25,10 +26,10 @@ if (isset($_GET['delete_id'])) {
     $stmt = mysqli_prepare($con, "DELETE FROM teams WHERE id = ?");
     mysqli_stmt_bind_param($stmt, "i", $del);
     if (mysqli_stmt_execute($stmt)) {
-        $_SESSION['msg'] = "Deleted Successfully";
+        $_SESSION['msg'] = "Berhasil Dihapus";
         $_SESSION['msgClass'] = "success";
     } else {
-        $_SESSION['msg'] = "Error in deleting data";
+        $_SESSION['msg'] = "Terjadi kesalahan saat menghapus data";
         $_SESSION['msgClass'] = "danger";
     }
     mysqli_stmt_close($stmt);
@@ -49,9 +50,9 @@ if (isset($_GET['delete_id'])) {
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
+  <!-- Tema (AdminLTE) -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- AdminLTE for demo purposes -->
+  <!-- AdminLTE untuk keperluan demo -->
   <link rel="stylesheet" href="dist/css/demo.css">
   <!-- Summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
@@ -73,12 +74,13 @@ if (isset($_GET['delete_id'])) {
     td {
         vertical-align: middle;
     }
-
-    table.dataTable thead>tr>th.dt-orderable-asc,table.dataTable thead>tr>th.dt-orderable-desc,table.dataTable thead>tr>td.dt-orderable-asc,table.dataTable thead>tr>td.dt-orderable-desc {
+    table.dataTable thead>tr>th.dt-orderable-asc,
+    table.dataTable thead>tr>th.dt-orderable-desc,
+    table.dataTable thead>tr>td.dt-orderable-asc,
+    table.dataTable thead>tr>td.dt-orderable-desc {
         cursor: pointer;
         text-align: center;
     }
-
     .table img {
         width: 100px;
         height: auto;
@@ -113,16 +115,16 @@ if (isset($_GET['delete_id'])) {
   <?php include "sidebar.php"; ?>
 
   <div class="content-wrapper">
-    <!-- Content Header -->
+    <!-- Header Konten -->
     <section class="content-header">
       <div class="container-fluid">
          <div class="row mb-2">
            <div class="col-sm-6">
-              <h1>All Teams</h1>
+              <h1>Semua Tim</h1>
            </div>
            <div class="col-sm-6 text-right">
               <a class="btn btn-primary" href="add-teams.php">
-                <i class="fa fa-plus"></i> Add New
+                <i class="fa fa-plus"></i> Tambah Baru
               </a>
            </div>
          </div>
@@ -134,7 +136,7 @@ if (isset($_GET['delete_id'])) {
          <div style="max-width:600px; margin:0 auto 20px auto;">
            <div class="alert alert-<?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
              <?php echo $_SESSION['msg']; ?>
-             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+             <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                <span aria-hidden="true">&times;</span>
              </button>
            </div>
@@ -147,7 +149,7 @@ if (isset($_GET['delete_id'])) {
 
       <div class="card card-info">
          <div class="card-header">
-           <h3 class="card-title">View</h3>
+           <h3 class="card-title">Lihat</h3>
            <div class="card-tools">
              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                <i class="fas fa-minus"></i>
@@ -160,20 +162,20 @@ if (isset($_GET['delete_id'])) {
              <table id="myTable" class="table">
                <thead>
                  <tr>
-                   <th>Img</th>
-                   <th>Name</th>
-                   <th>Designation</th>
-                   <th>Description</th>
+                   <th>Gambar</th>
+                   <th>Nama</th>
+                   <th>Jabatan</th>
+                   <th>Deskripsi</th>
                    <th>Facebook</th>
                    <th>Twitter</th>
                    <th>Instagram</th>
-                   <th>Linkedin</th>
-                   <th>Whatsapp</th>
-                   <th>Action</th>
+                   <th>LinkedIn</th>
+                   <th>WhatsApp</th>
+                   <th>Aksi</th>
                  </tr>
                </thead>
                <tbody>
-                 <!-- Data akan di-load melalui AJAX -->
+                 <!-- Data akan dimuat melalui AJAX -->
                </tbody>
              </table>
            </div>
@@ -181,6 +183,7 @@ if (isset($_GET['delete_id'])) {
       </div>
     </section>
   </div>
+  
   <?php include "footer.php"; ?>
 </div>
 
@@ -190,36 +193,40 @@ if (isset($_GET['delete_id'])) {
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
+<!-- AdminLTE untuk keperluan demo -->
 <script src="dist/js/demo.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
 <!-- DataTables JS -->
 <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 <script>
-  // Inisialisasi DataTables dengan server-side processing
-  let table = new DataTable('#myTable', {
-    serverSide: true,
-    ajax: 'ajax.php?action=fetch_teams',
-    lengthChange: false,
-    order : [[0, 'desc']],
-    columns: [
-      { 
-        data: 'img', 
-        render: function(data, type, row) {
-          return '<img src="images/team/' + data + '" alt="Team Image">';
-        }
+  $(document).ready(function() {
+    let table = new DataTable('#myTable', {
+      language: {
+        search: "Cari :"
       },
-      { data: 'title' },
-      { data: 'designation' },
-      { data: 'descrip' },
-      { data: 'facebook' },
-      { data: 'twitter' },
-      { data: 'instagram' },
-      { data: 'linkedin' },
-      { data: 'whatsapp' },
-      { data: 'aksi' }
-    ]
+      serverSide: true,
+      ajax: 'ajax.php?action=fetch_teams',
+      lengthChange: false,
+      order: [[0, 'desc']],
+      columns: [
+        { 
+          data: 'img', 
+          render: function(data, type, row) {
+            return '<img src="images/team/' + data + '" alt="Gambar Tim">';
+          }
+        },
+        { data: 'title' },
+        { data: 'designation' },
+        { data: 'descrip' },
+        { data: 'facebook' },
+        { data: 'twitter' },
+        { data: 'instagram' },
+        { data: 'linkedin' },
+        { data: 'whatsapp' },
+        { data: 'aksi' }
+      ]
+    });
   });
 </script>
 </body>

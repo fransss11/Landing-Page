@@ -101,7 +101,7 @@ function formatTanggalIndonesia($tanggal) {
     <!-- Header End -->
 
     <!-- Services Start -->
-    <div class="container-fluid service py-5" data-aos="fade-up">
+    <div class="container-fluid service py-5 animated fadeInUp">
         <div class="container py-5">
             <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.2s">
                 <div class="sub-style">

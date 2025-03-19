@@ -5,7 +5,7 @@ include 'auth.php';
 date_default_timezone_set('Asia/Kolkata');
 $today = date("D d M Y");
 
-// Proses delete (tetap sama)
+// Proses hapus (tetap sama)
 if (isset($_GET['delete_id'])) {
     $del = mysqli_real_escape_string($con, $_GET['delete_id']);
     $selectdelete = mysqli_query($con, "SELECT * FROM klien WHERE id = $del");
@@ -17,16 +17,16 @@ if (isset($_GET['delete_id'])) {
         if ($now_delete) {
             $query_delete = "DELETE FROM klien WHERE id = $del";
             $p = mysqli_query($con, $query_delete);
-            $_SESSION['msg'] = "Deleted Successfully";
+            $_SESSION['msg'] = "Berhasil Dihapus";
             $_SESSION['msgClass'] = "success";
         } else {
-            $_SESSION['msg'] = "Error deleting file.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat menghapus file.";
             $_SESSION['msgClass'] = "danger";
         }
     } else {
         $query_delete = "DELETE FROM klien WHERE id = $del";
         $p = mysqli_query($con, $query_delete);
-        $_SESSION['msg'] = "File not found. Record deleted.";
+        $_SESSION['msg'] = "File tidak ditemukan. Data dihapus.";
         $_SESSION['msgClass'] = "warning";
     }
     header("Location: view-partner.php");
@@ -44,9 +44,9 @@ if (isset($_GET['delete_id'])) {
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
+  <!-- Tema (AdminLTE) -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- AdminLTE for demo purposes -->
+  <!-- AdminLTE untuk keperluan demo -->
   <link rel="stylesheet" href="dist/css/demo.css">
   <!-- Summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
@@ -61,17 +61,24 @@ if (isset($_GET['delete_id'])) {
         vertical-align: middle;
     }
     
-        table.dataTable thead>tr>th.dt-orderable-asc,table.dataTable thead>tr>th.dt-orderable-desc,table.dataTable thead>tr>td.dt-orderable-asc,table.dataTable thead>tr>td.dt-orderable-desc {
-            cursor: pointer;
-            text-align: center;
-        }
-        table.dataTable>tbody>tr>th,table.dataTable>tbody>tr>td {
-            padding: 8px 10px;
-            text-align: center;
-        }
-        table.dataTable th.dt-type-numeric,table.dataTable th.dt-type-date,table.dataTable td.dt-type-numeric,table.dataTable td.dt-type-date {
-            text-align: center;
-        }
+    table.dataTable thead>tr>th.dt-orderable-asc,
+    table.dataTable thead>tr>th.dt-orderable-desc,
+    table.dataTable thead>tr>td.dt-orderable-asc,
+    table.dataTable thead>tr>td.dt-orderable-desc {
+        cursor: pointer;
+        text-align: center;
+    }
+    table.dataTable>tbody>tr>th,
+    table.dataTable>tbody>tr>td {
+        padding: 8px 10px;
+        text-align: center;
+    }
+    table.dataTable th.dt-type-numeric,
+    table.dataTable th.dt-type-date,
+    table.dataTable td.dt-type-numeric,
+    table.dataTable td.dt-type-date {
+        text-align: center;
+    }
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -84,11 +91,11 @@ if (isset($_GET['delete_id'])) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>All Partnerships</h1>
+            <h1>Semua Klien</h1>
           </div>
           <div class="col-sm-6" style="text-align:right;">
             <a class="btn btn-primary" href="add-partner.php">
-              <i class="fa fa-plus" aria-hidden="true"></i> Add Partnership
+              <i class="fa fa-plus" aria-hidden="true"></i> Tambah Klien
             </a>
           </div>
         </div>
@@ -102,7 +109,7 @@ if (isset($_GET['delete_id'])) {
             <div style="max-width:600px; margin:0 auto 20px auto;">
               <div class="alert alert-<?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
                 <?php echo $_SESSION['msg']; ?>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -115,10 +122,10 @@ if (isset($_GET['delete_id'])) {
           
           <div class="card card-info">
             <div class="card-header">
-              <h3 class="card-title">View Partnership</h3>
+              <h3 class="card-title">Lihat Klien</h3>
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" 
-                        data-toggle="tooltip" title="Collapse">
+                        data-toggle="tooltip" title="Sembunyikan">
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
@@ -131,7 +138,7 @@ if (isset($_GET['delete_id'])) {
                     <th>No</th>
                     <th>Nama</th>
                     <th>Logo</th>
-                    <th>Actions</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -154,7 +161,7 @@ if (isset($_GET['delete_id'])) {
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
+<!-- AdminLTE untuk keperluan demo -->
 <script src="dist/js/demo.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
@@ -163,10 +170,13 @@ if (isset($_GET['delete_id'])) {
 <script>
   // Inisialisasi DataTables dengan server-side processing
   let table = new DataTable('#myTable', {
+    language: {
+      search: "Cari :"
+    },
     serverSide: true,
-    ajax: 'ajax.php?action=fetch_partner' ,  // file PHP yang menangani pengambilan data
+    ajax: 'ajax.php?action=fetch_partner',  // File PHP yang menangani pengambilan data
     lengthChange: false,
-    order: [[0, 'desc']], // Default urutan berdasarkan kolom ID secara DESC
+    order: [[0, 'desc']], // Urutan default berdasarkan kolom No secara DESC
     columns: [
       { data: 'no' },
       { data: 'klien' },

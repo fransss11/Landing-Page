@@ -88,6 +88,33 @@ $conn->close();
             transform: translateY(-3px);
             background-color: #0056b3;
         }
+        
+        /* Responsive style untuk mobile */
+        @media (max-width: 768px) {
+            .detail-service-container {
+                padding: 20px;
+            }
+            .detail-service-card {
+                margin: 0;
+                border: none;
+                box-shadow: none;
+            }
+            .detail-service-img img {
+                border-radius: 0;
+            }
+            .detail-service-content h2 {
+                font-size: 24px;
+            }
+            .detail-service-content p {
+                font-size: 16px;
+            }
+            .detail-service-back-btn {
+                display: block;
+                width: 100%;
+                text-align: center;
+                margin-top: 20px;
+            }
+        }
     </style>
 </head>
 
@@ -116,7 +143,7 @@ $conn->close();
                             <img id="detail-gambar-service" class="card-img-top" alt="Service Image">
                         </div>
                         <div class="card-body detail-service-content">
-                            <h2 id="detail-judul-service"></h2>
+                            <h1 id="detail-judul-service"></h1>
                             <p class="text-muted">
                                 <i class="fa fa-calendar-alt text-primary"></i> 
                                 <span id="detail-tanggal-service"></span>

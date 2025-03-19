@@ -43,53 +43,17 @@ $conn->close();
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
     <style>
-        /* Animasi Fade In */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .kategori-header {
+            transition: background 0.3s, color 0.3s;
         }
 
-        /* Animasi untuk setiap gambar */
-        .gallery-item {
-            animation: fadeIn 0.9s ease-in-out;
-            opacity: 1;
+        .kategori-header:hover {
+            color:rgb(255, 255, 255);
+            cursor: pointer;
         }
 
-        /* Efek hover untuk gambar */
-        .gallery-item img {
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            background-color: rgba(0, 0, 0, 0.05);
-            padding: 10px;
-            border-radius: 8px;
-        }
 
-        .gallery-item img:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Animasi WOW.js */
-        .wow {
-            visibility: hidden;
-        }
-
-        /* Animasi untuk tombol */
-        .btn-primary {
-            transition: all 0.3s ease-in-out;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            background-color: #0056b3;
-        }
     </style>
 </head>
 
@@ -117,32 +81,48 @@ $conn->close();
     <!-- Gallery Start -->
     <div class="container-fluid team py-5">
         <div class="container py-5">
-            <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="section-title mb-1 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="sub-style">
-                    <h2 class="sub-title px-3 mb-0">Galeri Kami</h2>
+                    <h4 class="sub-title px-3 mb-0">Galeri Kami</h4>
                 </div>
             </div>
+
+            <!-- Petunjuk penggunaan galeri -->
+            <div class="text-center mb-4">
+                <p class="text-mutedd" style="font-size: 16px;">
+                    Klik pada <strong>nama kegiatan</strong> untuk membuka atau menutup gambar berdasarkan kegiatan, atau klik tombol <strong>"Lihat Semua Gambar"</strong> untuk membuka/menutup semua gambar sekaligus.
+                </p>
+            </div>
+
+            <!-- Tombol Lihat Semua Gambar (posisi diperbaiki) -->
+            <div class="text-center mb-4">
+                <button class="btn btn-primary" id="lihat-semua">Lihat Semua Gambar</button>
+            </div>
+
             <?php foreach ($images as $kategori => $kategori_images): ?>
                 <div class="row text-center mb-4">
-                    <h3 style="background: #9300ff ;"><?php echo htmlspecialchars($kategori); ?></h3>
+                    <h3 class="kategori-header" style="background:var(--bs-primary) !important; cursor:pointer; border-radius: 25px; " data-kategori="<?= htmlspecialchars($kategori); ?>">
+                        <?= htmlspecialchars($kategori); ?>
+                    </h3>
                 </div>
-                <div class="row">
+                <div class="row kategori-content" id="kategori-<?= htmlspecialchars($kategori); ?>" style="display: none;">
                     <?php foreach ($kategori_images as $index => $image): ?>
                         <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="client-card wow fadeInUp" data-wow-delay="<?php echo $index * 0.2; ?>s" data-wow-duration="0.8s">
-                                <!-- <a href="detail.php?id=<?php echo $image['id']; ?>"> -->
+                            <div class="client-card wow fadeInUp" data-wow-delay="<?= $index * 0.2; ?>s" data-wow-duration="0.8s">
                                 <a>
-                                    <img src="admin/uploads/<?php echo $image['foto']; ?>" class="img-fluid" alt="<?php echo $image['galery']; ?>">
+                                    <img src="admin/uploads/<?= $image['foto']; ?>" class="img-fluid" alt="<?= $image['galery']; ?>">
                                 </a>
-                                <h6 class="mt-2"><?php echo $image['galery']; ?></h6>
+                                <h6 class="mt-2"><?= $image['galery']; ?></h6>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
             <?php endforeach; ?>
+
         </div>
     </div>
     <!-- Gallery End -->
+
 
     <!-- Footer Start -->
     <?php include 'includes/footer.php'; ?>
@@ -170,6 +150,37 @@ $conn->close();
     <!-- Inisialisasi WOW.js -->
     <script>
         new WOW().init();
+    </script>
+
+    <!-- Script JS untuk Toggle Kategori dan Tombol Lihat Semua -->
+    <script>
+        document.querySelectorAll('.kategori-header').forEach(function(header) {
+            header.addEventListener('click', function() {
+                const kategori = this.getAttribute('data-kategori');
+                const konten = document.getElementById('kategori-' + kategori);
+                // Cek apakah konten sedang tidak terlihat
+                if (konten.style.display === 'none' || konten.style.display === '') {
+                    konten.style.display = 'flex';
+                    // Tambahkan class 'active' pada header yang diklik
+                    this.classList.add('active');
+                } else {
+                    konten.style.display = 'none';
+                    // Hapus class 'active' jika konten disembunyikan
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+
+        let semuaTerbuka = false;
+        document.getElementById('lihat-semua').addEventListener('click', function() {
+            semuaTerbuka = !semuaTerbuka;
+            document.querySelectorAll('.kategori-content').forEach(function(konten) {
+                konten.style.display = semuaTerbuka ? 'flex' : 'none';
+            });
+            
+            this.textContent = semuaTerbuka ? 'Tutup Semua Gambar' : 'Lihat Semua Gambar';
+        });
     </script>
 
 </body>

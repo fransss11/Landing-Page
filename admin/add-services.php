@@ -9,7 +9,7 @@ include 'auth.php';
 date_default_timezone_set('Asia/Kolkata');
 $today = date("Y-m-d H:i:s");
 
-// Check if 'edit' parameter exists in URL dan valid
+// Cek apakah parameter 'edit' ada di URL dan valid
 $edit = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
 
 // Ambil data jika mode edit
@@ -34,12 +34,12 @@ if (isset($_POST['publise'])) {
     $descrip = mysqli_real_escape_string($con, $descrip);
 
 
-    // Handle file upload
+    // Tangani unggahan file
     if (!empty($_FILES['lis_img']['name'])) {
         // Validasi ukuran file (maksimum 500KB)
         $maxFileSize = 500 * 1024; // 500KB dalam byte
         if ($_FILES['lis_img']['size'] > $maxFileSize) {
-            $_SESSION['msg'] = "File size must be less than 500KB.";
+            $_SESSION['msg'] = "Ukuran file harus kurang dari 500KB.";
             $_SESSION['msgClass'] = "alert-danger";
             header("Location: add-services.php?edit=" . $edit);
             exit;
@@ -67,10 +67,10 @@ if (isset($_POST['publise'])) {
              VALUES('$title', '$short', '$descrip', '$lis_img', '$today')");
 
         if ($insertdata) {
-            $_SESSION['msg'] = "Posted Successfully";
+            $_SESSION['msg'] = "Berhasil Diposting";
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error while posting the service.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memposting layanan.";
             $_SESSION['msgClass'] = "alert-danger";
         }
         // Redirect ke halaman add-services.php tanpa parameter edit
@@ -89,10 +89,10 @@ if (isset($_POST['publise'])) {
              WHERE id=" . $edit);
 
         if ($insertdata) {
-            $_SESSION['msg'] = "Updated Successfully";
+            $_SESSION['msg'] = "Berhasil Diperbarui";
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error while updating the service.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui layanan.";
             $_SESSION['msgClass'] = "alert-danger";
         }
         // Redirect ke halaman edit dengan parameter edit sehingga data tetap muncul
@@ -131,33 +131,33 @@ if (isset($_POST['publise'])) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1><?php echo ($edit > 0) ? 'Edit Services' : 'Add Services'; ?></h1>
+            <h1><?php echo ($edit > 0) ? 'Perbarui Layanan' : 'Tambah Layanan'; ?></h1>
           </div>
           <div class="col-sm-6">
             <a href="view-services.php" class="btn btn-success">
-              <i class="fa fa-eye" aria-hidden="true"></i> View Services
+              <i class="fa fa-eye" aria-hidden="true"></i> Lihat Layanan
             </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Main Content -->
+    <!-- Konten Utama -->
     <section class="content">
       <div class="row">
         <div class="col-md-8">
           
-          <!-- Tampilkan alert jika ada pesan (menggunakan session) -->
+          <!-- Tampilkan pesan jika ada (menggunakan session) -->
           <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
             <div style="max-width: 600px; margin: 0 auto;">
               <div class="alert <?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
                 <?php 
                   echo $_SESSION['msg'];
-                  // Hapus session agar alert tidak muncul lagi setelah refresh
+                  // Hapus session agar pesan tidak muncul lagi setelah refresh
                   unset($_SESSION['msg']); 
                   unset($_SESSION['msgClass']);
                 ?>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -169,66 +169,66 @@ if (isset($_POST['publise'])) {
                 class="needs-validation" novalidate>
             <div class="card card-outline card-info">
               
-              <!-- Title -->
+              <!-- Judul -->
               <div class="card-header">
                 <div class="form-group">
-                  <label>Enter Title <span class="text-danger">*</span></label>
+                  <label>Judul <span class="text-danger">*</span></label>
                   <input 
                     name="title" 
                     value="<?php echo isset($roww["title"]) ? htmlspecialchars($roww["title"]) : ''; ?>" 
                     type="text" 
                     class="form-control" 
-                    placeholder="Enter ..." 
+                    placeholder="Judul ..." 
                     maxlength="100" 
                     required
                   >
                   <div class="invalid-feedback">
-                    Please enter a title.
+                    Silahkan masukkan judul
                   </div>
                 </div>
               </div>
 
-              <!-- Short Description -->
+              <!-- Deskripsi Pendek -->
               <div class="card-body pad">
                 <div class="form-group">
-                  <label>Short Description <span class="text-danger">*</span></label>
+                  <label>Deskripsi Pendek <span class="text-danger">*</span></label>
                   <textarea 
                     name="short" 
                     class="form-control" 
-                    placeholder="Short Description" 
+                    placeholder="Deskripsi Pendek" 
                     rows="3" 
                     maxlength="200" 
                     required
                   ><?php echo isset($roww["short"]) ? htmlspecialchars($roww["short"]) : ''; ?></textarea>
                   <div class="invalid-feedback">
-                    Please enter a short description.
+                    Silahkan masukkan deskripsi pendek.
                   </div>
                 </div>
               </div>
 
-              <!-- Full Description (Summernote) -->
+              <!-- Deskripsi Lengkap (Summernote) -->
               <div class="card-body pad">
                 <div class="form-group">
-                  <label>Full Description <span class="text-danger">*</span></label>
+                  <label>Deskripsi Lengkap <span class="text-danger">*</span></label>
                   <textarea 
                     name="descrip" 
                     class="form-control textarea" 
-                    placeholder="Place some text here" 
+                    placeholder="Masukkan deskripsi lengkap di sini" 
                     rows="8" 
                     maxlength="10000" 
                     required
                   ><?php echo isset($roww["descrip"]) ? htmlspecialchars($roww["descrip"]) : ''; ?></textarea>
                   <div class="invalid-feedback">
-                    Please enter the full description.
+                    Silakan masukkan deskripsi lengkap.
                   </div>
                 </div>
               </div>
 
-              <!-- Image Upload -->
+              <!-- Unggah Gambar -->
               <div class="card-header">
                 <div class="form-group">
                   <label for="exampleInputFile">
-                    Select Image
+                    Pilih Gambar
                     <?php 
                       // Wajib upload jika data baru atau belum ada gambar
                       if(empty($roww["img"])){ 
@@ -246,32 +246,32 @@ if (isset($_POST['publise'])) {
                     <?php echo empty($roww["img"]) ? 'required' : ''; ?>
                   >
                   <div class="invalid-feedback">
-                    Please upload an image.
+                    Silakan unggah gambar.
                   </div>
 
-                  <!-- Message box for file size error -->
+                  <!-- Kotak pesan untuk kesalahan ukuran file -->
                   <div id="fileError" class="alert alert-danger" style="display: none;">
-                      File size must be less than 500KB.
+                      Ukuran file harus kurang dari 500KB.
                   </div>
 
                   <?php 
                   if (!empty($roww["img"])) {
                     $imagePath = "images/services/" . $roww["img"];
                     if(file_exists($imagePath)) {
-                      echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Current Image" style="width:150px; margin-top:10px;">';
+                      echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Gambar Saat Ini" style="width:150px; margin-top:10px;">';
                     } else {
-                      echo '<br><p>Image file not found</p>';
+                      echo '<br><p>File gambar tidak ditemukan</p>';
                     }
                   }
                   ?>
                 </div>
               </div>
 
-              <!-- Submit Button -->
+              <!-- Tombol Kirim -->
               <div class="card-header">
                 <div class="form-group">
                   <button type="submit" name="publise" class="btn btn-primary btn-lg">
-                    <?php echo ($edit) ? 'Update' : 'Publish Post'; ?>
+                    <?php echo ($edit) ? 'Perbarui' : 'Tambahkan'; ?>
                   </button>
                   <a href="view-services.php" class="btn btn-danger">Kembali</a>
                 </div>
@@ -308,7 +308,7 @@ if (isset($_POST['publise'])) {
         }
       });
 
-      // Validasi file upload saat file dipilih
+      // Validasi unggahan file saat file dipilih
       $('#fileUpload').on('change', function() {
           var fileInput = this;
           var fileSize = fileInput.files[0] ? fileInput.files[0].size : 0;
@@ -321,19 +321,19 @@ if (isset($_POST['publise'])) {
               $('#fileError').hide();
           }
       });
-    // Validasi manual saat form disubmit
+    // Validasi manual saat form dikirim
     $('#serviceForm').on('submit', function(event) {
       var form = this;
       var isValid = true; // Flag untuk validasi
 
-      // Validasi ukuran file upload (maksimum 500KB)
+      // Validasi ukuran unggahan file (maksimum 500KB)
       var fileInput = $('#fileUpload')[0];
       var fileSize = fileInput.files[0] ? fileInput.files[0].size : 0;
       var maxFileSize = 500 * 1024; // 500KB
 
       if (fileSize > maxFileSize) {
         isValid = false;
-        // Tampilkan pesan kesalahan di dalam message box
+        // Tampilkan pesan kesalahan di dalam kotak pesan
         $('#fileError').show();
       } else {
         // Sembunyikan pesan kesalahan jika ukuran file valid

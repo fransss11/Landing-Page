@@ -1,36 +1,43 @@
 <?php
 include 'database.php';
 
-// Number of projects to display per page
-$projectsPerPage = 10;
-
-// Get the current page from the URL, default to page 1 if not set
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$startFrom = ($page - 1) * $projectsPerPage; // Calculate the starting point
-
-// Fetch data from the 'projek' table
-$sql = "SELECT * FROM projek ORDER BY tahun DESC LIMIT $startFrom, $projectsPerPage"; // Limit results per page
-$result = $conn->query($sql);
-
-$projectsByYear = array();
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        // Group projects by year
-        $projectsByYear[$row['tahun']][] = $row;
+// Ambil daftar tahun (distinct) untuk sidebar
+$yearsResult = $conn->query("SELECT DISTINCT tahun FROM projek ORDER BY tahun DESC");
+$years = [];
+if ($yearsResult && $yearsResult->num_rows > 0) {
+    while ($row = $yearsResult->fetch_assoc()) {
+        $years[] = $row['tahun'];
     }
 }
 
-// Get the total number of projects to calculate the total pages
-$totalProjectsResult = $conn->query("SELECT COUNT(*) AS total FROM projek");
+// Set default tahun jika tidak ada parameter 'year'
+$selectedYear = isset($_GET['year']) ? $_GET['year'] : date('Y');
+
+// Batasi jumlah proyek per halaman untuk tahun terpilih (misalnya 10)
+$projectsPerPage = 10;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$startFrom = ($page - 1) * $projectsPerPage;
+
+// Query untuk mengambil proyek dari tahun yang dipilih dengan LIMIT
+$sql = "SELECT * FROM projek WHERE tahun = '$selectedYear' ORDER BY id ASC LIMIT $startFrom, $projectsPerPage";
+$result = $conn->query($sql);
+
+$projects = [];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $projects[] = $row;
+    }
+}
+
+// Hitung total proyek untuk tahun yang dipilih agar bisa menentukan jumlah halaman
+$totalProjectsResult = $conn->query("SELECT COUNT(*) AS total FROM projek WHERE tahun = '$selectedYear'");
 $totalProjects = $totalProjectsResult->fetch_assoc()['total'];
-$totalPages = ceil($totalProjects / $projectsPerPage); // Calculate total number of pages
+$totalPages = ceil($totalProjects / $projectsPerPage);
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Lisa Mitra Mandiri</title>
@@ -60,9 +67,7 @@ $conn->close();
     <!-- jQuery (for toggling) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-
-<body >
-
+<body>
     <!-- Spinner Start -->
     <?php include 'includes/spinner.php'; ?>
     <!-- Spinner End -->
@@ -89,10 +94,10 @@ $conn->close();
                 <div class="sidebar">
                     <h3>Proyek Kami</h3>
                     <ul class="year-list">
-                        <?php foreach ($projectsByYear as $year => $projects): ?>
+                        <?php foreach ($years as $year): ?>
                             <li>
                                 <a href="?year=<?php echo $year; ?>" 
-                                   class="<?php echo (isset($_GET['year']) && $_GET['year'] == $year) ? 'active' : ''; ?>">
+                                   class="<?php echo ($selectedYear == $year) ? 'active' : ''; ?>">
                                     <?php echo $year; ?>
                                 </a>
                             </li>
@@ -103,60 +108,41 @@ $conn->close();
 
             <!-- Main Content Area -->
             <div class="col-md-9">
-                <!-- Message for selected year -->
                 <h2 id="selected-year-message">
-                    <?php
-                    // Display the selected year message
-                    if (isset($_GET['year'])) {
-                        $selectedYear = $_GET['year'];
-                        echo "Proyek Kami di Tahun " . $selectedYear;
-                    } else {
-                        echo "Proyek Kami di Tahun ...";
-                    }
-                    ?>
+                    Proyek Kami di Tahun <?php echo $selectedYear; ?>
                 </h2>
-
-                <?php
-                // If a year is selected from the URL, show the projects for that year
-                if (isset($_GET['year']) && isset($projectsByYear[$_GET['year']])) {
-                    $year = $_GET['year'];
-                    $projects = $projectsByYear[$year];
-                ?>
-
-                    <!-- Table to Display Projects -->
+                
+                <!-- Tampilkan proyek jika ada -->
+                <?php if (!empty($projects)): ?>
                     <table>
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Judul</th>
+                                <th>Nama Mitra</th>
                                 <th>Deskripsi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($projects as $index => $project): ?>
                                 <tr>
-                                    <td><?php echo $index + 1; ?></td>
-                                    <td><?php echo $project['judul']; ?></td>
+                                    <td><?php echo $startFrom + $index + 1; ?></td>
+                                    <td><?php echo $project['mitra']; ?></td>
                                     <td><?php echo $project['deskrip']; ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-
                     <!-- Pagination Links -->
                     <ul class="pagination">
                         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                             <li class="<?php echo ($i == $page) ? 'active' : ''; ?>">
-                                <a href="?year=<?php echo $year; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                <a href="?year=<?php echo $selectedYear; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
                             </li>
                         <?php endfor; ?>
                     </ul>
-
-                <?php
-                } else {
-                    echo "<p>Please select a year to view projects.</p>";
-                }
-                ?>
+                <?php else: ?>
+                    <p>Tidak ada proyek untuk tahun <?php echo $selectedYear; ?>.</p>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -187,6 +173,13 @@ $conn->close();
     <script>
         new WOW().init();
     </script>
+    <script>
+    window.addEventListener('load', function() {
+        // Jika URL memiliki parameter query, hapus dengan mengganti URL tanpa query
+        if(window.location.search) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    });
+    </script>
 </body>
-
 </html>

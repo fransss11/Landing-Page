@@ -5,7 +5,7 @@ include 'auth.php';
 date_default_timezone_set('Asia/Kolkata');
 $today = date("Y-m-d H:i:s");
 
-// Ambil flash message dari session (jika ada)
+// Ambil pesan flash dari session (jika ada)
 if (isset($_SESSION['msg'])) {
     $msg = $_SESSION['msg'];
     $msgClass = $_SESSION['msgClass'];
@@ -16,7 +16,7 @@ if (isset($_SESSION['msg'])) {
     $msgClass = "";
 }
 
-// Check if 'edit' parameter is set in the URL
+// Periksa apakah parameter 'edit' ada pada URL
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : '';
 
 if ($edit) {
@@ -28,28 +28,28 @@ if ($edit) {
     $roww = ['title' => '', 'category' => '', 'descrip' => '', 'img' => '', 'url' => ''];
 }
 
-// Handle form submission
+// Tangani pengiriman form
 if (isset($_POST['publise'])) {
     // Sanitasi input
     $title    = mysqli_real_escape_string($con, $_POST['title']);
     $category = mysqli_real_escape_string($con, $_POST['category']);
-    // Mengambil konten dari Summernote
+    // Ambil konten dari Summernote
     $descrip  = $_POST['descrip'];
 
-    // Menghapus tag <p> tapi mempertahankan tag HTML lainnya
+    // Hapus tag <p> tapi pertahankan tag HTML lainnya
     $descrip  = preg_replace('/<p[^>]*>(.*?)<\/p>/is', '$1', $descrip);
 
     // Sanitasi input untuk mencegah XSS
     $descrip  = mysqli_real_escape_string($con, $descrip);
     $url      = isset($_POST['url']) ? mysqli_real_escape_string($con, $_POST['url']) : '';
 
-    // Handle file upload
+    // Tangani unggahan file
     $lis_img = isset($roww["img"]) ? $roww["img"] : '';
     if (!empty($_FILES['lis_img']['name'])) {
         // Validasi ukuran file (maksimum 500KB)
         $maxFileSize = 500 * 1024; // 500KB dalam byte
         if ($_FILES['lis_img']['size'] > $maxFileSize) {
-            $_SESSION['msg'] = "File size must be less than 500KB.";
+            $_SESSION['msg'] = "Ukuran file harus kurang dari 500KB.";
             $_SESSION['msgClass'] = "alert-danger";
             header("Location: add-blog.php" . ($edit ? "?edit=" . $edit : ""));
             exit;
@@ -68,7 +68,7 @@ if (isset($_POST['publise'])) {
         }
     }
 
-    // Insert (mode baru) atau Update (mode edit)
+    // Jika mode baru (insert) atau update (edit)
     if ($edit == '') {
         // Insert
         $insertdata = mysqli_query($con, 
@@ -76,10 +76,10 @@ if (isset($_POST['publise'])) {
              VALUES ('$title', '$category', '$descrip', '$lis_img', '$url', '$today')"
         );
         if ($insertdata) {
-            $_SESSION['msg'] = "Posted Successfully";
+            $_SESSION['msg'] = "Berita berhasil diposting.";
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error while posting the blog.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memposting berita.";
             $_SESSION['msgClass'] = "alert-danger";
         }
         header("Location: add-blog.php");
@@ -97,10 +97,10 @@ if (isset($_POST['publise'])) {
              WHERE id = '$edit'"
         );
         if ($insertdata) {
-            $_SESSION['msg'] = "Updated Successfully";
+            $_SESSION['msg'] = "Berita berhasil diperbarui.";
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error while updating the blog.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui berita.";
             $_SESSION['msgClass'] = "alert-danger";
         }
         header("Location: add-blog.php?edit=" . $edit);
@@ -108,7 +108,7 @@ if (isset($_POST['publise'])) {
     }
 }
 
-// Fungsi kompres gambar
+// Fungsi untuk mengompres gambar
 function compressImage($source, $destination, $quality)
 {
     $info = getimagesize($source);
@@ -121,7 +121,7 @@ function compressImage($source, $destination, $quality)
         imagegif($image, $destination);
     } elseif ($info['mime'] == 'image/png') {
         $image = imagecreatefrompng($source);
-        // PNG quality: 0 (no compression) - 9 (max compression)
+        // Kualitas PNG: 0 (tanpa kompresi) - 9 (kompresi maksimal)
         imagepng($image, $destination, 9);
     }
 }
@@ -130,10 +130,12 @@ function compressImage($source, $destination, $quality)
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Add Blog</title>
+    <?php include "title.php"; ?>
     <!-- AdminLTE & Bootstrap CSS -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
 </head>
@@ -144,66 +146,66 @@ function compressImage($source, $destination, $quality)
     <?php include "sidebar.php"; ?>
 
     <div class="content-wrapper">
-        <!-- Content Header -->
+        <!-- Header Konten -->
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1><?php echo ($edit) ? 'Edit Blog' : 'Add Blog'; ?></h1>
+                        <h1><?php echo ($edit) ? 'Perbarui Berita' : 'Tambah Berita'; ?></h1>
                     </div>
                     <div class="col-sm-6">
                         <a href="view-blog.php" class="btn btn-success">
-                        <i class="fa fa-eye" aria-hidden="true"></i> View Blog
+                        <i class="fa fa-eye" aria-hidden="true"></i> Lihat Berita
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Main Content -->
+        <!-- Konten Utama -->
         <section class="content">
             <div class="row">
                 <div class="col-md-8">
-                    <!-- Tampilkan alert jika ada pesan -->
+                    <!-- Tampilkan pesan jika ada -->
                     <?php if (!empty($msg)): ?>
                         <div style="max-width:600px; margin:0 auto;">
                             <div class="alert <?php echo $msgClass; ?> alert-dismissible fade show" role="alert">
                                 <?php echo $msg; ?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                         </div>
                     <?php endif; ?>
 
-                    <!-- Form Blog dengan validasi Bootstrap & Summernote -->
+                    <!-- Form Berita dengan validasi Bootstrap & Summernote -->
                     <form id="blogForm" action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                         <div class="card card-outline card-info">
                             
-                            <!-- Title -->
+                            <!-- Judul -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label>Enter Title <span class="text-danger">*</span></label>
+                                    <label>Masukkan Judul <span class="text-danger">*</span></label>
                                     <input 
                                         name="title" 
                                         value="<?php echo htmlspecialchars($roww["title"]); ?>" 
                                         type="text" 
                                         class="form-control" 
-                                        placeholder="Enter ..." 
+                                        placeholder="Masukkan ..." 
                                         required
                                     >
                                     <div class="invalid-feedback">
-                                        Please enter a title.
+                                        Silahkan masukkan judul berita.
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Category -->
+                            <!-- Kategori -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label>Select Category <span class="text-danger">*</span></label>
+                                    <label>Pilih Kategori <span class="text-danger">*</span></label>
                                     <select name="category" class="form-control" required>
-                                        <option value="">Select...</option>
+                                        <option value="">Pilih...</option>
                                         <?php
                                         $location = mysqli_query($con, "SELECT * FROM category");
                                         while ($location_ft = mysqli_fetch_array($location)) {
@@ -217,63 +219,62 @@ function compressImage($source, $destination, $quality)
                                         ?>
                                     </select>
                                     <div class="invalid-feedback">
-                                        Please select a category.
+                                        Silahkan pilih kategori.
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Description (Summernote) -->
+                            <!-- Deskripsi (Summernote) -->
                             <div class="card-body pad">
-                                <label>Enter Description <span class="text-danger">*</span></label>
+                                <label>Masukkan Deskripsi <span class="text-danger">*</span></label>
                                 <div class="mb-3">
                                     <textarea 
                                         name="descrip" 
                                         class="textarea" 
-                                        placeholder="Place some text here" 
+                                        placeholder="Masukkan deskripsi ..." 
                                         style="width: 100%; height: 200px; border: 1px solid #dddddd; padding: 10px;" 
                                         required
                                     ><?php echo htmlspecialchars($roww["descrip"]); ?></textarea>
                                     <div class="invalid-feedback">
-                                        Please enter the description.
+                                        Silahkan masukkan deskripsi.
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Image Upload -->
+                            <!-- Unggah Gambar -->
                             <div class="card-header">
                                 <div class="form-group">
                                     <label for="exampleInputFile">
-                                        Select Image
+                                        Pilih Gambar
                                         <?php 
-                                        // Wajib upload jika data baru atau belum ada gambar
+                                        // Wajib unggah jika data baru atau belum ada gambar
                                         if(empty($roww["img"])){ 
                                             echo '<span class="text-danger">*</span>'; 
                                         }
                                         ?>
                                         <p style="color:red;">Maksimal 500 KB</p>
                                     </label>  
-                                    <input name="klien" value="<?php echo htmlspecialchars($roww['klien']); ?>" type="text" class="form-control" required>
-                                    <div id="fileError" class="text-danger mt-1" style="display: none;">File size must be less than 500KB.</div>
-                                    <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ File size is valid.</div>
+                                    <input type="file" name="lis_img" class="form-control" <?php echo empty($roww["img"]) ? 'required' : ''; ?>>
+                                    <div id="fileError" class="text-danger mt-1" style="display: none;">File maksimal 500 kb.</div>
+                                    <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ Ukuran file sudah benar.</div>
                                 </div>
-                                    <?php 
-                                    if (!empty($roww["img"])) {
-                                        $imagePath = "images/blog/" . $roww["img"];
-                                        if (file_exists($imagePath)) {
-                                            echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Current Image" style="width:150px; margin-top:10px;">';
-                                        } else {
-                                            echo '<br><p>Image file not found</p>';
-                                        }
+                                <?php 
+                                if (!empty($roww["img"])) {
+                                    $imagePath = "images/blog/" . $roww["img"];
+                                    if (file_exists($imagePath)) {
+                                        echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Gambar Saat Ini" style="width:150px; margin-top:10px;">';
+                                    } else {
+                                        echo '<br><p>File gambar tidak ditemukan</p>';
                                     }
-                                    ?>
-                                </div>
+                                }
+                                ?>
                             </div>
 
-                            <!-- Submit Button -->
+                            <!-- Tombol Submit -->
                             <div class="card-header">
                                 <div class="form-group">
                                     <button type="submit" name="publise" class="btn btn-primary btn-lg">
-                                        <?php echo ($edit) ? 'Update' : 'Publish Post'; ?>
+                                        <?php echo ($edit) ? 'Perbarui' : 'Tambahkan'; ?>
                                     </button>
                                     <a href="view-blog.php" class="btn btn-danger">Kembali</a>
                                 </div>
@@ -316,15 +317,15 @@ function compressImage($source, $destination, $quality)
 
         if (file) {
             if (file.size > maxFileSize) {
-                $('#fileError').show().text('File size must be less than 500KB.');
+                $('#fileError').show().text('File maksimal 500 kb.');
                 $(this).val(''); // Kosongkan input file
             } else {
                 $('#fileError').hide(); // Sembunyikan pesan jika ukuran sesuai
             }
         }
-    });
+      });
 
-      // Validasi khusus untuk Summernote dan file size
+      // Validasi khusus untuk Summernote dan ukuran file
       $('#blogForm').on('submit', function(event) {
         var isValid = true;
         var summernoteContent = $('.textarea').summernote('code');
@@ -337,16 +338,16 @@ function compressImage($source, $destination, $quality)
           $('.note-editor').removeClass('is-invalid');
         }
         
-        // Validasi ukuran file upload (maksimum 500KB)
+        // Validasi ukuran unggahan file (maksimum 500KB)
         var fileInput = $('input[name="lis_img"]')[0];
         if(fileInput && fileInput.files.length > 0) {
             var fileSize = fileInput.files[0].size;
             var maxFileSize = 500 * 1024; // 500KB
             if (fileSize > maxFileSize) {
                 isValid = false;
-                $('#fileError').show().text('File size must be less than 500KB.');
+                $('#fileError').show().text('File maksimal 500 kb.');
+            }
         }
-    }
         
         if (!isValid) {
           event.preventDefault();

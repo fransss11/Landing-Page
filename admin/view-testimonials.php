@@ -5,10 +5,10 @@ include 'auth.php';
 
 $a = 9;
 
-// Proses Delete (dijalankan sebelum output HTML)
+// Proses Hapus (dijalankan sebelum output HTML)
 if (isset($_GET['delete_id'])) {
     $del = mysqli_real_escape_string($con, $_GET['delete_id']);
-    // Ambil data testimonial untuk hapus gambar
+    // Ambil data testimoni untuk menghapus gambar
     $selectdelete = mysqli_query($con, "SELECT * FROM testimonials WHERE id=" . $del);
     $selectimg = mysqli_fetch_array($selectdelete);
     $path = 'images/testimonial/';
@@ -23,10 +23,10 @@ if (isset($_GET['delete_id'])) {
     $p = mysqli_query($con, $query_delete);
 
     if ($p) {
-        $_SESSION['msg'] = "Deleted Successfully";
+        $_SESSION['msg'] = "Berhasil Dihapus";
         $_SESSION['msgClass'] = "success";
     } else {
-        $_SESSION['msg'] = "Error while deleting the testimonial.";
+        $_SESSION['msg'] = "Terjadi kesalahan saat menghapus testimoni.";
         $_SESSION['msgClass'] = "danger";
     }
     header("Location: view-testimonials.php");
@@ -39,13 +39,13 @@ if (isset($_GET['delete_id'])) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <?php include "title.php"; ?>
-  <!-- Responsive meta -->
+  <!-- Meta Responsif -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
+  <!-- Tema -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
@@ -84,7 +84,10 @@ if (isset($_GET['delete_id'])) {
         vertical-align: middle;
     }
 
-    table.dataTable thead>tr>th.dt-orderable-asc,table.dataTable thead>tr>th.dt-orderable-desc,table.dataTable thead>tr>td.dt-orderable-asc,table.dataTable thead>tr>td.dt-orderable-desc {
+    table.dataTable thead>tr>th.dt-orderable-asc,
+    table.dataTable thead>tr>th.dt-orderable-desc,
+    table.dataTable thead>tr>td.dt-orderable-asc,
+    table.dataTable thead>tr>td.dt-orderable-desc {
         text-align: center;
     }
 
@@ -100,34 +103,34 @@ if (isset($_GET['delete_id'])) {
 <div class="wrapper">
   <!-- Navbar -->
   <?php include "topbar.php"; ?>
-  <!-- Main Sidebar Container -->
+  <!-- Sidebar Utama -->
   <?php include "sidebar.php"; ?>
 
-  <!-- Content Wrapper. Contains page content -->
+  <!-- Content Wrapper. Berisi konten halaman -->
   <div class="content-wrapper">
-    <!-- Content Header -->
+    <!-- Header Konten -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>All Testimonials</h1>
+            <h1>Semua Testimoni</h1>
           </div>
           <div class="col-sm-6" style="text-align:right;">
             <a class="btn btn-primary" href="add-testimonials.php">
-              <i class="fa fa-plus" aria-hidden="true"></i> Add New
+              <i class="fa fa-plus" aria-hidden="true"></i> Tambah Baru
             </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Main Content -->
+    <!-- Konten Utama -->
     <section class="content">
       <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
         <div style="max-width:600px; margin:0 auto;">
           <div class="alert alert-<?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
             <?php echo $_SESSION['msg']; ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -140,7 +143,7 @@ if (isset($_GET['delete_id'])) {
 
       <div class="card card-info">
         <div class="card-header">
-          <h3 class="card-title">View</h3>
+          <h3 class="card-title">Lihat</h3>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -148,10 +151,10 @@ if (isset($_GET['delete_id'])) {
             <table id="myTable" class="table">
               <thead>
                 <tr>
-                  <th>Img</th>
-                  <th>Name</th>
-                  <th>Designation</th>
-                  <th>Description</th>
+                  <th>Gambar</th>
+                  <th>Nama</th>
+                  <th>Jabatan</th>
+                  <th>Deskripsi</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -163,7 +166,7 @@ if (isset($_GET['delete_id'])) {
         </div>
       </div>
     </section>
-    <!-- /.content -->
+    <!-- /.konten -->
   </div>
   <!-- /.content-wrapper -->
   <?php include "footer.php"; ?>
@@ -183,6 +186,9 @@ if (isset($_GET['delete_id'])) {
 <script>
   // Inisialisasi DataTables dengan server-side processing
   let table = new DataTable('#myTable', {
+    language: {
+      search: "Cari :"
+    },
     serverSide: true,
     ajax: 'ajax.php?action=fetch_testimonials',
     order: [], // Nonaktifkan ordering default sehingga server akan mengurutkan berdasarkan id DESC
@@ -191,7 +197,7 @@ if (isset($_GET['delete_id'])) {
       { 
         data: 'img', 
         render: function(data, type, row) {
-          return '<img src="images/testimonial/' + data + '" alt="Image">';
+          return '<img src="images/testimonial/' + data + '" alt="Gambar">';
         }
       },
       { data: 'title' },

@@ -34,7 +34,7 @@ if (isset($_POST['submit'])) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="robots" content="noindex" />
-  <title>AdminLTE 3 | Log in</title>
+  <title>Admin Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -51,12 +51,12 @@ if (isset($_POST['submit'])) {
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="/"><b>Admin</b>Login</a>
+    <a href="/"><b>Admin </b>Login</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Silahkan Masukkan Email dan Password Kamu</p>
       <?php if (!empty($error)) { ?>
       <div class="alert alert-danger"><?php echo $error; ?></div>
       <?php } ?>
@@ -79,7 +79,7 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="row">
           <div class="col-12">
-            <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" name="submit" class="btn btn-primary btn-block">Masuk</button>
           </div>
           <!-- <div class="col-6">
             <a href="daftar.php" class="btn btn-secondary btn-block">Daftar</a>
@@ -105,6 +105,9 @@ if (isset($_POST['submit'])) {
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-
+<script>
+  // Set flag "isLoggedIn" agar tab tersebut dianggap valid
+  sessionStorage.setItem("isLoggedIn", "true");
+</script>
 </body>
 </html>

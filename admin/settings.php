@@ -95,7 +95,7 @@ if (isset($_POST['update'])) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Settings</h1>
+                            <h1>Pengaturan</h1>
                         </div>
                     </div>
                 </div>
@@ -118,20 +118,20 @@ if (isset($_POST['update'])) {
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label>Company Email</label>
-                                        <input name="email" value="<?php echo $info_row['gmail']; ?>" type="text" class="form-control" placeholder="Enter email">
+                                        <label>Email Perusahaan</label>
+                                        <input name="email" value="<?php echo $info_row['gmail']; ?>" type="text" class="form-control" placeholder="Masukkan email">
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Map (Iframe Code)</label>
-                                        <textarea name="map" class="form-control" placeholder="Enter iframe code"><?php echo $info_row['maps_url']; ?></textarea>
+                                        <textarea rows="5" name="map" class="form-control" placeholder="Masukkan iframe code"><?php echo $info_row['maps_url']; ?></textarea>
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label>Full Address with Pincode</label>
-                                        <input name="address" value="<?php echo $info_row['lokasi']; ?>" type="text" class="form-control" placeholder="Enter address">
+                                        <label>Lokasi</label>
+                                        <textarea rows="5" name="address" class="form-control" placeholder="Masukkan address"><?php echo $info_row['lokasi']; ?></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -141,38 +141,38 @@ if (isset($_POST['update'])) {
                             <div class="card card-outline card-info">
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label>Facebook URL</label>
-                                        <input name="facebook" value="<?php echo $social_row['facebook']; ?>" type="text" class="form-control" placeholder="Enter Facebook URL">
+                                        <label>Link Facebook</label>
+                                        <input name="facebook" value="<?php echo $social_row['facebook']; ?>" type="text" class="form-control" placeholder="Masukkan Link Facebook">
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label>Twitter URL</label>
-                                        <input name="twitter" value="<?php echo $social_row['twitter']; ?>" type="text" class="form-control" placeholder="Enter Twitter URL">
+                                        <label>Link Twitter</label>
+                                        <input name="twitter" value="<?php echo $social_row['twitter']; ?>" type="text" class="form-control" placeholder="Masukkan Link Twitter">
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label>Instagram URL</label>
-                                        <input name="instagram" value="<?php echo $social_row['instagram']; ?>" type="text" class="form-control" placeholder="Enter Instagram URL">
+                                        <label>Link Instagram</label>
+                                        <input name="instagram" value="<?php echo $social_row['instagram']; ?>" type="text" class="form-control" placeholder="Masukkan Link Instagram">
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label>LinkedIn URL</label>
-                                        <input name="linkedin" value="<?php echo $social_row['linkedin']; ?>" type="text" class="form-control" placeholder="Enter LinkedIn URL">
+                                        <label>Link LinkedIn</label>
+                                        <input name="linkedin" value="<?php echo $social_row['linkedin']; ?>" type="text" class="form-control" placeholder="Masukkan Link LinkedIn">
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label>Whatsapp URL</label>
-                                        <input name="whatsapp" value="<?php echo $social_row['whatsapp']; ?>" type="text" class="form-control" placeholder="Enter Whatsapp">
+                                        <label>Whatsapp</label>
+                                        <input name="whatsapp" value="<?php echo $social_row['whatsapp']; ?>" type="text" class="form-control" placeholder="Masukkan Nomor Whatsapp">
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
-                                        <label>Phone URL</label>
-                                        <input name="phone" value="<?php echo $social_row['phone']; ?>" type="text" class="form-control" placeholder="Enter Phone">
+                                        <label>Telepon</label>
+                                        <input name="phone" value="<?php echo $social_row['phone']; ?>" type="text" class="form-control" placeholder="Masukkan Nomor Telepon">
                                     </div>
                                 </div>
                             </div>

@@ -5,7 +5,7 @@ include 'auth.php';
 
 $a = 6;
 
-// Ambil flash message jika ada
+// Ambil pesan flash jika ada
 if(isset($_SESSION['msg'])) {
     $msg = $_SESSION['msg'];
     $msgClass = $_SESSION['msgClass'];
@@ -15,22 +15,22 @@ if(isset($_SESSION['msg'])) {
     $msgClass = "";
 }
 
-// Proses delete kategori jika parameter delete_id ada
+// Proses hapus kategori jika parameter delete_id ada
 if (isset($_GET['delete_id'])) {
     $delete_id = mysqli_real_escape_string($con, $_GET['delete_id']);
     $query_delete = "DELETE FROM kategori_gal WHERE id = '$delete_id'";
     if (mysqli_query($con, $query_delete)) {
-        $_SESSION['msg'] = "Deleted Successfully";
+        $_SESSION['msg'] = "Berhasil Dihapus";
         $_SESSION['msgClass'] = "alert-success";
     } else {
-        $_SESSION['msg'] = "Error deleting category";
+        $_SESSION['msg'] = "Terjadi kesalahan saat menghapus kategori";
         $_SESSION['msgClass'] = "alert-danger";
     }
     header("Location: add-kat_gal.php");
     exit;
 }
 
-// Fetch data untuk mode edit
+// Ambil data untuk mode edit
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : '';
 $roww = [];
 if ($edit != '') {
@@ -38,7 +38,7 @@ if ($edit != '') {
     $roww = mysqli_fetch_array($resultt);
 }
 
-// Handle form submission untuk menambah atau memperbarui kategori
+// Tangani pengiriman form untuk menambah atau memperbarui kategori
 if (isset($_POST['add'])) {
     $name = mysqli_real_escape_string($con, $_POST['kat_gal']);
     
@@ -46,7 +46,7 @@ if (isset($_POST['add'])) {
     if ($edit == '') {
         $checkQuery = mysqli_query($con, "SELECT * FROM kategori_gal WHERE kat_gal = '$name'");
         if (mysqli_num_rows($checkQuery) > 0) {
-            $_SESSION['msg'] = "Category already exists!";
+            $_SESSION['msg'] = "Kategori sudah ada!";
             $_SESSION['msgClass'] = "alert-danger";
             header("Location: add-kat_gal.php");
             exit;
@@ -54,23 +54,23 @@ if (isset($_POST['add'])) {
     }
     
     if ($edit == '') {
-        // Insert new category
+        // Insert kategori baru
         if (mysqli_query($con, "INSERT INTO kategori_gal (kat_gal) VALUES ('$name')")) {
-            $_SESSION['msg'] = "Added Successfully";
+            $_SESSION['msg'] = "Berhasil Ditambahkan";
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error adding category";
+            $_SESSION['msg'] = "Terjadi kesalahan saat menambahkan kategori";
             $_SESSION['msgClass'] = "alert-danger";
         }
         header("Location: add-kat_gal.php");
         exit;
     } else {
-        // Update category
+        // Update kategori
         if (mysqli_query($con, "UPDATE kategori_gal SET kat_gal = '$name' WHERE id = '$edit'")) {
-            $_SESSION['msg'] = "Updated Successfully";
+            $_SESSION['msg'] = "Berhasil Diperbarui";
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error updating category";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui kategori";
             $_SESSION['msgClass'] = "alert-danger";
         }
         header("Location: add-kat_gal.php?edit=" . $edit);
@@ -89,7 +89,7 @@ if (isset($_POST['add'])) {
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
+  <!-- Tema style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -107,28 +107,28 @@ if (isset($_POST['add'])) {
   <?php include "sidebar.php"; ?>
 
   <div class="content-wrapper">
-    <!-- Content Header -->
+    <!-- Header Konten -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add New Category</h1>
+            <h1>Tambah Kategori Baru</h1>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Main content -->
+    <!-- Konten Utama -->
     <section class="content">
       <div class="row">
-        <!-- Form untuk add/edit kategori -->
+        <!-- Bagian Form -->
         <div class="col-md-5">
           <!-- Tampilkan alert jika ada pesan -->
           <?php if (!empty($msg)): ?>
             <div class="alert-container">
               <div class="alert <?php echo $msgClass; ?> alert-dismissible fade show" role="alert">
                 <?php echo $msg; ?>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -140,39 +140,39 @@ if (isset($_POST['add'])) {
             <div class="card card-outline card-info">
               <div class="card-header">
                 <div class="form-group">
-                  <label for="validationCategoryName" class="form-label">Enter Category Name <span class="text-danger">*</span></label>
+                  <label for="validationCategoryName" class="form-label">Masukkan Nama Kategori <span class="text-danger">*</span></label>
                   <input 
                     type="text" 
                     name="kat_gal" 
                     id="validationCategoryName"
                     value="<?php echo isset($roww['kat_gal']) ? htmlspecialchars($roww['kat_gal']) : ''; ?>" 
                     class="form-control" 
-                    placeholder="Enter ..." 
+                    placeholder="Masukkan ..." 
                     required
                   >
                   <div class="invalid-feedback">
-                    Please enter a category name.
+                    Silahkan masukkan nama kategori
                   </div>
                 </div>
               </div>
-              <button type="submit" name="add" class="btn btn-block btn-primary btn-lg">Add</button>
+              <button type="submit" name="add" class="btn btn-block btn-primary btn-lg">Tambahkan</button>
               <a href="add-kat_gal.php" class="btn btn-danger">Kembali</a>
             </div>
           </form>
         </div>
 
-        <!-- Tabel kategori -->
+        <!-- Tabel Kategori -->
         <div class="col-md-7">
           <div class="card card-outline card-info">
             <div class="card-header">
-              <label>All Category</label>
+              <label>Semua Kategori</label>
             </div>
             <div class="card-header">
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th></th>
+                    <th>Nama</th>
+                    <th style="width:80px;">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,15 +185,15 @@ if (isset($_POST['add'])) {
                         <div class="btn-group btn-group-sm">
                           <a 
                             href="add-kat_gal.php?edit=<?php echo $location_ft["id"]; ?>" 
-                            class="btn btn-info" 
-                            onclick="return confirm('Are you sure?')"
+                            onclick="return confirm('Anda yakin?')" 
+                            class="btn btn-info"
                           >
                             <i class="fas fa-edit"></i>
                           </a>
                           <a 
                             href="add-kat_gal.php?delete_id=<?php echo $location_ft["id"]; ?>" 
-                            class="btn btn-danger" 
-                            onclick="return confirm('Are you sure?')"
+                            onclick="return confirm('Anda yakin?')" 
+                            class="btn btn-danger"
                           >
                             <i class="fas fa-trash"></i>
                           </a>
@@ -203,10 +203,10 @@ if (isset($_POST['add'])) {
                   <?php } ?>
                 </tbody>
               </table>
-            </div>
-          </div>
-        </div>
-      </div>
+            </div> <!-- /.card-header -->
+          </div> <!-- /.card -->
+        </div> <!-- /.col-md-7 -->
+      </div> <!-- /.row -->
     </section>
   </div>
 

@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Form Testimoni Start -->
     <div class="container py-5">
-        <h2 class="text-center mb-4">Berikan Testimoni Anda</h2>
+        <h1 class="text-center mb-4">Berikan Testimoni Anda</h1>
         <!-- Jika ada error, tampilkan alert Bootstrap -->
         <?php if (isset($error) && !empty($error)) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -118,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Kirim Testimoni</button>
+            <a href="service.php#testimoni" class="btn btn-danger">Kembali</a>
         </form>
     </div>
     <!-- Form Testimoni End -->

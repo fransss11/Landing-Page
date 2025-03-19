@@ -2,7 +2,7 @@
 include 'conn.php';
 header('Content-Type: application/json');
 
-// Nonaktifkan error output agar tidak tercampur dalam JSON
+// Nonaktifkan keluaran error agar tidak tercampur dalam JSON
 error_reporting(0);
 ini_set('display_errors', 0);
 
@@ -11,7 +11,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 if ($action == 'fetch_services') {
     // =======================
-    //        SERVICES
+    //        LAYANAN
     // =======================
     $draw        = isset($_GET['draw']) ? intval($_GET['draw']) : 0;
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
@@ -34,7 +34,7 @@ if ($action == 'fetch_services') {
     $rowTotal       = mysqli_fetch_assoc($resultTotal);
     $totalRecords   = $rowTotal['total'];
 
-    // Default order (tanpa sorting dari DataTables)
+    // Urutan default (tanpa sorting dari DataTables)
     $orderColumn = "id";
     $orderDir    = "DESC";
 
@@ -65,7 +65,7 @@ if ($action == 'fetch_services') {
                         <a href="add-services.php?edit=' . $id . '" class="btn btn-info">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="view-services.php?delete_id=' . $id . '" onclick="return confirm(\'Are you sure?\')" class="btn btn-danger">
+                        <a href="view-services.php?delete_id=' . $id . '" onclick="return confirm(\'Apakah Anda yakin?\')" class="btn btn-danger">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>';
@@ -84,7 +84,7 @@ if ($action == 'fetch_services') {
 
 } elseif ($action == 'fetch_partner') {
     // =======================
-    //        PARTNER
+    //        MITRA
     // =======================
     $draw        = isset($_GET['draw']) ? intval($_GET['draw']) : 0;
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
@@ -94,7 +94,7 @@ if ($action == 'fetch_services') {
     $baseQuery  = "SELECT id, klien, gambar FROM klien";
     $totalQuery = "SELECT COUNT(id) as total FROM klien";
 
-    // Siapkan WHERE clause untuk filter pencarian
+    // Siapkan klausa WHERE untuk filter pencarian
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
@@ -138,10 +138,10 @@ if ($action == 'fetch_services') {
     while ($row = mysqli_fetch_assoc($resultData)) {
         $id = $row['id'];
         $actions = '<div class="btn-group btn-group-sm">
-                        <a href="add-partner.php?edit=' . $id . '" class="btn btn-info" onclick="return confirm(\'Are you sure?\')">
+                        <a href="add-partner.php?edit=' . $id . '" class="btn btn-info" onclick="return confirm(\'Apakah Anda yakin?\')">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="view-partner.php?delete_id=' . $id . '" class="btn btn-danger" onclick="return confirm(\'Are you sure?\')">
+                        <a href="view-partner.php?delete_id=' . $id . '" class="btn btn-danger" onclick="return confirm(\'Apakah Anda yakin?\')">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>';
@@ -150,7 +150,7 @@ if ($action == 'fetch_services') {
         $data[] = $row;
     }
 
-    // Menyiapkan response akhir yang akan dikirimkan ke DataTables
+    // Menyiapkan respons akhir yang akan dikirimkan ke DataTables
     $response = array(
         "draw"            => $draw,
         "recordsTotal"    => $totalRecords,
@@ -160,9 +160,6 @@ if ($action == 'fetch_services') {
 
     echo json_encode($response);
     exit;
-
-
-
 
 } elseif ($action == 'fetch_blog') {
     // =======================
@@ -215,7 +212,7 @@ if ($action == 'fetch_services') {
                         <a href="add-blog.php?edit=' . $id . '" class="btn btn-info">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="view-blog.php?delete_id=' . $id . '" onclick="return confirm(\'Are you sure?\')" class="btn btn-danger">
+                        <a href="view-blog.php?delete_id=' . $id . '" onclick="return confirm(\'Apakah Anda yakin?\')" class="btn btn-danger">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>';
@@ -266,7 +263,7 @@ if ($action == 'fetch_services') {
             0 => 'id',
             1 => 'title',
             2 => 'designation',
-            3 => 'descrip'
+            3 => 'deskrip'
         );
         if (isset($columns[$orderColumnIndex])) {
             $orderColumn = $columns[$orderColumnIndex];
@@ -280,10 +277,10 @@ if ($action == 'fetch_services') {
     while ($row = mysqli_fetch_assoc($resultData)) {
         $id = $row['id'];
         $actions = '<div class="btn-group btn-group-sm">
-                        <a href="add-testimonials.php?edit=' . $id . '" onclick="return confirm(\'Are you sure?\')" class="btn btn-info">
+                        <a href="add-testimonials.php?edit=' . $id . '" onclick="return confirm(\'Apakah Anda yakin?\')" class="btn btn-info">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="view-testimonials.php?delete_id=' . $id . '" onclick="return confirm(\'Are you sure?\')" class="btn btn-danger">
+                        <a href="view-testimonials.php?delete_id=' . $id . '" onclick="return confirm(\'Apakah Anda yakin?\')" class="btn btn-danger">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>';
@@ -302,7 +299,7 @@ if ($action == 'fetch_services') {
 
 } elseif ($action == 'fetch_teams') {
     // =======================
-    //        TEAMS
+    //        TIM
     // =======================
     $draw        = isset($_GET['draw']) ? intval($_GET['draw']) : 0;
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
@@ -312,7 +309,7 @@ if ($action == 'fetch_services') {
     $baseQuery  = "SELECT * FROM teams";
     $totalQuery = "SELECT COUNT(id) as total FROM teams";
 
-    // Siapkan WHERE clause untuk filter pencarian
+    // Siapkan klausa WHERE untuk filter pencarian
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
@@ -368,10 +365,10 @@ if ($action == 'fetch_services') {
     while ($row = mysqli_fetch_assoc($resultData)) {
         $id = $row['id'];
         $actions = '<div class="btn-group btn-group-sm">
-                        <a href="add-teams.php?edit=' . $id . '" class="btn btn-info" onclick="return confirm(\'Are you sure?\')">
+                        <a href="add-teams.php?edit=' . $id . '" class="btn btn-info" onclick="return confirm(\'Apakah Anda yakin?\')">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="view-teams.php?delete_id=' . $id . '" class="btn btn-danger" onclick="return confirm(\'Are you sure?\')">
+                        <a href="view-teams.php?delete_id=' . $id . '" class="btn btn-danger" onclick="return confirm(\'Apakah Anda yakin?\')">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>';
@@ -380,7 +377,7 @@ if ($action == 'fetch_services') {
         $data[] = $row;
     }
 
-    // Menyiapkan response akhir yang akan dikirimkan ke DataTables
+    // Menyiapkan respons akhir yang akan dikirimkan ke DataTables
     $response = array(
         "draw"            => $draw,
         "recordsTotal"    => $totalRecords,
@@ -390,8 +387,6 @@ if ($action == 'fetch_services') {
 
     echo json_encode($response);
     exit;
-
-
 
 } elseif ($action == 'fetch_projek') {
     // =======================
@@ -405,7 +400,7 @@ if ($action == 'fetch_services') {
     $baseQuery  = "SELECT * FROM projek";
     $totalQuery = "SELECT COUNT(id) as total FROM projek";
 
-    // Siapkan WHERE clause untuk filter pencarian
+    // Siapkan klausa WHERE untuk filter pencarian
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
@@ -454,10 +449,10 @@ if ($action == 'fetch_services') {
     while ($row = mysqli_fetch_assoc($resultData)) {
         $id = $row['id'];
         $actions = '<div class="btn-group btn-group-sm">
-                        <a href="add-projek.php?edit=' . $id . '" class="btn btn-info" onclick="return confirm(\'Are you sure?\')">
+                        <a href="add-projek.php?edit=' . $id . '" class="btn btn-info" onclick="return confirm(\'Apakah Anda yakin?\')">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="view-projek.php?delete_id=' . $id . '" class="btn btn-danger" onclick="return confirm(\'Are you sure?\')">
+                        <a href="view-projek.php?delete_id=' . $id . '" class="btn btn-danger" onclick="return confirm(\'Apakah Anda yakin?\')">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>';
@@ -466,7 +461,7 @@ if ($action == 'fetch_services') {
         $data[] = $row;
     }
 
-    // Menyiapkan response akhir yang akan dikirimkan ke DataTables
+    // Menyiapkan respons akhir yang akan dikirimkan ke DataTables
     $response = array(
         "draw"            => $draw,
         "recordsTotal"    => $totalRecords,
@@ -478,7 +473,7 @@ if ($action == 'fetch_services') {
     exit;
 
 } else {
-    echo json_encode(["error" => "Invalid action"]);
+    echo json_encode(["error" => "Aksi tidak valid"]);
     exit;
 }
 ?>

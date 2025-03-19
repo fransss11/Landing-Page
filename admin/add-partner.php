@@ -9,7 +9,7 @@ $today = date("D d M Y"); // Format tanggal untuk MySQL
 $msg = "";
 $msgClass = "";
 
-// Check if 'edit' parameter is set in the URL
+// Periksa apakah parameter 'edit' ada di URL
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : null;
 
 if ($edit) {
@@ -17,9 +17,9 @@ if ($edit) {
     if ($resultt) {
         $roww = mysqli_fetch_array($resultt);
     } else {
-        $msg = "Client not found.";
+        $msg = "Klien tidak ditemukan.";
         $msgClass = "danger";
-        // Jika client tidak ditemukan, hentikan eksekusi
+        // Jika klien tidak ditemukan, hentikan eksekusi
         exit;
     }
 } else {
@@ -29,18 +29,18 @@ if ($edit) {
 if (isset($_POST['publise'])) {
     $klien = mysqli_real_escape_string($con, $_POST['klien']);
 
-    // Validasi server-side (jika kosong, set message dan hentikan eksekusi)
+    // Validasi server-side: jika kosong, set pesan dan hentikan eksekusi
     if (empty($klien)) {
-        $msg = "Client name is required.";
+        $msg = "Nama klien wajib diisi.";
         $msgClass = "danger";
     } else {
         if ($_FILES['gambar']['name'] != '') {
             $maxFileSize = 500 * 1024; // 500KB
 
             if ($_FILES['gambar']['size'] > $maxFileSize) {
-                $msg = "File size must be less than 500KB.";
+                $msg = "Ukuran file harus kurang dari 500KB.";
                 $msgClass = "danger";
-                echo "<div class='alert alert-danger'>".$msg."</div>";
+                echo "<div class='alert alert-danger'>" . $msg . "</div>";
                 exit;
             }
 
@@ -53,15 +53,15 @@ if (isset($_POST['publise'])) {
             if (in_array($file_extension, $valid_ext)) {
                 compressImage($tempname, $folder, 60);
             } else {
-                $msg = "Invalid file type.";
+                $msg = "Tipe file tidak valid.";
                 $msgClass = "danger";
                 // Hentikan eksekusi jika file tidak valid
-                echo "<div class='alert alert-danger'>".$msg."</div>";
+                echo "<div class='alert alert-danger'>" . $msg . "</div>";
                 exit;
             }
         } else {
             if (empty($roww["gambar"])) {
-                $msg = "Client logo is required.";
+                $msg = "Logo klien wajib diunggah.";
                 $msgClass = "danger";
             }
             $gambar = $roww["gambar"];
@@ -72,23 +72,23 @@ if (isset($_POST['publise'])) {
         if (!$edit) {
             $insertdata = mysqli_query($con, "INSERT INTO klien(klien, gambar) VALUES ('$klien', '$gambar')");
             if ($insertdata) {
-                $_SESSION['msg'] = "Posted Successfully";
+                $_SESSION['msg'] = "Berhasil Diposting";
                 $_SESSION['msgClass'] = "success";
             } else {
-                $_SESSION['msg'] = "Error posting data";
+                $_SESSION['msg'] = "Terjadi kesalahan saat memposting data.";
                 $_SESSION['msgClass'] = "danger";
             }
         } else {
             $insertdata = mysqli_query($con, "UPDATE klien SET klien='$klien', gambar='$gambar' WHERE id=$edit");
             if ($insertdata) {
-                $_SESSION['msg'] = "Updated Successfully";
+                $_SESSION['msg'] = "Berhasil Diperbarui";
                 $_SESSION['msgClass'] = "success";
             } else {
-                $_SESSION['msg'] = "Error updating data";
+                $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui data.";
                 $_SESSION['msgClass'] = "danger";
             }
         }
-        // Redirect to view-partner.php to show the message
+        // Redirect ke view-partner.php untuk menampilkan pesan
         header("Location: view-partner.php");
         exit;
     }
@@ -120,7 +120,7 @@ function compressImage($source, $destination, $quality)
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style (AdminLTE) -->
+  <!-- Tema (AdminLTE) -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
@@ -137,11 +137,11 @@ function compressImage($source, $destination, $quality)
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add Client</h1>
+            <h1>Tambah Klien</h1>
           </div>
           <div class="col-sm-6">
             <a href="view-partner.php" class="btn btn-success">
-              <i class="fa fa-eye" aria-hidden="true"></i> View Clients
+              <i class="fa fa-eye" aria-hidden="true"></i> Lihat Klien
             </a>
           </div>
         </div>
@@ -156,7 +156,7 @@ function compressImage($source, $destination, $quality)
             <div style="max-width:600px; margin:0 auto 20px auto;">
               <div class="alert alert-<?php echo $msgClass; ?> alert-dismissible fade show" role="alert">
                 <?php echo $msg; ?>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -164,18 +164,17 @@ function compressImage($source, $destination, $quality)
           <?php endif; ?>
 
           <!-- Form dengan validasi Bootstrap -->
-          <!-- Tambahkan class "needs-validation" dan "novalidate" -->
           <form id="clientForm" action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             <div class="card card-outline card-info">
               <div class="card-header">
                 <div class="form-group">
-                  <label for="validationClientName">Input Client Name <span class="text-danger">*</span></label>
-                  <input name="klien" value="<?php echo htmlspecialchars($roww['klien']); ?>" type="text" class="form-control" id="validationClientName" placeholder="Enter name..." required>
+                  <label for="validationClientName">Masukkan Nama Klien <span class="text-danger">*</span></label>
+                  <input name="klien" value="<?php echo htmlspecialchars($roww['klien']); ?>" type="text" class="form-control" id="validationClientName" placeholder="Masukkan nama..." required>
                   <div class="invalid-feedback">
-                    Client name is required.
+                    Nama klien wajib diisi.
                   </div>
                   <div class="valid-feedback">
-                    Looks good!
+                    Sudah benar!
                   </div>
                 </div>
               </div>
@@ -183,26 +182,25 @@ function compressImage($source, $destination, $quality)
               <div class="card-header">
                 <div class="form-group">
                     <label for="exampleInputFile">
-                        Select Image
+                        Pilih Gambar
                         <?php 
-                        // Wajib upload jika data baru atau belum ada gambar
-                        if(empty($roww["img"])){ 
+                        // Wajib unggah jika data baru atau belum ada gambar
+                        if(empty($roww["gambar"])){ 
                             echo '<span class="text-danger">*</span>'; 
                         }
                         ?>
                         <p style="color:red;">Maksimal 500 KB</p>
                     </label>  
                     <input name="gambar" type="file" id="validationLogo" class="form-control" accept="image/*" <?php echo empty($roww['gambar']) ? 'required' : ''; ?>>
-                    <div id="fileErrorBox" style="color: red; display: none;">File size must be less than 500KB.</div>
-                    <!-- <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ File size is valid.</div> -->
+                    <div id="fileErrorBox" style="color: red; display: none;">Ukuran file harus kurang dari 500KB.</div>
                 </div>
                   <?php 
                   if (!empty($roww['gambar'])) {
                       $imagePath = "images/partnership/" . $roww['gambar'];
                       if (file_exists($imagePath)) {
-                          echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Client Logo" style="width:150px; margin-top:10px;">';
+                          echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Logo Klien" style="width:150px; margin-top:10px;">';
                       } else {
-                          echo '<br><p>Image file not found</p>';
+                          echo '<br><p>File gambar tidak ditemukan</p>';
                       }
                   }
                   ?>
@@ -212,7 +210,7 @@ function compressImage($source, $destination, $quality)
               <div class="card-header">
                 <div class="form-group">
                   <button type="submit" name="publise" class="btn btn-primary btn-lg">
-                    <?php echo ($edit) ? 'Update' : 'Publish Post'; ?>
+                    <?php echo ($edit) ? 'Perbarui' : 'Tambahkan'; ?>
                   </button>
                   <a href="view-partner.php" class="btn btn-danger">Kembali</a>
                 </div>

@@ -18,10 +18,10 @@ if (isset($_GET['delete_id'])) {
     $delete_id = mysqli_real_escape_string($con, $_GET['delete_id']);
     $query_delete = "DELETE FROM category WHERE id = '$delete_id'";
     if (mysqli_query($con, $query_delete)) {
-        $_SESSION['msg'] = "Deleted Successfully";
+        $_SESSION['msg'] = "Berhasil Dihapus";
         $_SESSION['msgClass'] = "alert-success";
     } else {
-        $_SESSION['msg'] = "Error deleting category";
+        $_SESSION['msg'] = "Terjadi kesalahan saat menghapus kategori";
         $_SESSION['msgClass'] = "alert-danger";
     }
     header("Location: add-category.php");
@@ -41,23 +41,23 @@ if (isset($_POST['add'])) {
     $name = mysqli_real_escape_string($con, $_POST['cat_name']);
     
     if ($edit == '') {
-        // Insert new category
+        // Insert kategori baru
         if (mysqli_query($con, "INSERT INTO category (cat_name) VALUES ('$name')")) {
-            $_SESSION['msg'] = "Added Successfully";
+            $_SESSION['msg'] = "Berhasil Ditambahkan";
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error adding category";
+            $_SESSION['msg'] = "Terjadi kesalahan saat menambahkan kategori";
             $_SESSION['msgClass'] = "alert-danger";
         }
         header("Location: add-category.php");
         exit;
     } else {
-        // Update category
+        // Update kategori
         if (mysqli_query($con, "UPDATE category SET cat_name = '$name' WHERE id = '$edit'")) {
-            $_SESSION['msg'] = "Updated Successfully";
+            $_SESSION['msg'] = "Berhasil Diperbarui";
             $_SESSION['msgClass'] = "alert-success";
         } else {
-            $_SESSION['msg'] = "Error updating category";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui kategori";
             $_SESSION['msgClass'] = "alert-danger";
         }
         header("Location: add-category.php?edit=" . $edit);
@@ -69,6 +69,7 @@ if (isset($_POST['add'])) {
 <html>
 <head>
   <meta charset="utf-8">
+  <?php include "title.php"; ?>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <?php include "title.php"; ?>
   <!-- Responsive viewport -->
@@ -93,7 +94,7 @@ if (isset($_POST['add'])) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add New Category</h1>
+            <h1>Tambah kategori baru</h1>
           </div>
         </div>
       </div>
@@ -109,7 +110,7 @@ if (isset($_POST['add'])) {
             <div style="max-width:600px; margin:0 auto;">
               <div class="alert <?php echo $msgClass; ?> alert-dismissible fade show" role="alert">
                 <?php echo $msg; ?>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -121,22 +122,22 @@ if (isset($_POST['add'])) {
             <div class="card card-outline card-info">
               <div class="card-header">
                 <div class="form-group">
-                  <label for="validationCategoryName" class="form-label">Enter Category Name <span class="text-danger">*</span></label>
+                  <label for="validationCategoryName" class="form-label">Masukkan nama kategori <span class="text-danger">*</span></label>
                   <input 
                     type="text" 
                     name="cat_name" 
                     value="<?php echo isset($roww['cat_name']) ? htmlspecialchars($roww['cat_name']) : ''; ?>" 
                     class="form-control" 
                     id="validationCategoryName"
-                    placeholder="Enter ..." 
+                    placeholder="Masukkan ..." 
                     required
                   >
                   <div class="invalid-feedback">
-                    Please enter a category name.
+                    Silahkan masukkan nama kategori
                   </div>
                 </div>
               </div>
-              <button type="submit" name="add" class="btn btn-primary btn-lg">Add</button>
+              <button type="submit" name="add" class="btn btn-primary btn-lg">Tambahkan</button>
               <a href="add-category.php" class="btn btn-danger">Kembali</a>
             </div>
           </form>
@@ -146,14 +147,14 @@ if (isset($_POST['add'])) {
         <div class="col-md-7">
           <div class="card card-outline card-info">
             <div class="card-header">
-              <label>All Category</label>
+              <label>Semua Kategori</label>
             </div>
             <div class="card-header">
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th style="width:80px;">Action</th>
+                    <th>Nama</th>
+                    <th style="width:80px;">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -166,14 +167,14 @@ if (isset($_POST['add'])) {
                         <div class="btn-group btn-group-sm">
                           <a 
                             href="add-category.php?edit=<?php echo $location_ft["id"]; ?>" 
-                            onclick="return confirm('Are you sure?')" 
+                            onclick="return confirm('Anda yakin?')" 
                             class="btn btn-info"
                           >
                             <i class="fas fa-edit"></i>
                           </a>
                           <a 
                             href="add-category.php?delete_id=<?php echo $location_ft["id"]; ?>" 
-                            onclick="return confirm('Are you sure?')" 
+                            onclick="return confirm('Anda yakin?')" 
                             class="btn btn-danger"
                           >
                             <i class="fas fa-trash"></i>
@@ -201,8 +202,6 @@ if (isset($_POST['add'])) {
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 
 <!-- SCRIPT VALIDASI BOOTSTRAP ala dokumentasi -->
 <script>

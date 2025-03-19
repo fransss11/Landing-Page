@@ -153,7 +153,7 @@ function formatTanggalIndonesia($tanggal) {
     <!-- Client Reviews Section End -->
 
     <!-- Services Start -->
-    <div class="container-fluid service py-5">
+    <div class="container-fluid service py-5 animated fadeInUp">
         <div class="container py-5">
             <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.2s">
                 <div class="sub-style">
@@ -225,7 +225,6 @@ function formatTanggalIndonesia($tanggal) {
                         <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
                         <p class="mb-4"><?php echo $about['descrip']; ?></p>
                         <!-- <a href="<?php echo $about['url']; ?>" class="btn btn-primary rounded-pill text-white py-3 px-5">Our Service</a> -->
-                        <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Tentang Kami</a>
                     </div>
                 </div>
             </div>

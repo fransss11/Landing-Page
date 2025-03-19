@@ -10,7 +10,7 @@ $today = date("D d M Y");
 $msg = "";
 $msgClass = "";
 
-// Check if 'edit' parameter is set in the URL
+// Periksa apakah parameter 'edit' ada di URL
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : null;
 
 if ($edit) {
@@ -21,7 +21,7 @@ if ($edit) {
     $roww = $resultt->fetch_assoc();
     $stmt->close();
 } else {
-    // Default values for a new entry
+    // Nilai default untuk data baru
     $roww = ['galery' => '', 'foto' => '', 'kategori' => ''];
 }
 
@@ -29,7 +29,7 @@ if (isset($_POST['publise'])) {
     $nama = mysqli_real_escape_string($con, $_POST['nama']);
     $kategori_id = mysqli_real_escape_string($con, $_POST['kategori_gal']);
 
-    // Ambil nama kategori dari id
+    // Ambil nama kategori berdasarkan id
     $stmt2 = $con->prepare("SELECT kat_gal FROM kategori_gal WHERE id = ?");
     $stmt2->bind_param("i", $kategori_id);
     $stmt2->execute();
@@ -39,7 +39,7 @@ if (isset($_POST['publise'])) {
     $stmt2->close();
 
     if ($edit) {
-        // Mode edit: jika file baru diupload, gunakan file baru; jika tidak, gunakan gambar lama.
+        // Mode edit: jika file baru diunggah, gunakan file baru; jika tidak, gunakan gambar lama.
         if (isset($_FILES['gambar']) && $_FILES['gambar']['name'] != '') {
             $gambar = rand() . $_FILES['gambar']['name'];
             $tempname = $_FILES['gambar']['tmp_name'];
@@ -54,17 +54,17 @@ if (isset($_POST['publise'])) {
         }
         $update = mysqli_query($con, "UPDATE media SET galery='$nama', foto='$gambar', kategori='$kategori', uploaded_on=NOW(), status='1' WHERE id='$edit'");
         if ($update) {
-            $_SESSION['msg'] = "Updated Successfully";
+            $_SESSION['msg'] = "Berhasil Diperbarui";
             $_SESSION['msgClass'] = "success";
         } else {
-            $_SESSION['msg'] = "Error while updating the gallery.";
+            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui galeri.";
             $_SESSION['msgClass'] = "danger";
         }
         
         echo "<script>window.location.href = 'view-gallery.php';</script>";
         exit;
     } else {
-        // Mode tambah: multiple file upload
+        // Mode tambah: unggah file berganda
         if (isset($_FILES['gambar'])) {
           $total_files = count($_FILES['gambar']['name']);
           $inserted = false;
@@ -74,7 +74,7 @@ if (isset($_POST['publise'])) {
                   $max_size = 500 * 1024; // 500KB dalam bytes
       
                   if ($image_size > $max_size) {
-                      $_SESSION['msg'] = "Error: One or more images exceed 500KB limit.";
+                      $_SESSION['msg'] = "Error: Satu atau lebih gambar melebihi batas 500KB.";
                       $_SESSION['msgClass'] = "danger";
                       echo "<script>window.location.href = 'view-gallery.php';</script>";
                       exit;
@@ -95,10 +95,10 @@ if (isset($_POST['publise'])) {
           }
         }
           if ($inserted) {
-              $_SESSION['msg'] = "Posted Successfully";
+              $_SESSION['msg'] = "Berhasil Diposting";
               $_SESSION['msgClass'] = "success";
           } else {
-              $_SESSION['msg'] = "Error while updating the gallery.";
+              $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui galeri.";
               $_SESSION['msgClass'] = "danger";
           }
       }      
@@ -130,7 +130,7 @@ function compressImage($source, $destination, $quality) {
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Theme style (AdminLTE) -->
+    <!-- Tema (AdminLTE) -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- Summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
@@ -149,21 +149,21 @@ function compressImage($source, $destination, $quality) {
     <?php include "sidebar.php"; ?>
 
     <div class="content-wrapper">
-        <!-- Content Header -->
+        <!-- Header Konten -->
         <section class="content-header">
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col-sm-6">
-                <h1><?php echo ($edit) ? 'Edit Gallery' : 'Add Gallery'; ?></h1>
+                <h1><?php echo ($edit) ? 'Perbarui Galeri' : 'Tambah Galeri'; ?></h1>
               </div>
               <div class="col-sm-6">
-                <a href="view-gallery.php" class="btn btn-success"><i class="fa fa-eye"></i> View Gallery</a>
+                <a href="view-gallery.php" class="btn btn-success"><i class="fa fa-eye"></i> Lihat Galeri</a>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Main content -->
+        <!-- Konten Utama -->
         <section class="content">
           <div class="row">
             <div class="col-md-8">
@@ -171,34 +171,28 @@ function compressImage($source, $destination, $quality) {
                 <div class="alert-container">
                   <div class="alert alert-<?php echo $msgClass; ?> alert-dismissible fade show" role="alert">
                     <?php echo $msg; ?>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                 </div>
               <?php endif; ?>
 
-              <!-- Form Gallery dengan validasi Bootstrap -->
+              <!-- Form Galeri dengan validasi Bootstrap -->
               <form id="galleryForm" action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                 <div class="card card-outline card-info">
                   <div class="card-header">
                     <div class="form-group">
-                      <label for="validationGalleryName">Input Gallery Name <span class="text-danger">*</span></label>
-                      <input type="text" name="nama" value="<?php echo isset($roww["galery"]) ? htmlspecialchars($roww["galery"]) : ''; ?>" class="form-control" id="validationGalleryName" placeholder="Enter ...">
-                      <!-- <div class="invalid-feedback">
-                        Please enter a gallery name.
-                      </div>
-                      <div class="valid-feedback">
-                        Looks good!
-                      </div> -->
+                      <label for="validationGalleryName">Masukkan Nama Galeri <span class="text-danger">*</span></label>
+                      <input type="text" name="nama" value="<?php echo isset($roww["galery"]) ? htmlspecialchars($roww["galery"]) : ''; ?>" class="form-control" id="validationGalleryName" placeholder="Masukkan ..." required>
                     </div>
                   </div>
 
                   <div class="card-header">
                     <div class="form-group">
-                      <label for="validationKategori">Select Kategori <span class="text-danger">*</span></label>
+                      <label for="validationKategori">Pilih Kategori <span class="text-danger">*</span></label>
                       <select name="kategori_gal" class="form-control" id="validationKategori" required>
-                        <option value="">Select...</option>
+                        <option value="">Pilih...</option>
                         <?php
                         $location = mysqli_query($con, "SELECT * FROM kategori_gal");
                         while ($location_ft = mysqli_fetch_array($location)) {
@@ -208,10 +202,7 @@ function compressImage($source, $destination, $quality) {
                         ?>
                       </select>
                       <div class="invalid-feedback">
-                        Please select a kategori.
-                      </div>
-                      <div class="valid-feedback">
-                        Looks good!
+                        Silahkan pilih kategori.
                       </div>
                     </div>
                   </div>
@@ -219,10 +210,10 @@ function compressImage($source, $destination, $quality) {
                   <div class="card-header">
                     <div class="form-group">
                     <label for="exampleInputFile">
-                        Select Image
+                        Pilih Gambar
                         <?php 
-                        // Wajib upload jika data baru atau belum ada gambar
-                        if(empty($roww["img"])){ 
+                        // Wajib unggah jika data baru atau belum ada gambar
+                        if(empty($roww["foto"])){ 
                             echo '<span class="text-danger">*</span>'; 
                         }
                         ?>
@@ -230,25 +221,25 @@ function compressImage($source, $destination, $quality) {
                     </label>
                       <?php 
                       if ($edit) {
-                          // Mode edit: single file upload
+                          // Mode edit: unggah file tunggal
                           ?>
                           <input type="file" name="gambar" id="validationImages" class="form-control" accept="image/*" <?php echo empty($roww["foto"]) ? 'required' : ''; ?>>
                           <?php
                       } else {
-                          // Mode tambah: multiple file upload
+                          // Mode tambah: unggah file berganda
                           ?>
                           <input type="file" name="gambar[]" id="validationImages" class="form-control" accept="image/*" required multiple>
                           <?php
                       }
                       ?>
-                    <div id="fileErrorBox" style="color: red; display: none;">File size must be less than 500KB.</div>
+                    <div id="fileErrorBox" style="color: red; display: none;">Ukuran file harus kurang dari 500KB.</div>
                       <?php
                       if ($edit && isset($roww["foto"]) && !empty($roww["foto"])) {
                           $imagePath = "uploads/" . $roww["foto"];
                           if (file_exists($imagePath)) {
-                              echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Gallery Image" style="width:200px; margin-top:10px;">';
+                              echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Gambar Galeri" style="width:200px; margin-top:10px;">';
                           } else {
-                              echo '<br><p>Image file not found</p>';
+                              echo '<br><p>File gambar tidak ditemukan</p>';
                           }
                       }
                       ?>
@@ -257,7 +248,7 @@ function compressImage($source, $destination, $quality) {
 
                   <div class="card-header">
                     <div class="form-group">
-                      <button type="submit" name="publise" class="btn btn-primary btn-lg"><?php echo ($edit) ? 'Update' : 'Publish'; ?></button>
+                      <button type="submit" name="publise" class="btn btn-primary btn-lg"><?php echo ($edit) ? 'Perbarui' : 'Publikasikan'; ?></button>
                       <a href="view-gallery.php" class="btn btn-danger">Kembali</a>
                     </div>
                   </div>
@@ -291,7 +282,7 @@ function compressImage($source, $destination, $quality) {
     Array.prototype.slice.call(forms)
       .forEach(function (form) {
         form.addEventListener('submit', function (event) {
-          // Validasi Summernote (jika perlu)
+          // Validasi Summernote (jika diperlukan)
           var summernoteContent = $('.textarea').summernote('code');
           if ($('.textarea').summernote('isEmpty') || summernoteContent.trim() === "" || summernoteContent.trim() === "<p><br></p>") {
             $('.note-editor').addClass('is-invalid');
@@ -318,7 +309,7 @@ document.getElementById('validationImages').addEventListener('change', function 
     for (var i = 0; i < files.length; i++) {
         if (files[i].size > maxSize) {
             errorBox.style.display = 'block';
-            errorBox.innerHTML = "Error: One or more images exceed 500KB limit.";
+            errorBox.innerHTML = "Error: Salah satu atau lebih gambar melebihi batas 500KB.";
             this.value = ""; // Kosongkan input file agar pengguna harus memilih ulang
             break;
         }

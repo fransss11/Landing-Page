@@ -1,6 +1,5 @@
 <?php 
 include 'conn.php';
-
 session_start();
 
 if (isset($_POST['delete_id'])) {
@@ -27,7 +26,7 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Admin</title>
+    <?php include "title.php"; ?>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Bootstrap -->
@@ -86,9 +85,9 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
                                                     <!-- <td><?= $row['ad_id']; ?></td> -->
                                                     <td>
                                                         <?php if (!empty($row['pict']) && file_exists('images/admin/' . $row['pict'])): ?>
-                                                            <img src="images/admin/<?= $row['pict']; ?>" alt="Profile Picture" class="img-thumbnail" width="70px">
+                                                            <img src="images/admin/<?= $row['pict']; ?>" alt="Foto Profil" class="img-thumbnail" width="70px">
                                                         <?php else: ?>
-                                                            <img src="images/admin/avatar3.png" alt="Profile Picture" class="img-thumbnail" width="70px">
+                                                            <img src="images/admin/avatar3.png" alt="Foto Profil" class="img-thumbnail" width="70px">
                                                         <?php endif; ?>
                                                     </td>
 
@@ -142,8 +141,8 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
                                 // Tampilkan alert sukses dan hapus baris dari tabel
                                 $('#alert-container').html(
                                     '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                                    'Deleted Successfully' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                    'Berhasil Dihapus' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Tutup">' +
                                     '<span aria-hidden="true">&times;</span>' +
                                     '</button>' +
                                     '</div>'
@@ -153,7 +152,7 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
                                 $('#alert-container').html(
                                     '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
                                     'Anda tidak dapat menghapus admin yang sedang login.' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Tutup">' +
                                     '<span aria-hidden="true">&times;</span>' +
                                     '</button>' +
                                     '</div>'
@@ -162,7 +161,7 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
                                 $('#alert-container').html(
                                     '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
                                     'Gagal menghapus data.' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Tutup">' +
                                     '<span aria-hidden="true">&times;</span>' +
                                     '</button>' +
                                     '</div>'
@@ -173,7 +172,7 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
                             $('#alert-container').html(
                                 '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
                                 'Terjadi kesalahan.' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Tutup">' +
                                 '<span aria-hidden="true">&times;</span>' +
                                 '</button>' +
                                 '</div>'
