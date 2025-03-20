@@ -16,7 +16,7 @@ $info_result = mysqli_query($con, "SELECT * FROM info WHERE id_info='1'");
 if (!$info_result) {
     die("Error fetching info: " . mysqli_error($con));
 }
-$info_row = mysqli_fetch_array($info_result);
+
 $social_result = mysqli_query($con, "SELECT * FROM social WHERE id='1'");
 if (!$social_result) {
     die("Error fetching social data: " . mysqli_error($con));
@@ -24,7 +24,6 @@ if (!$social_result) {
 $social_row = mysqli_fetch_array($social_result);
 // Proses form update jika tombol "update" ditekan
 if (isset($_POST['update'])) {
-    // Ambil data dari form
     extract($_POST);
     // Update data ke tabel info
     $update_info = mysqli_query($con, "UPDATE info SET lokasi='$address', gmail='$email', maps_url='$map' WHERE id_info='1'");
@@ -42,14 +41,16 @@ if (isset($_POST['update'])) {
         $tempname = $_FILES['logo']['tmp_name'];
         $folder = "images/logo/" . $logo;  // Tentukan folder penyimpanan logo
         if (move_uploaded_file($tempname, $folder)) {
-            // Update nama file logo ke kolom logo pada tabel info
             mysqli_query($con, "UPDATE info SET logo='$logo' WHERE id_info='1'");
         } else {
-            echo "<script>alert('Failed to upload logo');</script>";
+            $_SESSION['message'] = "Failed to upload logo";
+            header("Location: settings.php");
+            exit;
         }
     }
-    echo "<script>alert('Updated Successfully');</script>";
-    echo "<script>window.location.href = 'settings.php'</script>";
+    $_SESSION['message'] = "Updated Successfully";
+    header("Location: settings.php");
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -59,16 +60,16 @@ if (isset($_POST['update'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <?php include "title.php"; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Sertakan CSS Bootstrap -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <style>
         img.logo {
-            width: 100%;  /* Lebar logo 300px */
-            height: auto;  /* Tinggi otomatis sesuai dengan proporsi */
-            /* background-color:rgb(83, 83, 83);  Warna background */
+            width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -77,6 +78,20 @@ if (isset($_POST['update'])) {
         <?php include "topbar.php"; ?>
         <?php include "sidebar.php"; ?>
         <div class="content-wrapper">
+            <!-- Tempatkan message box di sini -->
+            <?php
+            if (isset($_SESSION['message'])) {
+                echo '<div class="container mt-3">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            ' . $_SESSION['message'] . '
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                      </div>';
+                unset($_SESSION['message']);
+            }
+            ?>
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -88,13 +103,13 @@ if (isset($_POST['update'])) {
             </section>
             <section class="content">
                 <form action="" method="post" enctype="multipart/form-data">
+                    <!-- Konten form settings seperti sebelumnya -->
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card card-outline card-info">
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Logo</label>
-                                        <!-- Menampilkan Logo yang Ada dengan CSS -->
                                         <?php if ($info_row['logo']): ?>
                                             <img src="images/logo/<?php echo $info_row['logo']; ?>" alt="Logo" class="logo"><br><br>
                                         <?php endif; ?>
@@ -175,15 +190,16 @@ if (isset($_POST['update'])) {
         <?php include "footer.php"; ?>
         <aside class="control-sidebar control-sidebar-dark"></aside>
     </div>
+    <!-- Sertakan JS Bootstrap dan dependencies-nya -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="dist/js/adminlte.min.js"></script>
     <script src="dist/js/demo.js"></script>
     <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <script>
-    $(function() {
-        $('.textarea').summernote()
-    })
+        $(function() {
+            $('.textarea').summernote()
+        })
     </script>
 </body>
 </html>
