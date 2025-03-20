@@ -1,29 +1,23 @@
 <?php
 // Mengasumsikan Anda memiliki file koneksi database
 include 'conn.php';
-
 // Memeriksa apakah sesi sudah dimulai
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 // Pastikan session "ad_id" sudah ada, jika tidak redirect ke login
 if (!isset($_SESSION['ad_id'])) {
     header("Location: login.php");
     exit;
 }
 $ad_id = (int) $_SESSION['ad_id']; // Casting ke integer untuk keamanan
-
-
 // Mengambil data pengguna dari database
 $query = "SELECT * FROM admin WHERE ad_id = $ad_id"; // Sesuaikan query jika diperlukan
 $hasil = mysqli_query($con, $query);
 $user = mysqli_fetch_assoc($hasil);
-
 // Menentukan path gambar profil
 $profile_image = !empty($user['pict']) ? "images/admin/" . $user['pict'] : "images/admin/default.jpg"; // Jika gambar tidak ada, gunakan gambar default
 ?>
-
 <nav class="main-header navbar navbar-expand navbar-white navbar-light d-flex justify-content-between align-items-center">
     <!-- Left navbar links -->
     <ul class="navbar-nav d-flex align-items-center">
@@ -34,7 +28,6 @@ $profile_image = !empty($user['pict']) ? "images/admin/" . $user['pict'] : "imag
             <span class="nav-link font-weight-bold">Selamat Datang di Admin Panel</span>
         </li>
     </ul>
-
     <!-- Right navbar links -->
     <ul class="navbar-nav d-flex align-items-center">
         <li class="nav-item dropdown">

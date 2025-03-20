@@ -2,13 +2,10 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("Y-m-d H:i:s"); // Format tanggal standar
-
 // Cek apakah parameter 'edit' tersedia dan valid
 $edit = (isset($_GET['edit']) && intval($_GET['edit']) > 0) ? intval($_GET['edit']) : 0;
-
 // Jika mode edit, ambil data dari database
 if ($edit > 0) {
     $resultt = mysqli_query($con, "SELECT * FROM teams WHERE id = '$edit'");
@@ -16,7 +13,6 @@ if ($edit > 0) {
 } else {
     $roww = []; // Untuk mode insert
 }
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title       = mysqli_real_escape_string($con, $_POST['title']);
     $designation = mysqli_real_escape_string($con, $_POST['designation']);
@@ -27,16 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $linkedin    = mysqli_real_escape_string($con, $_POST['linkedin']);
     $whatsapp    = mysqli_real_escape_string($con, $_POST['whatsapp']);
     $url         = mysqli_real_escape_string($con, $_POST['url']);
-
     // Jika ada data lama (mode edit), gunakan gambarnya; jika tidak, kosongkan
     $lis_img = isset($roww["img"]) ? $roww["img"] : '';
-
     if (!empty($_FILES['lis_img']['name'])) {
         $img_name = $_FILES['lis_img']['name'];
         $img_tmp  = $_FILES['lis_img']['tmp_name'];
         $img_size = $_FILES['lis_img']['size'];
         $img_ext  = strtolower(pathinfo($img_name, PATHINFO_EXTENSION));
-
         $valid_ext = ['png', 'jpeg', 'jpg', 'webp'];
         if (in_array($img_ext, $valid_ext) && $img_size <= 512000) { // Maksimal 500KB
             $lis_img = rand() . '_' . $img_name;
@@ -44,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             move_uploaded_file($img_tmp, $folder);
         }
     }
-
     if ($edit > 0) {
         // Mode update
         $query = "UPDATE teams SET title=?, designation=?, descrip=?, img=?, facebook=?, twitter=?, instagram=?, linkedin=?, whatsapp=?, url=?, date=? WHERE id=?";
@@ -57,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = mysqli_prepare($con, $query);
         mysqli_stmt_bind_param($stmt, "sssssssssss", $title, $designation, $descrip, $lis_img, $facebook, $twitter, $instagram, $linkedin, $whatsapp, $url, $today);
     }
-
     if (mysqli_stmt_execute($stmt)) {
         $_SESSION['msg'] = ($edit > 0) ? "Berhasil Diperbarui" : "Berhasil Diposting";
         $_SESSION['msgClass'] = "success";
@@ -98,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="wrapper">
     <?php include "topbar.php"; ?>
     <?php include "sidebar.php"; ?>
-
     <div class="content-wrapper">
         <!-- Header Konten -->
         <section class="content-header">
@@ -113,7 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
         </section>
-
         <!-- Konten Utama -->
         <section class="content">
             <div class="row">
@@ -133,7 +122,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         unset($_SESSION['msgClass']);
                         ?>
                     <?php endif; ?>
-
                     <!-- Form dengan validasi Bootstrap -->
                     <form id="teamForm" action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                         <div class="card card-outline card-info">
@@ -147,7 +135,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Designation -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -158,7 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Description -->
                             <div class="card-body pad">
                                 <label>Deskripsi</label>
@@ -169,7 +155,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Social Media -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -177,35 +162,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <input name="facebook" value="<?php echo isset($roww["facebook"]) ? htmlspecialchars($roww["facebook"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan URL atau username Facebook...">
                                 </div>
                             </div>
-
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>Twitter</label>
                                     <input name="twitter" value="<?php echo isset($roww["twitter"]) ? htmlspecialchars($roww["twitter"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan URL atau username Twitter...">
                                 </div>
                             </div>
-
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>Instagram</label>
                                     <input name="instagram" value="<?php echo isset($roww["instagram"]) ? htmlspecialchars($roww["instagram"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan URL atau username Instagram...">
                                 </div>
                             </div>
-
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>LinkedIn</label>
                                     <input name="linkedin" value="<?php echo isset($roww["linkedin"]) ? htmlspecialchars($roww["linkedin"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan URL atau username LinkedIn...">
                                 </div>
                             </div>
-
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>WhatsApp</label>
                                     <input name="whatsapp" value="<?php echo isset($roww["whatsapp"]) ? htmlspecialchars($roww["whatsapp"]) : ''; ?>" type="text" class="form-control" placeholder="Masukkan nomor WhatsApp...">
                                 </div>
                             </div>
-
                             <!-- URL -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -213,14 +193,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <input name="url" value="<?php echo isset($roww["url"]) ? htmlspecialchars($roww["url"]) : ''; ?>" type="text" class="form-control" id="validationURL" placeholder="Masukkan URL...">
                                 </div>
                             </div>
-
                             <!-- Image Upload -->
                             <div class="card-header">
                                 <div class="form-group">
                                     <label for="validationImage">Pilih Gambar <span style="color:red;">(Maksimal 500KB, Hanya PNG, JPG, JPEG, WEBP)</span> <?php echo ($edit == 0 ? '<span class="text-danger">*</span>' : ''); ?></label>
                                     <input name="lis_img" type="file" id="validationImage" class="form-control" accept="image/*" <?php echo ($edit == 0 ? 'required' : ''); ?>>
-                                    <small id="imageError" class="text-danger"></small>
-                                    
+                                    <small id="imageError" class="text-danger"></small>                              
                                     <?php 
                                     if (!empty($roww["img"])) {
                                         $imagePath = "images/team/" . $roww["img"];
@@ -233,7 +211,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     ?>
                                 </div>
                             </div>
-
                             <!-- Tombol Submit -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -249,10 +226,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div><!-- /.row -->
         </section>
     </div>
-
     <?php include "footer.php"; ?>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -261,7 +236,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script src="dist/js/adminlte.min.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
-
 <!-- SCRIPT VALIDASI BOOTSTRAP -->
 <script>
 (function () {
@@ -289,7 +263,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 document.getElementById("validationImage").addEventListener("change", function() {
     var file = this.files[0];
     var errorText = document.getElementById("imageError");
-
     if (file) {
         var fileSize = file.size;
         if (fileSize > 512000) { // 500KB = 512000 byte

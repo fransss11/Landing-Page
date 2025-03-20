@@ -1,6 +1,5 @@
 <?php
 include 'database.php';
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['title'];
     $designation = $_POST['designation'];
@@ -8,7 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $img = $_FILES['img']['name'];
     $target_dir = "admin/images/testimonial/";
     $target_file = $target_dir . basename($img);
-
     // Upload file
     if (move_uploaded_file($_FILES['img']['tmp_name'], $target_file)) {
         // Insert data into database
@@ -27,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conn->close();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,48 +33,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
-
 <body>
-
     <!-- Spinner Start -->
     <?php include 'includes/spinner.php'; ?>
     <!-- Spinner End -->
-
     <!-- Topbar Start -->
     <?php include 'includes/topbar.php'; ?>
     <!-- Topbar End -->
-
     <!-- Navbar & Hero Start -->
     <?php include 'includes/navbar.php'; ?>
     <!-- Navbar End -->
-
     <!-- Header Start -->
     <?php
     $pageTitle = "Berikan Testimoni";
     include 'includes/header.php';
     ?>
     <!-- Header End -->
-
     <!-- Form Testimoni Start -->
     <div class="container py-5">
         <h1 class="text-center mb-4">Berikan Testimoni Anda</h1>
@@ -122,19 +108,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </div>
     <!-- Form Testimoni End -->
-
     <!-- Footer Start -->
     <?php include 'includes/footer.php'; ?>
     <!-- Footer End -->
-
     <!-- Copyright Start -->
     <?php include 'includes/copyright.php'; ?>
     <!-- Copyright End -->
-
     <!-- Back to Top -->
     <?php include 'includes/back_to_top.php'; ?>
     <!-- Back to Top End -->
-
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -142,10 +124,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-
     <!-- Bootstrap Validation Script -->
     <script>
     (function () {

@@ -1,7 +1,6 @@
 <?php 
 include 'conn.php';
 session_start();
-
 if (isset($_POST['delete_id'])) {
     $id = $_POST['delete_id'];
     if ($id == $_SESSION['ad_id']) {
@@ -16,11 +15,9 @@ if (isset($_POST['delete_id'])) {
     }
     exit;
 }
-
 $query = "SELECT * FROM admin";
 $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con));
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -37,11 +34,9 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <!-- Navbar -->
-        <?php include "topbar.php"; ?>
-        
+        <?php include "topbar.php"; ?>      
         <!-- Sidebar -->
         <?php include "sidebar.php"; ?>
-
         <!-- Content Wrapper -->
         <div class="content-wrapper">
             <!-- Content Header -->
@@ -54,10 +49,8 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
                     </div>
                 </div>
             </div>
-
             <!-- Alert Container -->
             <div id="alert-container" class="container-fluid"></div>
-
             <!-- Main Content -->
             <section class="content">
                 <div class="container-fluid">
@@ -90,7 +83,6 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
                                                             <img src="images/admin/avatar3.png" alt="Foto Profil" class="img-thumbnail" width="70px">
                                                         <?php endif; ?>
                                                     </td>
-
                                                     <td><?= $row['ad_name']; ?></td>
                                                     <td><?= $row['ad_email']; ?></td>
                                                     <td>
@@ -113,12 +105,10 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
             </section>
         </div>
         <!-- /.content-wrapper -->
-
         <!-- Footer -->
         <?php include "footer.php"; ?>
     </div>
     <!-- /.wrapper -->
-
     <!-- Scripts -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -130,7 +120,6 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
                 e.preventDefault();
                 var id = $(this).data('id');
                 var row = $(this).closest('tr');
-
                 if (confirm('Yakin ingin menghapus?')) {
                     $.ajax({
                         url: 'data_admin.php',

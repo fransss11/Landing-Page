@@ -5,13 +5,10 @@ header("Pragma: no-cache");
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("Y-m-d H:i:s");
-
 // Cek apakah parameter 'edit' ada di URL dan valid
 $edit = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
-
 // Ambil data jika mode edit
 if ($edit > 0) {
     $resultt = mysqli_query($con, "SELECT * FROM services WHERE id = '$edit'");
@@ -19,21 +16,16 @@ if ($edit > 0) {
 } else {
     $roww = []; // mode insert, inisialisasi agar tidak error
 }
-
 if (isset($_POST['publise'])) {
     // Sanitasi input menggunakan mysqli_real_escape_string
     $title   = mysqli_real_escape_string($con, $_POST['title']);
     $short   = mysqli_real_escape_string($con, $_POST['short']);
     // Mengambil konten dari Summernote
     $descrip = $_POST['descrip'];
-
     // Menghapus tag <p> tapi mempertahankan tag HTML lainnya
     $descrip = preg_replace('/<p[^>]*>(.*?)<\/p>/is', '$1', $descrip);
-
     // Sanitasi input untuk mencegah XSS
     $descrip = mysqli_real_escape_string($con, $descrip);
-
-
     // Tangani unggahan file
     if (!empty($_FILES['lis_img']['name'])) {
         // Validasi ukuran file (maksimum 500KB)
@@ -44,12 +36,10 @@ if (isset($_POST['publise'])) {
             header("Location: add-services.php?edit=" . $edit);
             exit;
         }
-
         // Buat nama file unik (mirip dengan add-about.php)
         $newFileName = rand() . '_' . $_FILES['lis_img']['name'];
         $tempFile    = $_FILES['lis_img']['tmp_name'];
         $folder      = "images/services/" . $newFileName;
-
         // Jika file ada, pindahkan ke folder tujuan
         if (!empty($tempFile)) {
             move_uploaded_file($tempFile, $folder);
@@ -59,13 +49,11 @@ if (isset($_POST['publise'])) {
         // Gunakan gambar lama jika ada
         $lis_img = isset($roww["img"]) ? $roww["img"] : '';
     }
-
     // INSERT (tambah data baru)
     if ($edit == 0) {
         $insertdata = mysqli_query($con, 
             "INSERT INTO services(title, short, descrip, img, date) 
              VALUES('$title', '$short', '$descrip', '$lis_img', '$today')");
-
         if ($insertdata) {
             $_SESSION['msg'] = "Berhasil Diposting";
             $_SESSION['msgClass'] = "alert-success";
@@ -87,7 +75,6 @@ if (isset($_POST['publise'])) {
                 img='$lis_img', 
                 date='$today' 
              WHERE id=" . $edit);
-
         if ($insertdata) {
             $_SESSION['msg'] = "Berhasil Diperbarui";
             $_SESSION['msgClass'] = "alert-success";
@@ -101,7 +88,6 @@ if (isset($_POST['publise'])) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -123,7 +109,6 @@ if (isset($_POST['publise'])) {
   <?php include "topbar.php"; ?>
   <!-- Main Sidebar Container -->
   <?php include "sidebar.php"; ?>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header -->
@@ -141,12 +126,10 @@ if (isset($_POST['publise'])) {
         </div>
       </div>
     </section>
-
     <!-- Konten Utama -->
     <section class="content">
       <div class="row">
         <div class="col-md-8">
-          
           <!-- Tampilkan pesan jika ada (menggunakan session) -->
           <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
             <div style="max-width: 600px; margin: 0 auto;">
@@ -163,12 +146,10 @@ if (isset($_POST['publise'])) {
               </div>
             </div>
           <?php endif; ?>
-
           <!-- Form dengan validasi -->
           <form id="serviceForm" action="" method="post" enctype="multipart/form-data" 
                 class="needs-validation" novalidate>
             <div class="card card-outline card-info">
-              
               <!-- Judul -->
               <div class="card-header">
                 <div class="form-group">
@@ -187,7 +168,6 @@ if (isset($_POST['publise'])) {
                   </div>
                 </div>
               </div>
-
               <!-- Deskripsi Pendek -->
               <div class="card-body pad">
                 <div class="form-group">
@@ -205,7 +185,6 @@ if (isset($_POST['publise'])) {
                   </div>
                 </div>
               </div>
-
               <!-- Deskripsi Lengkap (Summernote) -->
               <div class="card-body pad">
                 <div class="form-group">
@@ -223,7 +202,6 @@ if (isset($_POST['publise'])) {
                   </div>
                 </div>
               </div>
-
               <!-- Unggah Gambar -->
               <div class="card-header">
                 <div class="form-group">
@@ -248,12 +226,10 @@ if (isset($_POST['publise'])) {
                   <div class="invalid-feedback">
                     Silakan unggah gambar.
                   </div>
-
                   <!-- Kotak pesan untuk kesalahan ukuran file -->
                   <div id="fileError" class="alert alert-danger" style="display: none;">
                       Ukuran file harus kurang dari 500KB.
                   </div>
-
                   <?php 
                   if (!empty($roww["img"])) {
                     $imagePath = "images/services/" . $roww["img"];
@@ -266,7 +242,6 @@ if (isset($_POST['publise'])) {
                   ?>
                 </div>
               </div>
-
               <!-- Tombol Kirim -->
               <div class="card-header">
                 <div class="form-group">
@@ -276,17 +251,14 @@ if (isset($_POST['publise'])) {
                   <a href="view-services.php" class="btn btn-danger">Kembali</a>
                 </div>
               </div>
-
             </div><!-- /.card -->
           </form>
         </div><!-- /.col-md-8 -->
       </div><!-- /.row -->
     </section>
   </div>
-
   <?php include "footer.php"; ?>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -295,7 +267,6 @@ if (isset($_POST['publise'])) {
 <script src="dist/js/adminlte.min.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
-
 <script>
     $(document).ready(function() {
       $('.textarea').summernote({
@@ -307,13 +278,11 @@ if (isset($_POST['publise'])) {
           }
         }
       });
-
       // Validasi unggahan file saat file dipilih
       $('#fileUpload').on('change', function() {
           var fileInput = this;
           var fileSize = fileInput.files[0] ? fileInput.files[0].size : 0;
-          var maxFileSize = 500 * 1024; // 500KB
-          
+          var maxFileSize = 500 * 1024; // 500KB 
           if (fileSize > maxFileSize) {
               $('#fileError').show();
               $(fileInput).val(''); // Reset input file
@@ -325,12 +294,10 @@ if (isset($_POST['publise'])) {
     $('#serviceForm').on('submit', function(event) {
       var form = this;
       var isValid = true; // Flag untuk validasi
-
       // Validasi ukuran unggahan file (maksimum 500KB)
       var fileInput = $('#fileUpload')[0];
       var fileSize = fileInput.files[0] ? fileInput.files[0].size : 0;
       var maxFileSize = 500 * 1024; // 500KB
-
       if (fileSize > maxFileSize) {
         isValid = false;
         // Tampilkan pesan kesalahan di dalam kotak pesan
@@ -339,11 +306,9 @@ if (isset($_POST['publise'])) {
         // Sembunyikan pesan kesalahan jika ukuran file valid
         $('#fileError').hide();
       }
-
       // Sinkronkan isi Summernote ke textarea sebelum validasi
       var summernoteContent = $('.textarea').summernote('code');
       $('textarea[name="descrip"]').val(summernoteContent);
-
       // Cek jika Summernote kosong
       if ($('.textarea').summernote('isEmpty') || 
           summernoteContent.trim() === "" || 
@@ -353,18 +318,15 @@ if (isset($_POST['publise'])) {
       } else {
         $('.note-editor').removeClass('is-invalid'); // Hapus class error jika valid
       }
-
       // Jalankan validasi Bootstrap (untuk input lainnya)
       if (!form.checkValidity()) {
         isValid = false;
       }
-
       // Jika ada yang tidak valid, cegah submit
       if (!isValid) {
         event.preventDefault();
         event.stopPropagation();
       }
-
       // Tambahkan class Bootstrap agar field ditandai sebagai error
       form.classList.add('was-validated');
     });

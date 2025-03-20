@@ -5,27 +5,22 @@ if (session_status() == PHP_SESSION_NONE) {
     ini_set('session.cookie_lifetime', 0);
     session_start();
 }
-
 // Sertakan koneksi database dan file otentikasi
 include 'conn.php';
 include 'auth.php';
-
 // Periksa apakah sesi `ad_id` sudah di-set
 if (!isset($_SESSION['ad_id']) || empty($_SESSION['ad_id'])) {
     header('Location: login.php');
     exit;
 }
-
 // Simpan ID admin dari sesi
 $ad_id = $_SESSION['ad_id'];
-
 // Gunakan Prepared Statement untuk keamanan
 $query = "SELECT ad_id, ad_email, ad_name FROM admin WHERE ad_id = ?";
 $stmt = $con->prepare($query);
 $stmt->bind_param("i", $ad_id);
 $stmt->execute();
 $result = $stmt->get_result();
-
 if ($result->num_rows > 0) {
     $admin = $result->fetch_assoc();
     $admin_name  = $admin['ad_name'];
@@ -34,18 +29,15 @@ if ($result->num_rows > 0) {
     header('Location: login.php');
     exit;
 }
-
 // Query untuk mendapatkan total pengunjung
 $query_total = "SELECT COUNT(*) AS total FROM visitor";
 $result_total = $con->query($query_total);
 $total = ($result_total && $result_total->num_rows > 0) ? $result_total->fetch_assoc()['total'] : 0;
-
 // Query untuk mendapatkan jumlah pengunjung hari ini
 $query_today = "SELECT COUNT(*) AS today FROM visitor WHERE DATE(visit_date) = CURDATE()";
 $result_today = $con->query($query_today);
 $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_assoc()['today'] : 0;
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -53,7 +45,6 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <?php include "title.php"; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Bootstrap -->
@@ -61,7 +52,6 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
   <!-- AdminLTE -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <style>
     /* Pastikan content-wrapper menyesuaikan sidebar */
     .content-wrapper {
@@ -74,7 +64,6 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
         margin-left: 0; /* Saat sidebar collapse di layar kecil */
       }
     }
-
     .wrapper {
       min-height: 100vh;
     }
@@ -83,7 +72,6 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
       margin: auto;
     }
   </style>
-  
   <!-- Skrip untuk cek sessionStorage -->
   <script>
     // Jika flag 'isLoggedIn' tidak ada di sessionStorage, arahkan ke logout untuk menghapus sesi
@@ -95,27 +83,22 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
     }
   </script>
 </head>
-
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
   <!-- Navbar -->
   <?php include "topbar.php"; ?>
-
   <!-- Sidebar -->
   <?php include "sidebar.php"; ?>
-
   <!-- Content Wrapper -->
   <div class="content-wrapper">
     <section class="content">
       <div class="container-fluid">
-        
         <!-- Baris untuk Welcome -->
         <div class="row mt-3">
           <div class="col-12 text-center">
             <h1 id="admin-text" style="white-space: pre-wrap; font-size: 48px; font-weight: bold; line-height: .7; ">Selamat Datang<br></br><?= htmlspecialchars($admin_name, ENT_QUOTES, 'UTF-8') ?></h1>
           </div>
         </div>
-
         <!-- Baris untuk Tombol -->
         <div class="row mt-4">
           <div class="col-md-6 col-sm-12">
@@ -131,7 +114,6 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
               </div>
             </a>
           </div>
-
           <div class="col-md-6 col-sm-12">
             <a href="view-blog.php" class="small-box-footer">
               <div class="small-box bg-danger">
@@ -146,7 +128,6 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
             </a>
           </div>
         </div>
-
         <!-- Baris untuk Diagram Pengunjung -->
         <div class="row mt-4">
           <div class="col-md-12">
@@ -160,7 +141,6 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
     </section>
   </div><!-- /.content-wrapper -->
 </div><!-- /.wrapper -->
-
 <!-- Modal untuk Detail Pengunjung -->
 <div class="modal fade" id="visitorModal" tabindex="-1" role="dialog" aria-labelledby="visitorModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -180,15 +160,12 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
     </div>
   </div>
 </div>
-
 <!-- Footer -->
 <?php include "footer.php"; ?>
-
 <!-- Scripts -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="dist/js/adminlte.js"></script>
-
 <!-- Inisialisasi Chart.js dan Modal -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -205,7 +182,6 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
         clearInterval(interval);
       }
     }, 100);
-
     // Inisialisasi diagram menggunakan Chart.js
     const ctx = document.getElementById('visitorChart').getContext('2d');
     const visitorChart = new Chart(ctx, {

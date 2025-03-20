@@ -2,19 +2,16 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-
 // Tangani penghapusan data sebelum output
 if (isset($_GET['delete_id'])) {
   $del = mysqli_real_escape_string($con, $_GET['delete_id']);
   $selectdelete = mysqli_query($con, "SELECT * FROM blog WHERE id=" . $del);
   $selectimg = mysqli_fetch_array($selectdelete);
   $path = 'images/blog/';
-  
   // Cek apakah file gambar ada, jika ada hapus
   if (!empty($selectimg['img']) && file_exists($path . $selectimg['img'])) {
       unlink($path . $selectimg['img']);
   }
-  
   $query_delete = "DELETE FROM blog WHERE id='" . $del . "'";
   $p = mysqli_query($con, $query_delete);
   if ($p) {
@@ -78,21 +75,18 @@ if (isset($_GET['delete_id'])) {
       vertical-align: middle !important;
       text-align: center;
     }
-
     table.dataTable thead>tr>th.dt-orderable-asc,
     table.dataTable thead>tr>th.dt-orderable-desc,
     table.dataTable thead>tr>td.dt-orderable-asc,
     table.dataTable thead>tr>td.dt-orderable-desc {
         text-align: center;
     }
-
     /* Lebar gambar lebih kecil agar tidak mendominasi */
     .table img {
         width: 100px;
         height: auto;
         object-fit: contain;
     }
-
     /* Grup tombol agar tetap sejajar */
     .btn-group {
         display: flex;
@@ -107,7 +101,6 @@ if (isset($_GET['delete_id'])) {
   <?php include "topbar.php"; ?>
   <!-- Sidebar Utama -->
   <?php include "sidebar.php"; ?>
-
   <!-- Content Wrapper -->
   <div class="content-wrapper">
     <!-- Header Konten -->
@@ -125,7 +118,6 @@ if (isset($_GET['delete_id'])) {
         </div>
       </div>
     </section>
-
     <!-- Konten Utama -->
     <section class="content">
       <?php if (!empty($_SESSION['msg'])): ?>
@@ -142,7 +134,6 @@ if (isset($_GET['delete_id'])) {
           unset($_SESSION['msgClass']);
         ?>
       <?php endif; ?>
-
       <div class="card card-info">
         <div class="card-header">
           <h3 class="card-title">Lihat</h3>
@@ -174,7 +165,6 @@ if (isset($_GET['delete_id'])) {
   <?php include "footer.php"; ?>
 </div>
 <!-- ./wrapper -->
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

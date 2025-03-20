@@ -1,10 +1,8 @@
 <?php
 include 'conn.php';
 include 'auth.php';
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("Y-m-d H:i:s"); // Format tanggal standar
-
 // Ambil flash message dari session (jika ada)
 if (isset($_SESSION['msg'])) {
     $msg = $_SESSION['msg'];
@@ -15,10 +13,8 @@ if (isset($_SESSION['msg'])) {
     $msg = "";
     $msgClass = "";
 }
-
 // Check if 'edit' parameter is set in the URL
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : '';
-
 if ($edit) {
     // Mode edit: ambil data dari tabel projek berdasarkan ID
     $resultt = mysqli_query($con, "SELECT * FROM projek WHERE id = '$edit'");
@@ -27,7 +23,6 @@ if ($edit) {
     // Mode baru (insert): set default kosong
     $roww = ['mitra' => '', 'tahun' => '', 'deskrip' => ''];
 }
-
 // Handle form submission
 if (isset($_POST['publise'])) {
     // Sanitasi input
@@ -35,30 +30,24 @@ if (isset($_POST['publise'])) {
     $tahun = mysqli_real_escape_string($con, $_POST['tahun']);
     // Mengambil konten dari Summernote
     $deskrip = $_POST['deskrip'];
-
     // Menghapus tag <p> tapi mempertahankan tag HTML lainnya
     $deskrip = preg_replace('/<p[^>]*>(.*?)<\/p>/is', '$1', $deskrip);
-
     // Sanitasi input untuk mencegah XSS
     $deskrip = mysqli_real_escape_string($con, $deskrip);
     $url     = isset($_POST['url']) ? mysqli_real_escape_string($con, $_POST['url']) : '';
-
     // // Handle file upload
     // $lis_img = isset($roww["img"]) ? $roww["img"] : '';
     // if (!empty($_FILES['lis_img']['name'])) {
     //     $lis_img   = rand() . '_' . $_FILES['lis_img']['name'];
     //     $tempname  = $_FILES['lis_img']['tmp_name'];
     //     $folder    = "images/projek/" . $lis_img;
-
     //     // Validasi ekstensi (opsional)
     //     $valid_ext = array('png', 'jpeg', 'jpg');
     //     $file_extension = strtolower(pathinfo($folder, PATHINFO_EXTENSION));
-
     //     if (in_array($file_extension, $valid_ext)) {
     //         compressImage($tempname, $folder, 60);
     //     }
     // }
-
     // Insert (mode baru) atau Update (mode edit)
     if ($edit == '') {
         // Insert
@@ -100,12 +89,10 @@ if (isset($_POST['publise'])) {
         exit;
     }
 }
-
 // // Fungsi kompres gambar
 // function compressImage($source, $destination, $quality)
 // {
 //     $info = getimagesize($source);
-
 //     if ($info['mime'] == 'image/jpeg') {
 //         $image = imagecreatefromjpeg($source);
 //         imagejpeg($image, $destination, $quality);
@@ -129,16 +116,13 @@ if (isset($_POST['publise'])) {
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!-- Summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
 </head>
-
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
     <?php include "topbar.php"; ?>
     <?php include "sidebar.php"; ?>
-
     <div class="content-wrapper">
         <!-- Content Header -->
         <section class="content-header">
@@ -155,7 +139,6 @@ if (isset($_POST['publise'])) {
                 </div>
             </div>
         </section>
-
         <!-- Main Content -->
         <section class="content">
             <div class="row">
@@ -172,15 +155,13 @@ if (isset($_POST['publise'])) {
                             </div>
                         </div>
                     <?php endif; ?>
-
                     <!-- Form projek dengan validasi Bootstrap & Summernote -->
                     <form id="projekForm" action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                         <div class="card card-outline card-info">
-                            
                             <!-- mitra -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label>Masukkan mitra <span class="text-danger">*</span></label>
+                                    <label>Masukkan Mitra <span class="text-danger">*</span></label>
                                     <input 
                                         name="mitra" 
                                         value="<?php echo htmlspecialchars($roww["mitra"]); ?>" 
@@ -194,7 +175,6 @@ if (isset($_POST['publise'])) {
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Tahun -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -231,7 +211,6 @@ if (isset($_POST['publise'])) {
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Submit Button -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -247,10 +226,8 @@ if (isset($_POST['publise'])) {
             </div><!-- /.row -->
         </section>
     </div>
-
     <?php include "footer.php"; ?>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -259,7 +236,6 @@ if (isset($_POST['publise'])) {
 <script src="dist/js/adminlte.min.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
-
 <!-- SCRIPT VALIDASI BOOTSTRAP -->
 <script>
     $(document).ready(function() {
@@ -272,7 +248,6 @@ if (isset($_POST['publise'])) {
           }
         }
       });
-
     // Validasi khusus Summernote
     $('#projekForm').on('submit', function() {
       var summernoteContent = $('.textarea').summernote('code');
@@ -285,7 +260,6 @@ if (isset($_POST['publise'])) {
       }
     });
   });
-
   // Validasi Bootstrap 4
   (function () {
     'use strict';

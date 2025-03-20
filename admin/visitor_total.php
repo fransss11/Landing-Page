@@ -1,24 +1,18 @@
 <?php
 include 'conn.php';
-
 // Ambil halaman saat ini dari parameter GET, default ke 1 jika tidak ada atau tidak valid
 $page = isset($_GET['page']) && $_GET['page'] > 0 ? (int) $_GET['page'] : 1;
-
 // Tentukan limit data per halaman
 $limit = 5;
-
 // Hitung offset (data mulai dari baris ke-berapa)
 $offset = ($page - 1) * $limit;
-
 // Query total data pengunjung (untuk menghitung total halaman)
 $queryCount = "SELECT COUNT(*) AS total FROM visitor";
 $resultCount = $con->query($queryCount);
 $rowCount   = $resultCount->fetch_assoc();
 $totalData  = $rowCount['total'];
-
 // Hitung total halaman (dibulatkan ke atas)
 $totalPages = ceil($totalData / $limit);
-
 // Query untuk mengambil data pengunjung dengan limit dan offset
 $queryTotal = "SELECT *
   -- id_visitor, ip_address, visit_date, user_agent, browser, device
@@ -27,7 +21,6 @@ $queryTotal = "SELECT *
   LIMIT $offset, $limit
 ";
 $resultTotal = $con->query($queryTotal);
-
 // Jika parameter ajax diset, keluarkan markup tabel dan pagination saja
 if (isset($_GET['ajax'])) {
   if ($resultTotal && $resultTotal->num_rows > 0) {
@@ -59,7 +52,6 @@ if (isset($_GET['ajax'])) {
   } else {
       echo '<p>Tidak ada data pengunjung.</p>';
   }
-
   // Tampilkan pagination jika total halaman lebih dari 1
   if ($totalPages > 1) {
     echo '<div class="pagination text-center" style="margin-top:10px;">';
@@ -110,14 +102,11 @@ if (isset($_GET['ajax'])) {
   <h2>Total Pengunjung</h2>
   <!-- Kontainer untuk data total pengunjung yang dimuat via AJAX -->
   <div id="visitorTotalContainer"></div>
-
   <!-- Tombol untuk kembali ke index -->
   <!-- <a href="index.php" class="btn btn-primary">Kembali ke Index</a> -->
-
   <!-- jQuery dan Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
   <script>
     // Fungsi untuk memuat data total pengunjung dengan AJAX
     function loadVisitorTotal(page = 1) {
@@ -132,12 +121,10 @@ if (isset($_GET['ajax'])) {
           $('#visitorTotalContainer').html('<p>Terjadi kesalahan saat mengambil data.</p>');
         }
       });
-    }
-    
+    }  
     // Muat data saat halaman sudah siap
     $(document).ready(function(){
-      loadVisitorTotal();
-      
+      loadVisitorTotal();     
       // Intersep klik pada link pagination
       $('#visitorTotalContainer').on('click', '.pagination a', function(e){
         e.preventDefault();

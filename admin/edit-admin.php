@@ -1,7 +1,6 @@
 <?php 
 include 'conn.php';
 session_start();
-
 // Ambil data admin berdasarkan GET id
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -9,14 +8,12 @@ if (isset($_GET['id'])) {
     $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con));
     $admin = mysqli_fetch_assoc($result);
 }
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['ad_id'];
     $ad_name = htmlspecialchars($_POST['ad_name']);
     $ad_email = htmlspecialchars($_POST['ad_email']);
     $ad_password = $admin['ad_password']; // Password default (jika tidak diubah)
     $ad_image = $admin['pict']; // Gambar default (jika tidak diubah)
-
     // Cek apakah field password diisi
     if (!empty($_POST['ad_password'])) {
         $ad_password_raw = $_POST['ad_password'];
@@ -27,17 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $ad_password = password_hash($ad_password_raw, PASSWORD_DEFAULT);
         }
     }
-
     // Cek apakah gambar diupload
     if (!empty($_FILES['ad_image']['name'])) {
         // Proses upload gambar
         $target_dir = "images/admin/";
         $image_name = basename($_FILES["ad_image"]["name"]);
         $imageFileType = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
-
         // Membuat nama file unik dengan ID admin dan timestamp
         $new_image_name = "admin_".$id."_".time().".".$imageFileType;
-
         // Cek apakah file gambar valid
         if (in_array($imageFileType, ["jpg", "jpeg", "png", "gif", "webp"])) {
             if (move_uploaded_file($_FILES["ad_image"]["tmp_name"], $target_dir.$new_image_name)) {
@@ -49,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message = "Format gambar tidak valid. Harus berupa JPG, JPEG, PNG, GIF, atau WEBP.";
         }
     }
-
     // Jika tidak ada error dari validasi password dan gambar, lanjutkan update data
     if (!isset($message)) {
         $query = "UPDATE admin SET ad_name = '$ad_name', ad_email = '$ad_email', ad_password = '$ad_password', pict = '$ad_image' WHERE ad_id = $id";
@@ -67,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -90,11 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <!-- Navbar -->
-        <?php include "topbar.php"; ?>
-        
+        <?php include "topbar.php"; ?>      
         <!-- Sidebar -->
         <?php include "sidebar.php"; ?>
-
         <!-- Content Wrapper -->
         <div class="content-wrapper">
             <!-- Content Header -->
@@ -107,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
             </div>
-
             <!-- Main Content -->
             <section class="content">
                 <div class="container-fluid">
@@ -134,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="card-header">
                                         <div class="form-group">
                                             <label for="validationAdEmail">Email Admin</label>
@@ -144,7 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="card-header">
                                         <div class="form-group">
                                             <label for="validationAdPassword">Password (Kosongkan jika tidak ingin mengubah)</label>
@@ -163,7 +150,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="card-header">
                                         <div class="form-group">
                                             <label for="validationAdImage">Gambar Profil (Maksimal 500KB)</label>
@@ -172,7 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <label class="custom-file-label" for="validationAdImage">Pilih gambar...</label>
                                             </div>
                                             <small id="imageError" class="text-danger"></small> <!-- Pesan error akan muncul di sini -->
-
                                             <?php if (!empty($admin['pict'])): ?>
                                                 <div class="mt-2">
                                                     <label>Gambar Profil Saat Ini:</label>
@@ -181,7 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <?php endif; ?>
                                         </div>
                                     </div>
-
                                     <div class="card-header">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary btn-lg">Perbarui Admin</button>
@@ -195,17 +179,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </section>
         </div>
-
         <!-- Footer -->
         <?php include "footer.php"; ?>
     </div>
     <!-- /.wrapper -->
-
     <!-- Scripts -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="dist/js/adminlte.js"></script>
-
     <!-- Bootstrap Validation Script -->
     <script>
         (function () {
@@ -222,7 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               }, false);
             });
         })();
-
         // Toggle tampil/sembunyikan password
         $(document).on('click', '.toggle-password', function() {
             var input = $($(this).attr('data-toggle'));
@@ -234,7 +214,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $(this).removeClass('fa-eye-slash').addClass('fa-eye');
             }
         });
-
         // Perbarui label input file dengan nama file yang dipilih
         $("#validationAdImage").change(function(e) {
             var fileName = e.target.files[0].name;
@@ -246,7 +225,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             var file = this.files[0]; // Ambil file yang diupload
             var errorText = document.getElementById("imageError"); // Elemen pesan error
             var fileInput = document.getElementById("validationAdImage"); // Input file
-
             if (file) {
                 var fileSize = file.size; // Ukuran file dalam byte
                 if (fileSize > 512000) { // 500KB = 512000 byte
@@ -257,7 +235,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         });
-
         // Mencegah form dikirim jika ada error
         document.querySelector("form").addEventListener("submit", function(event) {
             var errorText = document.getElementById("imageError").textContent;

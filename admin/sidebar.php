@@ -1,20 +1,17 @@
 <?php
 // Tentukan halaman saat ini berdasarkan nama file
 $current_page = basename($_SERVER['PHP_SELF']);
-
 // Ambil data logo dari tabel info
 $info_result = mysqli_query($con, "SELECT * FROM info WHERE id_info='1'");
 if (!$info_result) {
     die("Error fetching info: " . mysqli_error($con));
 }
 $info_row = mysqli_fetch_array($info_result);
-
 // Gunakan path absolut untuk logo, sehingga selalu terhubung dengan benar di semua halaman
 $logo = (!empty($info_row['logo']))
     ? "images/logo/" . $info_row['logo']
     : "/img/Logo LMM (Persigi Panjang Putih Tanpa Alamat).png";
 ?>
-
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <div class="sidebar" style="font-size: 15px;">
@@ -26,7 +23,6 @@ $logo = (!empty($info_row['logo']))
                 </a>
             </div>
         </div>
-
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -37,7 +33,6 @@ $logo = (!empty($info_row['logo']))
                         <p>Beranda</p>
                     </a>
                 </li>
-
                 <!-- Settings -->
                 <li class="nav-item">
                     <a href="settings.php" class="nav-link <?php echo ($current_page == 'settings.php') ? 'active' : ''; ?>">
@@ -45,7 +40,6 @@ $logo = (!empty($info_row['logo']))
                         <p>Pengaturan</p>
                     </a>
                 </li>
-
                 <!-- About Section -->
                 <li class="nav-header">Tentang Kami</li>
                 <li class="nav-item">
@@ -54,7 +48,6 @@ $logo = (!empty($info_row['logo']))
                         <p>Lihat Tentang Kami</p>
                     </a>
                 </li>
-
                 <!-- Service Section -->
                 <li class="nav-header">Layanan</li>
                 <li class="nav-item">
@@ -69,7 +62,6 @@ $logo = (!empty($info_row['logo']))
                         <p>Lihat Layanan</p>
                     </a>
                 </li>
-
                 <!-- Blog Section -->
                 <li class="nav-header">Berita</li>
                 <li class="nav-item">
@@ -90,7 +82,6 @@ $logo = (!empty($info_row['logo']))
                         <p>Lihat Berita</p>
                     </a>
                 </li>
-
                 <!-- Testimonials Section -->
                 <li class="nav-header">Testimoni</li>
                 <li class="nav-item">
@@ -105,7 +96,6 @@ $logo = (!empty($info_row['logo']))
                         <p>Lihat Testimoni</p>
                     </a>
                 </li>
-
                 <!-- Partnership Section -->
                 <li class="nav-header">Klien</li>
                 <li class="nav-item">
@@ -120,7 +110,6 @@ $logo = (!empty($info_row['logo']))
                         <p>Lihat Klien</p>
                     </a>
                 </li>
-
                 <!-- Gallery Section -->
                 <li class="nav-header">Galeri</li>
                 <li class="nav-item">
@@ -141,7 +130,6 @@ $logo = (!empty($info_row['logo']))
                         <p>Lihat Galeri</p>
                     </a>
                 </li>
-
                 <!-- Team Section -->
                 <li class="nav-header">Tim</li>
                 <li class="nav-item">
@@ -176,7 +164,6 @@ $logo = (!empty($info_row['logo']))
     </div>
     <!-- /.sidebar -->
 </aside>
-
 <!-- Tambahkan CSS agar tampilan lebih rapi -->
 <style>
     .nav-sidebar .nav-item .nav-link {
@@ -194,6 +181,5 @@ $logo = (!empty($info_row['logo']))
         text-transform: uppercase;
     }
 </style>
-
 <!-- Pastikan FontAwesome dimuat -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

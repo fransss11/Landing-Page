@@ -1,18 +1,14 @@
 <?php
 include('conn.php');
 session_start();
-
 $error = "";
-
 if (isset($_POST['submit'])) {
     // Bersihkan input dari user
     $ad_email = mysqli_real_escape_string($con, $_POST['ad_email']);
     $ad_pass  = mysqli_real_escape_string($con, $_POST['ad_pass']);
-
     // Query untuk mengambil data admin berdasarkan email
     $query = "SELECT * FROM admin WHERE ad_email='$ad_email' LIMIT 1";
     $result = mysqli_query($con, $query);
-    
     if ($result && mysqli_num_rows($result) > 0) {
         $check_fetch = mysqli_fetch_array($result);
         // Verifikasi password yang di-hash menggunakan password_verify()
@@ -98,7 +94,6 @@ if (isset($_POST['submit'])) {
   </div>
 </div>
 <!-- /.login-box -->
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

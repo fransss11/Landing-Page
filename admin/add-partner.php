@@ -1,17 +1,13 @@
 <?php
 include 'conn.php';
 include 'auth.php';
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("D d M Y"); // Format tanggal untuk MySQL
-
 // Inisialisasi variabel alert
 $msg = "";
 $msgClass = "";
-
 // Periksa apakah parameter 'edit' ada di URL
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : null;
-
 if ($edit) {
     $resultt = mysqli_query($con, "SELECT * FROM klien WHERE id = $edit");
     if ($resultt) {
@@ -25,10 +21,8 @@ if ($edit) {
 } else {
     $roww = ['klien' => '', 'gambar' => ''];
 }
-
 if (isset($_POST['publise'])) {
     $klien = mysqli_real_escape_string($con, $_POST['klien']);
-
     // Validasi server-side: jika kosong, set pesan dan hentikan eksekusi
     if (empty($klien)) {
         $msg = "Nama klien wajib diisi.";
@@ -36,20 +30,17 @@ if (isset($_POST['publise'])) {
     } else {
         if ($_FILES['gambar']['name'] != '') {
             $maxFileSize = 500 * 1024; // 500KB
-
             if ($_FILES['gambar']['size'] > $maxFileSize) {
                 $msg = "Ukuran file harus kurang dari 500KB.";
                 $msgClass = "danger";
                 echo "<div class='alert alert-danger'>" . $msg . "</div>";
                 exit;
             }
-
             $gambar = rand() . $_FILES['gambar']['name'];
             $tempname = $_FILES['gambar']['tmp_name'];
             $folder = "images/partnership/" . $gambar;
             $valid_ext = array('png', 'jpeg', 'jpg', 'gif');
             $file_extension = strtolower(pathinfo($folder, PATHINFO_EXTENSION));
-
             if (in_array($file_extension, $valid_ext)) {
                 compressImage($tempname, $folder, 60);
             } else {
@@ -67,7 +58,6 @@ if (isset($_POST['publise'])) {
             $gambar = $roww["gambar"];
         }
     }
-
     if (empty($msg)) {
         if (!$edit) {
             $insertdata = mysqli_query($con, "INSERT INTO klien(klien, gambar) VALUES ('$klien', '$gambar')");
@@ -93,7 +83,6 @@ if (isset($_POST['publise'])) {
         exit;
     }
 }
-
 function compressImage($source, $destination, $quality)
 {
     $info = getimagesize($source);
@@ -131,7 +120,6 @@ function compressImage($source, $destination, $quality)
 <div class="wrapper">
   <?php include "topbar.php"; ?>
   <?php include "sidebar.php"; ?>
-
   <div class="content-wrapper">
     <section class="content-header">
       <div class="container-fluid">
@@ -147,7 +135,6 @@ function compressImage($source, $destination, $quality)
         </div>
       </div>
     </section>
-
     <section class="content">
       <div class="row">
         <div class="col-md-8">
@@ -162,7 +149,6 @@ function compressImage($source, $destination, $quality)
               </div>
             </div>
           <?php endif; ?>
-
           <!-- Form dengan validasi Bootstrap -->
           <form id="clientForm" action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             <div class="card card-outline card-info">
@@ -178,7 +164,6 @@ function compressImage($source, $destination, $quality)
                   </div>
                 </div>
               </div>
-
               <div class="card-header">
                 <div class="form-group">
                     <label for="exampleInputFile">
@@ -206,7 +191,6 @@ function compressImage($source, $destination, $quality)
                   ?>
                 </div>
               </div>
-
               <div class="card-header">
                 <div class="form-group">
                   <button type="submit" name="publise" class="btn btn-primary btn-lg">
@@ -221,10 +205,8 @@ function compressImage($source, $destination, $quality)
       </div><!-- /.row -->
     </section>
   </div>
-
   <?php include "footer.php"; ?>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -233,7 +215,6 @@ function compressImage($source, $destination, $quality)
 <script src="dist/js/adminlte.min.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
-
 <!-- SCRIPT VALIDASI BOOTSTRAP -->
 <script>
 (function () {
@@ -257,7 +238,6 @@ document.getElementById('validationLogo').addEventListener('change', function ()
     var file = this.files[0]; // Ambil file yang dipilih
     var errorBox = document.getElementById('fileErrorBox'); // Ambil elemen pesan error
     errorBox.style.display = 'none'; // Sembunyikan pesan error secara default
-
     if (file) {
         var maxSize = 500 * 1024; // 500KB dalam bytes
         if (file.size > maxSize) {
@@ -267,6 +247,5 @@ document.getElementById('validationLogo').addEventListener('change', function ()
     }
 });
 </script>
-
 </body>
 </html>

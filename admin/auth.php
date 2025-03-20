@@ -2,12 +2,10 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 if ($_SESSION['ad_id'] == '') {
     header('location:login.php');
     exit;
 }
-
 $ad_id = $_SESSION['ad_id'];
 $result = mysqli_query($con, "SELECT * FROM admin WHERE ad_id='$ad_id'");
 while ($row = mysqli_fetch_array($result)) { 

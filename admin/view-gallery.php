@@ -2,30 +2,25 @@
 ob_start();
 include 'conn.php';
 include 'auth.php';
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("D d M Y");
-
 // Proses hapus data jika ada parameter delete_id
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
-    $delete_id = intval($_GET['delete_id']);
-    
+    $delete_id = intval($_GET['delete_id']);  
     // Ambil nama file foto untuk dihapus
     $stmtSelect = $con->prepare("SELECT foto FROM media WHERE id = ?");
     $stmtSelect->bind_param("i", $delete_id);
     $stmtSelect->execute();
     $resultSelect = $stmtSelect->get_result();
     $rowSelect = $resultSelect->fetch_assoc();
-    $stmtSelect->close();
-    
+    $stmtSelect->close();    
     // Jika ada file, hapus file fisik
     if ($rowSelect && !empty($rowSelect['foto'])) {
         $filePath = "uploads/" . $rowSelect['foto'];
         if (file_exists($filePath)) {
             unlink($filePath);
         }
-    }
-    
+    }    
     // Hapus record dari database
     $stmtDelete = $con->prepare("DELETE FROM media WHERE id = ?");
     $stmtDelete->bind_param("i", $delete_id);
@@ -37,13 +32,11 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
         $_SESSION['msgClass'] = "danger";
     }
     $stmtDelete->close();
-    
     // Redirect agar mencegah reload mengulangi proses hapus
     header("Location: view-gallery.php");
     exit();
 }
 ob_end_flush();
-
 // Query untuk mengambil data galeri
 $query = "
     SELECT 
@@ -58,19 +51,16 @@ $query = "
 ";
 $result = mysqli_query($con, $query);
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <?php include "title.php"; ?>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1">  
   <!-- CSS -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
-
   <style>
     .table-responsive {
         overflow-x: auto;
@@ -115,7 +105,6 @@ $result = mysqli_query($con, $query);
   <!-- TOPBAR & SIDEBAR -->
   <?php include "topbar.php"; ?>
   <?php include "sidebar.php"; ?>
-
   <div class="content-wrapper">
     <section class="content-header">
       <div class="container-fluid">
@@ -131,7 +120,6 @@ $result = mysqli_query($con, $query);
           </div>
       </div>
     </section>
-
     <section class="content">
       <!-- Pesan notifikasi jika ada -->
       <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
@@ -148,7 +136,6 @@ $result = mysqli_query($con, $query);
          unset($_SESSION['msgClass']);
          endif;
       ?>
-
       <div class="card card-info">
          <div class="card-header">
            <h3 class="card-title">Lihat Galeri</h3>
@@ -194,16 +181,13 @@ $result = mysqli_query($con, $query);
       </div>
     </section>
   </div>
-  
   <?php include "footer.php"; ?>
 </div>
-
 <!-- JS -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="dist/js/adminlte.min.js"></script>
 <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-
 <script>
   $(document).ready(function() {
     $('#myTable').DataTable({

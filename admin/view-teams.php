@@ -2,26 +2,21 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-
 $a = 10;
-
 // Proses hapus data (dijalankan sebelum output HTML)
 if (isset($_GET['delete_id'])) {
     $del = intval($_GET['delete_id']);
-    
     // Ambil nama file gambar untuk dihapus
     $stmt = mysqli_prepare($con, "SELECT img FROM teams WHERE id = ?");
     mysqli_stmt_bind_param($stmt, "i", $del);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_bind_result($stmt, $img);
     mysqli_stmt_fetch($stmt);
-    mysqli_stmt_close($stmt);
-    
+    mysqli_stmt_close($stmt);  
     $path = "images/team/";
     if (!empty($img) && file_exists($path . $img)) {
         unlink($path . $img);
-    }
-    
+    }    
     // Hapus record dari database
     $stmt = mysqli_prepare($con, "DELETE FROM teams WHERE id = ?");
     mysqli_stmt_bind_param($stmt, "i", $del);
@@ -32,8 +27,7 @@ if (isset($_GET['delete_id'])) {
         $_SESSION['msg'] = "Terjadi kesalahan saat menghapus data";
         $_SESSION['msgClass'] = "danger";
     }
-    mysqli_stmt_close($stmt);
-    
+    mysqli_stmt_close($stmt);    
     header("Location: view-teams.php");
     exit();
 }
@@ -45,7 +39,6 @@ if (isset($_GET['delete_id'])) {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <?php include "title.php"; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -113,7 +106,6 @@ if (isset($_GET['delete_id'])) {
 <div class="wrapper">
   <?php include "topbar.php"; ?>
   <?php include "sidebar.php"; ?>
-
   <div class="content-wrapper">
     <!-- Header Konten -->
     <section class="content-header">
@@ -130,7 +122,6 @@ if (isset($_GET['delete_id'])) {
          </div>
       </div>
     </section>
-
     <section class="content">
       <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
          <div style="max-width:600px; margin:0 auto 20px auto;">
@@ -146,7 +137,6 @@ if (isset($_GET['delete_id'])) {
          unset($_SESSION['msgClass']);
          endif;
          ?>
-
       <div class="card card-info">
          <div class="card-header">
            <h3 class="card-title">Lihat</h3>
@@ -183,10 +173,8 @@ if (isset($_GET['delete_id'])) {
       </div>
     </section>
   </div>
-  
   <?php include "footer.php"; ?>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

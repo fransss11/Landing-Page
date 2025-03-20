@@ -1,14 +1,11 @@
 <?php
 include 'conn.php';
 header('Content-Type: application/json');
-
 // Nonaktifkan keluaran error agar tidak tercampur dalam JSON
 error_reporting(0);
 ini_set('display_errors', 0);
-
 // Ambil parameter action
 $action = isset($_GET['action']) ? $_GET['action'] : '';
-
 if ($action == 'fetch_services') {
     // =======================
     //        LAYANAN
@@ -17,10 +14,8 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-
     $baseQuery  = "SELECT id, title, short, descrip, img, date FROM services";
     $totalQuery = "SELECT COUNT(id) as total FROM services";
-
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
@@ -28,16 +23,13 @@ if ($action == 'fetch_services') {
                    OR short LIKE '%$searchValueEsc%' 
                    OR descrip LIKE '%$searchValueEsc%'";
     }
-
     $totalDataQuery = $totalQuery . $where;
     $resultTotal    = mysqli_query($con, $totalDataQuery);
     $rowTotal       = mysqli_fetch_assoc($resultTotal);
     $totalRecords   = $rowTotal['total'];
-
     // Urutan default (tanpa sorting dari DataTables)
     $orderColumn = "id";
     $orderDir    = "DESC";
-
     // Jika ada parameter order dari DataTables, gunakan
     if (isset($_GET['order'][0]['column']) && isset($_GET['order'][0]['dir'])) {
         $orderColumnIndex = intval($_GET['order'][0]['column']);
@@ -54,10 +46,8 @@ if ($action == 'fetch_services') {
             $orderColumn = $columns[$orderColumnIndex];
         }
     }
-
     $dataQuery = $baseQuery . $where . " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
     $resultData = mysqli_query($con, $dataQuery);
-
     $data = array();
     while ($row = mysqli_fetch_assoc($resultData)) {
         $id = $row['id'];
@@ -72,7 +62,6 @@ if ($action == 'fetch_services') {
         $row['aksi'] = $actions;
         $data[] = $row;
     }
-
     $response = array(
         "draw"            => $draw,
         "recordsTotal"    => $totalRecords,
@@ -81,7 +70,6 @@ if ($action == 'fetch_services') {
     );
     echo json_encode($response);
     exit;
-
 } elseif ($action == 'fetch_partner') {
     // =======================
     //        MITRA
@@ -90,48 +78,39 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-
     $baseQuery  = "SELECT id, klien, gambar FROM klien";
     $totalQuery = "SELECT COUNT(id) as total FROM klien";
-
     // Siapkan klausa WHERE untuk filter pencarian
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
         $where = " WHERE klien LIKE '%$searchValueEsc%'";
     }
-
     // Ambil jumlah total data
     $totalDataQuery = $totalQuery . $where;
     $resultTotal    = mysqli_query($con, $totalDataQuery);
     $rowTotal       = mysqli_fetch_assoc($resultTotal);
     $totalRecords   = $rowTotal['total'];
-
     // Pengaturan default sorting berdasarkan 'id' DESC
     $orderColumn = "id"; // Default ke 'id'
     $orderDir    = "DESC"; // Default DESC
-
     // Cek apakah ada parameter sorting dari DataTables, dan ubah urutannya
     if (isset($_GET['order'][0]['column']) && isset($_GET['order'][0]['dir'])) {
         $orderColumnIndex = intval($_GET['order'][0]['column']);
         $orderDir = ($_GET['order'][0]['dir'] === 'asc') ? 'ASC' : 'DESC';
-
         // Hanya izinkan pengurutan berdasarkan 'id' (kolom 0)
         $columns = array(
             0 => 'id',  // Kolom 0 adalah 'id' (kolom yang diizinkan untuk diurutkan)
             1 => 'klien', // Kolom 1 adalah 'klien' (kolom yang diizinkan untuk diurutkan)
         );
-
         // Jika indeks kolom yang diminta ada dalam peta, ubah kolom pengurutan
         if (isset($columns[$orderColumnIndex])) {
             $orderColumn = $columns[$orderColumnIndex];
         }
     }
-
     // Bangun query untuk mengambil data dengan pengurutan yang dinamis
     $dataQuery = $baseQuery . $where . " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
     $resultData = mysqli_query($con, $dataQuery);
-
     // Siapkan data untuk DataTables
     $data = array();
     $no   = $start + 1; // Untuk menampilkan nomor baris yang benar
@@ -149,7 +128,6 @@ if ($action == 'fetch_services') {
         $row['aksi'] = $actions;  // Menambahkan tombol aksi
         $data[] = $row;
     }
-
     // Menyiapkan respons akhir yang akan dikirimkan ke DataTables
     $response = array(
         "draw"            => $draw,
@@ -157,10 +135,8 @@ if ($action == 'fetch_services') {
         "recordsFiltered" => $totalRecords,
         "data"            => $data
     );
-
     echo json_encode($response);
     exit;
-
 } elseif ($action == 'fetch_blog') {
     // =======================
     //         BLOG
@@ -169,10 +145,8 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-
     $baseQuery  = "SELECT id, title, category, descrip, img FROM blog";
     $totalQuery = "SELECT COUNT(id) as total FROM blog";
-
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
@@ -180,12 +154,10 @@ if ($action == 'fetch_services') {
                    OR category LIKE '%$searchValueEsc%' 
                    OR descrip LIKE '%$searchValueEsc%'";
     }
-
     $totalDataQuery = $totalQuery . $where;
     $resultTotal    = mysqli_query($con, $totalDataQuery);
     $rowTotal       = mysqli_fetch_assoc($resultTotal);
     $totalRecords   = $rowTotal['total'];
-
     $orderColumn = "id";
     $orderDir    = "DESC";
     if (isset($_GET['order'][0]['column']) && isset($_GET['order'][0]['dir'])) {
@@ -201,10 +173,8 @@ if ($action == 'fetch_services') {
             $orderColumn = $columns[$orderColumnIndex];
         }
     }
-
     $dataQuery = $baseQuery . $where . " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
     $resultData = mysqli_query($con, $dataQuery);
-
     $data = array();
     while ($row = mysqli_fetch_assoc($resultData)) {
         $id = $row['id'];
@@ -219,7 +189,6 @@ if ($action == 'fetch_services') {
         $row['aksi'] = $actions;
         $data[] = $row;
     }
-
     $response = array(
         "draw"            => $draw,
         "recordsTotal"    => $totalRecords,
@@ -228,7 +197,6 @@ if ($action == 'fetch_services') {
     );
     echo json_encode($response);
     exit;
-
 } elseif ($action == 'fetch_testimonials') {
     // =======================
     //    TESTIMONIALS
@@ -237,10 +205,8 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-
     $baseQuery  = "SELECT id, title, designation, descrip, img FROM testimonials";
     $totalQuery = "SELECT COUNT(id) as total FROM testimonials";
-
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
@@ -248,12 +214,10 @@ if ($action == 'fetch_services') {
                    OR designation LIKE '%$searchValueEsc%' 
                    OR descrip LIKE '%$searchValueEsc%'";
     }
-
     $totalDataQuery = $totalQuery . $where;
     $resultTotal    = mysqli_query($con, $totalDataQuery);
     $rowTotal       = mysqli_fetch_assoc($resultTotal);
     $totalRecords   = $rowTotal['total'];
-
     $orderColumn = "id";
     $orderDir    = "DESC";
     if (isset($_GET['order'][0]['column']) && isset($_GET['order'][0]['dir'])) {
@@ -269,10 +233,8 @@ if ($action == 'fetch_services') {
             $orderColumn = $columns[$orderColumnIndex];
         }
     }
-
     $dataQuery = $baseQuery . $where . " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
     $resultData = mysqli_query($con, $dataQuery);
-
     $data = array();
     while ($row = mysqli_fetch_assoc($resultData)) {
         $id = $row['id'];
@@ -287,7 +249,6 @@ if ($action == 'fetch_services') {
         $row['aksi'] = $actions;
         $data[] = $row;
     }
-
     $response = array(
         "draw"            => $draw,
         "recordsTotal"    => $totalRecords,
@@ -296,7 +257,6 @@ if ($action == 'fetch_services') {
     );
     echo json_encode($response);
     exit;
-
 } elseif ($action == 'fetch_teams') {
     // =======================
     //        TIM
@@ -305,10 +265,8 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-
     $baseQuery  = "SELECT * FROM teams";
     $totalQuery = "SELECT COUNT(id) as total FROM teams";
-
     // Siapkan klausa WHERE untuk filter pencarian
     $where = "";
     if (!empty($searchValue)) {
@@ -321,22 +279,18 @@ if ($action == 'fetch_services') {
                    OR linkedin LIKE '%$searchValueEsc%' 
                    OR whatsapp LIKE '%$searchValueEsc%'";
     }
-
     // Ambil jumlah total data
     $totalDataQuery = $totalQuery . $where;
     $resultTotal    = mysqli_query($con, $totalDataQuery);
     $rowTotal       = mysqli_fetch_assoc($resultTotal);
     $totalRecords   = $rowTotal['total'];
-
     // Pengaturan default sorting berdasarkan 'id' DESC
     $orderColumn = "id"; // Default ke 'id'
     $orderDir    = "DESC"; // Default DESC
-
     // Cek apakah ada parameter sorting dari DataTables, dan ubah urutannya
     if (isset($_GET['order'][0]['column']) && isset($_GET['order'][0]['dir'])) {
         $orderColumnIndex = intval($_GET['order'][0]['column']);
         $orderDir = ($_GET['order'][0]['dir'] === 'asc') ? 'ASC' : 'DESC';
-
         // Kolom yang diizinkan untuk sorting
         $columns = array(
             0 => 'id',
@@ -348,17 +302,14 @@ if ($action == 'fetch_services') {
             6 => 'linkedin',
             7 => 'whatsapp'
         );
-
         // Jika indeks kolom yang diminta ada dalam peta, ubah kolom pengurutan
         if (isset($columns[$orderColumnIndex])) {
             $orderColumn = $columns[$orderColumnIndex];
         }
     }
-
     // Bangun query untuk mengambil data dengan pengurutan yang dinamis
     $dataQuery = $baseQuery . $where . " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
     $resultData = mysqli_query($con, $dataQuery);
-
     // Siapkan data untuk DataTables
     $data = array();
     $no   = $start + 1; // Untuk menampilkan nomor baris yang benar
@@ -376,7 +327,6 @@ if ($action == 'fetch_services') {
         $row['aksi'] = $actions;  // Menambahkan tombol aksi
         $data[] = $row;
     }
-
     // Menyiapkan respons akhir yang akan dikirimkan ke DataTables
     $response = array(
         "draw"            => $draw,
@@ -384,10 +334,8 @@ if ($action == 'fetch_services') {
         "recordsFiltered" => $totalRecords,
         "data"            => $data
     );
-
     echo json_encode($response);
     exit;
-
 } elseif ($action == 'fetch_projek') {
     // =======================
     //        PROJEK
@@ -396,10 +344,8 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-
     $baseQuery  = "SELECT * FROM projek";
     $totalQuery = "SELECT COUNT(id) as total FROM projek";
-
     // Siapkan klausa WHERE untuk filter pencarian
     $where = "";
     if (!empty($searchValue)) {
@@ -409,22 +355,18 @@ if ($action == 'fetch_services') {
                    OR deskrip LIKE '%$searchValueEsc%' 
                    OR upload LIKE '%$searchValueEsc%'";
     }
-
     // Ambil jumlah total data
     $totalDataQuery = $totalQuery . $where;
     $resultTotal    = mysqli_query($con, $totalDataQuery);
     $rowTotal       = mysqli_fetch_assoc($resultTotal);
     $totalRecords   = $rowTotal['total'];
-
     // Pengaturan default sorting berdasarkan 'id' DESC
     $orderColumn = "id"; // Default ke 'id'
     $orderDir    = "DESC"; // Default DESC
-
     // Cek apakah ada parameter sorting dari DataTables, dan ubah urutannya
     if (isset($_GET['order'][0]['column']) && isset($_GET['order'][0]['dir'])) {
         $orderColumnIndex = intval($_GET['order'][0]['column']);
         $orderDir = ($_GET['order'][0]['dir'] === 'asc') ? 'ASC' : 'DESC';
-
         // Kolom yang diizinkan untuk sorting
         $columns = array(
             0 => 'judul',
@@ -432,17 +374,14 @@ if ($action == 'fetch_services') {
             2 => 'deskrip',
             3 => 'upload'
         );
-
         // Jika indeks kolom yang diminta ada dalam peta, ubah kolom pengurutan
         if (isset($columns[$orderColumnIndex])) {
             $orderColumn = $columns[$orderColumnIndex];
         }
     }
-
     // Bangun query untuk mengambil data dengan pengurutan yang dinamis
     $dataQuery = $baseQuery . $where . " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
     $resultData = mysqli_query($con, $dataQuery);
-
     // Siapkan data untuk DataTables
     $data = array();
     $no   = $start + 1; // Untuk menampilkan nomor baris yang benar
@@ -460,7 +399,6 @@ if ($action == 'fetch_services') {
         $row['aksi'] = $actions;  // Menambahkan tombol aksi
         $data[] = $row;
     }
-
     // Menyiapkan respons akhir yang akan dikirimkan ke DataTables
     $response = array(
         "draw"            => $draw,
@@ -468,10 +406,8 @@ if ($action == 'fetch_services') {
         "recordsFiltered" => $totalRecords,
         "data"            => $data
     );
-
     echo json_encode($response);
     exit;
-
 } else {
     echo json_encode(["error" => "Aksi tidak valid"]);
     exit;

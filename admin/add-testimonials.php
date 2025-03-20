@@ -2,9 +2,7 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-
 $a = 5;
-
 // Ambil flash message dari session jika ada
 if (isset($_SESSION['msg'])) {
     $msg = $_SESSION['msg'];
@@ -14,10 +12,8 @@ if (isset($_SESSION['msg'])) {
     $msg = "";
     $msgClass = "";
 }
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("D d M Y");
-
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : '';
 $roww = [];
 if ($edit) {
@@ -32,14 +28,11 @@ if (!$roww) {
         "img"         => "",
     ];
 }
-
 if (isset($_POST['publise'])) {
     $title       = mysqli_real_escape_string($con, $_POST['title']);
     $designation = mysqli_real_escape_string($con, $_POST['designation']);
     $comments    = mysqli_real_escape_string($con, $_POST['comments']);
-
     $lis_img = $roww["img"];
-
     if (!empty($_FILES['lis_img']['name'])) {
         $maxFileSize = 500 * 1024; // 500KB
         if ($_FILES['lis_img']['size'] > $maxFileSize) {
@@ -48,7 +41,6 @@ if (isset($_POST['publise'])) {
             header("Location: add-testimonials.php" . ($edit ? "?edit=" . $edit : ""));
             exit;
         }
-        
         $lis_img = rand() . '_' . $_FILES['lis_img']['name'];
         $tempname = $_FILES['lis_img']['tmp_name'];
         $folder   = "images/testimonial/" . $lis_img;
@@ -58,7 +50,6 @@ if (isset($_POST['publise'])) {
             compressImage($tempname, $folder, 60);
         }
     }
-
     if ($edit == '') {
         $insertdata = mysqli_query($con, "INSERT INTO testimonials (title, designation, descrip, img, date, status) 
             VALUES ('$title', '$designation', '$comments', '$lis_img', '$today', '0')");
@@ -86,7 +77,6 @@ if (isset($_POST['publise'])) {
         exit;
     }
 }
-
 function compressImage($source, $destination, $quality) {
     $info = getimagesize($source);
     if ($info['mime'] == 'image/jpeg') {
@@ -104,10 +94,8 @@ function compressImage($source, $destination, $quality) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -124,14 +112,12 @@ function compressImage($source, $destination, $quality) {
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
     <!-- Navbar -->
     <?php include "topbar.php"; ?>
     <!-- Sidebar Utama -->
     <?php include "sidebar.php"; ?>
-
     <!-- Content Wrapper. Berisi konten halaman -->
     <div class="content-wrapper">
         <!-- Header Konten (Page header) -->
@@ -149,7 +135,6 @@ function compressImage($source, $destination, $quality) {
                 </div>
             </div>
         </section>
-
         <!-- Konten Utama -->
         <section class="content">
             <div class="container-fluid">
@@ -163,8 +148,7 @@ function compressImage($source, $destination, $quality) {
                             </button>
                         </div>
                     </div>
-                <?php endif; ?>
-                
+                <?php endif; ?>        
                 <div class="row">
                     <div class="col-md-8">
                         <!-- Form dengan validasi Bootstrap -->
@@ -181,7 +165,6 @@ function compressImage($source, $destination, $quality) {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label for="validationDesignation" class="form-label">Masukkan Jabatan</label>
@@ -193,7 +176,6 @@ function compressImage($source, $destination, $quality) {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="card-body pad">
                                     <label for="validationComments" class="form-label">Komentar</label>
                                     <div class="mb-3">
@@ -204,7 +186,6 @@ function compressImage($source, $destination, $quality) {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="card-header">   
                                     <div class="form-group">
                                         <label for="exampleInputFile">
@@ -232,7 +213,6 @@ function compressImage($source, $destination, $quality) {
                                         }
                                     ?>
                                 </div>
-
                                 <div class="card-header">
                                     <div class="form-group">
                                         <div class="row">
@@ -245,7 +225,6 @@ function compressImage($source, $destination, $quality) {
                                         </div>
                                     </div>
                                 </div>
-
                             </div><!-- /.card -->
                         </form>
                     </div>
@@ -260,7 +239,6 @@ function compressImage($source, $destination, $quality) {
     <?php include "footer.php"; ?>
 </div>
 <!-- ./wrapper -->
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -269,7 +247,6 @@ function compressImage($source, $destination, $quality) {
 <script src="dist/js/adminlte.min.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
-
 <!-- VALIDASI BOOTSTRAP SCRIPT -->
 <script>
 (function () {
@@ -287,7 +264,6 @@ function compressImage($source, $destination, $quality) {
     });
 })();
 </script>
-
 <script>
     $(document).ready(function(){
         $("#imageUpload").change(function(){
@@ -308,6 +284,5 @@ function compressImage($source, $destination, $quality) {
         $('.textarea').summernote();
     });
 </script>
-
 </body>
 </html>

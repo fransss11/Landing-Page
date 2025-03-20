@@ -1,51 +1,41 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
 // Include koneksi dan autentikasi
 include 'conn.php';
 include 'auth.php';
-
 $a = 2;
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("D d M Y");
-
 // Cek koneksi ke database
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
 // Ambil data dari tabel info dan social
 $info_result = mysqli_query($con, "SELECT * FROM info WHERE id_info='1'");
 if (!$info_result) {
     die("Error fetching info: " . mysqli_error($con));
 }
 $info_row = mysqli_fetch_array($info_result);
-
 $social_result = mysqli_query($con, "SELECT * FROM social WHERE id='1'");
 if (!$social_result) {
     die("Error fetching social data: " . mysqli_error($con));
 }
 $social_row = mysqli_fetch_array($social_result);
-
 // Proses form update jika tombol "update" ditekan
 if (isset($_POST['update'])) {
     // Ambil data dari form
     extract($_POST);
-
     // Update data ke tabel info
     $update_info = mysqli_query($con, "UPDATE info SET lokasi='$address', gmail='$email', maps_url='$map' WHERE id_info='1'");
     if (!$update_info) {
         die("Error updating info: " . mysqli_error($con));
     }
-
     // Update data ke tabel social
     $update_social = mysqli_query($con, "UPDATE social SET facebook='$facebook', twitter='$twitter', instagram='$instagram', linkedin='$linkedin', whatsapp='$whatsapp', phone='$phone' WHERE id='1'");
     if (!$update_social) {
         die("Error updating social data: " . mysqli_error($con));
     }
-
     // Upload logo jika ada
     if ($_FILES['logo']['name'] != '') {
         $logo = rand() . $_FILES['logo']['name'];  // Nama file logo akan digenerate secara acak
@@ -58,15 +48,12 @@ if (isset($_POST['update'])) {
             echo "<script>alert('Failed to upload logo');</script>";
         }
     }
-
     echo "<script>alert('Updated Successfully');</script>";
     echo "<script>window.location.href = 'settings.php'</script>";
 }
 ?>
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -85,7 +72,6 @@ if (isset($_POST['update'])) {
         }
     </style>
 </head>
-
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <?php include "topbar.php"; ?>
@@ -100,7 +86,6 @@ if (isset($_POST['update'])) {
                     </div>
                 </div>
             </section>
-
             <section class="content">
                 <form action="" method="post" enctype="multipart/form-data">
                     <div class="row">
@@ -136,7 +121,6 @@ if (isset($_POST['update'])) {
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="card card-outline card-info">
                                 <div class="card-header">
@@ -177,7 +161,6 @@ if (isset($_POST['update'])) {
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-12">
                             <div class="card-header">
                                 <div class="form-group">
@@ -192,7 +175,6 @@ if (isset($_POST['update'])) {
         <?php include "footer.php"; ?>
         <aside class="control-sidebar control-sidebar-dark"></aside>
     </div>
-
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="dist/js/adminlte.min.js"></script>
@@ -204,5 +186,4 @@ if (isset($_POST['update'])) {
     })
     </script>
 </body>
-
 </html>

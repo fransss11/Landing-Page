@@ -595,7 +595,7 @@
     }
     
     .contact-button:hover {
-        background: #5A1BB0; /* Warna lebih gelap saat hover */
+        background: #ffffff; /* Warna lebih gelap saat hover */
         box-shadow: 0 6px 14px rgba(90, 27, 176, 0.6);
     }
     
@@ -1304,7 +1304,7 @@
 }
 
 .testimonial .testimonial-item .testimonial-inner .testimonial-inner-img {
-    width: 150px;
+    width: auto;
     height: auto;
     border-radius: 50%;
     border: 5px solid var(--bs-white);
@@ -2169,3 +2169,13 @@ tr:hover {
 }
 
 /* end projek */
+
+/* tambahan galeri */
+.kategori-header {
+    transition: background 0.3s, color 0.3s;
+}
+.kategori-header:hover {
+    color:rgb(255, 255, 255);
+    cursor: pointer;
+}
+/* end tambahan galeri */

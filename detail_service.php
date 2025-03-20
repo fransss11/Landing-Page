@@ -1,65 +1,49 @@
 <?php
 include 'database.php';
-
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
 // Fungsi untuk format tanggal ke Bahasa Indonesia
 function formatTanggalIndonesia($tanggal) {
     $bulanIndo = [
         "Januari", "Februari", "Maret", "April", "Mei", "Juni",
         "Juli", "Agustus", "September", "Oktober", "November", "Desember"
     ];
-
     $hariIndo = [
         "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
     ];
-
     $dateObj = strtotime($tanggal);
     $hari = $hariIndo[date('w', $dateObj)];
     $tanggalNum = date('j', $dateObj);
     $bulan = $bulanIndo[date('n', $dateObj) - 1];
     $tahun = date('Y', $dateObj);
     $jam = date('H:i:s', $dateObj);
-
     return "$hari, $tanggalNum $bulan $tahun $jam";
 }
-
 // Fetch data dari tabel 'services'
 $sql = "SELECT title, descrip, img, date FROM services WHERE id = $id";
 $result = $conn->query($sql);
 $serviceDetail = $result->fetch_assoc();
-
 if ($serviceDetail) {
     $serviceDetail['date'] = formatTanggalIndonesia($serviceDetail['date']); // Ubah format tanggal
 }
-
 $conn->close();
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Detail Service - Lisa Mitra Mandiri</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet"> 
-
     <!-- Bootstrap & FontAwesome -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-
     <!-- Animations & Carousel -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
-
     <style>
         /* Animasi Hover untuk Gambar */
         .service-img img {
@@ -68,27 +52,22 @@ $conn->close();
             width: 100%;
             height: auto;
         }
-
         .service-img img:hover {
             transform: scale(1.05);
             box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
         }
-
         /* Animasi WOW.js */
         .wow {
             visibility: hidden;
         }
-
         /* Animasi hover tombol */
         .btn-primary {
             transition: all 0.3s ease-in-out;
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             background-color: #0056b3;
-        }
-        
+        } 
         /* Responsive style untuk mobile */
         @media (max-width: 768px) {
             .detail-service-container {
@@ -117,9 +96,7 @@ $conn->close();
         }
     </style>
 </head>
-
 <body>
-
     <!-- Header -->
     <div class="container-fluid bg-breadcrumb">
         <div class="container text-center py-5">
@@ -132,7 +109,6 @@ $conn->close();
         </div>
     </div>
     <!-- Header End -->
-
     <!-- Detail Service Start -->
     <div class="container detail-service-container">
         <div class="row">
@@ -157,18 +133,14 @@ $conn->close();
         </div>
     </div>
     <!-- Detail Service End -->
-
-
     <!-- Script untuk Ambil ID dari URL & Tampilkan Detail -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const serviceDetail = <?php echo json_encode($serviceDetail); ?>;
-            
             if (serviceDetail) {
                 document.getElementById("detail-judul-service").innerText = serviceDetail.title;
                 document.getElementById("detail-tanggal-service").innerText = serviceDetail.date; // Tanggal sudah dalam format Indonesia
                 document.getElementById("detail-gambar-service").src = "admin/images/services/" + serviceDetail.img;
-
                 // Gunakan innerHTML agar bisa mendukung format HTML dalam deskripsi
                 document.getElementById("detail-konten-service").innerHTML = serviceDetail.descrip;
             } else {
@@ -177,22 +149,18 @@ $conn->close();
         });
     </script>
     <!-- Detail Service End -->
-
     <!-- Footer -->
     <div class="container-fluid footer py-5 text-center">
         <p>&copy; 2025 Lisa Mitra Mandiri. All Rights Reserved.</p>
     </div>
     <!-- Footer End -->
-
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
-
     <!-- Inisialisasi WOW.js -->
     <script>
         new WOW().init();
     </script>
-
 </body>
 </html>

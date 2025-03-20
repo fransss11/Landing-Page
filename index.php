@@ -1,135 +1,105 @@
 <?php
 include 'database.php';
-
 // Fetch data from the 'klien' table
 $sql = "SELECT klien, gambar FROM klien";
 $result = $conn->query($sql);
-
 $clients = array();
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $clients[] = $row;
     }
 }
-
 // Fetch data from the 'services' table
 $sql = "SELECT id, title, short, descrip, img, date FROM services";
 $result = $conn->query($sql);
-
 $services = array();
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $services[] = $row;
     }
 }
-
 // Fetch data from the 'about' table
 $sql = "SELECT * FROM about ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
 $about = $result->fetch_assoc();
-
 // Fetch data from the 'teams' table
 $sql = "SELECT title, designation, descrip, img, facebook, twitter, instagram, linkedin, whatsapp FROM teams";
 $result = $conn->query($sql);
-
 $teamList = array();
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $teamList[] = $row;
     }
 }
-
 // Fetch data from the 'testimonials' table
 $sql = "SELECT title, designation, descrip, img, date FROM testimonials";
 $result = $conn->query($sql);
-
 $testimonials = array();
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $testimonials[] = $row;
     }
 }
-
 // Fetch data from the 'blog' table
 $sql = "SELECT id, title, category, descrip, img, date FROM blog";
 $result = $conn->query($sql);
-
 $beritaList = array();
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $beritaList[] = $row;
     }
 }
-
 $conn->close();
-
 function formatTanggalIndonesia($tanggal) {
     $bulanIndo = [
         "Januari", "Februari", "Maret", "April", "Mei", "Juni",
         "Juli", "Agustus", "September", "Oktober", "November", "Desember"
     ];
-
     $hariIndo = [
         "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
     ];
-
     $dateObj = strtotime($tanggal);
     $hari = $hariIndo[date('w', $dateObj)];
     $tanggalNum = date('j', $dateObj);
     $bulan = $bulanIndo[date('n', $dateObj) - 1];
     $tahun = date('Y', $dateObj);
-
     return "$hari, $tanggalNum $bulan $tahun";
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Lisa Mitra Mandiri</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
 </head>
-
 <body>
-
     <!-- Spinner Start -->
     <?php include 'includes/spinner.php'; ?>
     <!-- Spinner End -->
-
-
     <!-- Topbar Start -->
     <?php include 'includes/topbar.php'; ?>
     <!-- Topbar End -->
-
-
     <!-- Navbar & Hero Start -->
     <?php include 'includes/navbar-index.php'; ?>
     <!-- Navbar End -->
-
     <!-- Client Reviews Section -->
     <div class="container-fluid py-5 client-reviews-section">
         <div class="row">
@@ -151,7 +121,6 @@ function formatTanggalIndonesia($tanggal) {
         </div>
     </div>
     <!-- Client Reviews Section End -->
-
     <!-- Services Start -->
     <div class="container-fluid service py-5 animated fadeInUp">
         <div class="container py-5">
@@ -174,18 +143,13 @@ function formatTanggalIndonesia($tanggal) {
                                 <p class="mb-4 short-description">
                                     <?php 
                                     $short = strip_tags($service['short']); // Hapus tag HTML agar tidak mengganggu perhitungan
-
                                     if (strlen($short) > 200) {
                                         $shortCut = substr($short, 0, 200);
                                         $short = substr($shortCut, 0, strrpos($shortCut, ' ')) . '...'; // Potong di akhir kata agar tidak terpotong
                                     }
-
                                     echo htmlspecialchars($short); // Pastikan teks aman untuk ditampilkan
                                     ?>
                                 </p>
-
-
-
                                 <!-- Wadah untuk tanggal + tombol -->
                                 <div class="mt-auto text-center">
                                     <p class="text-muted mb-2">
@@ -208,8 +172,6 @@ function formatTanggalIndonesia($tanggal) {
         </div>
     </div>
     <!-- Services End -->
-
-
     <!-- About Start -->
     <div class="container-fluid about bg-light py-5">
         <div class="container py-5">
@@ -231,7 +193,6 @@ function formatTanggalIndonesia($tanggal) {
         </div>
     </div>
     <!-- About End -->
-
     <!-- Team Start -->
     <div class="container-fluid team py-5">
         <div class="container py-5">
@@ -278,8 +239,6 @@ function formatTanggalIndonesia($tanggal) {
         </div>
     </div>
     <!-- Team End -->
-
-
     <!-- Testimonial Start -->
     <section id="testimoni" class="py-5" data-aos="fade-up">
         <div class="container-fluid testimonial py-5 wow zoomInDown" data-wow-delay="0.1s">
@@ -316,31 +275,26 @@ function formatTanggalIndonesia($tanggal) {
         </div>
     </section>
     <!-- Testimonial End -->
-
     <!-- Daftar Berita -->
     <div class="container py-5">
         <h4 class="text-center mb-4 fade-in" style="font-size: 300%;">Daftar Berita</h4>
         <div class="row g-4" id="berita-container"></div>
     </div>
-
     <!-- Script untuk Daftar Berita -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let beritaContainer = document.getElementById("berita-container");
             const beritaList = <?php echo json_encode($beritaList); ?>;
-
             // Jika hanya 1 berita, tambahkan kelas agar konten berada di tengah
             if (beritaList.length === 1) {
                 beritaContainer.classList.add("d-flex", "justify-content-center");
             }
-
             beritaList.forEach((berita, index) => {
                 let short = berita.descrip.replace(/(<([^>]+)>)/gi, ""); // Hapus tag HTML
                 if (short.length > 200) {
                     let shortCut = short.substring(0, 200);
                     short = shortCut.substring(0, shortCut.lastIndexOf(" ")) + "...";
                 }
-
                 // Jika hanya satu berita, kita bisa menambahkan 'mx-auto' agar card-nya benar-benar center
                 // (bisa dihilangkan jika sudah cukup dengan d-flex justify-content-center pada container)
                 beritaContainer.innerHTML += `
@@ -363,51 +317,42 @@ function formatTanggalIndonesia($tanggal) {
         });
     </script>
     <!-- end berita -->
-
-
-     <!-- Footer Start -->
-     <?php include 'includes/footer.php'; ?>
-     <!-- Footer End -->
-        
+    <!-- Footer Start -->
+    <?php include 'includes/footer.php'; ?>
+    <!-- Footer End -->
     <!-- Copyright Start -->
     <?php include 'includes/copyright.php'; ?>
     <!-- Copyright End -->
-
     <!-- Back to Top -->
     <?php include 'includes/back_to_top.php'; ?>
     <!-- Back to Top End -->
-        
-            <!-- JavaScript Libraries -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="lib/wow/wow.min.js"></script>
-            <script src="lib/easing/easing.min.js"></script>
-            <script src="lib/waypoints/waypoints.min.js"></script>
-            <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-            
-            <script>
-                $(document).ready(function(){
-                    $(".client-reviews").owlCarousel({
-                        loop: true,
-                        margin: 30,
-                        nav: false,
-                        autoplay: true,
-                        autoplayTimeout: 3000,
-                        autoplaySpeed: 1000,
-                        autoplayHoverPause: false,
-                        items: 1,
-                        responsive: {
-                            0: { items: 1 },
-                            600: { items: 2 },
-                            1000: { items: 3 }
-                        }
-                    });
-                });
-            </script>
-
-            <!-- Template Javascript -->
-            <script src="js/main.js"></script>
-        
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".client-reviews").owlCarousel({
+                loop: true,
+                margin: 30,
+                nav: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplaySpeed: 1000,
+                autoplayHoverPause: false,
+                items: 1,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+        });
+    </script>
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
     </body>
-
 </html>

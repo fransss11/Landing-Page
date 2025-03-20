@@ -1,10 +1,8 @@
 <?php
 include 'conn.php';
 include 'auth.php';
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("Y-m-d H:i:s");
-
 // Ambil pesan flash dari session (jika ada)
 if (isset($_SESSION['msg'])) {
     $msg = $_SESSION['msg'];
@@ -15,10 +13,8 @@ if (isset($_SESSION['msg'])) {
     $msg = "";
     $msgClass = "";
 }
-
 // Periksa apakah parameter 'edit' ada pada URL
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : '';
-
 if ($edit) {
     // Mode edit: ambil data dari tabel blog berdasarkan ID
     $resultt = mysqli_query($con, "SELECT * FROM blog WHERE id = '$edit'");
@@ -27,7 +23,6 @@ if ($edit) {
     // Mode baru (insert): set default kosong
     $roww = ['title' => '', 'category' => '', 'descrip' => '', 'img' => '', 'url' => ''];
 }
-
 // Tangani pengiriman form
 if (isset($_POST['publise'])) {
     // Sanitasi input
@@ -35,14 +30,11 @@ if (isset($_POST['publise'])) {
     $category = mysqli_real_escape_string($con, $_POST['category']);
     // Ambil konten dari Summernote
     $descrip  = $_POST['descrip'];
-
     // Hapus tag <p> tapi pertahankan tag HTML lainnya
     $descrip  = preg_replace('/<p[^>]*>(.*?)<\/p>/is', '$1', $descrip);
-
     // Sanitasi input untuk mencegah XSS
     $descrip  = mysqli_real_escape_string($con, $descrip);
     $url      = isset($_POST['url']) ? mysqli_real_escape_string($con, $_POST['url']) : '';
-
     // Tangani unggahan file
     $lis_img = isset($roww["img"]) ? $roww["img"] : '';
     if (!empty($_FILES['lis_img']['name'])) {
@@ -54,20 +46,16 @@ if (isset($_POST['publise'])) {
             header("Location: add-blog.php" . ($edit ? "?edit=" . $edit : ""));
             exit;
         }
-        
         $lis_img  = rand() . '_' . $_FILES['lis_img']['name'];
         $tempname = $_FILES['lis_img']['tmp_name'];
         $folder   = "images/blog/" . $lis_img;
-
         // Validasi ekstensi (opsional)
         $valid_ext = array('png', 'jpeg', 'jpg');
         $file_extension = strtolower(pathinfo($folder, PATHINFO_EXTENSION));
-
         if (in_array($file_extension, $valid_ext)) {
             compressImage($tempname, $folder, 60);
         }
     }
-
     // Jika mode baru (insert) atau update (edit)
     if ($edit == '') {
         // Insert
@@ -107,12 +95,10 @@ if (isset($_POST['publise'])) {
         exit;
     }
 }
-
 // Fungsi untuk mengompres gambar
 function compressImage($source, $destination, $quality)
 {
     $info = getimagesize($source);
-
     if ($info['mime'] == 'image/jpeg') {
         $image = imagecreatefromjpeg($source);
         imagejpeg($image, $destination, $quality);
@@ -135,16 +121,13 @@ function compressImage($source, $destination, $quality)
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!-- Summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
 </head>
-
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
     <?php include "topbar.php"; ?>
     <?php include "sidebar.php"; ?>
-
     <div class="content-wrapper">
         <!-- Header Konten -->
         <section class="content-header">
@@ -161,7 +144,6 @@ function compressImage($source, $destination, $quality)
                 </div>
             </div>
         </section>
-
         <!-- Konten Utama -->
         <section class="content">
             <div class="row">
@@ -177,11 +159,9 @@ function compressImage($source, $destination, $quality)
                             </div>
                         </div>
                     <?php endif; ?>
-
                     <!-- Form Berita dengan validasi Bootstrap & Summernote -->
                     <form id="blogForm" action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                         <div class="card card-outline card-info">
-                            
                             <!-- Judul -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -199,7 +179,6 @@ function compressImage($source, $destination, $quality)
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Kategori -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -223,7 +202,6 @@ function compressImage($source, $destination, $quality)
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Deskripsi (Summernote) -->
                             <div class="card-body pad">
                                 <label>Masukkan Deskripsi <span class="text-danger">*</span></label>
@@ -240,7 +218,6 @@ function compressImage($source, $destination, $quality)
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Unggah Gambar -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -269,7 +246,6 @@ function compressImage($source, $destination, $quality)
                                 }
                                 ?>
                             </div>
-
                             <!-- Tombol Submit -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -285,10 +261,8 @@ function compressImage($source, $destination, $quality)
             </div><!-- /.row -->
         </section>
     </div>
-
     <?php include "footer.php"; ?>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -297,7 +271,6 @@ function compressImage($source, $destination, $quality)
 <script src="dist/js/adminlte.min.js"></script>
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
-
 <!-- Validasi Bootstrap & Summernote -->
 <script>
     $(document).ready(function() {
@@ -310,11 +283,9 @@ function compressImage($source, $destination, $quality)
           }
         }
       });
-
       $('input[name="lis_img"]').on('change', function() {
         var file = this.files[0]; // Ambil file
         var maxFileSize = 500 * 1024; // 500KB dalam bytes
-
         if (file) {
             if (file.size > maxFileSize) {
                 $('#fileError').show().text('File maksimal 500 kb.');
@@ -324,7 +295,6 @@ function compressImage($source, $destination, $quality)
             }
         }
       });
-
       // Validasi khusus untuk Summernote dan ukuran file
       $('#blogForm').on('submit', function(event) {
         var isValid = true;
@@ -337,7 +307,6 @@ function compressImage($source, $destination, $quality)
         } else {
           $('.note-editor').removeClass('is-invalid');
         }
-        
         // Validasi ukuran unggahan file (maksimum 500KB)
         var fileInput = $('input[name="lis_img"]')[0];
         if(fileInput && fileInput.files.length > 0) {
@@ -348,14 +317,12 @@ function compressImage($source, $destination, $quality)
                 $('#fileError').show().text('File maksimal 500 kb.');
             }
         }
-        
         if (!isValid) {
           event.preventDefault();
           event.stopPropagation();
         }
       });
     });
-
     // Validasi Bootstrap 4
     (function () {
       'use strict';

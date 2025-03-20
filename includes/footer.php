@@ -66,11 +66,16 @@ function getBrowser() {
 
 function getDevice() {
     $device = "Unknown Device";
-    if (preg_match('/mobile/i', $_SERVER['HTTP_USER_AGENT'])) {
-        $device = "Mobile";
-    } elseif (preg_match('/tablet/i', $_SERVER['HTTP_USER_AGENT'])) {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+    // Deteksi tablet: iPad, Android tanpa "mobile", atau kata "tablet" di user agent
+    if (preg_match('/iPad/i', $user_agent) || 
+        (preg_match('/android/i', $user_agent) && !preg_match('/mobile/i', $user_agent)) ||
+        preg_match('/tablet/i', $user_agent)) {
         $device = "Tablet";
-    } elseif (preg_match('/desktop|windows|macintosh|linux/i', $_SERVER['HTTP_USER_AGENT'])) {
+    } elseif (preg_match('/mobile/i', $user_agent)) {
+        $device = "Mobile";
+    } elseif (preg_match('/desktop|windows|macintosh|linux/i', $user_agent)) {
         $device = "Desktop";
     }
     return $device;

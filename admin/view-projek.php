@@ -2,22 +2,18 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("Y-m-d H:i:s"); // Format tanggal standar
-
 // Tangani penghapusan data sebelum output
 if (isset($_GET['delete_id'])) {
   $del = mysqli_real_escape_string($con, $_GET['delete_id']);
   $selectdelete = mysqli_query($con, "SELECT * FROM projek WHERE id=" . $del);
   $selectimg = mysqli_fetch_array($selectdelete);
 //   $path = 'images/projek/';
-  
 //   // Cek apakah file gambar ada, jika ada hapus
 //   if (!empty($selectimg['img']) && file_exists($path . $selectimg['img'])) {
 //       unlink($path . $selectimg['img']);
 //   }
-  
   $query_delete = "DELETE FROM projek WHERE id='" . $del . "'";
   $p = mysqli_query($con, $query_delete);
   if ($p) {
@@ -53,25 +49,21 @@ if (isset($_GET['delete_id'])) {
             white-space: nowrap;
             margin-top: 20px;
         }
-
         /* Styling tambahan untuk tabel agar lebih rapi */
         .table {
             border-collapse: collapse;
             width: 100%;
         }
-
         .table th, .table td {
             padding: 15px;
             border: 1px solid #ddd;
             text-align: center;
             vertical-align: middle;
         }
-
         .table th {
             background-color: #f8f9fa;
             font-weight: bold;
         }
-
         /* Mengatur kolom agar lebih fleksibel */
         .table td, .table th {
             word-wrap: break-word;
@@ -80,35 +72,29 @@ if (isset($_GET['delete_id'])) {
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-
         table.dataTable thead>tr>th.dt-orderable-asc, table.dataTable thead>tr>th.dt-orderable-desc, table.dataTable thead>tr>td.dt-orderable-asc, table.dataTable thead>tr>td.dt-orderable-desc {
             text-align: center;
         }
-
         table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date, table.dataTable td.dt-type-numeric, table.dataTable td.dt-type-date {
             text-align: center;
         }
-
         /* Gambar yang ditampilkan di dalam tabel */
         .table img {
             width: 100px;
             height: auto;
             object-fit: contain;
         }
-
         /* Grup tombol agar tetap sejajar */
         .btn-group {
             display: flex;
             justify-content: center;
             gap: 5px;
         }
-
         /* Styling untuk pesan alert */
         .alert {
             max-width: 600px;
             margin: 0 auto;
         }
-
         /* Responsif pada layar kecil */
         @media (max-width: 768px) {
             .table th, .table td {
@@ -122,7 +108,6 @@ if (isset($_GET['delete_id'])) {
 <div class="wrapper">
   <?php include "topbar.php"; ?>
   <?php include "sidebar.php"; ?>
-
   <div class="content-wrapper">
     <!-- Header Konten -->
     <section class="content-header">
@@ -139,7 +124,6 @@ if (isset($_GET['delete_id'])) {
         </div>
       </div>
     </section>
-
     <!-- Konten Utama -->
     <section class="content">
       <?php if (!empty($_SESSION['msg'])): ?>
@@ -154,7 +138,6 @@ if (isset($_GET['delete_id'])) {
           unset($_SESSION['msgClass']);
         ?>
       <?php endif; ?>
-
       <div class="card card-info">
         <div class="card-header">
           <h3 class="card-title">Lihat Projek</h3>
@@ -164,7 +147,7 @@ if (isset($_GET['delete_id'])) {
             <table id="myTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>mitra</th>
+                  <th>Mitra</th>
                   <th>Tahun</th>
                   <th>Deskripsi</th>
                   <th>Upload</th>
@@ -180,10 +163,8 @@ if (isset($_GET['delete_id'])) {
       </div>
     </section>
   </div>
-
   <?php include "footer.php"; ?>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

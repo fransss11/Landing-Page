@@ -1,17 +1,14 @@
 <?php
 include 'conn.php';
 include 'auth.php';
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("D d M Y");
-
 // Proses hapus (tetap sama)
 if (isset($_GET['delete_id'])) {
     $del = mysqli_real_escape_string($con, $_GET['delete_id']);
     $selectdelete = mysqli_query($con, "SELECT * FROM klien WHERE id = $del");
     $selectimg = mysqli_fetch_array($selectdelete);
     $path = 'images/partnership/' . $selectimg['gambar'];
-    
     if (file_exists($path)) {
         $now_delete = unlink($path);
         if ($now_delete) {
@@ -60,7 +57,6 @@ if (isset($_GET['delete_id'])) {
         text-align: center;
         vertical-align: middle;
     }
-    
     table.dataTable thead>tr>th.dt-orderable-asc,
     table.dataTable thead>tr>th.dt-orderable-desc,
     table.dataTable thead>tr>td.dt-orderable-asc,
@@ -85,7 +81,6 @@ if (isset($_GET['delete_id'])) {
 <div class="wrapper">
   <?php include "topbar.php"; ?>
   <?php include "sidebar.php"; ?>
-
   <div class="content-wrapper">
     <section class="content-header">
       <div class="container-fluid">
@@ -101,7 +96,6 @@ if (isset($_GET['delete_id'])) {
         </div>
       </div>
     </section>
-
     <section class="content">
       <div class="row">
         <div class="col-md-12">
@@ -118,8 +112,7 @@ if (isset($_GET['delete_id'])) {
               unset($_SESSION['msg']);
               unset($_SESSION['msgClass']);
             ?>
-          <?php endif; ?>
-          
+          <?php endif; ?>          
           <div class="card card-info">
             <div class="card-header">
               <h3 class="card-title">Lihat Klien</h3>
@@ -151,10 +144,8 @@ if (isset($_GET['delete_id'])) {
       </div>
     </section>
   </div>
-  
   <?php include "footer.php"; ?>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

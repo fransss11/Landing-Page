@@ -1,14 +1,12 @@
 <?php
 session_start();
 include 'conn.php';
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Ambil input dari form dan lakukan escaping
     $ad_name = mysqli_real_escape_string($con, $_POST['ad_name']);
     $ad_email = mysqli_real_escape_string($con, $_POST['ad_email']);
     $ad_password = mysqli_real_escape_string($con, $_POST['ad_password']);
     $confirm_password = mysqli_real_escape_string($con, $_POST['confirm_password']);
-
     // Validasi agar password dan konfirmasi password sama
     if ($ad_password !== $confirm_password) {
         $_SESSION['error'] = "Password dan konfirmasi password tidak sama.";
@@ -32,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $fileName = $_FILES['ad_pict']['name'];
                     $fileTmp = $_FILES['ad_pict']['tmp_name'];
                     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
                     if (in_array($fileExt, $allowed)) {
                         // Buat nama file unik untuk mencegah bentrok
                         $newFileName = uniqid() . '.' . $fileExt;
@@ -49,12 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // Jika tidak ada gambar yang diupload, gunakan gambar default
                     $pict = "avatar3.png";
                 }
-
                 // Jika tidak ada error selama proses upload
                 if (!isset($_SESSION['error'])) {
                     // Hash password untuk keamanan
                     $hashed_password = password_hash($ad_password, PASSWORD_DEFAULT);
-
                     // Masukkan data admin baru ke tabel, termasuk nama file gambar
                     $sql_insert = "INSERT INTO admin (ad_name, ad_email, ad_password, pict) VALUES ('$ad_name', '$ad_email', '$hashed_password', '$pict')";
                     if (mysqli_query($con, $sql_insert) === TRUE) {
@@ -99,7 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <div class="register-logo">
     <a href="/"><b>Admin </b>Register</a>
   </div>
-
   <div class="card">
     <div class="card-body register-card-body">
       <p class="login-box-msg">Daftar Akun Baru</p>
@@ -192,14 +186,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </div><!-- /.card -->
 </div>
 <!-- /.register-box -->
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-
 <!-- Script validasi Bootstrap -->
 <script>
 (function () {
@@ -216,7 +208,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       }, false);
     });
 })();
-
 // Toggle tampil/sembunyikan password
 $(document).on('click', '.toggle-password', function() {
     var input = $($(this).attr('data-toggle'));
@@ -228,7 +219,6 @@ $(document).on('click', '.toggle-password', function() {
         $(this).removeClass('fa-eye-slash').addClass('fa-eye');
     }
 });
-  
 // Perbarui label file ketika memilih gambar
 $('.custom-file-input').on('change', function(){
     var fileName = $(this).val().split('\\').pop();

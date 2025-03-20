@@ -2,17 +2,13 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-
 date_default_timezone_set('Asia/Kolkata');
 $today = date("D d M Y");
-
 // Inisialisasi variabel alert
 $msg = "";
 $msgClass = "";
-
 // Periksa apakah parameter 'edit' ada di URL
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : null;
-
 if ($edit) {
     $stmt = $con->prepare("SELECT * FROM media WHERE id = ?");
     $stmt->bind_param("i", $edit);
@@ -24,11 +20,9 @@ if ($edit) {
     // Nilai default untuk data baru
     $roww = ['galery' => '', 'foto' => '', 'kategori' => ''];
 }
-
 if (isset($_POST['publise'])) {
     $nama = mysqli_real_escape_string($con, $_POST['nama']);
     $kategori_id = mysqli_real_escape_string($con, $_POST['kategori_gal']);
-
     // Ambil nama kategori berdasarkan id
     $stmt2 = $con->prepare("SELECT kat_gal FROM kategori_gal WHERE id = ?");
     $stmt2->bind_param("i", $kategori_id);
@@ -37,7 +31,6 @@ if (isset($_POST['publise'])) {
     $kategori_row = $kategori_result->fetch_assoc();
     $kategori = $kategori_row['kat_gal'];
     $stmt2->close();
-
     if ($edit) {
         // Mode edit: jika file baru diunggah, gunakan file baru; jika tidak, gunakan gambar lama.
         if (isset($_FILES['gambar']) && $_FILES['gambar']['name'] != '') {
@@ -60,7 +53,6 @@ if (isset($_POST['publise'])) {
             $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui galeri.";
             $_SESSION['msgClass'] = "danger";
         }
-        
         echo "<script>window.location.href = 'view-gallery.php';</script>";
         exit;
     } else {
@@ -71,21 +63,18 @@ if (isset($_POST['publise'])) {
           for ($i = 0; $i < $total_files; $i++) {
               if (!empty($_FILES['gambar']['name'][$i])) {
                   $image_size = $_FILES['gambar']['size'][$i];
-                  $max_size = 500 * 1024; // 500KB dalam bytes
-      
+                  $max_size = 500 * 1024; // 500KB dalam bytes  
                   if ($image_size > $max_size) {
                       $_SESSION['msg'] = "Error: Satu atau lebih gambar melebihi batas 500KB.";
                       $_SESSION['msgClass'] = "danger";
                       echo "<script>window.location.href = 'view-gallery.php';</script>";
                       exit;
                   }
-      
                   $image_name = rand() . $_FILES['gambar']['name'][$i];
                   $tempname = $_FILES['gambar']['tmp_name'][$i];
                   $folder = "uploads/" . $image_name;
                   $valid_ext = array('png', 'jpeg', 'jpg');
                   $file_extension = strtolower(pathinfo($folder, PATHINFO_EXTENSION));
-      
                   if (in_array($file_extension, $valid_ext)) {
                       compressImage($tempname, $folder, 60);
                       mysqli_query($con, "INSERT INTO media (galery, foto, kategori, uploaded_on, status) VALUES ('$nama', '$image_name', '$kategori', NOW(), '1')");
@@ -104,7 +93,6 @@ if (isset($_POST['publise'])) {
       }      
     echo "<script>window.location.href = 'view-gallery.php';</script>";
 }
-
 function compressImage($source, $destination, $quality) {
     $info = getimagesize($source);
     if ($info['mime'] == 'image/jpeg') {
@@ -147,7 +135,6 @@ function compressImage($source, $destination, $quality) {
 <div class="wrapper">
     <?php include "topbar.php"; ?>
     <?php include "sidebar.php"; ?>
-
     <div class="content-wrapper">
         <!-- Header Konten -->
         <section class="content-header">
@@ -162,7 +149,6 @@ function compressImage($source, $destination, $quality) {
             </div>
           </div>
         </section>
-
         <!-- Konten Utama -->
         <section class="content">
           <div class="row">
@@ -177,7 +163,6 @@ function compressImage($source, $destination, $quality) {
                   </div>
                 </div>
               <?php endif; ?>
-
               <!-- Form Galeri dengan validasi Bootstrap -->
               <form id="galleryForm" action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                 <div class="card card-outline card-info">
@@ -187,7 +172,6 @@ function compressImage($source, $destination, $quality) {
                       <input type="text" name="nama" value="<?php echo isset($roww["galery"]) ? htmlspecialchars($roww["galery"]) : ''; ?>" class="form-control" id="validationGalleryName" placeholder="Masukkan ..." required>
                     </div>
                   </div>
-
                   <div class="card-header">
                     <div class="form-group">
                       <label for="validationKategori">Pilih Kategori <span class="text-danger">*</span></label>
@@ -206,7 +190,6 @@ function compressImage($source, $destination, $quality) {
                       </div>
                     </div>
                   </div>
-
                   <div class="card-header">
                     <div class="form-group">
                     <label for="exampleInputFile">
@@ -245,7 +228,6 @@ function compressImage($source, $destination, $quality) {
                       ?>
                     </div>
                   </div>
-
                   <div class="card-header">
                     <div class="form-group">
                       <button type="submit" name="publise" class="btn btn-primary btn-lg"><?php echo ($edit) ? 'Perbarui' : 'Publikasikan'; ?></button>
@@ -258,10 +240,8 @@ function compressImage($source, $destination, $quality) {
           </div><!-- /.row -->
         </section>
     </div>
-
     <?php include "footer.php"; ?>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -303,9 +283,7 @@ document.getElementById('validationImages').addEventListener('change', function 
     var files = this.files;
     var maxSize = 500 * 1024; // 500KB dalam bytes
     var errorBox = document.getElementById('fileErrorBox');
-
     errorBox.style.display = 'none'; // Sembunyikan pesan error terlebih dahulu
-
     for (var i = 0; i < files.length; i++) {
         if (files[i].size > maxSize) {
             errorBox.style.display = 'block';

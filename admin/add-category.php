@@ -2,7 +2,6 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-
 // Inisialisasi flash message dari session jika ada
 if(isset($_SESSION['msg'])) {
     $msg = $_SESSION['msg'];
@@ -12,7 +11,6 @@ if(isset($_SESSION['msg'])) {
     $msg = "";
     $msgClass = "";
 }
-
 // Hapus kategori jika parameter delete_id ada
 if (isset($_GET['delete_id'])) {
     $delete_id = mysqli_real_escape_string($con, $_GET['delete_id']);
@@ -27,19 +25,16 @@ if (isset($_GET['delete_id'])) {
     header("Location: add-category.php");
     exit;
 }
-
 // Fetch data jika dalam mode edit
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : '';
-$roww = [];
+$roww = []; 
 if ($edit != '') {
     $resultt = mysqli_query($con, "SELECT * FROM category WHERE id = '$edit'");
     $roww = mysqli_fetch_array($resultt);
 }
-
 // Handle form submission untuk menambah atau memperbarui kategori
 if (isset($_POST['add'])) {
-    $name = mysqli_real_escape_string($con, $_POST['cat_name']);
-    
+    $name = mysqli_real_escape_string($con, $_POST['cat_name']);   
     if ($edit == '') {
         // Insert kategori baru
         if (mysqli_query($con, "INSERT INTO category (cat_name) VALUES ('$name')")) {
@@ -87,7 +82,6 @@ if (isset($_POST['add'])) {
 <div class="wrapper">
   <?php include "topbar.php"; ?>
   <?php include "sidebar.php"; ?>
-
   <div class="content-wrapper">
     <!-- Content Header -->
     <section class="content-header">
@@ -99,7 +93,6 @@ if (isset($_POST['add'])) {
         </div>
       </div>
     </section>
-
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -116,7 +109,6 @@ if (isset($_POST['add'])) {
               </div>
             </div>
           <?php endif; ?>
-
           <!-- Form dengan validasi Bootstrap -->
           <form action="" method="post" class="needs-validation" novalidate>
             <div class="card card-outline card-info">
@@ -142,7 +134,6 @@ if (isset($_POST['add'])) {
             </div>
           </form>
         </div>
-
         <!-- Tabel Category -->
         <div class="col-md-7">
           <div class="card card-outline card-info">
@@ -191,25 +182,21 @@ if (isset($_POST['add'])) {
       </div> <!-- /.row -->
     </section>
   </div>
-
   <?php include "footer.php"; ?>
   <aside class="control-sidebar control-sidebar-dark"></aside>
 </div>
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-
 <!-- SCRIPT VALIDASI BOOTSTRAP ala dokumentasi -->
 <script>
 (function () {
   'use strict';
   // Ambil semua form yang ingin divalidasi
   var forms = document.querySelectorAll('.needs-validation');
-
   // Loop ke tiap form dan cegah submit jika invalid
   Array.prototype.slice.call(forms)
     .forEach(function (form) {

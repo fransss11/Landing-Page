@@ -2,9 +2,7 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-
 $a = 9;
-
 // Proses Hapus (dijalankan sebelum output HTML)
 if (isset($_GET['delete_id'])) {
     $del = mysqli_real_escape_string($con, $_GET['delete_id']);
@@ -12,16 +10,13 @@ if (isset($_GET['delete_id'])) {
     $selectdelete = mysqli_query($con, "SELECT * FROM testimonials WHERE id=" . $del);
     $selectimg = mysqli_fetch_array($selectdelete);
     $path = 'images/testimonial/';
-    
     // Hapus file gambar jika ada
     if (!empty($selectimg['img']) && file_exists($path . $selectimg['img'])) {
         unlink($path . $selectimg['img']);
-    }
-    
+    }    
     // Hapus record dari database
     $query_delete = "DELETE FROM testimonials WHERE id='" . $del . "'";
     $p = mysqli_query($con, $query_delete);
-
     if ($p) {
         $_SESSION['msg'] = "Berhasil Dihapus";
         $_SESSION['msgClass'] = "success";
@@ -83,14 +78,12 @@ if (isset($_GET['delete_id'])) {
     td {
         vertical-align: middle;
     }
-
     table.dataTable thead>tr>th.dt-orderable-asc,
     table.dataTable thead>tr>th.dt-orderable-desc,
     table.dataTable thead>tr>td.dt-orderable-asc,
     table.dataTable thead>tr>td.dt-orderable-desc {
         text-align: center;
     }
-
     /* Lebar gambar lebih kecil agar tidak mendominasi */
     .table img {
         width: 80px;
@@ -105,7 +98,6 @@ if (isset($_GET['delete_id'])) {
   <?php include "topbar.php"; ?>
   <!-- Sidebar Utama -->
   <?php include "sidebar.php"; ?>
-
   <!-- Content Wrapper. Berisi konten halaman -->
   <div class="content-wrapper">
     <!-- Header Konten -->
@@ -123,7 +115,6 @@ if (isset($_GET['delete_id'])) {
         </div>
       </div>
     </section>
-
     <!-- Konten Utama -->
     <section class="content">
       <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
@@ -140,7 +131,6 @@ if (isset($_GET['delete_id'])) {
           unset($_SESSION['msgClass']);
         ?>
       <?php endif; ?>
-
       <div class="card card-info">
         <div class="card-header">
           <h3 class="card-title">Lihat</h3>
@@ -172,7 +162,6 @@ if (isset($_GET['delete_id'])) {
   <?php include "footer.php"; ?>
 </div>
 <!-- ./wrapper -->
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

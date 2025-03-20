@@ -1,7 +1,6 @@
 <?php
 include 'conn.php';
 include 'auth.php';
-
 // Tangani penghapusan data sebelum output
 if (isset($_GET['delete_id'])) {
     $delete_id = mysqli_real_escape_string($con, $_GET['delete_id']);
@@ -44,7 +43,6 @@ if (isset($_GET['delete_id'])) {
             overflow-x: auto;
             white-space: nowrap;
         }
-
         /* Styling tambahan untuk tabel agar lebih rapi */
         .table {
             border-collapse: collapse;
@@ -62,14 +60,12 @@ if (isset($_GET['delete_id'])) {
         td {
             vertical-align: middle;
         }
-
         table.dataTable thead>tr>th.dt-orderable-asc,
         table.dataTable thead>tr>th.dt-orderable-desc,
         table.dataTable thead>tr>td.dt-orderable-asc,
         table.dataTable thead>tr>td.dt-orderable-desc {
             text-align: center;
         }
-
         /* Pastikan semua kolom sejajar di tengah */
         .table th, .table td {
             padding: 15px;
@@ -77,7 +73,6 @@ if (isset($_GET['delete_id'])) {
             vertical-align: middle !important;
             text-align: center;
         }
-
         .table th {
             background-color: #f8f9fa;
             font-weight: bold;
@@ -88,7 +83,6 @@ if (isset($_GET['delete_id'])) {
             height: auto;
             object-fit: contain;
         }
-
         /* Grup tombol agar tetap sejajar */
         .btn-group {
             display: flex;
@@ -113,7 +107,6 @@ if (isset($_GET['delete_id'])) {
         <?php include "topbar.php"; ?>
         <!-- Sidebar Utama -->
         <?php include "sidebar.php"; ?>
-
         <!-- Content Wrapper -->
         <div class="content-wrapper">
             <!-- Header Konten -->
@@ -131,7 +124,6 @@ if (isset($_GET['delete_id'])) {
                     </div>
                 </div>
             </section>
-
             <!-- Konten Utama -->
             <section class="content">
                 <?php if (!empty($_SESSION['msg'])): ?>
@@ -148,7 +140,6 @@ if (isset($_GET['delete_id'])) {
                         unset($_SESSION['msgClass']);
                     ?>
                 <?php endif; ?>
-
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Lihat</h3>
@@ -189,7 +180,6 @@ if (isset($_GET['delete_id'])) {
         <aside class="control-sidebar control-sidebar-dark"></aside>
     </div>
     <!-- ./wrapper -->
-
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
