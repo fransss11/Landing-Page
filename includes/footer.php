@@ -131,7 +131,7 @@ $info = $result->fetch_assoc();
 ?>
 
 
-<div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
+<div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.5s">
     <div class="container py-5">
         <div class="row g-5">
             <div class="col-md-6 col-lg-6 col-xl-3">
@@ -196,9 +196,23 @@ $info = $result->fetch_assoc();
                 <br></br>
                 <div class="footer-item d-flex flex-column">
                     <h4 class="mb-4 text-white">Jam Kerja</h4>
-                    <p style="color: white;">Kami bekerja 5 hari dalam seminggu. </p>
-                    <p style="color: white;">Senin - Jumat: 08:00 - 17:00</p>
-                    <table style="width: auto" class="table text-center text-white" >
+                    <?php
+                    // Fetch data from the 'jam_kerja' table
+                    $query_jam_kerja = "SELECT deskripsi, waktu FROM jam_kerja";
+                    $result_jam_kerja = mysqli_query($conn, $query_jam_kerja);
+
+                    if (mysqli_num_rows($result_jam_kerja) > 0):
+                        while ($row_jam_kerja = mysqli_fetch_assoc($result_jam_kerja)):
+                    ?>
+                        <p style="color: white;"><?php echo htmlspecialchars_decode($row_jam_kerja['deskripsi']); ?></p>
+                        <p style="color: white;"><?php echo htmlspecialchars($row_jam_kerja['waktu']); ?></p>
+                    <?php
+                        endwhile;
+                    else:
+                    ?>
+                        <p style="color: white;">Data jam kerja tidak tersedia.</p>
+                    <?php endif; ?>
+                    <table style="width: auto" class="table text-center text-white">
                         <thead>
                             <tr>
                                 <th>Pengunjung Hari Ini</th>

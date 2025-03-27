@@ -135,12 +135,6 @@
 }
 
 /* Atur section agar lebih rapi */
-.client-reviews-section {
-    background: -webkit-radial-gradient(50% 50%, circle closest-side, #af52ed 0%, #8830df 100%);
-    padding: 60px 20px;
-    text-align: center;
-}
-
 .text-center a {
     color: rgb(255, 254, 254); /* Warna teks hitam */
     font-family: Arial, sans-serif; /* Font Arial */
@@ -184,11 +178,11 @@
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 /* Kartu klien */
 .single-review {
-    background: rgba(235, 14, 14, 0.8);
     border-radius: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -223,6 +217,19 @@
     margin: 10px auto;
 }
 
+
+/* Untuk layar sedang (tablet, 576px - 991.98px): 2 review per baris */
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .client-reviews-section {
+        padding: 50px 50px;
+        padding-right: 20%;
+        padding-left: 20%;
+    }
+    .client-reviews .single-review {
+        flex: 0 0 45%;
+        max-width: 45%;
+    }
+}
 
 
 
@@ -369,7 +376,7 @@
 .hero {
     position: relative;
     width: 100%;
-    min-height: 116vh;
+    min-height: 108vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -381,7 +388,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(128, 0, 255, 0.7);
+    background: rgba(52, 52, 52, 0.7);
 }
 
 .hero-content {
@@ -482,7 +489,7 @@
     margin-left: 8px;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 992px) {
     .navbar .nav-item .dropdown-menu {
         display: block;
         visibility: hidden;
@@ -881,13 +888,23 @@
     flex-direction: column;
     height: 100%; /* Semua kartu memiliki tinggi yang seragam */
 }
-
+.service .service-item .service-img {
+    position: relative;
+    width: 100%;
+    height: 100px; /* Ubah sesuai kebutuhan */
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f8f88b; /* Warna background untuk ruang kosong */
+}
 /* Buat gambar memiliki ukuran tetap dan sejajar */
 .service .service-item .service-img img {
     width: 100%;
-    height: 180px; /* Pastikan tinggi gambar tetap */
+    height: 100px; /* Pastikan tinggi gambar tetap */
     object-fit: contain; /* Pastikan gambar tidak terdistorsi */
-    display: block;
 }
 
 /* Pastikan konten berada di tengah dan tombol selalu di bawah */
@@ -1218,7 +1235,24 @@
     align-items: center;
     justify-content: center;
 }
+/* Ensure team images are aligned and consistent */
+.team-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 350px; /* Set a fixed height for the image container */
+    overflow: hidden;
+    background-color: #f8f8f8; /* Optional: Add a background color */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
 
+.team-img img.team-image {
+    width: auto;
+    height: 100%; /* Ensure the image fills the container height */
+    object-fit: cover; /* Ensure the image is cropped proportionally */
+    border-radius: 10px 10px 0 0; /* Match the container's border radius */
+}
 .team-img img {
     object-fit: contain; /* Memastikan gambar tidak terpotong */
     height: 70%;
@@ -1267,10 +1301,11 @@
 .team .team-item .team-content {
     color: var(--bs-primary);
     transition: 0.5s;
+    height: 150px;
 }
 
 .team .team-item .team-content h5 {
-    color: var(--bs-secondary);
+    color: #ffffff;
     transition: 0.5s;
 }
 
@@ -1641,7 +1676,7 @@
 
 /*** Footer Start ***/
 .footer {
-    background: -webkit-radial-gradient(50% 50%, circle closest-side, #af52ed 0%, #8830df 100%);
+    background: -webkit-radial-gradient(50% 50%, circle closest-side, #89898982 6%, #7c3abd 100%);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -2084,24 +2119,24 @@ body {
 
 /* Active Year Link */
 .year-list a.active {
-    background-color: rgb(0, 166, 255);
-    color: white;
+    background-color: rgba(0, 51, 255, 0.541);
+    color: rgb(0, 0, 0);
     transform: scale(1.1);
-    box-shadow: 0 0 15px rgb(0, 166, 255);
+    box-shadow: 0 0 15px rgb(0, 0, 0);
 }
 
 /* Hover Effect on Year Links */
 .year-list a:hover {
-    background-color: rgb(0, 166, 255);
+    background-color: rgb(0, 0, 0);
     color: white;
     transform: scale(1.05);
 }
 
 /* Main Content Area */
 #selected-year-message {
-    font-size: 28px;
+    font-size: 40px;
     font-weight: bold;
-    color: #333;
+    color: #000000;
     margin-bottom: 30px;
 }
 
@@ -2119,13 +2154,14 @@ table, th, td {
 th, td {
     padding: 12px;
     text-align: left;
-    font-size: 16px;
-    color:rgb(104, 104, 104);
+    font-size: 18px;
+    color:rgb(23 23 23);
 }
 
 th {
     background-color: #f2f2f2;
     font-weight: bold;
+    font-size: 20px;
     color : #000000;
 }
 
@@ -2163,7 +2199,7 @@ tr:hover {
 }
 
 .pagination .active a {
-    background-color:rgb(0, 183, 255);
+    background-color:rgb(0, 0, 0);
     color: white;
     font-weight: bold;
 }
@@ -2179,3 +2215,48 @@ tr:hover {
     cursor: pointer;
 }
 /* end tambahan galeri */
+
+/* background tambahan */
+.bckg {
+    background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/8845961_4004353.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container-fluid.client-reviews-section {
+    background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/6062704.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container-fluid.about {
+    background: linear-gradient(184deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/32867182.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container-fluid.service {
+    background: linear-gradient(351deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/3286718.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container-fluid.team {
+    background: linear-gradient(54deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/18952606_60656342.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container-fluid.berita {
+    background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/18952606_6065634.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container-fluid.projek {
+    background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/12065079_4861716.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+/* end background tambahan */

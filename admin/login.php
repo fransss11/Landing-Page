@@ -43,6 +43,47 @@ if (isset($_POST['submit'])) {
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <style>
+    /* Custom styling for a more attractive login page */
+    body.login-page {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+    .login-box {
+        margin-top: 10% !important;
+    }
+    .login-logo a {
+        color: #fff;
+        font-size: 2.2rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    }
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+    .card-body.login-card-body {
+        background: #fff;
+        padding: 30px;
+        border-top: 4px solid #764ba2;
+    }
+    .form-control {
+        border-radius: 20px;
+        box-shadow: none;
+    }
+    .btn-primary {
+        border-radius: 20px;
+        background: #764ba2;
+        border-color: #764ba2;
+        transition: background 0.3s, border-color 0.3s;
+    }
+    .btn-primary:hover {
+       background: #667eea;
+       border-color: #667eea;
+    }
+    .alert-danger {
+        border-radius: 20px;
+    }
+  </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">

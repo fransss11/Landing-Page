@@ -169,7 +169,7 @@ function compressImage($source, $destination, $quality) {
                   <div class="card-header">
                     <div class="form-group">
                       <label for="validationGalleryName">Masukkan Nama Galeri <span class="text-danger">*</span></label>
-                      <input type="text" name="nama" value="<?php echo isset($roww["galery"]) ? htmlspecialchars($roww["galery"]) : ''; ?>" class="form-control" id="validationGalleryName" placeholder="Masukkan ..." required>
+                      <input type="text" name="nama" value="<?php echo isset($roww["galery"]) ? htmlspecialchars($roww["galery"]) : ''; ?>" class="form-control" id="validationGalleryName" placeholder="Masukkan ...">
                     </div>
                   </div>
                   <div class="card-header">

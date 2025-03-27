@@ -44,65 +44,101 @@ $conn->close();
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <style>
+        .hidden {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .visible {
+            opacity: 1;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .pagination a {
+            margin: 0 5px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            color:rgb(0, 0, 0);
+            text-decoration: none;
+        }
+        .pagination a.active {
+            background-color:rgb(0, 0, 0);
+            color: white;
+            border: 1px solid rgb(230, 242, 255);
+        }
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+    </style>
 </head>
 <body>
-    <!-- Spinner Start -->
-    <?php include 'includes/spinner.php'; ?>
-    <!-- Spinner End -->
-    <!-- Topbar Start -->
-    <?php include 'includes/topbar.php'; ?>
-    <!-- Topbar End -->
-    <!-- Navbar & Hero Start -->
-    <?php include 'includes/navbar.php'; ?>
-    <!-- Navbar End -->
-    <!-- Header Start -->
-    <?php 
-    $pageTitle = "Klien Kami";
-    include 'includes/header.php'; 
-    ?>
-    <!-- Header End -->
-    <!-- Our Client Start -->
-    <div class="container-fluid team py-5">
-        <div class="container py-5">
-            <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="sub-style">
-                    <h4 class="sub-title px-3 mb-0">Klien Kami</h4>
-                </div>
-            </div>
-            <div class="clients-container">
-                <?php foreach ($clients as $client): ?>
-                    <div class="client-card wow fadeInUp">
-                        <img src="admin/images/partnership/<?php echo htmlspecialchars($client['gambar']); ?>" 
-                            alt="<?php echo htmlspecialchars($client['klien']); ?>">
-                        <p><?php echo htmlspecialchars($client['klien']); ?></p>
+    <div class="bckg">
+        <!-- Spinner Start -->
+        <?php include 'includes/spinner.php'; ?>
+        <!-- Spinner End -->
+        <!-- Topbar Start -->
+        <?php include 'includes/topbar.php'; ?>
+        <!-- Topbar End -->
+        <!-- Navbar & Hero Start -->
+        <?php include 'includes/navbar.php'; ?>
+        <!-- Navbar End -->
+        <!-- Header Start -->
+        <?php 
+        $pageTitle = "Klien Kami";
+        include 'includes/header.php'; 
+        ?>
+        <!-- Header End -->
+        <!-- Our Client Start -->
+        <div class="container-fluid about team py-5">
+            <div class="container py-5">
+                <div class="section-title mb-5">
+                    <div class="sub-style">
+                        <h1 class="sub-title px-3 mb-0">Klien Kami</h1>
                     </div>
-                <?php endforeach; ?>
-            </div>
-            <!-- Paginasi Start -->
-            <div class="pagination">
-                <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?>" class="prev-btn">Sebelumnya</a>
-                <?php endif; ?>
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <a href="?page=<?php echo $i; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
-                <?php endfor; ?>
+                </div>
+                <div class="clients-container" data-aos="fade-up" data-aos-delay="500">
+                    <?php foreach ($clients as $client): ?>
+                        <div class="client-card wow fadeInUp">
+                            <img src="admin/images/partnership/<?php echo htmlspecialchars($client['gambar']); ?>" 
+                                alt="<?php echo htmlspecialchars($client['klien']); ?>">
+                            <p><?php echo htmlspecialchars($client['klien']); ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <!-- Paginasi Start -->
+                <div class="pagination">
+                    <?php if ($page > 1): ?>
+                        <a href="?page=<?php echo $page - 1; ?>" class="prev-btn">Sebelumnya</a>
+                    <?php endif; ?>
+                </div>
+                <div class="pagination">
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <a href="?page=<?php echo $i; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
+                    <?php endfor; ?>
+                </div>
+                <div class="pagination">
                 <?php if ($page < $totalPages): ?>
                     <a href="?page=<?php echo $page + 1; ?>" class="next-btn">Selanjutnya</a>
                 <?php endif; ?>
+                </div>
+                <!-- Paginasi End -->
             </div>
-            <!-- Paginasi End -->
         </div>
+        <!-- Our Client End -->
+        <!-- Footer Start -->
+        <?php include 'includes/footer.php'; ?>
+        <!-- Footer End -->
+        <!-- Copyright Start -->
+        <?php include 'includes/copyright.php'; ?>
+        <!-- Copyright End -->
+        <!-- Back to Top -->
+        <?php include 'includes/back_to_top.php'; ?>
+        <!-- Back to Top End -->
     </div>
-    <!-- Our Client End -->
-    <!-- Footer Start -->
-    <?php include 'includes/footer.php'; ?>
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    <?php include 'includes/copyright.php'; ?>
-    <!-- Copyright End -->
-    <!-- Back to Top -->
-    <?php include 'includes/back_to_top.php'; ?>
-    <!-- Back to Top End -->
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -110,11 +146,41 @@ $conn->close();
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <!-- Inisialisasi WOW.js -->
     <script>
         new WOW().init();
+        // Fungsi untuk menampilkan elemen saat di-scroll
+        function revealOnScroll() {
+            var reveals = document.querySelectorAll('.hidden, .visible');
+            var windowHeight = window.innerHeight;
+            var elementVisible = 150;
+            for (var i = 0; i < reveals.length; i++) {
+                var elementTop = reveals[i].getBoundingClientRect().top;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('visible');
+                    reveals[i].classList.remove('hidden');
+                } else {
+                    reveals[i].classList.remove('visible');
+                    reveals[i].classList.add('hidden');
+                }
+            }
+            // Jika di-scroll ke paling atas, sembunyikan semua elemen
+            if (window.scrollY === 0) {
+                for (var i = 0; i < reveals.length; i++) {
+                    reveals[i].classList.remove('visible');
+                    reveals[i].classList.add('hidden');
+                }
+            }
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
     </script>
 </body>
 </html>

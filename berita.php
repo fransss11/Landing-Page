@@ -30,74 +30,81 @@ $conn->close();
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Spinner Start -->
-    <?php include 'includes/spinner.php'; ?>
-    <!-- Spinner End -->
-    <!-- Topbar Start -->
-    <?php include 'includes/topbar.php'; ?>
-    <!-- Topbar End -->
-    <!-- Navbar & Hero Start -->
-    <?php include 'includes/navbar.php'; ?>
-    <!-- Navbar End -->
-    <!-- Header Start -->
-    <?php
-    $pageTitle = "Berita";
-    include 'includes/header.php';
-    ?>
-    <!-- Header End -->
-    <!-- Daftar Berita -->
-    <div class="container py-5">
-        <h4 class="text-center mb-4 fade-in" style="font-size: 300%;">Daftar Berita</h4>
-        <div class="row g-4" id="berita-container"></div>
-    </div>
-    <!-- Script untuk Daftar Berita -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let beritaContainer = document.getElementById("berita-container");
-            const beritaList = <?php echo json_encode($beritaList); ?>;
-            // Jika hanya 1 berita, tambahkan kelas agar konten berada di tengah
-            if (beritaList.length === 1) {
-                beritaContainer.classList.add("d-flex", "justify-content-center");
-            }
-            beritaList.forEach((berita, index) => {
-                let short = berita.descrip.replace(/(<([^>]+)>)/gi, ""); // Hapus tag HTML
-                if (short.length > 200) {
-                    let shortCut = short.substring(0, 200);
-                    short = shortCut.substring(0, shortCut.lastIndexOf(" ")) + "...";
+    <div class="bckg">
+        <!-- Spinner Start -->
+        <?php include 'includes/spinner.php'; ?>
+        <!-- Spinner End -->
+        <!-- Topbar Start -->
+        <?php include 'includes/topbar.php'; ?>
+        <!-- Topbar End -->
+        <!-- Navbar & Hero Start -->
+        <?php include 'includes/navbar.php'; ?>
+        <!-- Navbar End -->
+        <!-- Header Start -->
+        <?php
+        $pageTitle = "Berita";
+        include 'includes/header.php';
+        ?>
+        <!-- Header End -->
+        <!-- Daftar Berita -->
+        <div class="container-fluid about py-5">
+            <div class="section-title mb-5">
+                <div class="sub-style">
+                    <h1 class="sub-title px-3 mb-0">Berita</h1>
+                </div>
+            </div>
+            <div class="row g-4" id="berita-container"></div>
+        </div>
+        <!-- Script untuk Daftar Berita -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let beritaContainer = document.getElementById("berita-container");
+                const beritaList = <?php echo json_encode($beritaList); ?>;
+                // Jika hanya 1 berita, tambahkan kelas agar konten berada di tengah
+                if (beritaList.length === 1) {
+                    beritaContainer.classList.add("d-flex", "justify-content-center");
                 }
-                // Jika hanya satu berita, kita bisa menambahkan 'mx-auto' agar card-nya benar-benar center
-                // (bisa dihilangkan jika sudah cukup dengan d-flex justify-content-center pada container)
-                beritaContainer.innerHTML += `
-                    <div class="col-md-6 col-lg-4 ${beritaList.length === 1 ? 'mx-auto' : ''} d-flex align-items-stretch wow fadeInUp" data-wow-delay="${index * 0.2}s">
-                        <div class="card shadow-lg">
-                            <img src="admin/images/blog/${berita.img}" class="card-img-top" alt="${berita.title}">
-                            <div class="card-body">
-                                <h4 class="card-title">${berita.title}</h4>
-                                <p class="text-muted">
-                                    <i class="fa fa-calendar-alt text-primary"></i> ${berita.date}
-                                </p>
-                                <h5 class="card-category">${berita.category}</h5>
-                                <p class="card-text">${short}</p>
-                                <a href="detail_berita.php?id=${berita.id}" class="btn btn-primary">Detail</a>
+                beritaList.forEach((berita, index) => {
+                    let short = berita.descrip.replace(/(<([^>]+)>)/gi, ""); // Hapus tag HTML
+                    if (short.length > 200) {
+                        let shortCut = short.substring(0, 200);
+                        short = shortCut.substring(0, shortCut.lastIndexOf(" ")) + "...";
+                    }
+                    // Jika hanya satu berita, kita bisa menambahkan 'mx-auto' agar card-nya benar-benar center
+                    // (bisa dihilangkan jika sudah cukup dengan d-flex justify-content-center pada container)
+                    beritaContainer.innerHTML += `
+                        <div class="col-md-6 col-lg-4 ${beritaList.length === 1 ? 'mx-auto' : ''} d-flex align-items-stretch" data-aos="fade-right" data-aos-delay="500">
+                            <div class="card shadow-lg">
+                                <img src="admin/images/blog/${berita.img}" class="card-img-top" alt="${berita.title}">
+                                <div class="card-body">
+                                    <h4 class="card-title">${berita.title}</h4>
+                                    <p class="text-muted">
+                                        <i class="fa fa-calendar-alt text-primary"></i> ${berita.date}
+                                    </p>
+                                    <h5 class="card-category">${berita.category}</h5>
+                                    <p class="card-text">${short}</p>
+                                    <a href="detail_berita.php?id=${berita.id}" class="btn btn-primary">Detail</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                });
             });
-        });
-    </script>
-    <!-- end berita -->
-    <!-- Footer Start -->
-    <?php include 'includes/footer.php'; ?>
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    <?php include 'includes/copyright.php'; ?>
-    <!-- Copyright End -->
-    <!-- Back to Top -->
-    <?php include 'includes/back_to_top.php'; ?>
-    <!-- Back to Top End -->
+        </script>
+        <!-- end berita -->
+        <!-- Footer Start -->
+        <?php include 'includes/footer.php'; ?>
+        <!-- Footer End -->
+        <!-- Copyright Start -->
+        <?php include 'includes/copyright.php'; ?>
+        <!-- Copyright End -->
+        <!-- Back to Top -->
+        <?php include 'includes/back_to_top.php'; ?>
+        <!-- Back to Top End -->
+    </div>
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -105,6 +112,10 @@ $conn->close();
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <!-- Inisialisasi WOW.js -->

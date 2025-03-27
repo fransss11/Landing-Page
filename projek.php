@@ -53,89 +53,94 @@ $conn->close();
     <link href="css/style.css" rel="stylesheet">
     <!-- jQuery (for toggling) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Spinner Start -->
-    <?php include 'includes/spinner.php'; ?>
-    <!-- Spinner End -->
-    <!-- Topbar Start -->
-    <?php include 'includes/topbar.php'; ?>
-    <!-- Topbar End -->
-    <!-- Navbar & Hero Start -->
-    <?php include 'includes/navbar.php'; ?>
-    <!-- Navbar End -->
-    <!-- Header Start -->
-    <?php 
-    $pageTitle = "Projek Kami";
-    include 'includes/header.php'; 
-    ?>
-    <!-- Header End -->
-    <div class="container">
-        <div class="row">
-            <!-- Sidebar with Year Navigation -->
-            <div class="col-md-3">
-                <div class="sidebar">
-                    <h3>Proyek Kami</h3>
-                    <ul class="year-list">
-                        <?php foreach ($years as $year): ?>
-                            <li>
-                                <a href="?year=<?php echo $year; ?>" 
-                                   class="<?php echo ($selectedYear == $year) ? 'active' : ''; ?>">
-                                    <?php echo $year; ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+    <div class="bckg">
+        <!-- Spinner Start -->
+        <?php include 'includes/spinner.php'; ?>
+        <!-- Spinner End -->
+        <!-- Topbar Start -->
+        <?php include 'includes/topbar.php'; ?>
+        <!-- Topbar End -->
+        <!-- Navbar & Hero Start -->
+        <?php include 'includes/navbar.php'; ?>
+        <!-- Navbar End -->
+        <!-- Header Start -->
+        <?php 
+        $pageTitle = "Projek Kami";
+        include 'includes/header.php'; 
+        ?>
+        <!-- Header End -->
+        <!-- Projek Start -->
+        <div class="container-fluid projek">
+            <div class="row" data-aos="fade-up">
+                <!-- Sidebar with Year Navigation -->
+                <div class="col-md-3">
+                    <div class="sidebar">
+                        <h3 >Proyek Kami</h3>
+                        <ul class="year-list">
+                            <?php foreach ($years as $year): ?>
+                                <li>
+                                    <a href="?year=<?php echo $year; ?>" 
+                                    class="<?php echo ($selectedYear == $year) ? 'active' : ''; ?>">
+                                        <?php echo $year; ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Main Content Area -->
+                <div class="col-md-9" data-aos="fade-up" data-aos-delay="500">
+                    <h2 id="selected-year-message" data-aos="fade-up" data-aos-delay="500">
+                        Proyek Kami di Tahun <?php echo $selectedYear; ?>
+                    </h2>
+                    <!-- Tampilkan proyek jika ada -->
+                    <?php if (!empty($projects)): ?>
+                        <table data-aos="fade-up" data-aos-delay="500">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Mitra</th>
+                                    <th>Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($projects as $index => $project): ?>
+                                    <tr>
+                                        <td><?php echo $startFrom + $index + 1; ?></td>
+                                        <td><?php echo $project['mitra']; ?></td>
+                                        <td><?php echo $project['deskrip']; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                        <!-- Pagination Links -->
+                        <ul class="pagination">
+                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                <li class="<?php echo ($i == $page) ? 'active' : ''; ?>">
+                                    <a href="?year=<?php echo $selectedYear; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                </li>
+                            <?php endfor; ?>
+                        </ul>
+                    <?php else: ?>
+                        <p>Tidak ada proyek untuk tahun <?php echo $selectedYear; ?>.</p>
+                    <?php endif; ?>
                 </div>
             </div>
-            <!-- Main Content Area -->
-            <div class="col-md-9">
-                <h2 id="selected-year-message">
-                    Proyek Kami di Tahun <?php echo $selectedYear; ?>
-                </h2>
-                <!-- Tampilkan proyek jika ada -->
-                <?php if (!empty($projects)): ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Mitra</th>
-                                <th>Deskripsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($projects as $index => $project): ?>
-                                <tr>
-                                    <td><?php echo $startFrom + $index + 1; ?></td>
-                                    <td><?php echo $project['mitra']; ?></td>
-                                    <td><?php echo $project['deskrip']; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    <!-- Pagination Links -->
-                    <ul class="pagination">
-                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                            <li class="<?php echo ($i == $page) ? 'active' : ''; ?>">
-                                <a href="?year=<?php echo $selectedYear; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php endfor; ?>
-                    </ul>
-                <?php else: ?>
-                    <p>Tidak ada proyek untuk tahun <?php echo $selectedYear; ?>.</p>
-                <?php endif; ?>
-            </div>
         </div>
+        <!-- Projek End -->
+        <!-- Footer Start -->
+        <?php include 'includes/footer.php'; ?>
+        <!-- Footer End -->
+        <!-- Copyright Start -->
+        <?php include 'includes/copyright.php'; ?>
+        <!-- Copyright End -->
+        <!-- Back to Top -->
+        <?php include 'includes/back_to_top.php'; ?>
+        <!-- Back to Top End -->
     </div>
-    <!-- Footer Start -->
-    <?php include 'includes/footer.php'; ?>
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    <?php include 'includes/copyright.php'; ?>
-    <!-- Copyright End -->
-    <!-- Back to Top -->
-    <?php include 'includes/back_to_top.php'; ?>
-    <!-- Back to Top End -->
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
@@ -144,6 +149,10 @@ $conn->close();
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <!-- Inisialisasi WOW.js -->
     <script>
         new WOW().init();

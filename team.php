@@ -33,76 +33,81 @@ $conn->close();
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Spinner Start -->
-    <?php include 'includes/spinner.php'; ?>
-    <!-- Spinner End -->
-    <!-- Topbar Start -->
-    <?php include 'includes/topbar.php'; ?>
-    <!-- Topbar End -->
-    <!-- Navbar & Hero Start -->
-    <?php include 'includes/navbar.php'; ?>
-    <!-- Navbar End -->
-    <!-- Header Start -->
-    <?php
-    $pageTitle = "Tim Kami";
-    include 'includes/header.php';
-    ?>
-    <!-- Header End -->
-    <!-- Team Start -->
-    <div class="container-fluid team py-5">
-        <div class="container py-5">
-            <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="sub-style">
-                    <h4 class="sub-title px-3 mb-0">Tim Kami</h4>
-                </div>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <?php foreach ($teamList as $team): ?>
-                <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="team-item rounded">
-                        <div class="team-img rounded-top h-100">
-                            <img src="admin/images/team/<?php echo $team['img']; ?>" class="img-fluid rounded-top w-100" alt="<?php echo $team['title']; ?>">
-                            <div class="team-icon d-flex justify-content-center">
-                                <?php if (!empty($team['facebook'])): ?>
-                                    <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
-                                <?php endif; ?>
-                                <?php if (!empty($team['twitter'])): ?>
-                                    <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['twitter']; ?>"><i class="fab fa-twitter"></i></a>
-                                <?php endif; ?>
-                                <?php if (!empty($team['instagram'])): ?>
-                                    <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['instagram']; ?>"><i class="fab fa-instagram"></i></a>
-                                <?php endif; ?>
-                                <?php if (!empty($team['linkedin'])): ?>
-                                    <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
-                                <?php endif; ?>
-                                <?php if (!empty($team['whatsapp'])): ?>
-                                    <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="https://wa.me/<?php echo $team['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4">
-                            <h5><?php echo $team['title']; ?></h5>
-                            <p class="mb-0"><?php echo $team['designation']; ?></p>
-                            <p class="mb-0" style="font-style: italic;"><?php echo $team['descrip']; ?></p>
-                        </div>
+    <div class="bckg">
+        <!-- Spinner Start -->
+        <?php include 'includes/spinner.php'; ?>
+        <!-- Spinner End -->
+        <!-- Topbar Start -->
+        <?php include 'includes/topbar.php'; ?>
+        <!-- Topbar End -->
+        <!-- Navbar & Hero Start -->
+        <?php include 'includes/navbar.php'; ?>
+        <!-- Navbar End -->
+        <!-- Header Start -->
+        <?php
+        $pageTitle = "Tim Kami";
+        include 'includes/header.php';
+        ?>
+        <!-- Header End -->
+        <!-- Team Start -->
+        <div class="container-fluid team py-5 hidden">
+            <div class="container py-5">
+                <div class="section-title mb-5">
+                    <div class="sub-style">
+                        <h1 class="sub-title px-3 mb-0">Tim Kami</h1>
                     </div>
                 </div>
-                <?php endforeach; ?>
+                <div class="row g-4 justify-content-center">
+                    <?php foreach ($teamList as $index => $team): ?>
+                    <div class="col-md-6 col-lg-6 col-xl-3" 
+                        data-aos="<?php echo $index % 2 == 0 ? 'fade-up' : 'fade-down'; ?>" 
+                        data-aos-delay="<?php echo $index * 300; ?>">
+                        <div class="team-item rounded">
+                            <div class="team-img rounded-top">
+                                <img src="admin/images/team/<?php echo $team['img']; ?>" class="img-fluid team-image" alt="<?php echo $team['title']; ?>">
+                                <div class="team-icon d-flex justify-content-center">
+                                    <?php if (!empty($team['facebook'])): ?>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
+                                    <?php endif; ?>
+                                    <?php if (!empty($team['twitter'])): ?>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['twitter']; ?>"><i class="fab fa-twitter"></i></a>
+                                    <?php endif; ?>
+                                    <?php if (!empty($team['instagram'])): ?>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['instagram']; ?>"><i class="fab fa-instagram"></i></a>
+                                    <?php endif; ?>
+                                    <?php if (!empty($team['linkedin'])): ?>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
+                                    <?php endif; ?>
+                                    <?php if (!empty($team['whatsapp'])): ?>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="https://wa.me/<?php echo $team['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4 d-flex flex-column justify-content-between">
+                                <h5 class="team-title"><?php echo $team['title']; ?></h5>
+                                <p class="team-designation mb-0"><?php echo $team['designation']; ?></p>
+                                <p class="team-description mb-0" style="font-style: italic;"><?php echo $team['descrip']; ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
+        <!-- Team End -->
+        <!-- Footer Start -->
+        <?php include 'includes/footer.php'; ?>
+        <!-- Footer End -->
+        <!-- Copyright Start -->
+        <?php include 'includes/copyright.php'; ?>
+        <!-- Copyright End -->
+        <!-- Back to Top -->
+        <?php include 'includes/back_to_top.php'; ?>
+        <!-- Back to Top End -->
     </div>
-    <!-- Team End -->
-    <!-- Footer Start -->
-    <?php include 'includes/footer.php'; ?>
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    <?php include 'includes/copyright.php'; ?>
-    <!-- Copyright End -->
-    <!-- Back to Top -->
-    <?php include 'includes/back_to_top.php'; ?>
-    <!-- Back to Top End -->
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -110,6 +115,10 @@ $conn->close();
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <!-- Inisialisasi WOW.js -->

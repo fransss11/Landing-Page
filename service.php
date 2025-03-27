@@ -1,7 +1,7 @@
 <?php
 include 'database.php';
 // Fetch data from the 'services' table
-$sql = "SELECT id, title, short, descrip, img, date FROM services";
+$sql = "SELECT id, title, short, descrip, img, date FROM services ORDER BY id DESC";
 $result = $conn->query($sql);
 $services = array();
 if ($result->num_rows > 0) {
@@ -54,120 +54,131 @@ function formatTanggalIndonesia($tanggal) {
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <!-- AOS Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
+    <style>
+        .hidden {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .visible {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
-    <!-- Spinner Start -->
-    <?php include 'includes/spinner.php'; ?>
-    <!-- Spinner End -->
-    <!-- Topbar Start -->
-    <?php include 'includes/topbar.php'; ?>
-    <!-- Topbar End -->
-    <!-- Navbar & Hero Start -->
-    <?php include 'includes/navbar.php'; ?>
-    <!-- Navbar End -->
-    <!-- Header Start -->
-    <?php
-    $pageTitle = "Layanan";
-    include 'includes/header.php';
-    ?>
-    <!-- Header End -->
-    <!-- Services Start -->
-    <div class="container-fluid service py-5 animated fadeInUp">
-        <div class="container py-5">
-            <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.2s">
-                <div class="sub-style">
-                    <h4 class="sub-title px-3 mb-0">Layanan</h4>
-                </div>
-            </div>
-            <div class="row g-4 justify-content-center" id="services-container">
-                <?php foreach ($services as $service) : ?>
-                    <div class="col-md-6 col-lg-4 col-xl-3" data-aos="zoom-in" data-aos-delay="100">
-                        <div class="service-item rounded">
-                            <div class="service-img rounded-top">
-                                <img src="admin/images/services/<?php echo $service['img']; ?>" 
-                                     class="img-fluid rounded-top w-100" 
-                                     alt="<?php echo $service['title']; ?>" loading="lazy">
-                            </div>
-                            <div class="service-content rounded-bottom bg-light p-4 d-flex flex-column">
-                                <h5 class="mb-4"><?php echo $service['title']; ?></h5>
-                                <p class="mb-4 short-description">
-                                    <?php 
-                                    $short = strip_tags($service['short']);
-                                    if (strlen($short) > 200) {
-                                        $shortCut = substr($short, 0, 200);
-                                        $short = substr($shortCut, 0, strrpos($shortCut, ' ')) . '...';
-                                    }
-                                    echo htmlspecialchars($short);
-                                    ?>
-                                </p>
-                                <div class="mt-auto text-center">
-                                    <p class="text-muted mb-2">
-                                        <small><?php echo formatTanggalIndonesia($service['date']); ?></small>
-                                    </p>
-                                    <a href="detail_service.php?id=<?php echo $service['id']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">
-                                        Detail
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-                <div class="col-12 text-center"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Services End -->
-    <!-- Testimonial Start -->
-    <section id="testimoni" class="py-5" data-aos="fade-up">
-        <div class="container-fluid testimonial py-5 wow zoomInDown" data-wow-delay="0.1s">
+    <div class="bckg">
+        <!-- Spinner Start -->
+        <?php include 'includes/spinner.php'; ?>
+        <!-- Spinner End -->
+        <!-- Topbar Start -->
+        <?php include 'includes/topbar.php'; ?>
+        <!-- Topbar End -->
+        <!-- Navbar & Hero Start -->
+        <?php include 'includes/navbar.php'; ?>
+        <!-- Navbar End -->
+        <!-- Header Start -->
+        <?php
+        $pageTitle = "Layanan";
+        include 'includes/header.php';
+        ?>
+        <!-- Header End -->
+        <!-- Services Start -->
+        <div class="container-fluid service bg-light py-5">
             <div class="container py-5">
                 <div class="section-title mb-5">
                     <div class="sub-style">
-                        <h4 class="sub-title text-white px-3 mb-0">Testimoni</h4>
+                        <h1 class="sub-title px-3 mb-0">Layanan</h1>
                     </div>
-                    <h1 class="display-3 mb-4">Silahkan Lihat dan Berikan Testimoni Anda</h1>
                 </div>
-                <div class="testimonial-carousel owl-carousel" data-aos="flip-left">
-                    <?php foreach ($testimonials as $testimonial) : ?>
-                        <div class="testimonial-item">
-                            <div class="testimonial-inner p-5">
-                                <div class="testimonial-inner-img mb-4">
-                                    <img src="admin/images/testimonial/<?php echo $testimonial['img']; ?>" class="img-fluid rounded-circle" alt="">
+                <div class="row g-4 justify-content-center" id="services-container">
+                    <?php foreach ($services as $service) : ?>
+                        <div class="col-md-6 col-lg-4 col-xl-3" data-aos="zoom-in" data-aos-delay="300">
+                            <div class="service-item rounded">
+                                <div class="service-img rounded-top">
+                                    <img src="admin/images/services/<?php echo $service['img']; ?>" 
+                                        class="img-fluid rounded-top w-100" 
+                                        alt="<?php echo $service['title']; ?>" loading="lazy">
                                 </div>
-                                <div class="text-center">
-                                    <h5 class="mb-2"><?php echo $testimonial['title']; ?></h5>
-                                    <p class="mb-2 text-white-50"><?php echo $testimonial['designation']; ?></p>
-                                    <p class="text-mutedd"><small><?php echo formatTanggalIndonesia($testimonial['date']); ?></small></p>
+                                <div class="service-content rounded-bottom bg-light p-4 d-flex flex-column">
+                                    <h5 class="mb-4"><?php echo $service['title']; ?></h5>
+                                    <p class="mb-4 short-description">
+                                        <?php 
+                                        $short = strip_tags($service['short']);
+                                        if (strlen($short) > 200) {
+                                            $shortCut = substr($short, 0, 200);
+                                            $short = substr($shortCut, 0, strrpos($shortCut, ' ')) . '...';
+                                        }
+                                        echo htmlspecialchars($short);
+                                        ?>
+                                    </p>
+                                    <div class="mt-auto text-center">
+                                        <p class="text-muted mb-2">
+                                            <small><?php echo formatTanggalIndonesia($service['date']); ?></small>
+                                        </p>
+                                        <a href="detail_service.php?id=<?php echo $service['id']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">
+                                            Detail
+                                        </a>
+                                    </div>
                                 </div>
-                                <p class="text-white fs-7"><?php echo $testimonial['descrip']; ?></p>
                             </div>
                         </div>
                     <?php endforeach; ?>
+                    <div class="col-12 text-center"></div>
                 </div>
-                <!-- Berikan Testimoni Start -->
-                <div class="container-fluid py-5 text-center">
-                    <a href="testimoni.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Berikan Testimoni</a>
-                </div>
-                <!-- Berikan Testimoni End -->
             </div>
         </div>
-    </section>
-    <!-- Testimonial End -->
-    <!-- Footer Start -->
-    <?php include 'includes/footer.php'; ?>
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    <?php include 'includes/copyright.php'; ?>
-    <!-- Copyright End -->
-    <!-- Back to Top -->
-    <?php include 'includes/back_to_top.php'; ?>
-    <!-- Back to Top End -->
+        <!-- Services End -->
+        <!-- Testimonial Start -->
+        <section id="testimoni" class="py-5 hidden" data-aos="fade-up">
+            <div class="container-fluid testimonial py-5" data-aos="zoom-in-down" data-aos-delay="100">
+                <div class="container py-5">
+                    <div class="section-title mb-5">
+                        <div class="sub-style">
+                            <h4 class="sub-title text-white px-3 mb-0">Testimoni</h4>
+                        </div>
+                        <h1 class="display-3 mb-4">Silahkan Lihat dan Berikan Testimoni Anda</h1>
+                    </div>
+                    <div class="testimonial-carousel owl-carousel" data-aos="flip-left">
+                        <?php foreach ($testimonials as $testimonial) : ?>
+                            <div class="testimonial-item">
+                                <div class="testimonial-inner p-5">
+                                    <div class="testimonial-inner-img mb-4">
+                                        <img src="admin/images/testimonial/<?php echo $testimonial['img']; ?>" class="img-fluid rounded-circle" alt="">
+                                    </div>
+                                    <div class="text-center">
+                                        <h5 class="mb-2"><?php echo $testimonial['title']; ?></h5>
+                                        <p class="mb-2 text-white-50"><?php echo $testimonial['designation']; ?></p>
+                                        <p class="text-mutedd"><small><?php echo formatTanggalIndonesia($testimonial['date']); ?></small></p>
+                                    </div>
+                                    <p class="text-white fs-7"><?php echo $testimonial['descrip']; ?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <!-- Berikan Testimoni Start -->
+                    <div class="container-fluid py-5 text-center">
+                        <a href="testimoni.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Berikan Testimoni</a>
+                    </div>
+                    <!-- Berikan Testimoni End -->
+                </div>
+            </div>
+        </section>
+        <!-- Testimonial End -->
+        <!-- Footer Start -->
+        <?php include 'includes/footer.php'; ?>
+        <!-- Footer End -->
+        <!-- Copyright Start -->
+        <?php include 'includes/copyright.php'; ?>
+        <!-- Copyright End -->
+        <!-- Back to Top -->
+        <?php include 'includes/back_to_top.php'; ?>
+        <!-- Back to Top End -->
+    </div>
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -176,16 +187,38 @@ function formatTanggalIndonesia($tanggal) {
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <!-- AOS Library Script -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
-        // Inisialisasi AOS
-        AOS.init({
-            duration: 1000,
-            easing: 'ease-in-out',
-            once: true,
-        });
+    // Inisialisasi AOS
+    AOS.init({
+    });
+    // Fungsi untuk menampilkan elemen saat di-scroll
+    function revealOnScroll() {
+        var reveals = document.querySelectorAll('.hidden, .visible');
+        var windowHeight = window.innerHeight;
+        var elementVisible = 150;
+        for (var i = 0; i < reveals.length; i++) {
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add('visible');
+                reveals[i].classList.remove('hidden');
+            } else {
+                reveals[i].classList.remove('visible');
+                reveals[i].classList.add('hidden');
+            }
+        }
+        // Jika di-scroll ke paling atas, sembunyikan semua elemen
+        if (window.scrollY === 0) {
+            for (var i = 0; i < reveals.length; i++) {
+                reveals[i].classList.remove('visible');
+                reveals[i].classList.add('hidden');
+            }
+        }
+    }
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
     </script>
 </body>
 </html>

@@ -40,6 +40,20 @@ $logo = (!empty($info_row['logo']))
                         <p>Pengaturan</p>
                     </a>
                 </li>
+                <!-- Portofolio Section -->
+                <li class="nav-item">
+                    <a href="add-portofolio.php" class="nav-link <?php echo ($current_page == 'add-portofolio.php') ? 'active' : ''; ?>">
+                        <i class="fas fa-plus nav-icon"></i>
+                        <p>Lihat Portofolio</p>
+                    </a>
+                </li>
+                <!-- Jam Kerja Section -->
+                <li class="nav-item">
+                    <a href="jam_kerja.php" class="nav-link <?php echo ($current_page == 'jam_kerja.php') ? 'active' : ''; ?>">
+                        <i class="fas fa-plus nav-icon"></i>
+                        <p>Lihat Jam Kerja</p>
+                    </a>
+                </li>
                 <!-- About Section -->
                 <li class="nav-header">Tentang Kami</li>
                 <li class="nav-item">

@@ -127,7 +127,7 @@ if (isset($_POST['save'])) {
                     <div class="col-md-12">
                         <label for="validationImage" class="form-label">Gambar</label><br>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="validationImage" name="lis_img" required>
+                            <input type="file" class="custom-file-input" id="validationImage" name="lis_img">
                             <label class="custom-file-label" for="validationImage">Pilih Gambar</label>
                             <div class="invalid-feedback">
                                 Mohon unggah gambar (jpg/jpeg/png).

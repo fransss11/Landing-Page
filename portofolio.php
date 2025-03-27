@@ -33,42 +33,54 @@ $conn->close();
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Spinner Start -->
-    <?php include 'includes/spinner.php'; ?>
-    <!-- Spinner End -->
-    <!-- Topbar Start -->
-    <?php include 'includes/topbar.php'; ?>
-    <!-- Topbar End -->
-    <!-- Navbar & Hero Start -->
-    <?php include 'includes/navbar.php'; ?>
-    <!-- Navbar End -->
-    <!-- Header Start -->
-    <?php 
-    $pageTitle = "Portofolio";
-    include 'includes/header.php'; 
-    ?>
-    <!-- Header End -->
-    <!-- Portofolio Start -->
-    <div class="container-fluid service py-5">
-        <?php foreach ($portfolios as $portfolio): ?>
-            <?php if (!empty($portfolio['pdf'])): ?>
-                <iframe src="pdf/<?php echo urlencode($portfolio['pdf']); ?>" 
-                        style="width:100%; height:600px;" frameborder="0"></iframe>
-            <?php endif; ?>
-        <?php endforeach; ?>
+    <div class="bckg">
+        <!-- Spinner Start -->
+        <?php include 'includes/spinner.php'; ?>
+        <!-- Spinner End -->
+        <!-- Topbar Start -->
+        <?php include 'includes/topbar.php'; ?>
+        <!-- Topbar End -->
+        <!-- Navbar & Hero Start -->
+        <?php include 'includes/navbar.php'; ?>
+        <!-- Navbar End -->
+        <!-- Header Start -->
+        <?php 
+        $pageTitle = "Portofolio";
+        include 'includes/header.php'; 
+        ?>
+        <!-- Header End -->
+        <!-- Portofolio Start -->
+        <div class="container-fluid about bg-light py-5">
+            <div class="container py-5">
+                    <div class="section-title mb-5">
+                        <div class="sub-style">
+                            <h1 class="sub-title px-9 mb-0">Proposal Kami</h1>
+                        </div>
+                    </div>
+                    <?php foreach ($portfolios as $portfolio): ?>
+                        <?php if (!empty($portfolio['pdf'])): ?>
+                            <?php $file = $portfolio['pdf']; ?>
+                            <iframe src="pdf/<?php echo $file; ?>" 
+                                    style="width:100%; height:600px;" data-aos="fade-up" data-aos-delay="500" frameborder="0"></iframe>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+
+            </div>
+        </div>
+        <!-- Portofolio End -->
+        <!-- Footer Start -->
+        <?php include 'includes/footer.php'; ?>
+        <!-- Footer End -->
+        <!-- Copyright Start -->
+        <?php include 'includes/copyright.php'; ?>
+        <!-- Copyright End -->
+        <!-- Back to Top -->
+        <?php include 'includes/back_to_top.php'; ?>
+        <!-- Back to Top End -->
     </div>
-    <!-- Portofolio End -->
-    <!-- Footer Start -->
-    <?php include 'includes/footer.php'; ?>
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    <?php include 'includes/copyright.php'; ?>
-    <!-- Copyright End -->
-    <!-- Back to Top -->
-    <?php include 'includes/back_to_top.php'; ?>
-    <!-- Back to Top End -->
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -76,6 +88,10 @@ $conn->close();
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>

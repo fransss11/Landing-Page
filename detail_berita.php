@@ -46,62 +46,72 @@ $conn->close();
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 1rem;
+        }
+        .card-img-top {
+            width: 100%;
+            height: auto;
+        }
+        p#konten-berita {
+            font-size: 1rem;
+        }
+    }
+</style>
 </head>
 <body>
-    <!-- Spinner Start -->
-    <?php include 'includes/spinner.php'; ?>
-    <!-- Spinner End -->
-    <!-- Topbar Start -->
-    <?php include 'includes/topbar.php'; ?>
-    <!-- Topbar End -->
-    <!-- Navbar & Hero Start -->
-    <?php include 'includes/navbar.php'; ?>
-    <!-- Navbar End -->
-    <!-- Header Start -->
-    <div class="container-fluid bg-breadcrumb">
-        <div class="container text-center py-5">
-            <h3 class="text-white display-3 mb-4 wow fadeInDown" data-wow-delay="0.3s">Detail Berita</h3>
-            <ol class="breadcrumb justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.5s">
-                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                <li class="breadcrumb-item"><a href="berita.php">Berita</a></li>
-                <li class="breadcrumb-item active text-primary">Detail Berita</li>
-            </ol>
-        </div>
-    </div>
-    <!-- Header End -->
-    <!-- Detail Berita Start -->
-    <div class="container py-5">
-        <h2 class="text-center mb-4">Detail Berita</h2>
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div id="berita-container">
-                    <?php if ($berita): ?>
-                        <div class="card shadow-lg animated-content">
-                            <img id="gambar-berita" class="img-fluid card-img-top" src="admin/images/blog/<?php echo $berita['img']; ?>" alt="Gambar Berita">
-                            <div class="card-body">
-                                <h2 id="judul-berita" class="wow fadeInUp" data-wow-delay="0.5s"><?php echo $berita['title']; ?></h2>
-                                <p class="text-muted wow fadeInUp" data-wow-delay="0.6s"><i class="fa fa-calendar-alt text-primary"></i> <span id="tanggal-berita"><?php echo formatTanggalIndonesia($berita['date']); ?></span></p>
-                                <p id="konten-berita" class="wow fadeInUp" data-wow-delay="0.7s"><?php echo $berita['descrip']; ?></p>
-                                <a href="berita.php" class="btn btn-primary wow fadeInUp" data-wow-delay="0.8s">Kembali ke Berita</a>
+    <div class="bckg">
+        <!-- Spinner Start -->
+        <?php include 'includes/spinner.php'; ?>
+        <!-- Spinner End -->
+        <!-- Topbar Start -->
+        <?php include 'includes/topbar.php'; ?>
+        <!-- Topbar End -->
+        <!-- Navbar & Hero Start -->
+        <?php include 'includes/navbar.php'; ?>
+        <!-- Navbar End -->
+        <!-- Header Start -->
+        <?php
+        $pageTitle = "Detail Berita";
+        include 'includes/header.php';
+        ?>
+        <!-- Header End -->
+        <!-- Detail Berita Start -->
+        <div class="container py-5">
+            <h1 class="text-center mb-4">Detail Berita</h1>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div id="berita-container">
+                        <?php if ($berita): ?>
+                            <div class="card shadow-lg animated-content">
+                                <img id="gambar-berita" class="img-fluid card-img-top rounded-top" src="admin/images/blog/<?php echo $berita['img']; ?>" alt="Gambar Berita">
+                                <div class="card-body">
+                                    <h3 id="judul-berita" class="wow fadeInUp" data-wow-delay="0.5s"><?php echo $berita['title']; ?></h3>
+                                    <p class="text-muted wow fadeInUp" data-wow-delay="0.6s"><i class="fa fa-calendar-alt text-primary"></i> <span id="tanggal-berita"><?php echo formatTanggalIndonesia($berita['date']); ?></span></p>
+                                    <p id="konten-berita" class="wow fadeInUp" data-wow-delay="0.7s"><?php echo nl2br(htmlspecialchars($berita['descrip'])); ?></p>
+                                    <a href="berita.php" class="btn btn-primary wow fadeInUp" data-wow-delay="0.8s">Kembali ke Berita</a>
+                                </div>
                             </div>
-                        </div>
-                    <?php else: ?>
-                        <h3 class="text-danger">Berita tidak ditemukan!</h3>
-                    <?php endif; ?>
+                        <?php else: ?>
+                            <h3 class="text-danger text-center">Berita tidak ditemukan!</h3>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- Detail Berita End -->
+        <!-- Footer Start -->
+        <?php include 'includes/footer.php'; ?>
+        <!-- Footer End -->
+        <!-- Copyright Start -->
+        <?php include 'includes/copyright.php'; ?>
+        <!-- Copyright End -->
+        <!-- Back to Top -->
+        <?php include 'includes/back_to_top.php'; ?>
+        <!-- Back to Top End -->
     </div>
-    <!-- Detail Berita End -->
-    <!-- Footer Start -->
-    <?php include 'includes/footer.php'; ?>
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    <?php include 'includes/copyright.php'; ?>
-    <!-- Copyright End -->
-    <!-- Back to Top -->
-    <?php include 'includes/back_to_top.php'; ?>
-    <!-- Back to Top End -->
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>

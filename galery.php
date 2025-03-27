@@ -33,72 +33,75 @@ $conn->close();
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Spinner Start -->
-    <?php include 'includes/spinner.php'; ?>
-    <!-- Spinner End -->
-    <!-- Topbar Start -->
-    <?php include 'includes/topbar.php'; ?>
-    <!-- Topbar End -->
-    <!-- Navbar & Hero Start -->
-    <?php include 'includes/navbar.php'; ?>
-    <!-- Navbar End -->
-    <!-- Header Start -->
-    <?php
-    $pageTitle = "Galeri";
-    include 'includes/header.php';
-    ?>
-    <!-- Header End -->
-    <!-- Gallery Start -->
-    <div class="container-fluid team py-5">
-        <div class="container py-5">
-            <div class="section-title mb-1 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="sub-style">
-                    <h4 class="sub-title px-3 mb-0">Galeri Kami</h4>
+    <div class="bckg">
+        <!-- Spinner Start -->
+        <?php include 'includes/spinner.php'; ?>
+        <!-- Spinner End -->
+        <!-- Topbar Start -->
+        <?php include 'includes/topbar.php'; ?>
+        <!-- Topbar End -->
+        <!-- Navbar & Hero Start -->
+        <?php include 'includes/navbar.php'; ?>
+        <!-- Navbar End -->
+        <!-- Header Start -->
+        <?php
+        $pageTitle = "Galeri";
+        include 'includes/header.php';
+        ?>
+        <!-- Header End -->
+        <!-- Gallery Start -->
+        <div class="container-fluid about team py-5">
+            <div class="container py-5">
+                <div class="section-title mb-1">
+                    <div class="sub-style">
+                        <h1 class="sub-title px-3 mb-0">Galeri Kami</h1>
+                    </div>
                 </div>
-            </div>
-            <!-- Petunjuk penggunaan galeri -->
-            <div class="text-center mb-4">
-                <p class="text-mutedd" style="font-size: 16px;">
-                    Klik pada <strong>nama kegiatan</strong> untuk membuka atau menutup gambar berdasarkan kegiatan, atau klik tombol <strong>"Lihat Semua Gambar"</strong> untuk membuka/menutup semua gambar sekaligus.
-                </p>
-            </div>
-            <!-- Tombol Lihat Semua Gambar (posisi diperbaiki) -->
-            <div class="text-center mb-4">
-                <button class="btn btn-primary" id="lihat-semua">Lihat Semua Gambar</button>
-            </div>
-            <?php foreach ($images as $kategori => $kategori_images): ?>
-                <div class="row text-center mb-4">
-                    <h3 class="kategori-header" style="background:var(--bs-primary) !important; cursor:pointer; border-radius: 25px; " data-kategori="<?= htmlspecialchars($kategori); ?>">
-                        <?= htmlspecialchars($kategori); ?>
-                    </h3>
+                <!-- Petunjuk penggunaan galeri -->
+                <div class="text-center mb-4" data-aos="fade-right" data-aos-delay="500">
+                    <p class="text-mutedd" style="font-size: 16px;">
+                        Klik pada <strong>nama kegiatan</strong> untuk membuka atau menutup gambar berdasarkan kegiatan, atau klik tombol <strong>"Lihat Semua Gambar"</strong> untuk membuka/menutup semua gambar sekaligus.
+                    </p>
                 </div>
-                <div class="row kategori-content" id="kategori-<?= htmlspecialchars($kategori); ?>" style="display: none;">
-                    <?php foreach ($kategori_images as $index => $image): ?>
-                        <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="client-card wow fadeInUp" data-wow-delay="<?= $index * 0.2; ?>s" data-wow-duration="0.8s">
-                                <a>
-                                    <img src="admin/uploads/<?= $image['foto']; ?>" class="img-fluid" alt="<?= $image['galery']; ?>">
-                                </a>
-                                <h6 class="mt-2"><?= $image['galery']; ?></h6>
+                <!-- Tombol Lihat Semua Gambar (posisi diperbaiki) -->
+                <div class="text-center mb-4" data-aos="fade-right" style=" margin-top: 2%;">
+                    <button class="btn btn-primary" id="lihat-semua" style="margin-right: 80%;">Lihat Semua Gambar</button>
+                </div>
+                <?php foreach ($images as $kategori => $kategori_images): ?>
+                    <div class="row text-center mb-4" data-aos="fade-left" data-aos-delay="500">
+                        <h3 class="kategori-header" style="background: #510EF5; cursor:pointer; border-radius: 25px; width: 500px; " data-kategori="<?= htmlspecialchars($kategori); ?>">
+                            <?= htmlspecialchars($kategori); ?>
+                        </h3>
+                    </div>
+                    <div class="row kategori-content" id="kategori-<?= htmlspecialchars($kategori); ?>" style="display: none;">
+                        <?php foreach ($kategori_images as $index => $image): ?>
+                            <div class="col-md-3 col-sm-6 mb-4">
+                                <div class="client-card wow fadeInUp" data-wow-delay="<?= $index * 0.2; ?>s" data-wow-duration="0.8s">
+                                    <a>
+                                        <img src="admin/uploads/<?= $image['foto']; ?>" class="img-fluid" alt="<?= $image['galery']; ?>">
+                                    </a>
+                                    <h6 class="mt-2"><?= $image['galery']; ?></h6>
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
-    </div>
-    <!-- Gallery End -->
-    <!-- Footer Start -->
-    <?php include 'includes/footer.php'; ?>
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    <?php include 'includes/copyright.php'; ?>
-    <!-- Copyright End -->
-    <!-- Back to Top -->
-    <?php include 'includes/back_to_top.php'; ?>
-    <!-- Back to Top End -->
+        <!-- Gallery End -->
+        <!-- Footer Start -->
+        <?php include 'includes/footer.php'; ?>
+        <!-- Footer End -->
+        <!-- Copyright Start -->
+        <?php include 'includes/copyright.php'; ?>
+        <!-- Copyright End -->
+        <!-- Back to Top -->
+        <?php include 'includes/back_to_top.php'; ?>
+        <!-- Back to Top End -->
+    </div> 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -106,6 +109,10 @@ $conn->close();
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <!-- Inisialisasi WOW.js -->

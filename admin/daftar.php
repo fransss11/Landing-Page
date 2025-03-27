@@ -82,10 +82,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="custom.css">
     <style>
       /* Opsional: styling khusus untuk ikon mata */
       .input-group-text .toggle-password {
           cursor: pointer;
+      }
+      body.register-page {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        font-family: 'Source Sans Pro', sans-serif;
+      }
+
+      .register-box {
+          margin-top: 7%;
+      }
+
+      .register-logo a {
+          color: #fff;
+          font-size: 2.5rem;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .card {
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .card-body.register-card-body {
+          background: #fff;
+          padding: 2rem;
+          border-top: 4px solid #764ba2;
+      }
+
+      .input-group .form-control {
+          border-radius: 20px;
+          padding: 0.75rem 1rem;
+          box-shadow: none;
+      }
+
+      .custom-file-label {
+          border-radius: 20px;
+      }
+
+      .btn-primary {
+          border-radius: 20px;
+          background: #764ba2;
+          border: none;
+          transition: background 0.3s ease;
+      }
+
+      .btn-primary:hover {
+          background: #667eea;
+      }
+
+      .alert {
+          border-radius: 20px;
       }
     </style>
 </head>
