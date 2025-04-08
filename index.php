@@ -169,7 +169,7 @@ function formatTanggalIndonesia($tanggal) {
                     <div class="col-12 text-center" data-aos="fade-up" data-aos-delay="200">
                     </div>
                     <div class="mt-auto text-center">
-                        <a href="service.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Layanan Kami</a>
+                        <a href="service.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Layanan</a>
                     </div>
                 </div>
             </div>
@@ -192,7 +192,7 @@ function formatTanggalIndonesia($tanggal) {
                     </div>
                 </div>
                 <div class="mt-auto text-center">
-                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Tentang Kami</a>
+                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">LIhat Semua Tentang Kami</a>
                 </div>
             </div>
         </div>
@@ -249,6 +249,9 @@ function formatTanggalIndonesia($tanggal) {
                 </div>
             </div>
             <div class="row g-4" id="berita-container"></div>
+            <div class="mt-auto text-center" style="padding-top: 20px;">
+                <a href="berita.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Berita</a>
+            </div>
         </div>
         <!-- Script untuk Daftar Berita -->
         <script>
@@ -278,7 +281,7 @@ function formatTanggalIndonesia($tanggal) {
                                     </p>
                                     <h5 class="card-category">${berita.category}</h5>
                                     <p class="card-text">${short}</p>
-                                    <a href="detail_berita.php?id=${berita.id}" class="btn btn-primary">Detail</a>
+                                    
                                 </div>
                             </div>
                         </div>

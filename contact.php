@@ -54,60 +54,15 @@ $social = $result->fetch_assoc();
         <!-- Contact Start -->
         <div class="container-fluid about contact py-5">
             <div class="container py-5">
-                <div class="section-title mb-5">
+                <div class="section-title mb-5 text-center">
                     <div class="sub-style mb-4">
                         <h1 class="sub-title text-white px-3 mb-0">Kontak</h1>
                     </div>
                     <p class="mb-0 text-black-50">Jika ada yang mau ditanyakan, silahkan hubungi kami!</p>
                 </div>
-                <div class="row g-4 align-items-center" data-aos="fade-right" data-aos-delay="500">
-                    <div class="col-lg-5 col-xl-5 contact-form">
-                        <h2 class="display-5 text-white mb-2">Silahkan bertanya</h2>
-                            <form action="send_email.php" method="post">
-                                <div class="row g-3">
-                                    <div class="col-lg-12 col-xl-6">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control bg-transparent border border-white" id="name" name="name" placeholder="Your Name" required>
-                                            <label for="name">Nama Anda</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-xl-6">
-                                        <div class="form-floating">
-                                            <input type="email" class="form-control bg-transparent border border-white" id="email" name="email" placeholder="Your Email" required>
-                                            <label for="email">Email Anda</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-xl-6">
-                                        <div class="form-floating">
-                                            <input type="phone" class="form-control bg-transparent border border-white" id="phone" name="phone" placeholder="Phone" required>
-                                            <label for="phone">Telepon Anda</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-xl-6">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control bg-transparent border border-white" id="project" name="project" placeholder="Project" required>
-                                            <label for="project">Projek Anda</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control bg-transparent border border-white" id="subject" name="subject" placeholder="Subject" required>
-                                            <label for="subject">Subject</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <textarea class="form-control bg-transparent border border-white" placeholder="Leave a message here" id="message" name="message" style="height: 160px" required></textarea>
-                                            <label for="message">Pesan</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn btn-light text-primary w-100 py-3" type="submit">Kirim Pesan</button>
-                                    </div>
-                                </div>
-                            </form>
-                    </div>
-                    <div class="col-lg-2 col-xl-2" data-aos="fade-up" data-aos-delay="500">
+                <div class="row g-4 align-items-center">
+                    <!-- Contact Info Section -->
+                    <div class="col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="500" style="padding-top: 90px;">
                         <div class="bg-transparent rounded">
                             <div class="d-flex flex-column align-items-center text-center mb-4">
                                 <a href="<?php echo $info['lokasi']; ?>" class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;">
@@ -130,25 +85,26 @@ $social = $result->fetch_assoc();
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 col-xl-5" data-aos="fade-left" data-aos-delay="500">
-                        <div class="d-flex justify-content-center mb-4">
+                    <!-- Map and Social Media Section -->
+                    <div class="col-lg-8 col-md-6 col-12 text-center" data-aos="fade-left" data-aos-delay="500">
+                        <div class="d-flex justify-content-center mb-4 flex-wrap">
                             <?php if (!empty($social['facebook'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2" href="<?php echo $social['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="<?php echo $social['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
                             <?php endif; ?>
                             <?php if (!empty($social['twitter'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2" href="<?php echo $social['twitter']; ?>"><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="<?php echo $social['twitter']; ?>"><i class="fab fa-twitter"></i></a>
                             <?php endif; ?>
                             <?php if (!empty($social['instagram'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2" href="<?php echo $social['instagram']; ?>"><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="<?php echo $social['instagram']; ?>"><i class="fab fa-instagram"></i></a>
                             <?php endif; ?>
                             <?php if (!empty($social['linkedin'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2" href="<?php echo $social['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="<?php echo $social['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
                             <?php endif; ?>
                             <?php if (!empty($social['whatsapp'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2" href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-0"><i class="fab fa-whatsapp"></i></a>
+                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="https://wa.me/<?php echo $social['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
                             <?php endif; ?>
                         </div>
-                        <div class="rounded h-100" data-aos="fade-left" data-aos-delay="400">
+                        <div class="rounded h-100">
                             <iframe class="rounded w-100" 
                                 style="height: 500px; border:0;" 
                                 loading="lazy" 
