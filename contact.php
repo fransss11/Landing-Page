@@ -52,7 +52,7 @@ $social = $result->fetch_assoc();
         ?>
         <!-- Header End -->
         <!-- Contact Start -->
-        <div class="container-fluid about contact py-5">
+        <div class="container-fluid about team contact py-5">
             <div class="container py-5">
                 <div class="section-title mb-5 text-center">
                     <div class="sub-style mb-4">

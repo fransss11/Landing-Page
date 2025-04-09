@@ -108,9 +108,10 @@ function formatTanggalIndonesia($tanggal) {
             <div class="row">
                 <div class="col-lg-12">
                     <a href="klien.php"><h2 class="text-center text-white">Klien Kami</h2></a>
-                    <div class="client-reviews" data-aos="fade-up" data-aos-delay="500">
+                    <div class="client-reviews">
                         <?php foreach ($clients as $index => $client) : ?>
-                            <div class="single-review" id="review-<?php echo $index; ?>" style="display: <?php echo $index < 4 ? 'block' : 'none'; ?>;">
+                            <div class="single-review" id="review-<?php echo $index; ?>" style="display: <?php echo $index < 4 ? 'block' : 'none'; ?>;" 
+                                data-aos="<?php echo $index % 2 == 0 ? 'fade-left' : 'fade-right'; ?>" data-aos-delay="<?php echo ($index % 2 == 0 ? 200 : 400); ?>">
                                 <h5 class="reviewer-name"><?php echo htmlspecialchars($client['klien']); ?></h5>
                                 <div class="reviewer-thumb">
                                     <img class="avatar-lg radius-200" 

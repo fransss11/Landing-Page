@@ -72,14 +72,14 @@ $conn->close();
                 </div>
                 <?php foreach ($images as $kategori => $kategori_images): ?>
                     <div class="row text-center mb-4" data-aos="fade-left" data-aos-delay="500">
-                        <h3 class="kategori-header" style="background: #510EF5; cursor:pointer; border-radius: 25px; width: 500px; " data-kategori="<?= htmlspecialchars($kategori); ?>">
+                        <h3 class="kategori-header" style="background: #7c0ef59c; cursor:pointer; border-radius: 25px; width: 500px; " data-kategori="<?= htmlspecialchars($kategori); ?>">
                             <?= htmlspecialchars($kategori); ?>
                         </h3>
                     </div>
                     <div class="row kategori-content" id="kategori-<?= htmlspecialchars($kategori); ?>" style="display: none;">
                         <?php foreach ($kategori_images as $index => $image): ?>
                             <div class="col-md-3 col-sm-6 mb-4">
-                                <div class="client-card wow fadeInUp" data-wow-delay="<?= $index * 0.2; ?>s" data-wow-duration="0.8s">
+                                <div class="client-card">
                                     <a>
                                         <img src="admin/uploads/<?= $image['foto']; ?>" class="img-fluid" alt="<?= $image['galery']; ?>">
                                     </a>
@@ -115,24 +115,63 @@ $conn->close();
     </script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    <!-- Inisialisasi WOW.js -->
-    <script>
-        new WOW().init();
-    </script>
     <!-- Script JS untuk Toggle Kategori dan Tombol Lihat Semua -->
     <script>
         document.querySelectorAll('.kategori-header').forEach(function(header) {
             header.addEventListener('click', function() {
                 const kategori = this.getAttribute('data-kategori');
                 const konten = document.getElementById('kategori-' + kategori);
-                // Cek apakah konten sedang tidak terlihat
+                const items = konten.querySelectorAll('.col-md-3');
+                const itemsPerPage = 5;
+                let currentPage = 1;
+
+                function renderPage(page) {
+                    items.forEach((item, index) => {
+                        item.style.display = (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) ? 'block' : 'none';
+                    });
+                }
+
                 if (konten.style.display === 'none' || konten.style.display === '') {
                     konten.style.display = 'flex';
-                    // Tambahkan class 'active' pada header yang diklik
+                    konten.style.flexWrap = 'wrap';
+                    renderPage(currentPage);
+
+                    let pagination = konten.querySelector('.pagination');
+                    if (!pagination) {
+                        pagination = document.createElement('div');
+                        pagination.className = 'pagination';
+                        pagination.style.marginTop = '20px';
+                        pagination.style.textAlign = 'center';
+                        konten.appendChild(pagination);
+
+                        const totalPages = Math.ceil(items.length / itemsPerPage);
+                        for (let i = 1; i <= totalPages; i++) {
+                            const pageButton = document.createElement('button');
+                            pageButton.textContent = i;
+                            pageButton.className = 'btn';
+                            pageButton.style.margin = '0 5px';
+                            pageButton.style.padding = '5px 10px';
+                            pageButton.style.border = '1px solid #ccc';
+                            pageButton.style.borderRadius = '5px';
+                            pageButton.style.backgroundColor = i === currentPage ? '#007bff' : '#fff';
+                            pageButton.style.color = i === currentPage ? '#fff' : '#000';
+                            pageButton.addEventListener('click', function() {
+                                currentPage = i;
+                                renderPage(currentPage);
+                                pagination.querySelectorAll('button').forEach(btn => {
+                                    btn.style.backgroundColor = '#fff';
+                                    btn.style.color = '#000';
+                                });
+                                pageButton.style.backgroundColor = '#007bff';
+                                pageButton.style.color = '#fff';
+                            });
+                            pagination.appendChild(pageButton);
+                        }
+                    }
+
                     this.classList.add('active');
                 } else {
                     konten.style.display = 'none';
-                    // Hapus class 'active' jika konten disembunyikan
                     this.classList.remove('active');
                 }
             });
@@ -141,8 +180,18 @@ $conn->close();
         document.getElementById('lihat-semua').addEventListener('click', function() {
             semuaTerbuka = !semuaTerbuka;
             document.querySelectorAll('.kategori-content').forEach(function(konten) {
+                const items = konten.querySelectorAll('.col-md-3');
+                const pagination = konten.querySelector('.pagination');
+
                 konten.style.display = semuaTerbuka ? 'flex' : 'none';
-            }); 
+                items.forEach(item => {
+                    item.style.display = semuaTerbuka ? 'block' : 'none';
+                });
+
+                if (pagination) {
+                    pagination.style.display = semuaTerbuka ? 'none' : 'block';
+                }
+            });
             this.textContent = semuaTerbuka ? 'Tutup Semua Gambar' : 'Lihat Semua Gambar';
         });
     </script>

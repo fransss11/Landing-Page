@@ -2242,13 +2242,19 @@ tr:hover {
     background-repeat: no-repeat;
 }
 .container-fluid.team {
-    background: linear-gradient(54deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/18952606_60656342.jpg');
+    background: linear-gradient(350deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/18952606_60656342.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 .container-fluid.berita {
     background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/18952606_6065634.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container-fluid.projek {
+    background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/12065079_4861716.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

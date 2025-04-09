@@ -98,11 +98,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="mb-3">
                 <label for="img" class="form-label">Foto</label>
-                <input type="file" class="form-control" id="img" name="img" required>
+                <input type="file" class="form-control" id="img" name="img" accept="image/*" required>
                 <div class="invalid-feedback">
-                    Please upload your photo.
+                    Please upload a valid image file (max 500KB).
+                </div>
+                <div id="file-error" class="text-danger mt-2" style="display: none;"></div>
+                <div class="mt-3" id="image-preview" style="display: none;">
+                    <p>Preview:</p>
+                    <img id="preview-img" src="#" alt="Image Preview" style="max-width: 100%; height: auto; border: 1px solid #ddd; padding: 5px;">
                 </div>
             </div>
+
+            <script>
+            document.getElementById('img').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                const errorBox = document.getElementById('file-error');
+                const previewContainer = document.getElementById('image-preview');
+                const previewImage = document.getElementById('preview-img');
+
+                errorBox.style.display = 'none';
+                errorBox.textContent = '';
+                previewContainer.style.display = 'none';
+                previewImage.src = '';
+
+                if (file) {
+                    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    if (!validImageTypes.includes(file.type)) {
+                        errorBox.textContent = 'Only image files (JPEG, PNG, GIF) are allowed.';
+                        errorBox.style.display = 'block';
+                        event.target.value = '';
+                    } else if (file.size > 500 * 1024) {
+                        errorBox.textContent = 'File size must not exceed 500KB.';
+                        errorBox.style.display = 'block';
+                        event.target.value = '';
+                    } else {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewImage.src = e.target.result;
+                            previewContainer.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+            </script>
             <button type="submit" class="btn btn-primary">Kirim Testimoni</button>
             <a href="service.php#testimoni" class="btn btn-danger">Kembali</a>
         </form>
