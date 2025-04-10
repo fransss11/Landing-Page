@@ -158,7 +158,6 @@ if (isset($_GET['delete_id'])) {
                                     <tr>
                                         <th>Gambar</th>
                                         <th>Judul</th>
-                                        <th>Deskripsi Pendek</th>
                                         <th>Deskripsi</th>
                                         <th>Tanggal</th>
                                         <th>Aksi</th>
@@ -210,7 +209,6 @@ if (isset($_GET['delete_id'])) {
                     }
                 },
                 { data: 'title' },
-                { data: 'short' },
                 { 
                     data: 'descrip', 
                     render: function(data, type, row) {

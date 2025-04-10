@@ -14,13 +14,12 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-    $baseQuery  = "SELECT id, title, short, descrip, img, date FROM services";
+    $baseQuery  = "SELECT id, title, descrip, img, date FROM services";
     $totalQuery = "SELECT COUNT(id) as total FROM services";
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
         $where = " WHERE title LIKE '%$searchValueEsc%' 
-                   OR short LIKE '%$searchValueEsc%' 
                    OR descrip LIKE '%$searchValueEsc%'";
     }
     $totalDataQuery = $totalQuery . $where;
@@ -38,9 +37,8 @@ if ($action == 'fetch_services') {
         $columns = array(
             0 => 'id',
             1 => 'title',
-            2 => 'short',
-            3 => 'descrip',
-            4 => 'date'
+            2 => 'descrip',
+            3 => 'date'
         );
         if (isset($columns[$orderColumnIndex])) {
             $orderColumn = $columns[$orderColumnIndex];

@@ -1,7 +1,7 @@
 <?php
 include 'database.php';
 // Fetch data from the 'services' table
-$sql = "SELECT id, title, short, descrip, img, date FROM services ORDER BY id DESC";
+$sql = "SELECT * FROM services ORDER BY id DESC";
 $result = $conn->query($sql);
 $services = array();
 if ($result->num_rows > 0) {
@@ -108,7 +108,7 @@ function formatTanggalIndonesia($tanggal) {
                                     <h5 class="mb-4"><?php echo $service['title']; ?></h5>
                                     <p class="mb-4 short-description">
                                         <?php 
-                                        $short = strip_tags($service['short']);
+                                        $short = strip_tags($service['descrip']);
                                         if (strlen($short) > 200) {
                                             $shortCut = substr($short, 0, 200);
                                             $short = substr($shortCut, 0, strrpos($shortCut, ' ')) . '...';

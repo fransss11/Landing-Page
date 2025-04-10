@@ -1,7 +1,7 @@
 <?php
 include 'database.php';
 // Fetch data from the 'proposal' table
-$sql = "SELECT pdf FROM proposal";
+$sql = "SELECT pdf, name FROM proposal";
 $result = $conn->query($sql);
 $portfolios = array();
 if ($result->num_rows > 0) {
@@ -63,8 +63,11 @@ $conn->close();
                     <?php foreach ($portfolios as $portfolio): ?>
                         <?php if (!empty($portfolio['pdf'])): ?>
                             <?php $file = $portfolio['pdf']; ?>
-                            <iframe src="pdf/<?php echo $file; ?>" 
-                                    style="width:100%; height:600px;" data-aos="fade-up" data-aos-delay="500" frameborder="0"></iframe>
+                            <div class="portfolio-item">
+                                <h2 class="pdf-title" style="margin-bottom: 10px;"><?php echo $portfolio['name']; ?></h2>
+                                <iframe src="pdf/<?php echo $file; ?>" 
+                                        style="width:100%; height:600px;" data-aos="fade-up" data-aos-delay="500" frameborder="0"></iframe>
+                            </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
 

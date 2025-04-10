@@ -19,7 +19,6 @@ if ($edit > 0) {
 if (isset($_POST['publise'])) {
     // Sanitasi input menggunakan mysqli_real_escape_string
     $title   = mysqli_real_escape_string($con, $_POST['title']);
-    $short   = mysqli_real_escape_string($con, $_POST['short']);
     // Mengambil konten dari Summernote
     $descrip = $_POST['descrip'];
     // Menghapus tag <p> tapi mempertahankan tag HTML lainnya
@@ -52,8 +51,8 @@ if (isset($_POST['publise'])) {
     // INSERT (tambah data baru)
     if ($edit == 0) {
         $insertdata = mysqli_query($con, 
-            "INSERT INTO services(title, short, descrip, img, date) 
-             VALUES('$title', '$short', '$descrip', '$lis_img', '$today')");
+            "INSERT INTO services(title, descrip, img, date) 
+             VALUES('$title', '$descrip', '$lis_img', '$today')");
         if ($insertdata) {
             $_SESSION['msg'] = "Berhasil Diposting";
             $_SESSION['msgClass'] = "alert-success";
@@ -70,7 +69,6 @@ if (isset($_POST['publise'])) {
         $insertdata = mysqli_query($con, 
             "UPDATE services SET 
                 title='$title', 
-                short='$short', 
                 descrip='$descrip', 
                 img='$lis_img', 
                 date='$today' 
@@ -165,23 +163,6 @@ if (isset($_POST['publise'])) {
                   >
                   <div class="invalid-feedback">
                     Silahkan masukkan judul
-                  </div>
-                </div>
-              </div>
-              <!-- Deskripsi Pendek -->
-              <div class="card-body pad">
-                <div class="form-group">
-                  <label>Deskripsi Pendek <span class="text-danger">*</span></label>
-                  <textarea 
-                    name="short" 
-                    class="form-control" 
-                    placeholder="Deskripsi Pendek" 
-                    rows="3" 
-                    maxlength="200" 
-                    required
-                  ><?php echo isset($roww["short"]) ? htmlspecialchars($roww["short"]) : ''; ?></textarea>
-                  <div class="invalid-feedback">
-                    Silahkan masukkan deskripsi pendek.
                   </div>
                 </div>
               </div>

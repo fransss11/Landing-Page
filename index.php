@@ -10,7 +10,7 @@ if ($result->num_rows > 0) {
     }
 }
 // Fetch data from the 'services' table
-$sql = "SELECT id, title, short, descrip, img, date FROM services ORDER BY id DESC LIMIT 3";
+$sql = "SELECT * FROM services ORDER BY id DESC LIMIT 3";
 $result = $conn->query($sql);
 $services = array();
 if ($result->num_rows > 0) {
@@ -145,8 +145,8 @@ function formatTanggalIndonesia($tanggal) {
                                 <div class="service-content rounded-bottom bg-light p-4 d-flex flex-column">
                                     <h5 class="mb-4"><?php echo htmlspecialchars($service['title']); ?></h5>
                                     <p class="mb-4 short-description">
-                                        <?php 
-                                        $short = strip_tags($service['short']);
+                                        <?php
+                                        $short = strip_tags($service['descrip']);
                                         if (strlen($short) > 200) {
                                             $shortCut = substr($short, 0, 200);
                                             $short = substr($shortCut, 0, strrpos($shortCut, ' ')) . '...';
@@ -188,7 +188,15 @@ function formatTanggalIndonesia($tanggal) {
                     <div class="col-lg-7" data-aos="fade-left" data-aos-delay="400">
                         <div class="section-title text-start mb-5">
                             <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
-                            <p class="mb-4"><?php echo $about['descrip']; ?></p>
+                            <p class="mb-4">
+                                <?php 
+                                $description = strip_tags($about['descrip']);
+                                if (strlen($description) > 500) {
+                                    $description = substr($description, 0, 500) . '...';
+                                }
+                                echo $description;
+                                ?>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -244,7 +252,7 @@ function formatTanggalIndonesia($tanggal) {
         <!-- Team End -->
         <!-- Daftar Berita -->
         <div class="container-fluid berita py-5">
-            <div class="section-title mb-5">
+            <div class="section-title mb-5" data-aos="flip-left" data-aos-delay="100">
                 <div class="sub-style">
                     <h1 class="sub-title px-3 mb-0">Berita</h1>
                 </div>
