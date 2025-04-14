@@ -1301,7 +1301,7 @@
 .team .team-item .team-content {
     color: var(--bs-primary);
     transition: 0.5s;
-    height: 150px;
+    height: 180px;
 }
 
 .team .team-item .team-content h5 {

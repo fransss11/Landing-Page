@@ -1,7 +1,7 @@
 <?php
 include 'database.php';
 // Tentukan jumlah klien yang akan ditampilkan per halaman
-$clientsPerPage = 8;
+$clientsPerPage = 12;
 // Tentukan halaman saat ini dari URL atau default ke halaman 1
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 // Tentukan offset untuk query SQL

@@ -60,14 +60,21 @@ $conn->close();
                         <h1 class="sub-title px-3 mb-0">Tim Kami</h1>
                     </div>
                 </div>
-                <div class="row g-4 justify-content-center">
+                <!-- Tambahkan align-items-stretch untuk memaksa tiap kolom punya tinggi yang sama -->
+                <div class="row g-4 justify-content-center align-items-stretch">
                     <?php foreach ($teamList as $index => $team): ?>
-                    <div class="col-md-6 col-lg-6 col-xl-3" 
+                    <div class="col-md-6 col-lg-6 col-xl-3"
                         data-aos="<?php echo $index % 2 == 0 ? 'fade-up' : 'fade-down'; ?>" 
                         data-aos-delay="<?php echo $index * 300; ?>">
-                        <div class="team-item rounded">
+
+                        <!-- Tambahkan h-100 dan d-flex flex-column agar item membentang penuh dan konten ditata secara vertikal -->
+                        <div class="team-item rounded h-100 d-flex flex-column">
                             <div class="team-img rounded-top">
-                                <img src="admin/images/team/<?php echo $team['img']; ?>" class="img-fluid team-image" alt="<?php echo $team['title']; ?>">
+                                <!-- Pastikan semua gambar punya tinggi sama, misal 350px, dan gunakan object-fit: cover agar ter-crop rapi -->
+                                <img src="admin/images/team/<?php echo $team['img']; ?>"
+                                    class="img-fluid team-image"
+                                    alt="<?php echo htmlspecialchars($team['title']); ?>"
+                                    style="width: 100%; height: 250px; object-fit: contain;">
                                 <div class="team-icon d-flex justify-content-center">
                                     <?php if (!empty($team['facebook'])): ?>
                                         <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
@@ -86,10 +93,11 @@ $conn->close();
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4 d-flex flex-column justify-content-between">
-                                <h5 class="team-title"><?php echo $team['title']; ?></h5>
-                                <p class="team-designation mb-0"><?php echo $team['designation']; ?></p>
-                                <p class="team-description mb-0" style="font-style: italic;"><?php echo $team['descrip']; ?></p>
+                            <!-- flex-grow-1 supaya bagian konten mengisi sisa ruang di bawah gambar -->
+                            <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4 d-flex flex-column justify-content-between flex-grow-1">
+                                <h5 class="team-title"><?php echo htmlspecialchars($team['title']); ?></h5>
+                                <p class="team-designation mb-0"><?php echo htmlspecialchars($team['designation']); ?></p>
+                                <p class="team-description mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p>
                             </div>
                         </div>
                     </div>

@@ -204,7 +204,7 @@ $info = $result->fetch_assoc();
                     if (mysqli_num_rows($result_jam_kerja) > 0):
                         while ($row_jam_kerja = mysqli_fetch_assoc($result_jam_kerja)):
                     ?>
-                        <p style="color: white;"><?php echo htmlspecialchars_decode($row_jam_kerja['deskripsi']); ?></p>
+                        <p style="color: white; font-size: 20px;"><?php echo htmlspecialchars_decode($row_jam_kerja['deskripsi']); ?></p>
                         <p style="color: white;"><?php echo htmlspecialchars($row_jam_kerja['waktu']); ?></p>
                     <?php
                         endwhile;

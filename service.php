@@ -139,7 +139,7 @@ function formatTanggalIndonesia($tanggal) {
                 <div class="container py-5">
                     <div class="section-title mb-5">
                         <div class="sub-style">
-                            <h4 class="sub-title text-white px-3 mb-0">Testimoni</h4>
+                            <h1 class="sub-title text-white px-3 mb-0">Testimoni</h1>
                         </div>
                         <h1 class="display-3 mb-4">Silahkan Lihat dan Berikan Testimoni Anda</h1>
                     </div>

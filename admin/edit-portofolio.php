@@ -96,6 +96,8 @@ if (isset($_POST['update'])) {
                 </div>
                 <label for="pdf">Tambahkan Proposal baru:</label>
                 <input type="file" id="pdf" name="pdf" accept=".pdf,.jpg,.jpeg,.png" class="form-control">
+                <!-- Area preview file -->
+                <div id="preview" style="margin-top:20px;"></div>
                 <button type="submit" name="update" class="btn btn-success">Perbarui</button>
                 <a href="add-portofolio.php" class="btn btn-secondary">Batal</a>
             </form>
@@ -118,6 +120,43 @@ if (isset($_POST['update'])) {
             }, false);
         });
     })();
+    </script>
+    <script>
+    document.getElementById('pdf').addEventListener('change', function(e) {
+        var file = e.target.files[0];
+        var preview = document.getElementById('preview');
+        preview.innerHTML = ''; // Kosongkan preview sebelumnya
+
+        if (file) {
+            var fileType = file.type;
+            
+            // Jika file berupa gambar
+            if (fileType.startsWith("image/")) {
+                var img = document.createElement("img");
+                img.style.maxWidth = "300px";
+                img.style.maxHeight = "300px";
+                img.className = "img-fluid";
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    img.src = event.target.result;
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+            // Jika file berupa PDF
+            else if (fileType === "application/pdf") {
+                var iframe = document.createElement("iframe");
+                iframe.style.width = "100%";
+                iframe.style.height = "500px";
+                iframe.src = URL.createObjectURL(file);
+                preview.appendChild(iframe);
+            }
+            // Untuk tipe file lain (jika diperlukan)
+            else {
+                preview.innerHTML = "<p>Preview tidak tersedia untuk tipe file ini.</p>";
+            }
+        }
+    });
     </script>
 </body>
 </html>

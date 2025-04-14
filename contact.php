@@ -79,9 +79,11 @@ $social = $result->fetch_assoc();
                                 </a>
                             </div>
                             <div class="d-flex flex-column align-items-center text-center mb-4">
-                                <div class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;"><i class="fa fa-phone-alt fa-2x text-primary"></i></div>
+                                <div class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;">
+                                    <i class="fa fa-phone-alt fa-2x text-primary"></i>
+                                </div>
                                 <h4 class="text-dark">Telepon</h4>
-                                <p href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" class="mb-0 text-white"></p>
+                                <p class="mb-0 text-white"><?php echo $social['phone']; ?></p>
                             </div>
                         </div>
                     </div>

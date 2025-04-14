@@ -58,8 +58,7 @@ if (isset($_POST['save'])) {
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Summernote CSS -->
-    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+    <!-- Summernote CSS telah dihapus karena tidak digunakan lagi -->
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -89,7 +88,8 @@ if (isset($_POST['save'])) {
                     <!-- Deskripsi -->
                     <div class="col-md-12">
                         <label for="validationDeskripsi" class="form-label">Deskripsi</label>
-                        <textarea name="deskripsi" class="form-control textarea" id="validationDeskripsi" rows="4" required><?php 
+                        <!-- Menggunakan textarea biasa tanpa inisialisasi Summernote -->
+                        <textarea name="deskripsi" class="form-control" id="validationDeskripsi" rows="4" required><?php 
                             echo ($dataExists) ? htmlspecialchars($row['deskripsi']) : ''; 
                         ?></textarea>
                         <div class="invalid-feedback">
@@ -137,49 +137,6 @@ if (isset($_POST['save'])) {
         }, false)
       })
   })();
-</script>
-<!-- Summernote JS -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<script>
-  $(function() {
-    // Initialize Summernote
-    $('.textarea').summernote({
-      height: 200, // Set the height of the editor
-      toolbar: [
-        ['style', ['style']],
-        ['font', ['bold', 'italic', 'underline', 'clear']],
-        ['fontname', ['fontname']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']],
-        ['insert', ['link', 'picture', 'video']],
-        ['view', ['fullscreen', 'codeview', 'help']]
-      ]
-    });
-
-    // Ensure Summernote content is submitted with the form
-    $('form.needs-validation').on('submit', function(event) {
-      var summernoteContent = $('.textarea').summernote('code');
-      $('textarea[name="deskripsi"]').val(summernoteContent);
-
-      // Check if Summernote content is empty
-      if ($('.textarea').summernote('isEmpty')) {
-        event.preventDefault();
-        event.stopPropagation();
-        $('.note-editor').addClass('is-invalid');
-      } else {
-        $('.note-editor').removeClass('is-invalid');
-      }
-
-      // Continue with Bootstrap validation
-      if (!this.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      this.classList.add('was-validated');
-    });
-  });
 </script>
 </body>
 </html>

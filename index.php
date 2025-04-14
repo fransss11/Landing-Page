@@ -107,7 +107,9 @@ function formatTanggalIndonesia($tanggal) {
         <div class="container-fluid client-reviews-section py-5" data-aos="fade-up" data-aos-delay="200">
             <div class="row">
                 <div class="col-lg-12">
-                    <a href="klien.php"><h2 class="text-center text-white">Klien Kami</h2></a>
+                    <a href="klien.php">
+                        <h1 class="text-center text-white">Klien Kami</h1>
+                    </a>
                     <div class="client-reviews">
                         <?php foreach ($clients as $index => $client) : ?>
                             <div class="single-review" id="review-<?php echo $index; ?>" style="display: <?php echo $index < 4 ? 'block' : 'none'; ?>;" 
@@ -130,7 +132,7 @@ function formatTanggalIndonesia($tanggal) {
             <div class="container py-5">
                 <div class="section-title mb-5" data-aos="fade-up" data-aos-delay="200">
                     <div class="sub-style">
-                        <h4 class="sub-title px-3 mb-0">Layanan</h4>
+                        <h1 class="sub-title px-3 mb-0">Layanan</h1>
                     </div>
                 </div>
                 <div class="row g-4 justify-content-center" id="services-container">
@@ -211,15 +213,26 @@ function formatTanggalIndonesia($tanggal) {
             <div class="container py-5">
                 <div class="section-title mb-5" data-aos="flip-left" data-aos-delay="100">
                     <div class="sub-style">
-                        <h4 class="sub-title px-3 mb-0">Tim Kami</h4>
+                        <h1 class="sub-title px-3 mb-0">Tim Kami</h1>
                     </div>
                 </div>
-                <div class="row g-4 justify-content-center">
-                    <?php foreach ($teamList as $team): ?>
+                <!-- Gunakan align-items-stretch agar setiap .col memiliki tinggi sama -->
+                <div class="row g-4 justify-content-center align-items-stretch">
+                    <?php 
+                        // Membatasi data tim yang ditampilkan maksimal 8
+                        $limitedTeamList = array_slice($teamList, 0, 8);
+                        foreach ($limitedTeamList as $team):
+                    ?>
                     <div class="col-md-6 col-lg-6 col-xl-3" data-aos="zoom-in-up" data-aos-delay="400">
-                        <div class="team-item rounded">
-                            <div class="team-img rounded-top h-100">
-                                <img src="admin/images/team/<?php echo $team['img']; ?>" class="img-fluid rounded-top w-100" alt="<?php echo htmlspecialchars($team['title']); ?>">
+                        <!-- Tambahkan .h-100 dan .d-flex.flex-column agar tinggi item mengikuti .col dan isi tersusun vertikal -->
+                        <div class="team-item rounded h-100 d-flex flex-column">
+                            <div class="team-img rounded-top">
+                                <!-- Hilangkan h-100 di sini, dan atur tinggi gambar sesuai kebutuhan,
+                                    gunakan object-fit: cover (atau contain) agar proporsinya rapi -->
+                                <img src="admin/images/team/<?php echo htmlspecialchars($team['img']); ?>"
+                                    class="img-fluid rounded-top w-100"
+                                    alt="<?php echo htmlspecialchars($team['title']); ?>"
+                                    style="height: 250px; object-fit: contain;">
                                 <div class="team-icon d-flex justify-content-center">
                                     <?php if (!empty($team['facebook'])): ?>
                                         <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
@@ -238,11 +251,12 @@ function formatTanggalIndonesia($tanggal) {
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4">
-                                <h5><?php echo htmlspecialchars($team['title']); ?></h5>
-                                <p class="mb-0"><?php echo htmlspecialchars($team['designation']); ?></p>
-                                <p class="mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p>
+                            <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4 d-flex flex-column justify-content-between flex-grow-1">
+                                <h5 class="team-title"><?php echo htmlspecialchars($team['title']); ?></h5>
+                                <p class="team-designation mb-0"><?php echo htmlspecialchars($team['designation']); ?></p>
+                                <p class="team-description mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p>
                             </div>
+                            <!-- flex-grow-1 agar konten memenuhi sisa ruang di bawah gambar -->
                         </div>
                     </div>
                     <?php endforeach; ?>
@@ -305,7 +319,7 @@ function formatTanggalIndonesia($tanggal) {
                 <div class="container py-5">
                     <div class="section-title mb-5">
                         <div class="sub-style">
-                            <h4 class="sub-title text-white px-3 mb-0">Testimoni</h4>
+                            <h1 class="sub-title text-white px-3 mb-0">Testimoni</h1>
                         </div>
                         <h1 class="display-3 mb-4">Silahkan Lihat dan Berikan Testimoni Anda</h1>
                     </div>
