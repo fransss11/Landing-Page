@@ -131,7 +131,8 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
         <!-- Baris untuk Diagram Pengunjung -->
         <div class="row mt-4">
           <div class="col-md-12">
-            <h3>Statistik Pengunjung</h3>
+            <h1>Statistik Pengunjung</h1>
+            <h5>Silakan klik pada diagram untuk melihat detail pengunjung.</h5>
             <div class="chart-container">
               <canvas id="visitorChart"></canvas>
             </div>
