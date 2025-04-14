@@ -6,7 +6,7 @@ $result = $conn->query($sql);
 $info = $result->fetch_assoc();
 $maps_url = $info['maps_url'];
 // Fetch data from the 'social_table'
-$sql = "SELECT facebook, twitter, instagram, linkedin, whatsapp FROM social ORDER BY id DESC LIMIT 1";
+$sql = "SELECT * FROM social ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
 $social = $result->fetch_assoc();
 ?>
@@ -81,7 +81,7 @@ $social = $result->fetch_assoc();
                             <div class="d-flex flex-column align-items-center text-center mb-4">
                                 <div class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;"><i class="fa fa-phone-alt fa-2x text-primary"></i></div>
                                 <h4 class="text-dark">Telepon</h4>
-                                <p class="mb-0 text-white">031 843 7854</p>
+                                <p href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" class="mb-0 text-white"></p>
                             </div>
                         </div>
                     </div>
