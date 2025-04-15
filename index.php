@@ -127,6 +127,36 @@ function formatTanggalIndonesia($tanggal) {
             </div>
         </div>
         <!-- Client Reviews Section End -->
+                 <!-- About Start -->
+        <div class="container-fluid about bg-light py-5">
+            <div class="container py-5">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-5" data-aos="fade-right" data-aos-delay="500">
+                        <div class="about-img pb-5 ps-5">
+                            <img src="admin/images/about/<?php echo htmlspecialchars($about['img']); ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
+                        </div>
+                    </div>
+                    <div class="col-lg-7" data-aos="fade-left" data-aos-delay="400">
+                        <div class="section-title text-start mb-5">
+                            <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
+                            <p class="mb-4">
+                                <?php 
+                                $description = strip_tags($about['descrip']);
+                                if (strlen($description) > 500) {
+                                    $description = substr($description, 0, 500) . '...';
+                                }
+                                echo $description;
+                                ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-auto text-center">
+                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">LIhat Semua Tentang Kami</a>
+                </div>
+            </div>
+        </div>
+        <!-- About End -->
         <!-- Services Start -->
         <div class="container-fluid service py-5">
             <div class="container py-5">
@@ -178,36 +208,7 @@ function formatTanggalIndonesia($tanggal) {
             </div>
         </div>
         <!-- Services End -->
-        <!-- About Start -->
-        <div class="container-fluid about bg-light py-5">
-            <div class="container py-5">
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-5" data-aos="fade-right" data-aos-delay="500">
-                        <div class="about-img pb-5 ps-5">
-                            <img src="admin/images/about/<?php echo htmlspecialchars($about['img']); ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
-                        </div>
-                    </div>
-                    <div class="col-lg-7" data-aos="fade-left" data-aos-delay="400">
-                        <div class="section-title text-start mb-5">
-                            <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
-                            <p class="mb-4">
-                                <?php 
-                                $description = strip_tags($about['descrip']);
-                                if (strlen($description) > 500) {
-                                    $description = substr($description, 0, 500) . '...';
-                                }
-                                echo $description;
-                                ?>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-auto text-center">
-                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">LIhat Semua Tentang Kami</a>
-                </div>
-            </div>
-        </div>
-        <!-- About End -->
+
         <!-- Team Start -->
         <div class="container-fluid team py-5">
             <div class="container py-5">

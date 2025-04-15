@@ -91,7 +91,7 @@ $logo = isset($info_row['logo']) && !empty($info_row['logo']) ? "admin/images/lo
 }
 @media (max-width: 576px) {
   .hero {
-    background-position: center 17%, center center !important;
+    background-position: center 170px, center center !important;
     height: auto !important;
     min-height: auto !important;
     overflow: visible !important;
