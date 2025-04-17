@@ -129,9 +129,9 @@ if (isset($_POST['add'])) {
                   </div>
                 </div>
               </div>
-              <button type="submit" name="add" class="btn btn-primary btn-lg">Tambahkan</button>
-              <a href="add-category.php" class="btn btn-danger">Kembali</a>
             </div>
+            <button type="submit" name="add" class="btn btn-primary btn-lg">Tambahkan</button>
+            <a href="add-category.php" class="btn btn-danger btn-lg">Batal</a>
           </form>
         </div>
         <!-- Tabel Category -->

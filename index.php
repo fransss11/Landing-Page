@@ -9,6 +9,7 @@ if ($result->num_rows > 0) {
         $clients[] = $row;
     }
 }
+
 // Fetch data from the 'services' table
 $sql = "SELECT * FROM services ORDER BY id DESC LIMIT 3";
 $result = $conn->query($sql);
@@ -18,12 +19,14 @@ if ($result->num_rows > 0) {
         $services[] = $row;
     }
 }
+
 // Fetch data from the 'about' table
 $sql = "SELECT * FROM about ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
 $about = $result->fetch_assoc();
+
 // Fetch data from the 'teams' table
-$sql = "SELECT title, designation, descrip, img, facebook, twitter, instagram, linkedin, whatsapp FROM teams";
+$sql = "SELECT title, designation, img, facebook, twitter, instagram, linkedin, whatsapp FROM teams";
 $result = $conn->query($sql);
 $teamList = array();
 if ($result->num_rows > 0) {
@@ -31,6 +34,56 @@ if ($result->num_rows > 0) {
         $teamList[] = $row;
     }
 }
+
+// Pisahkan data tim menjadi tiga kategori: direktur, manajer, dan staf (lainnya)
+$directorTeam = array();
+$managerTeam  = array();
+$staffTeam    = array();
+
+foreach ($teamList as $member) {
+    $designation = strtolower(trim($member['designation']));
+    // Jika mengandung kata "direktur"
+    if (strpos($designation, 'direktur') !== false) {
+        $directorTeam[] = $member;
+    }
+    // Jika mengandung kata "manajer"
+    else if (strpos($designation, 'manajer') !== false) {
+        $managerTeam[] = $member;
+    }
+    // Jika tidak mengandung kata kunci tersebut, dianggap sebagai staf
+    else {
+        $staffTeam[] = $member;
+    }
+}
+
+// Gabungkan data pimpinan (direktur dan manajer)
+$pimpinan = array_merge($directorTeam, $managerTeam);
+
+// Jika jumlah pimpinan >= 8, tampilkan semua pimpinan
+// Jika kurang dari 8, tambahkan data staf hingga total tampil 8 (jika ada)
+if (count($pimpinan) >= 8) {
+    $limitedTeamList = $pimpinan;
+} else {
+    $needed = 8 - count($pimpinan);
+    $limitedTeamList = array_merge($pimpinan, array_slice($staffTeam, 0, $needed));
+}
+
+// ---- TAMBAHAN PAGINATION BAGIAN TIM ----
+// Set jumlah data per halaman
+$perPage = 8;
+$totalTeams = count($limitedTeamList);
+$totalPages = ceil($totalTeams / $perPage);
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($currentPage < 1) {
+    $currentPage = 1;
+}
+if ($currentPage > $totalPages) {
+    $currentPage = $totalPages;
+}
+$startIndex = ($currentPage - 1) * $perPage;
+$teamsToShow = array_slice($limitedTeamList, $startIndex, $perPage);
+// ---------------------------------------
+
 // Fetch data from the 'testimonials' table
 $sql = "SELECT title, designation, descrip, img, date FROM testimonials";
 $result = $conn->query($sql);
@@ -40,6 +93,7 @@ if ($result->num_rows > 0) {
         $testimonials[] = $row;
     }
 }
+
 // Fetch data from the 'blog' table
 $sql = "SELECT id, title, category, descrip, img, date FROM blog ORDER BY id DESC LIMIT 3";
 $result = $conn->query($sql);
@@ -50,6 +104,7 @@ if ($result->num_rows > 0) {
     }
 }
 $conn->close();
+
 function formatTanggalIndonesia($tanggal) {
     $bulanIndo = [
         "Januari", "Februari", "Maret", "April", "Mei", "Juni",
@@ -127,7 +182,7 @@ function formatTanggalIndonesia($tanggal) {
             </div>
         </div>
         <!-- Client Reviews Section End -->
-                 <!-- About Start -->
+        <!-- About Start -->
         <div class="container-fluid about bg-light py-5">
             <div class="container py-5">
                 <div class="row g-5 align-items-center">
@@ -208,7 +263,6 @@ function formatTanggalIndonesia($tanggal) {
             </div>
         </div>
         <!-- Services End -->
-
         <!-- Team Start -->
         <div class="container-fluid team py-5">
             <div class="container py-5">
@@ -220,16 +274,12 @@ function formatTanggalIndonesia($tanggal) {
                 <!-- Gunakan align-items-stretch agar setiap .col memiliki tinggi sama -->
                 <div class="row g-4 justify-content-center align-items-stretch">
                     <?php 
-                        // Membatasi data tim yang ditampilkan maksimal 8
-                        $limitedTeamList = array_slice($teamList, 0, 8);
-                        foreach ($limitedTeamList as $team):
+                        // Menampilkan data tim sesuai pagination
+                        foreach ($teamsToShow as $team):
                     ?>
                     <div class="col-md-6 col-lg-6 col-xl-3" data-aos="zoom-in-up" data-aos-delay="400">
-                        <!-- Tambahkan .h-100 dan .d-flex.flex-column agar tinggi item mengikuti .col dan isi tersusun vertikal -->
                         <div class="team-item rounded h-100 d-flex flex-column">
                             <div class="team-img rounded-top">
-                                <!-- Hilangkan h-100 di sini, dan atur tinggi gambar sesuai kebutuhan,
-                                    gunakan object-fit: cover (atau contain) agar proporsinya rapi -->
                                 <img src="admin/images/team/<?php echo htmlspecialchars($team['img']); ?>"
                                     class="img-fluid rounded-top w-100"
                                     alt="<?php echo htmlspecialchars($team['title']); ?>"
@@ -255,13 +305,41 @@ function formatTanggalIndonesia($tanggal) {
                             <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4 d-flex flex-column justify-content-between flex-grow-1">
                                 <h5 class="team-title"><?php echo htmlspecialchars($team['title']); ?></h5>
                                 <p class="team-designation mb-0"><?php echo htmlspecialchars($team['designation']); ?></p>
-                                <p class="team-description mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p>
+                                <!-- <p class="team-description mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p> -->
                             </div>
-                            <!-- flex-grow-1 agar konten memenuhi sisa ruang di bawah gambar -->
                         </div>
                     </div>
                     <?php endforeach; ?>
                 </div>
+                <!-- Pagination untuk bagian Tim -->
+                <div class="mt-4 text-center">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <?php if($currentPage > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?php echo $currentPage - 1; ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php for($i = 1; $i <= $totalPages; $i++): ?>
+                            <li class="page-item <?php if($i == $currentPage) echo 'active'; ?>">
+                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                            </li>
+                            <?php endfor; ?>
+                            <?php if($currentPage < $totalPages): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?php echo $currentPage + 1; ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="mt-auto text-center">
+                <a href="team.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Tim Kami</a>
             </div>
         </div>
         <!-- Team End -->
@@ -292,8 +370,6 @@ function formatTanggalIndonesia($tanggal) {
                         let shortCut = short.substring(0, 200);
                         short = shortCut.substring(0, shortCut.lastIndexOf(" ")) + "...";
                     }
-                    // Jika hanya satu berita, kita bisa menambahkan 'mx-auto' agar card-nya benar-benar center
-                    // (bisa dihilangkan jika sudah cukup dengan d-flex justify-content-center pada container)
                     beritaContainer.innerHTML += `
                         <div class="col-md-6 col-lg-4 ${beritaList.length === 1 ? 'mx-auto' : ''} d-flex align-items-stretch" data-aos="fade-right" data-aos-delay="500">
                             <div class="card shadow-lg">
@@ -305,7 +381,6 @@ function formatTanggalIndonesia($tanggal) {
                                     </p>
                                     <h5 class="card-category">${berita.category}</h5>
                                     <p class="card-text">${short}</p>
-                                    
                                 </div>
                             </div>
                         </div>
@@ -397,5 +472,5 @@ function formatTanggalIndonesia($tanggal) {
     </script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    </body>
+</body>
 </html>

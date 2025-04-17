@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div class="card-header">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary btn-lg">Perbarui Admin</button>
-                                            <a href="data_admin.php" class="btn btn-danger">Kembali</a>
+                                            <a href="data_admin.php" class="btn btn-danger btn-lg">Kembali</a>
                                         </div>
                                     </div>
                                 </div>

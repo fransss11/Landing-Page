@@ -220,7 +220,7 @@ function compressImage($source, $destination, $quality) {
                                                 <button type="submit" name="publise" class="btn btn-primary btn-lg">
                                                     <?php echo ($edit) ? 'Perbarui' : 'Tambahkan'; ?>
                                                 </button>
-                                                <a href="view-testimonials.php" class="btn btn-danger">Kembali</a>
+                                                <a href="view-testimonials.php" class="btn btn-danger btn-lg">Kembali</a>
                                             </div>
                                         </div>
                                     </div>

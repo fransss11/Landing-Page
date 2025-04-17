@@ -4,17 +4,17 @@ include 'auth.php';
 date_default_timezone_set('Asia/Jakarta'); // Ensure timezone is set to Indonesia (WIB)
 $today = date("Y-m-d H:i:s");
 
-// Check if a record already exists in the 'proposal' table
-$query  = "SELECT * FROM proposal";
+// Ambil data proposal terbaru dengan mengurutkan berdasarkan tanggal secara menurun
+$query  = "SELECT * FROM proposal ORDER BY date DESC LIMIT 1";
 $result = mysqli_query($con, $query);
 $row    = mysqli_fetch_assoc($result);
 $dataExists = ($row) ? true : false;
 
-// If delete action is triggered
+// Jika delete action di-trigger
 if (isset($_GET['delete']) && isset($_GET['id'])) {
     $deleteId = $_GET['id'];
 
-    // Fetch the specific record to delete
+    // Ambil record spesifik untuk dihapus
     $query = "SELECT * FROM proposal WHERE id_pro = '$deleteId'";
     $result = mysqli_query($con, $query);
     $row = mysqli_fetch_assoc($result);
@@ -22,12 +22,12 @@ if (isset($_GET['delete']) && isset($_GET['id'])) {
     if ($row) {
         $pdfToDelete = $row['pdf'];
 
-        // Delete the file from the server
+        // Hapus file dari server
         if (!empty($pdfToDelete) && file_exists("../pdf/" . $pdfToDelete)) {
             unlink("../pdf/" . $pdfToDelete);
         }
 
-        // Delete the record from the database
+        // Hapus record dari database
         $sql = "DELETE FROM proposal WHERE id_pro = '$deleteId'";
         $exec = mysqli_query($con, $sql);
         if ($exec) {
@@ -42,29 +42,29 @@ if (isset($_GET['delete']) && isset($_GET['id'])) {
         $_SESSION['msgClass'] = "alert-warning";
     }
 
-    // Redirect to avoid resubmission
+    // Redirect untuk menghindari resubmission
     header("Location: add-portofolio.php");
     exit;
 }
 
-// If form is submitted
+// Jika form disubmit untuk update
 if (isset($_POST['save'])) {
-    // Use existing pdf filename if available
+    // Gunakan nama file pdf yang sudah ada jika tersedia
     $proposal_pdf = isset($row['pdf']) ? $row['pdf'] : '';
     $proposal_name = isset($_POST['proposal_name']) ? $_POST['proposal_name'] : $row['name'];
-    
-    // If a new PDF file is uploaded, process it
+
+    // Jika ada file PDF baru yang diupload, proses filenya
     if (!empty($_FILES['proposal_pdf']['name'])) {
         $newFileName = rand() . '_' . $_FILES['proposal_pdf']['name'];
         $tempFile    = $_FILES['proposal_pdf']['tmp_name'];
         $folder      = "../pdf/" . $newFileName;
-        // Allow only pdf and image extensions
+        // Hanya izinkan ekstensi pdf dan image
         $valid_ext = ['pdf', 'jpg', 'jpeg', 'png'];
         $file_ext  = strtolower(pathinfo($newFileName, PATHINFO_EXTENSION));
         $file_size = $_FILES['proposal_pdf']['size'];
 
         if (in_array($file_ext, $valid_ext)) {
-            if (in_array($file_ext, ['jpg', 'jpeg', 'png']) && $file_size > 512000) { // Check image size (500KB = 512000 bytes)
+            if (in_array($file_ext, ['jpg', 'jpeg', 'png']) && $file_size > 512000) { // Ukuran gambar maksimal 500KB
                 $_SESSION['msg'] = "Gambar yang diunggah harus berukuran maksimal 500KB.";
                 $_SESSION['msgClass'] = "alert-danger";
                 header("Location: add-portofolio.php");
@@ -79,8 +79,8 @@ if (isset($_POST['save'])) {
             exit;
         }
     }
-    
-    // If no record exists, insert new record; otherwise update the record
+
+    // Jika tidak ada record, insert; jika sudah ada, update record terbaru
     if (!$dataExists) {
         $sql = "INSERT INTO proposal (pdf, name, date) 
                 VALUES ('$proposal_pdf', '$proposal_name', '$today')";
@@ -107,28 +107,25 @@ if (isset($_POST['save'])) {
             $_SESSION['msgClass'] = "alert-danger";
         }
     }
-    // Redirect to avoid resubmission
     header("Location: add-portofolio.php");
     exit;
 }
 
-// If form is submitted for adding a new PDF
+// Jika form disubmit untuk menambahkan PDF baru
 if (isset($_POST['add'])) {
     $proposal_pdf = '';
     $proposal_name = isset($_POST['new_proposal_name']) ? $_POST['new_proposal_name'] : '';
 
-    // If a new PDF file is uploaded, process it
     if (!empty($_FILES['new_proposal_pdf']['name'])) {
         $newFileName = rand() . '_' . $_FILES['new_proposal_pdf']['name'];
         $tempFile    = $_FILES['new_proposal_pdf']['tmp_name'];
         $folder      = "../pdf/" . $newFileName;
-        // Allow only pdf and image extensions
         $valid_ext = ['pdf', 'jpg', 'jpeg', 'png'];
         $file_ext  = strtolower(pathinfo($newFileName, PATHINFO_EXTENSION));
         $file_size = $_FILES['new_proposal_pdf']['size'];
 
         if (in_array($file_ext, $valid_ext)) {
-            if (in_array($file_ext, ['jpg', 'jpeg', 'png']) && $file_size > 512000) { // Check image size (500KB = 512000 bytes)
+            if (in_array($file_ext, ['jpg', 'jpeg', 'png']) && $file_size > 512000) {
                 $_SESSION['msg'] = "Gambar yang diunggah harus berukuran maksimal 500KB.";
                 $_SESSION['msgClass'] = "alert-danger";
                 header("Location: add-portofolio.php");
@@ -144,7 +141,6 @@ if (isset($_POST['add'])) {
         }
     }
 
-    // Insert new record into the database
     if (!empty($proposal_pdf) && !empty($proposal_name)) {
         $sql = "INSERT INTO proposal (name, pdf, date) VALUES ('$proposal_name','$proposal_pdf', '$today')";
         $exec = mysqli_query($con, $sql);
@@ -160,12 +156,11 @@ if (isset($_POST['add'])) {
         $_SESSION['msgClass'] = "alert-warning";
     }
 
-    // Redirect to avoid resubmission
     header("Location: add-portofolio.php");
     exit;
 }
 
-// Fetch all records from the 'proposal' table
+// Ambil semua record untuk ditampilkan dalam daftar portofolio
 $queryAll = "SELECT * FROM proposal ORDER BY date DESC";
 $resultAll = mysqli_query($con, $queryAll);
 ?>
@@ -174,7 +169,6 @@ $resultAll = mysqli_query($con, $queryAll);
 <head>
     <meta charset="UTF-8">
     <?php include "title.php"; ?>
-    <!-- Bootstrap & AdminLTE CSS -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -190,7 +184,6 @@ $resultAll = mysqli_query($con, $queryAll);
         </section>
         <section class="content">
             <div class="container">
-                <!-- Display session alerts if set -->
                 <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
                     <div class="alert <?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
                         <?php 
@@ -204,7 +197,7 @@ $resultAll = mysqli_query($con, $queryAll);
                     </div>
                 <?php endif; ?>
 
-                <!-- Display existing PDF if available -->
+                <!-- Tampilkan PDF terbaru jika ada -->
                 <?php if ($dataExists && !empty($row['pdf'])): ?>
                     <?php $pdfPath = "../pdf/" . $row['pdf']; ?>
                     <div class="existing-pdf mb-4">
@@ -214,26 +207,10 @@ $resultAll = mysqli_query($con, $queryAll);
                     </div>
                 <?php endif; ?>
 
-                <?php if (isset($_FILES['new_proposal_pdf']['name']) && !empty($_FILES['new_proposal_pdf']['name'])): ?>
-                    <?php $newPdfPath = "../pdf/" . rand() . '_' . $_FILES['new_proposal_pdf']['name']; ?>
-                    <div class="new-pdf mb-4">
-                        <iframe src="<?php echo $newPdfPath; ?>" 
-                                style="width:100%; height:600px;" data-aos="fade-up" data-aos-delay="500" frameborder="0"></iframe>
-                    </div>
-                <?php endif; ?>
-
-                <!-- Add Delete Button if PDF exists
-                <?php if ($dataExists && !empty($row['pdf'])): ?>
-                    <div class="col-12 mb-3">
-                        <a href="add-portofolio.php?delete=true" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus PDF ini?');">Hapus PDF</a>
-                    </div>
-                <?php endif; ?> -->
-
-                <!-- Form to add a new PDF -->
+                <!-- Form untuk menambahkan portofolio baru -->
                 <div class="container mt-4">
                     <h3>Tambah Portofolio Baru</h3>
                     <form action="" method="post" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate style="margin:0;">
-                        <!-- Proposal Name -->
                         <div class="col-md-12">
                             <label for="newProposalName" class="form-label">Nama Proposal</label>
                             <input type="text" class="form-control" id="newProposalName" name="new_proposal_name" placeholder="Masukkan nama proposal" required>
@@ -241,7 +218,6 @@ $resultAll = mysqli_query($con, $queryAll);
                                 Mohon masukkan nama proposal.
                             </div>
                         </div>
-                        <!-- PDF Upload -->
                         <div class="col-md-12">
                             <label for="newValidationPDF" class="form-label">Upload Portofolio Baru</label><br>
                             <div class="custom-file">
@@ -256,7 +232,6 @@ $resultAll = mysqli_query($con, $queryAll);
                                 <iframe id="pdfPreviewFrame" style="width:50%; height:70vh;" frameborder="0"></iframe>
                             </div>
                         </div>
-                        <!-- Action Buttons -->
                         <div style="padding-top: 3%;" class="col-12">
                             <button type="submit" name="add" class="btn btn-success">Tambah</button>
                             <a href="add-portofolio.php" class="btn btn-secondary">Batal</a>
@@ -265,7 +240,6 @@ $resultAll = mysqli_query($con, $queryAll);
                 </div>
 
                 <script>
-                // Enable Bootstrap validation styles
                 (function () {
                     'use strict';
                     var forms = document.querySelectorAll('.needs-validation');
@@ -283,7 +257,7 @@ $resultAll = mysqli_query($con, $queryAll);
             </div>
         </section>
 
-        <!-- Display all uploaded PDFs -->
+        <!-- Tampilkan daftar semua portofolio -->
         <section class="content">
             <div class="container mt-4">
                 <h3>Daftar Portofolio</h3>
@@ -324,7 +298,6 @@ $resultAll = mysqli_query($con, $queryAll);
     </div>
     <?php include "footer.php"; ?>
 </div>
-<!-- jQuery, Bootstrap, AdminLTE JS -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="dist/js/adminlte.min.js"></script>
@@ -339,25 +312,19 @@ document.getElementById("newValidationPDF").addEventListener("change", function 
     this.nextElementSibling.innerText = fileName;
 });
 
-// Disable the Perbarui button if no changes are made
 const proposalNameInput = document.getElementById('proposalName');
 const proposalFileInput = document.getElementById('validationPDF');
 const saveButton = document.querySelector('button[name="save"]');
 
 function checkChanges() {
     const originalName = '<?php echo isset($row['name']) ? $row['name'] : ''; ?>';
-    const originalFile = '';
-
     const nameChanged = proposalNameInput.value !== originalName;
     const fileChanged = proposalFileInput.files.length > 0;
-
     saveButton.disabled = !(nameChanged || fileChanged);
 }
 
 proposalNameInput.addEventListener('input', checkChanges);
 proposalFileInput.addEventListener('change', checkChanges);
-
-// Initial check to disable the button on page load
 checkChanges();
 
 function updateFileName(input) {

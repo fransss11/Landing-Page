@@ -231,7 +231,7 @@ function compressImage($source, $destination, $quality) {
                   <div class="card-header">
                     <div class="form-group">
                       <button type="submit" name="publise" class="btn btn-primary btn-lg"><?php echo ($edit) ? 'Perbarui' : 'Publikasikan'; ?></button>
-                      <a href="view-gallery.php" class="btn btn-danger">Kembali</a>
+                      <a href="view-gallery.php" class="btn btn-danger btn-lg">Kembali</a>
                     </div>
                   </div>
                 </div><!-- /.card -->

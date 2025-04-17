@@ -5,7 +5,7 @@
     $(document).ready(function () {
         setTimeout(function () {
             $("#spinner").addClass("hide"); // Tambahkan class 'hide' agar spinner hilang dengan efek transisi
-        }, 10); // Spinner akan hilang setelah 1.5 detik
+        }, 100); // Spinner akan hilang setelah 1.5 detik
     });
     
     

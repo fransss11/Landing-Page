@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                             </div>
                             <!-- Description -->
-                            <div class="card-body pad">
+                            <!-- <div class="card-body pad">
                                 <label>Deskripsi</label>
                                 <div class="mb-3">
                                     <textarea name="Deskripsi" class="textarea" placeholder="Deskripsi" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo isset($roww["descrip"]) ? htmlspecialchars($roww["descrip"]) : ''; ?></textarea>
@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         Silahkan masukkan deskripsi.
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- Social Media -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -217,7 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <button type="submit" class="btn btn-primary btn-lg">
                                         <?php echo ($edit > 0) ? 'Perbarui' : 'Publikasikan'; ?>
                                     </button>
-                                    <a href="view-teams.php" class="btn btn-danger">Kembali</a>
+                                    <a href="view-teams.php" class="btn btn-danger btn-lg">Kembali</a>
                                 </div>
                             </div>
                         </div><!-- /.card -->

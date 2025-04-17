@@ -108,7 +108,7 @@ $social = $result->fetch_assoc();
                         </div>
                         <div class="rounded h-100">
                             <iframe class="rounded w-100" 
-                                style="height: 500px; border:0;" 
+                                style="height: 500px; border:0; width: 100%;" 
                                 loading="lazy" 
                                 referrerpolicy="no-referrer-when-downgrade" 
                                 src="<?php echo isset($maps_url) ? $maps_url : 'https://www.google.com/maps'; ?>" 

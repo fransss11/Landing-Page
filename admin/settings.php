@@ -179,7 +179,10 @@ if (isset($_POST['update'])) {
                         <div class="col-md-12">
                             <div class="card-header">
                                 <div class="form-group">
-                                    <center><button type="submit" name="update" class="btn btn-warning btn-lg">Update</button></center>
+                                    <center>
+                                    <button type="submit" name="update" class="btn btn-warning btn-lg">Update</button>
+                                    <button type="reset" class="btn btn-danger btn-lg">Reset</button>
+                                    </center>
                                 </div>
                             </div>
                         </div>

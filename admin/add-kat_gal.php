@@ -145,9 +145,9 @@ if (isset($_POST['add'])) {
                   </div>
                 </div>
               </div>
-              <button type="submit" name="add" class="btn btn-block btn-primary btn-lg">Tambahkan</button>
-              <a href="add-kat_gal.php" class="btn btn-danger">Kembali</a>
             </div>
+            <button type="submit" name="add" class="btn btn-primary btn-lg">Tambahkan</button>
+            <a href="add-kat_gal.php" class="btn btn-danger btn-lg">Kembali</a>
           </form>
         </div>
         <!-- Tabel Kategori -->

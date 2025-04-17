@@ -53,25 +53,34 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Pastikan content-wrapper menyesuaikan sidebar */
+  /* Pastikan content-wrapper menyesuaikan sidebar */
+  .content-wrapper {
+    margin-left: 250px;   /* Sesuai lebar sidebar */
+    transition: all 0.3s;
+    min-height: 100vh;
+  }
+  @media (max-width: 992px) {
     .content-wrapper {
-      margin-left: 250px;   /* Sesuai lebar sidebar */
-      transition: all 0.3s;
-      min-height: 100vh;
+      margin-left: 0; /* Saat sidebar collapse di layar kecil */
     }
-    @media (max-width: 992px) {
-      .content-wrapper {
-        margin-left: 0; /* Saat sidebar collapse di layar kecil */
-      }
-    }
-    .wrapper {
-      min-height: 100vh;
-    }
-    .chart-container {
-      max-width: 900px;
-      margin: auto;
-    }
-  </style>
+  }
+  .wrapper {
+    min-height: 100vh;
+  }
+  .chart-container {
+    max-width: 900px;
+    margin: auto;
+  }
+  /* CSS tambahan untuk pagination agar responsif */
+  .pagination-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-top: 20px;
+  }
+  .pagination {
+    flex-wrap: wrap;
+  }
+</style>
   <!-- Skrip untuk cek sessionStorage -->
   <script>
     // Jika flag 'isLoggedIn' tidak ada di sessionStorage, arahkan ke logout untuk menghapus sesi

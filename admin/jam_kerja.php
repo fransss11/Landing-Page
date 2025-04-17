@@ -108,8 +108,8 @@ if (isset($_POST['save'])) {
                     </div>
                     <!-- Action Buttons -->
                     <div style="padding-top: 3%;" class="col-12">
-                        <button type="submit" name="save" class="btn btn-primary">Simpan</button>
-                        <a href="jam_kerja.php" class="btn btn-danger">Kembali</a>
+                        <button type="submit" name="save" class="btn btn-primary btn-lg">Simpan</button>
+                        <button type="reset" class="btn btn-danger btn-lg">Reset</button> 
                     </div>
                 </form>
             </div>

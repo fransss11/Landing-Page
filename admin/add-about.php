@@ -145,8 +145,8 @@ if (isset($_POST['save'])) {
                     </div>
                     <!-- Tombol Aksi -->
                     <div style="padding-top: 3%;" class="col-12">
-                        <button type="submit" name="save" class="btn btn-primary">Perbarui</button>
-                        <a href="add-about.php" class="btn btn-danger">Kembali</a>
+                        <button type="submit" name="save" class="btn btn-primary btn-lg">Perbarui</button>
+                        <a href="add-about.php" class="btn btn-danger btn-lg">Batal</a>
                     </div>
                 </form>
             </div>

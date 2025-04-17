@@ -1,15 +1,90 @@
 <?php
 include 'database.php';
+
+// Fetch data from the 'klien' table
+$sql = "SELECT klien, gambar FROM klien";
+$result = $conn->query($sql);
+$clients = array();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $clients[] = $row;
+    }
+}
+
+// Fetch data from the 'services' table
+$sql = "SELECT * FROM services ORDER BY id DESC LIMIT 3";
+$result = $conn->query($sql);
+$services = array();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $services[] = $row;
+    }
+}
+
+// Fetch data from the 'about' table
+$sql = "SELECT * FROM about ORDER BY id DESC LIMIT 1";
+$result = $conn->query($sql);
+$about = $result->fetch_assoc();
+
 // Fetch data from the 'teams' table
-$sql = "SELECT title, designation, descrip, img, facebook, twitter, instagram, linkedin, whatsapp FROM teams";
+$sql = "SELECT title, designation, img, facebook, twitter, instagram, linkedin, whatsapp FROM teams";
 $result = $conn->query($sql);
 $teamList = array();
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         $teamList[] = $row;
     }
 }
 $conn->close();
+
+// Pisahkan data berdasarkan designation (dengan pengecekan substring untuk kata tambahan)
+// Direktur: jika contains "direktur"
+// Manajer: jika contains "manajer"
+// Staf: sisanya
+$directorTeam = array();
+$managerTeam  = array();
+$staffTeam    = array();
+
+foreach ($teamList as $member) {
+    $designation = strtolower(trim($member['designation']));
+    if (strpos($designation, 'direktur') !== false) {
+        $directorTeam[] = $member;
+    } else if (strpos($designation, 'manajer') !== false) {
+        $managerTeam[] = $member;
+    } else {
+        $staffTeam[] = $member;
+    }
+}
+
+// Gabungkan data sehingga direktur dan manajer tampil di atas, diikuti oleh staf
+$combinedTeam = array_merge($directorTeam, $managerTeam, $staffTeam);
+
+// Pagination untuk bagian tim (8 data per halaman)
+$itemsPerPage = 8;
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($currentPage < 1) {
+    $currentPage = 1;
+}
+$totalItems = count($combinedTeam);
+$totalPages = ceil($totalItems / $itemsPerPage);
+$offset = ($currentPage - 1) * $itemsPerPage;
+$limitedTeamList = array_slice($combinedTeam, $offset, $itemsPerPage);
+
+function formatTanggalIndonesia($tanggal) {
+    $bulanIndo = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+    $hariIndo = [
+        "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
+    ];
+    $dateObj = strtotime($tanggal);
+    $hari = $hariIndo[date('w', $dateObj)];
+    $tanggalNum = date('j', $dateObj);
+    $bulan = $bulanIndo[date('n', $dateObj) - 1];
+    $tahun = date('Y', $dateObj);
+    return "$hari, $tanggalNum $bulan $tahun";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,25 +128,22 @@ $conn->close();
         ?>
         <!-- Header End -->
         <!-- Team Start -->
-        <div class="container-fluid team py-5 hidden">
+        <div class="container-fluid team py-5">
             <div class="container py-5">
-                <div class="section-title mb-5">
+                <div class="section-title mb-5" data-aos="flip-left" data-aos-delay="100">
                     <div class="sub-style">
                         <h1 class="sub-title px-3 mb-0">Tim Kami</h1>
                     </div>
                 </div>
-                <!-- Tambahkan align-items-stretch untuk memaksa tiap kolom punya tinggi yang sama -->
+                <!-- Tampilkan tim dengan paging: 8 per halaman -->
                 <div class="row g-4 justify-content-center align-items-stretch">
-                    <?php foreach ($teamList as $index => $team): ?>
+                    <?php foreach ($limitedTeamList as $index => $team): ?>
                     <div class="col-md-6 col-lg-6 col-xl-3"
-                        data-aos="<?php echo $index % 2 == 0 ? 'fade-up' : 'fade-down'; ?>" 
+                        data-aos="<?php echo $index % 2 == 0 ? 'fade-up' : 'fade-down'; ?>"
                         data-aos-delay="<?php echo $index * 300; ?>">
-
-                        <!-- Tambahkan h-100 dan d-flex flex-column agar item membentang penuh dan konten ditata secara vertikal -->
                         <div class="team-item rounded h-100 d-flex flex-column">
                             <div class="team-img rounded-top">
-                                <!-- Pastikan semua gambar punya tinggi sama, misal 350px, dan gunakan object-fit: cover agar ter-crop rapi -->
-                                <img src="admin/images/team/<?php echo $team['img']; ?>"
+                                <img src="admin/images/team/<?php echo htmlspecialchars($team['img']); ?>"
                                     class="img-fluid team-image"
                                     alt="<?php echo htmlspecialchars($team['title']); ?>"
                                     style="width: 100%; height: 250px; object-fit: contain;">
@@ -93,15 +165,32 @@ $conn->close();
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            <!-- flex-grow-1 supaya bagian konten mengisi sisa ruang di bawah gambar -->
                             <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4 d-flex flex-column justify-content-between flex-grow-1">
                                 <h5 class="team-title"><?php echo htmlspecialchars($team['title']); ?></h5>
                                 <p class="team-designation mb-0"><?php echo htmlspecialchars($team['designation']); ?></p>
-                                <p class="team-description mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p>
+                                <!-- <p class="team-description mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p> -->
                             </div>
                         </div>
                     </div>
                     <?php endforeach; ?>
+                </div>
+                <!-- Pagination -->
+                <div class="pagination text-center mt-4">
+                    <?php if ($currentPage > 1): ?>
+                        <a href="?page=<?php echo $currentPage - 1; ?>" class="btn btn-outline-primary mx-1">Previous</a>
+                    <?php endif; ?>
+
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <?php if ($i == $currentPage): ?>
+                            <span class="btn btn-primary mx-1"><?php echo $i; ?></span>
+                        <?php else: ?>
+                            <a href="?page=<?php echo $i; ?>" class="btn btn-outline-primary mx-1"><?php echo $i; ?></a>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+
+                    <?php if ($currentPage < $totalPages): ?>
+                        <a href="?page=<?php echo $currentPage + 1; ?>" class="btn btn-outline-primary mx-1">Next</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

@@ -229,7 +229,7 @@ if (isset($_POST['publise'])) {
                   <button type="submit" name="publise" class="btn btn-primary btn-lg">
                     <?php echo ($edit) ? 'Perbarui' : 'Tambahkan'; ?>
                   </button>
-                  <a href="view-services.php" class="btn btn-danger">Kembali</a>
+                  <a href="view-services.php" class="btn btn-danger btn-lg">Kembali</a>
                 </div>
               </div>
             </div><!-- /.card -->
