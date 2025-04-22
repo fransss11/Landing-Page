@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include 'database.php';
 // Fetch data from the 'klien' table
 $sql = "SELECT klien, gambar FROM klien";
@@ -137,8 +139,8 @@ function formatTanggalIndonesia($tanggal) {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="libr/animate/animate.min.css" rel="stylesheet">
+    <link href="libr/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
@@ -146,6 +148,7 @@ function formatTanggalIndonesia($tanggal) {
     <link href="css/responsive.css" rel="stylesheet">
     <!-- AOS Stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <?php include 'includes/logo.php'; ?>
 </head>
 <body>
     <div class="bckg">
@@ -438,9 +441,9 @@ function formatTanggalIndonesia($tanggal) {
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="libr/wow/wow.min.js"></script>
+    <script src="libr/waypoints/waypoints.min.js"></script>
+    <script src="libr/owlcarousel/owl.carousel.min.js"></script>
     <!-- AOS Library -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>

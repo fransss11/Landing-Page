@@ -173,6 +173,7 @@ $resultAll = mysqli_query($con, $queryAll);
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit Portofolio</title>
+    <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

@@ -71,6 +71,7 @@ if (isset($_POST['update'])) {
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Proposal</title>
+    <?php include '../includes/logo.php'; ?>
 </head>
 <body>
     <div class="container">

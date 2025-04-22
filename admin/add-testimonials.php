@@ -111,6 +111,7 @@ function compressImage($source, $destination, $quality) {
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

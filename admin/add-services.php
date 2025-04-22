@@ -100,6 +100,7 @@ if (isset($_POST['publise'])) {
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+  <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

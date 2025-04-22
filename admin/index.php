@@ -51,7 +51,12 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
   <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
   <!-- AdminLTE -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <?php include '../includes/logo.php'; ?>
   <style>
   /* Pastikan content-wrapper menyesuaikan sidebar */
   .content-wrapper {
@@ -68,8 +73,12 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
     min-height: 100vh;
   }
   .chart-container {
+    width: 100%;
     max-width: 900px;
-    margin: auto;
+    height:0;
+    padding-bottom:610px;
+    position:relative;
+    margin:auto;
   }
   /* CSS tambahan untuk pagination agar responsif */
   .pagination-container {
@@ -80,7 +89,48 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
   .pagination {
     flex-wrap: wrap;
   }
-</style>
+  
+  @media (max-width:766.98px){
+    .chart-container{
+      width:100%;
+      padding-bottom:455px;              /* rasio ≈1.4:1 agar tidak terlalu rendah */
+    }
+    #admin-text{font-size:32px;}
+    .small-box h3{font-size:20px;}
+    .small-box p{font-size:14px;margin-bottom:0;}
+  }
+  /* ─── PENYESUAIAN MOBILE <576px ──────────────────────────────────────────── */
+  @media (max-width:575.98px){
+    .chart-container{
+      width:100%;
+      padding-bottom:350px;              /* rasio ≈1.4:1 agar tidak terlalu rendah */
+    }
+    #admin-text{font-size:32px;}
+    .small-box h3{font-size:20px;}
+    .small-box p{font-size:14px;margin-bottom:0;}
+  }
+
+  /* PAGINATION (opsional) */
+  .pagination-container{overflow-x:auto;white-space:nowrap;margin-top:20px;}
+  .pagination{flex-wrap:wrap;}
+
+  /* Styling for Detail buttons */
+  #detailTodayBtn, #detailTotalBtn {
+    width: 257px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 575.98px) {
+    #detailTodayBtn, #detailTotalBtn {
+      font-size: 16px;
+      padding: 12px;
+    }
+  }
+  </style>
   <!-- Skrip untuk cek sessionStorage -->
   <script>
     // Jika flag 'isLoggedIn' tidak ada di sessionStorage, arahkan ke logout untuk menghapus sesi
@@ -140,14 +190,22 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
         <!-- Baris untuk Diagram Pengunjung -->
         <div class="row mt-4">
           <div class="col-md-12">
-            <h1>Statistik Pengunjung</h1>
-            <h5>Silakan klik pada diagram untuk melihat detail pengunjung.</h5>
+            <h1>Statistik Pengunjung :</h1>
             <div class="chart-container">
               <canvas id="visitorChart"></canvas>
             </div>
           </div>
         </div>
       </div><!-- /.container-fluid -->
+      <!-- New row for Detail buttons -->
+      <div class="row mt-3">
+        <div class="col-md-6 col-sm-12 text-center">
+          <button id="detailTodayBtn" class="btn btn-info btn-lg">Detail Pengunjung Hari Ini</button>
+        </div>
+        <div class="col-md-6 col-sm-12 text-center">
+          <button id="detailTotalBtn" class="btn btn-primary btn-lg">Detail Total Pengunjung</button>
+        </div>
+      </div>
     </section>
   </div><!-- /.content-wrapper -->
 </div><!-- /.wrapper -->
@@ -170,6 +228,7 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
     </div>
   </div>
 </div>
+
 <!-- Footer -->
 <?php include "footer.php"; ?>
 <!-- Scripts -->
@@ -213,7 +272,7 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
         scales: {
           y: {
             beginAtZero: true,
-            precision: 0
+            precision: 0,
           }
         },
         // Event click pada diagram
@@ -252,6 +311,37 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
           }
         }
       }
+    });
+
+    // Add event listeners for the new Detail buttons
+    document.getElementById("detailTodayBtn").addEventListener("click", function(){
+      $.ajax({
+        url: 'visitor_today.php',
+        type: 'GET',
+        success: function(data) {
+          $('#visitorModalBody').html(data);
+          $('#visitorModalLabel').text('Detail Pengunjung Hari Ini');
+          $('#visitorModal').modal('show');
+        },
+        error: function() {
+          alert('Terjadi kesalahan saat mengambil data detail pengunjung hari ini.');
+        }
+      });
+    });
+
+    document.getElementById("detailTotalBtn").addEventListener("click", function(){
+      $.ajax({
+        url: 'visitor_total.php',
+        type: 'GET',
+        success: function(data) {
+          $('#visitorModalBody').html(data);
+          $('#visitorModalLabel').text('Detail Total Pengunjung');
+          $('#visitorModal').modal('show');
+        },
+        error: function() {
+          alert('Terjadi kesalahan saat mengambil data total pengunjung.');
+        }
+      });
     });
   });
 </script>

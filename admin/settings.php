@@ -66,6 +66,7 @@ if (isset($_POST['update'])) {
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <?php include '../includes/logo.php'; ?>
     <style>
         img.logo {
             width: 100%;

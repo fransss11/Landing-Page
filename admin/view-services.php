@@ -37,6 +37,7 @@ if (isset($_GET['delete_id'])) {
     <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <?php include '../includes/logo.php'; ?>
     <style>
         /* Buat tabel bisa di-scroll jika terlalu lebar */
         .table-responsive {

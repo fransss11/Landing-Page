@@ -27,13 +27,14 @@ $conn->close();
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="libr/animate/animate.min.css" rel="stylesheet">
+    <link href="libr/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <?php include 'includes/logo.php'; ?>
 </head>
 <body>
     <div class="bckg">
@@ -55,16 +56,14 @@ $conn->close();
         <!-- Portofolio Start -->
         <div class="container-fluid about bg-light py-5">
             <div class="container py-5">
-                    <div class="section-title mb-5">
-                        <div class="sub-style">
-                            <h1 class="sub-title px-9 mb-0">Proposal Kami</h1>
-                        </div>
+                    <div class="section-title mb-5 text-center" style="background: linear-gradient(135deg,rgba(107, 17, 203, 0.35), #2575fc); padding: 20px; border-radius: 10px; color: white;">
+                        <h1 class="display-4 font-weight-bold" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Proposal Kami</h1>
                     </div>
                     <?php foreach ($portfolios as $portfolio): ?>
                         <?php if (!empty($portfolio['pdf'])): ?>
                             <?php $file = $portfolio['pdf']; ?>
                             <div class="portfolio-item">
-                                <h2 class="pdf-title" style="margin-bottom: 10px;"><?php echo $portfolio['name']; ?></h2>
+                            <p class="pdf-title" style="margin-bottom: 10px; font-size: 20px; text-transform: uppercase;"><?php echo $portfolio['name']; ?></p>
                                 <iframe src="pdf/<?php echo $file; ?>" 
                                         style="width:100%; height:600px;" data-aos="fade-up" data-aos-delay="500" frameborder="0"></iframe>
                             </div>
@@ -87,10 +86,10 @@ $conn->close();
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="libr/wow/wow.min.js"></script>
+    <script src="libr/easing/easing.min.js"></script>
+    <script src="libr/waypoints/waypoints.min.js"></script>
+    <script src="libr/owlcarousel/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>
         AOS.init();

@@ -74,6 +74,7 @@ if (isset($_POST['save'])) {
     <!-- Summernote CSS -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

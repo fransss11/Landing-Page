@@ -99,6 +99,7 @@ $result = mysqli_query($con, $query);
         min-height: 35px;
     }
   </style>
+  <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

@@ -140,6 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           border-radius: 20px;
       }
     </style>
+    <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition register-page">
 <div class="register-box">

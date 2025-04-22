@@ -84,6 +84,7 @@ if (isset($_POST['submit'])) {
         border-radius: 20px;
     }
   </style>
+  <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">

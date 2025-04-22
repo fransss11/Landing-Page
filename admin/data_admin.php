@@ -30,6 +30,7 @@ $result = mysqli_query($con, $query) or die("Query Error: " . mysqli_error($con)
     <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
     <!-- AdminLTE -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">

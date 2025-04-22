@@ -26,13 +26,14 @@ $social = $result->fetch_assoc();
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="libr/animate/animate.min.css" rel="stylesheet">
+    <link href="libr/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <?php include 'includes/logo.php'; ?>
 </head>
 <body>
     <div class="bckg">
@@ -88,7 +89,7 @@ $social = $result->fetch_assoc();
                         </div>
                     </div>
                     <!-- Map and Social Media Section -->
-                    <div class="col-lg-8 col-md-6 col-12 text-center" data-aos="fade-left" data-aos-delay="500">
+                    <div class="col-lg-8 col-md-6 col-12 text-center" data-aos="fade-up" data-aos-delay="500">
                         <div class="d-flex justify-content-center mb-4 flex-wrap">
                             <?php if (!empty($social['facebook'])): ?>
                                 <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="<?php echo $social['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
@@ -133,10 +134,10 @@ $social = $result->fetch_assoc();
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="libr/wow/wow.min.js"></script>
+    <script src="libr/easing/easing.min.js"></script>
+    <script src="libr/waypoints/waypoints.min.js"></script>
+    <script src="libr/owlcarousel/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>
         AOS.init();

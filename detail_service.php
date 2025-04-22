@@ -41,9 +41,10 @@ $conn->close();
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
     <!-- Animations & Carousel -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="libr/animate/animate.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
+    <?php include 'includes/logo.php'; ?>
     <style>
         /* Animasi Hover untuk Gambar */
         .service-img img {
@@ -166,7 +167,7 @@ $conn->close();
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
+    <script src="libr/wow/wow.min.js"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <!-- Inisialisasi WOW.js -->

@@ -110,7 +110,7 @@ if (isset($_POST['publise'])) {
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Tambah Projek</title>
+    <title>Admin Lisa Mitra Mandiri</title>
     <?php include "title.php"; ?>
     <!-- AdminLTE & Bootstrap CSS -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -118,6 +118,7 @@ if (isset($_POST['publise'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+    <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

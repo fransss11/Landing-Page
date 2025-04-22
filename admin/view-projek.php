@@ -103,6 +103,7 @@ if (isset($_GET['delete_id'])) {
             }
         }
   </style>
+  <?php include '../includes/logo.php'; ?>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

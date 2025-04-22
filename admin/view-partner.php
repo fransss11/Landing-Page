@@ -49,6 +49,7 @@ if (isset($_GET['delete_id'])) {
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+  <?php include '../includes/logo.php'; ?>
   <style>
     /* Pastikan semua kolom sejajar di tengah */
     .table th, .table td {
@@ -167,7 +168,7 @@ if (isset($_GET['delete_id'])) {
     serverSide: true,
     ajax: 'ajax.php?action=fetch_partner',  // File PHP yang menangani pengambilan data
     lengthChange: false,
-    order: [[0, 'desc']], // Urutan default berdasarkan kolom No secara DESC
+    order: [[0, 'asc']], // Urutan default berdasarkan kolom No secara ASC
     columns: [
       { data: 'no' },
       { data: 'klien' },

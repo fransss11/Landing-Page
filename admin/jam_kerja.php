@@ -58,6 +58,7 @@ if (isset($_POST['save'])) {
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php include '../includes/logo.php'; ?>
     <!-- Summernote CSS telah dihapus karena tidak digunakan lagi -->
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
