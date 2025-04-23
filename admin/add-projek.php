@@ -1,7 +1,7 @@
 <?php
 include 'conn.php';
 include 'auth.php';
-date_default_timezone_set('Asia/Kolkata');
+date_default_timezone_set('Asia/Jakarta');
 $today = date("Y-m-d H:i:s"); // Format tanggal standar
 // Ambil flash message dari session (jika ada)
 if (isset($_SESSION['msg'])) {

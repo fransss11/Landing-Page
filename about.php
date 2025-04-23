@@ -29,34 +29,6 @@ $about = $result->fetch_assoc();
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
-    <style>
-        /* Pastikan tidak ada elemen yang melebihi lebar viewport */
-        body {
-            overflow-x: hidden;
-        }
-
-        /* Atur elemen yang mungkin menyebabkan overflow */
-        .container-fluid {
-            padding-left: 15px;
-            padding-right: 15px;
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 100%;
-            overflow-x: hidden;
-        }
-
-        img, iframe {
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* Pastikan tabel atau elemen besar lainnya tidak menyebabkan overflow */
-        table {
-            width: 100%;
-            table-layout: fixed;
-            word-wrap: break-word;
-        }
-    </style>
 </head>
 <body>
     <div class="bckg">
@@ -79,12 +51,12 @@ $about = $result->fetch_assoc();
         <div class="container-fluid about bg-light py-5">
             <div class="container py-5">
                 <div class="row g-5 align-items-center">
-                    <div class="col-lg-5" data-aos="fade-right" data-aos-delay="500">
+                    <div class="col-lg-5" data-aos="fade-up" data-aos-delay="500">
                         <div class="about-img pb-5 ps-5">
                             <img src="admin/images/about/<?php echo htmlspecialchars($about['img']); ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
                         </div>
                     </div>
-                    <div class="col-lg-7" data-aos="fade-left" data-aos-delay="400">
+                    <div class="col-lg-7" data-aos="fade-down" data-aos-delay="400">
                         <div class="section-title text-start mb-5">
                             <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
                             <p class="mb-4"><?php echo $about['descrip']; ?></p>

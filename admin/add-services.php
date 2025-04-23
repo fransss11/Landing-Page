@@ -5,7 +5,7 @@ header("Pragma: no-cache");
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-date_default_timezone_set('Asia/Kolkata');
+date_default_timezone_set('Asia/Jakarta'); // Set timezone ke Waktu Indonesia Barat (WIB)
 $today = date("Y-m-d H:i:s");
 // Cek apakah parameter 'edit' ada di URL dan valid
 $edit = isset($_GET['edit']) ? intval($_GET['edit']) : 0;

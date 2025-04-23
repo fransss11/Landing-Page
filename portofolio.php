@@ -69,7 +69,6 @@ $conn->close();
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
-
             </div>
         </div>
         <!-- Portofolio End -->

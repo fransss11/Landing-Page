@@ -174,6 +174,17 @@ $resultAll = mysqli_query($con, $queryAll);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit Portofolio</title>
     <?php include '../includes/logo.php'; ?>
+    <style>
+        @media (max-width: 768px) {
+            .table-responsive {
+                margin-bottom: 20px;
+            }
+            .table td, .table th {
+                font-size: 14px;
+                white-space: nowrap;
+            }
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -262,38 +273,41 @@ $resultAll = mysqli_query($con, $queryAll);
         <section class="content">
             <div class="container mt-4">
                 <h3>Daftar Portofolio</h3>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Proposal</th>
-                            <th>Proposal</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (mysqli_num_rows($resultAll) > 0): ?>
-                            <?php $no = 1; ?>
-                            <?php while ($row = mysqli_fetch_assoc($resultAll)): ?>
-                                <tr>
-                                    <td><?php echo $no++; ?></td>
-                                    <td><?php echo $row['name']; ?></td>
-                                    <td><a href="../pdf/<?php echo $row['pdf']; ?>" target="_blank">Lihat File</a></td>
-                                    <td><?php echo $row['date']; ?></td>
-                                    <td>
-                                        <a href="edit-portofolio.php?id=<?php echo $row['id_pro']; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                        <a href="add-portofolio.php?delete=true&id=<?php echo $row['id_pro']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus PDF ini?');">Hapus</a>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        <?php else: ?>
+                <!-- Tambahkan wrapper table-responsive -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
                             <tr>
-                                <td colspan="5" class="text-center">Belum ada portofolio yang diunggah.</td>
+                                <th>No</th>
+                                <th>Nama Proposal</th>
+                                <th>Proposal</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
                             </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php if (mysqli_num_rows($resultAll) > 0): ?>
+                                <?php $no = 1; ?>
+                                <?php while ($row = mysqli_fetch_assoc($resultAll)): ?>
+                                    <tr>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo $row['name']; ?></td>
+                                        <td><a href="../pdf/<?php echo $row['pdf']; ?>" target="_blank">Lihat File</a></td>
+                                        <td><?php echo $row['date']; ?></td>
+                                        <td>
+                                            <a href="edit-portofolio.php?id=<?php echo $row['id_pro']; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                            <a href="add-portofolio.php?delete=true&id=<?php echo $row['id_pro']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus PDF ini?');">Hapus</a>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="5" class="text-center">Belum ada portofolio yang diunggah.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </div>

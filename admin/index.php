@@ -58,15 +58,14 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <?php include '../includes/logo.php'; ?>
   <style>
-  /* Pastikan content-wrapper menyesuaikan sidebar */
   .content-wrapper {
-    margin-left: 250px;   /* Sesuai lebar sidebar */
+    margin-left: 250px;
     transition: all 0.3s;
     min-height: 100vh;
   }
   @media (max-width: 992px) {
     .content-wrapper {
-      margin-left: 0; /* Saat sidebar collapse di layar kecil */
+      margin-left: 0;
     }
   }
   .wrapper {
@@ -80,54 +79,35 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
     position:relative;
     margin:auto;
   }
-  /* CSS tambahan untuk pagination agar responsif */
-  .pagination-container {
-    overflow-x: auto;
-    white-space: nowrap;
-    margin-top: 20px;
-  }
-  .pagination {
-    flex-wrap: wrap;
-  }
-  
   @media (max-width:766.98px){
     .chart-container{
       width:100%;
-      padding-bottom:455px;              /* rasio ≈1.4:1 agar tidak terlalu rendah */
+      padding-bottom:455px;
     }
     #admin-text{font-size:32px;}
     .small-box h3{font-size:20px;}
     .small-box p{font-size:14px;margin-bottom:0;}
   }
-  /* ─── PENYESUAIAN MOBILE <576px ──────────────────────────────────────────── */
   @media (max-width:575.98px){
     .chart-container{
       width:100%;
-      padding-bottom:350px;              /* rasio ≈1.4:1 agar tidak terlalu rendah */
+      padding-bottom:350px;
     }
     #admin-text{font-size:32px;}
     .small-box h3{font-size:20px;}
     .small-box p{font-size:14px;margin-bottom:0;}
   }
-
-  /* PAGINATION (opsional) */
-  .pagination-container{overflow-x:auto;white-space:nowrap;margin-top:20px;}
-  .pagination{flex-wrap:wrap;}
-
-  /* Styling for Detail buttons */
-  #detailTodayBtn, #detailTotalBtn {
-    width: 257px;
-    padding: 15px;
-    font-size: 18px;
+  #admin-text {
+    white-space: pre-wrap;
+    font-size: 48px;
     font-weight: bold;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    line-height: 0.7;
   }
 
   @media (max-width: 575.98px) {
-    #detailTodayBtn, #detailTotalBtn {
-      font-size: 16px;
-      padding: 12px;
+    #admin-text {
+      font-size: 32px;
+      line-height: 1.2;
     }
   }
   </style>
@@ -155,7 +135,7 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
         <!-- Baris untuk Welcome -->
         <div class="row mt-3">
           <div class="col-12 text-center">
-            <h1 id="admin-text" style="white-space: pre-wrap; font-size: 48px; font-weight: bold; line-height: .7; ">Selamat Datang<br></br><?= htmlspecialchars($admin_name, ENT_QUOTES, 'UTF-8') ?></h1>
+            <h1 id="admin-text">Selamat Datang<br></br><?= htmlspecialchars($admin_name, ENT_QUOTES, 'UTF-8') ?></h1>
           </div>
         </div>
         <!-- Baris untuk Tombol -->
@@ -196,46 +176,25 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
             </div>
           </div>
         </div>
+        <div class="row mt-4">
+          <div class="col-md-6 col-sm-12 text-center">
+            <a href="detail.php?type=today" class="btn btn-info btn-lg">Detail Pengunjung Hari Ini</a>
+          </div>
+          <div class="col-md-6 col-sm-12 text-center">
+            <a href="detail.php?type=total" class="btn btn-primary btn-lg">Detail Total Pengunjung</a>
+          </div>
+        </div>
       </div><!-- /.container-fluid -->
-      <!-- New row for Detail buttons -->
-      <div class="row mt-3">
-        <div class="col-md-6 col-sm-12 text-center">
-          <button id="detailTodayBtn" class="btn btn-info btn-lg">Detail Pengunjung Hari Ini</button>
-        </div>
-        <div class="col-md-6 col-sm-12 text-center">
-          <button id="detailTotalBtn" class="btn btn-primary btn-lg">Detail Total Pengunjung</button>
-        </div>
-      </div>
     </section>
   </div><!-- /.content-wrapper -->
 </div><!-- /.wrapper -->
-<!-- Modal untuk Detail Pengunjung -->
-<div class="modal fade" id="visitorModal" tabindex="-1" role="dialog" aria-labelledby="visitorModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="visitorModalLabel">Detail Pengunjung</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="visitorModalBody">
-        <!-- Data detail pengunjung akan dimuat di sini -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Footer -->
 <?php include "footer.php"; ?>
 <!-- Scripts -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="dist/js/adminlte.js"></script>
-<!-- Inisialisasi Chart.js dan Modal -->
+<!-- Inisialisasi Chart.js -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     // Animasi teks selamat datang
@@ -274,74 +233,8 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
             beginAtZero: true,
             precision: 0,
           }
-        },
-        // Event click pada diagram
-        onClick: function(event, activeElements) {
-          if (activeElements.length > 0) {
-            let index = activeElements[0].index;
-            if (index === 0) {
-              // Jika bar "Pengunjung Hari Ini" diklik, panggil file visitor_today.php
-              $.ajax({
-                url: 'visitor_today.php',
-                type: 'GET',
-                success: function(data) {
-                  $('#visitorModalBody').html(data);
-                  $('#visitorModalLabel').text('Detail Pengunjung Hari Ini');
-                  $('#visitorModal').modal('show');
-                },
-                error: function() {
-                  alert('Terjadi kesalahan saat mengambil data detail pengunjung hari ini.');
-                }
-              });
-            } else if (index === 1) {
-              // Jika bar "Total Pengunjung" diklik, panggil file visitor_total.php
-              $.ajax({
-                url: 'visitor_total.php',
-                type: 'GET',
-                success: function(data) {
-                  $('#visitorModalBody').html(data);
-                  $('#visitorModalLabel').text('Detail Total Pengunjung');
-                  $('#visitorModal').modal('show');
-                },
-                error: function() {
-                  alert('Terjadi kesalahan saat mengambil data total pengunjung.');
-                }
-              });
-            }
-          }
         }
       }
-    });
-
-    // Add event listeners for the new Detail buttons
-    document.getElementById("detailTodayBtn").addEventListener("click", function(){
-      $.ajax({
-        url: 'visitor_today.php',
-        type: 'GET',
-        success: function(data) {
-          $('#visitorModalBody').html(data);
-          $('#visitorModalLabel').text('Detail Pengunjung Hari Ini');
-          $('#visitorModal').modal('show');
-        },
-        error: function() {
-          alert('Terjadi kesalahan saat mengambil data detail pengunjung hari ini.');
-        }
-      });
-    });
-
-    document.getElementById("detailTotalBtn").addEventListener("click", function(){
-      $.ajax({
-        url: 'visitor_total.php',
-        type: 'GET',
-        success: function(data) {
-          $('#visitorModalBody').html(data);
-          $('#visitorModalLabel').text('Detail Total Pengunjung');
-          $('#visitorModal').modal('show');
-        },
-        error: function() {
-          alert('Terjadi kesalahan saat mengambil data total pengunjung.');
-        }
-      });
     });
   });
 </script>
