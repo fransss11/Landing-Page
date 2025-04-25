@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "php-cms";
+$dbname = "php_cms";
 // Buat koneksi
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Cek koneksi

@@ -40,7 +40,7 @@ $profile_image = !empty($user['pict']) ? "images/admin/" . $user['pict'] : "imag
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span class="dropdown-item dropdown-header"><?php echo $user['ad_name']; ?></span>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <a class="dropdown-item">
                     <i class="fas fa-envelope mr-2"></i> <?php echo $user['ad_email']; ?>
                 </a>
                 <a href="data_admin.php" class="dropdown-item">
@@ -53,3 +53,7 @@ $profile_image = !empty($user['pict']) ? "images/admin/" . $user['pict'] : "imag
         </li>
     </ul>
 </nav>
+<!-- Tambahkan ini di bagian <head> atau sebelum penutup </body> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">

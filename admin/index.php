@@ -109,6 +109,12 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
       font-size: 32px;
       line-height: 1.2;
     }
+    .card h1 {
+      font-size: 24px;
+    }
+  }
+  .btn-lg {
+    width: 100%;
   }
   </style>
   <!-- Skrip untuk cek sessionStorage -->
@@ -170,7 +176,11 @@ $today = ($result_today && $result_today->num_rows > 0) ? $result_today->fetch_a
         <!-- Baris untuk Diagram Pengunjung -->
         <div class="row mt-4">
           <div class="col-md-12">
-            <h1>Statistik Pengunjung :</h1>
+            <div class="card bg-info text-white shadow mb-4">
+              <div class="card-body text-center">
+                <h1 class="font-weight-bold">Statistik Pengunjung :</h1>
+              </div>
+            </div>
             <div class="chart-container">
               <canvas id="visitorChart"></canvas>
             </div>

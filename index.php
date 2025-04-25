@@ -210,7 +210,7 @@ function formatTanggalIndonesia($tanggal) {
                     </div>
                 </div>
                 <div class="mt-auto text-center">
-                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">LIhat Semua Tentang Kami</a>
+                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">LIhat Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -342,7 +342,7 @@ function formatTanggalIndonesia($tanggal) {
                 </div>
             </div>
             <div class="mt-auto text-center">
-                <a href="team.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Tim Kami</a>
+                <a href="team.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Tim</a>
             </div>
         </div>
         <!-- Team End -->

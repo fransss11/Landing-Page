@@ -232,7 +232,7 @@ function compressImage($source, $destination, $quality)
                                         ?>
                                         <p style="color:red;">Maksimal 500 KB</p>
                                     </label>  
-                                    <input type="file" name="lis_img" class="form-control" <?php echo empty($roww["img"]) ? 'required' : ''; ?>>
+                                    <input type="file" name="lis_img" class="form-control" accept="image/png, image/jpeg, image/jpg" <?php echo empty($roww["img"]) ? 'required' : ''; ?>>
                                     <div id="fileError" class="text-danger mt-1" style="display: none;">File maksimal 500 kb.</div>
                                     <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ Ukuran file sudah benar.</div>
                                 </div>

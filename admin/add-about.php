@@ -128,7 +128,7 @@ if (isset($_POST['save'])) {
                     <div class="col-md-12">
                         <label for="validationImage" class="form-label">Gambar</label><br>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="validationImage" name="lis_img">
+                            <input type="file" class="custom-file-input" id="validationImage" name="lis_img" accept="image/png, image/jpeg, image/jpg">
                             <label class="custom-file-label" for="validationImage">Pilih Gambar</label>
                             <div class="invalid-feedback">
                                 Mohon unggah gambar (jpg/jpeg/png).
@@ -207,8 +207,20 @@ if (isset($_POST['save'])) {
 </script>
 <script>
 document.getElementById("validationImage").addEventListener("change", function () {
-    var fileName = this.files[0] ? this.files[0].name : "Tidak ada gambar yang dipilih";
-    this.nextElementSibling.innerText = fileName;
+    var file = this.files[0];
+    if (file) {
+        var fileName = file.name;
+        var fileExt = fileName.split('.').pop().toLowerCase();
+        var validExt = ["jpg", "jpeg", "png"];
+        if (!validExt.includes(fileExt)) {
+            this.value = ""; // Reset input file
+            this.nextElementSibling.innerText = "Pilih Gambar";
+        } else {
+            this.nextElementSibling.innerText = fileName;
+        }
+    } else {
+        this.nextElementSibling.innerText = "Tidak ada gambar yang dipilih";
+    }
 });
 </script>
 </body>

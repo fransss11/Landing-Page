@@ -114,7 +114,7 @@ if (isset($_POST['update'])) {
                                         <?php if ($info_row['logo']): ?>
                                             <img src="images/logo/<?php echo $info_row['logo']; ?>" alt="Logo" class="logo"><br><br>
                                         <?php endif; ?>
-                                        <input name="logo" type="file" class="form-control">
+                                        <input name="logo" type="file" class="form-control" accept="image/png, image/jpeg, image/jpg">
                                     </div>
                                 </div>
                                 <div class="card-header">

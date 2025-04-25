@@ -46,7 +46,10 @@ if (isset($_POST['submit'])) {
   <style>
     /* Custom styling for a more attractive login page */
     body.login-page {
-        background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('images/8845961_4004353.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
     .login-box {
         margin-top: 10% !important;
