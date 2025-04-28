@@ -189,28 +189,59 @@ function formatTanggalIndonesia($tanggal) {
         <div class="container-fluid about bg-light py-5">
             <div class="container py-5">
                 <div class="row g-5 align-items-center">
-                    <div class="col-lg-5" data-aos="fade-right" data-aos-delay="500">
-                        <div class="about-img pb-5 ps-5">
-                            <img src="admin/images/about/<?php echo htmlspecialchars($about['img']); ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
+                    <?php if (!empty($about['img']) && file_exists("admin/images/about/" . $about['img'])): ?>
+                        <div class="col-lg-5" data-aos="fade-right" data-aos-delay="500">
+                            <div class="about-img pb-5 ps-5">
+                                <img src="admin/images/about/<?php echo htmlspecialchars($about['img']); ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-7" data-aos="fade-left" data-aos-delay="400">
-                        <div class="section-title text-start mb-5">
-                            <h4 class="display-3 mb-4"><?php echo $about['title']; ?></h4>
-                            <p class="mb-4">
+                        <div class="col-lg-7" data-aos="fade-left" data-aos-delay="400">
+                            <div class="section-title text-start mb-5">
+                                <h4 class="display-3 mb-4">Tentang Kami</h4>
                                 <?php 
                                 $description = strip_tags($about['descrip']);
-                                if (strlen($description) > 500) {
-                                    $description = substr($description, 0, 500) . '...';
+                                $words = explode(' ', $description);
+                                if (count($words) > 50) {
+                                    $description = implode(' ', array_slice($words, 0, 50)) . '...';
                                 }
-                                echo $description;
+                                echo '<p>' . $description . '</p>'; 
                                 ?>
-                            </p>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="col-lg-12 text-center" data-aos="fade-down" data-aos-delay="400">
+                            <div class="section-title mb-5">
+                                <h4 class="display-3 mb-4">Tentang Kami</h4>
+                                <?php 
+                                $description = strip_tags($about['descrip']);
+                                $words = explode(' ', $description);
+                                if (count($words) > 50) {
+                                    $description = implode(' ', array_slice($words, 0, 50)) . '...';
+                                }
+                                echo '<p>' . $description . '</p>'; 
+                                ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <!-- Sejarah Section -->
+                <div class="row g-5 align-items-center mt-2">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="500">
+                        <div class="section-title text-start mb-5">
+                            <h4 class="display-3 mb-4 text-center"><?php echo $about['history_title']; ?></h4>
+                            <?php 
+                            $history = strip_tags($about['history']);
+                            $words = explode(' ', $history);
+                            if (count($words) > 100) {
+                                $history = implode(' ', array_slice($words, 0, 100)) . '...';
+                            }
+                            echo '<p>' . $history . '</p>'; 
+                            ?>
                         </div>
                     </div>
                 </div>
                 <div class="mt-auto text-center">
-                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">LIhat Selengkapnya</a>
+                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Selengkapnya</a>
                 </div>
             </div>
         </div>

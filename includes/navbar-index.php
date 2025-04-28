@@ -11,7 +11,7 @@ $info_row = mysqli_fetch_array($info_result);
 $logo = isset($info_row['logo']) && !empty($info_row['logo']) ? "admin/images/logo/" . $info_row['logo'] : "img/Logo LMM (Persigi Panjang Tanpa Alamat).png";
 ?>
 <div class="container-fluid position-relative p-0">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0">
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0">
         <a href="index.php" class="navbar-brand p-0">
             <img src="<?php echo $logo; ?>" alt="Logo">
         </a>
@@ -119,15 +119,23 @@ $logo = isset($info_row['logo']) && !empty($info_row['logo']) ? "admin/images/lo
 document.addEventListener("DOMContentLoaded", function() {
   const overlay = document.querySelector('.hero .overlay');
   overlay.classList.add("active");
-  let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  window.addEventListener("scroll", function() {
-    let st = window.pageYOffset || document.documentElement.scrollTop;
-    if (st < lastScrollTop) {
-      overlay.classList.add("active");
-    } else {
-      overlay.classList.remove("active");
-    }    
-    lastScrollTop = st <= 0 ? 0 : st;
+  
+  let lastScrollTop = 0;
+  const navbar = document.getElementById('navbar');
+  const scrollThreshold = 200; // Batas tinggi scroll sebelum navbar disembunyikan
+
+  navbar.style.transition = 'top 0.3s';
+
+  window.addEventListener('scroll', function () {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+          // Scroll ke bawah dan melewati batas - sembunyikan navbar
+          navbar.style.top = '-100px';
+      } else if (scrollTop < lastScrollTop) {
+          // Scroll ke atas - tampilkan navbar
+          navbar.style.top = '0';
+      }
+      lastScrollTop = scrollTop;
   });
 });
 </script>

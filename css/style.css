@@ -468,7 +468,13 @@
 .navbar-light .navbar-nav .nav-link.active {
     color: var(--bs-primary) !important;
 }
+.navbar-brand img {
+    transition: transform 0.3s ease;
+}
 
+.navbar-brand img:hover {
+    transform: scale(0.9);
+}
 .navbar-light .navbar-brand img {
     max-height: 50px;
     transition: .5s;
@@ -523,7 +529,7 @@
     }
 
     .navbar.navbar-expand-lg .navbar-toggler {
-        padding: 10px 20px;
+        padding: 7px 12px;
         border: 1px solid var(--bs-primary);
         color: var(--bs-primary);
     }
@@ -541,7 +547,7 @@
     }
 
     .navbar-light .navbar-brand img {
-        max-height: 45px;
+        max-height: 35px;
     }
 }
 
@@ -1713,8 +1719,8 @@
 
 .section-title {
     text-align: center;
-    font-size: 1 rem;
-    font-weight: bold;
+    font-size: 17px;
+    /* font-weight: bold; */
     color: #020202d9; /* Warna putih untuk teks */
     margin-bottom: 30px;
 }

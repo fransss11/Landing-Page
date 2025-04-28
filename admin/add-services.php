@@ -5,7 +5,7 @@ header("Pragma: no-cache");
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-date_default_timezone_set('Asia/Jakarta'); // Set timezone ke Waktu Indonesia Barat (WIB)
+date_default_timezone_set('Asia/Kolkata');
 $today = date("Y-m-d H:i:s");
 // Cek apakah parameter 'edit' ada di URL dan valid
 $edit = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
@@ -254,6 +254,16 @@ if (isset($_POST['publise'])) {
       $('.textarea').summernote({
         height: 200,
         paragraph: false,  // Matikan paragraf otomatis
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'italic', 'underline', 'clear', 'fontname']],
+          ['fontsize', ['fontsize']], // Menambahkan dropdown ukuran font
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']],
+          ['insert', ['link', 'picture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ],
         callbacks: {
           onChange: function(contents, $editable) {
             // Sesuaikan callback sesuai kebutuhan

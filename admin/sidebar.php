@@ -194,6 +194,13 @@ $logo = (!empty($info_row['logo']))
         color: white;
         text-transform: uppercase;
     }
+    .user-panel .navbar-brand img {
+        transition: transform 0.3s ease;
+    }
+
+    .user-panel .navbar-brand img:hover {
+        transform: scale(.9);
+    }
 </style>
 <!-- Pastikan FontAwesome dimuat -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

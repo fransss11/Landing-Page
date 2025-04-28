@@ -275,12 +275,22 @@ function compressImage($source, $destination, $quality)
 <!-- Validasi Bootstrap & Summernote -->
 <script>
     $(document).ready(function() {
-      $('.textarea').summernote({
+        $('.textarea').summernote({
         height: 200,
-        paragraph: false,
+        paragraph: false,  // Matikan paragraf otomatis
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'italic', 'underline', 'clear', 'fontname']],
+          ['fontsize', ['fontsize']], // Menambahkan dropdown ukuran font
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']],
+          ['insert', ['link', 'picture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ],
         callbacks: {
           onChange: function(contents, $editable) {
-            // Callback sesuai kebutuhan
+            // Sesuaikan callback sesuai kebutuhan
           }
         }
       });

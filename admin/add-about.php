@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 include 'conn.php';
 include 'auth.php';
 date_default_timezone_set('Asia/Kolkata');
@@ -14,6 +13,9 @@ $dataExists = ($roww) ? true : false;
 if (isset($_POST['save'])) {
     $title   = mysqli_real_escape_string($con, $_POST['title']);
     $descrip = mysqli_real_escape_string($con, $_POST['descrip']);
+    // Ambil data dari form
+    $history_title = mysqli_real_escape_string($con, $_POST['history_title']);
+    $history = mysqli_real_escape_string($con, $_POST['history']);
     // Jika ada data lama, gunakan gambar lama. Jika upload baru, pakai file baru
     $lis_img = isset($roww['img']) ? $roww['img'] : '';
     if (!empty($_FILES['lis_img']['name'])) {
@@ -31,8 +33,8 @@ if (isset($_POST['save'])) {
     // Jika data belum ada, lakukan INSERT. Jika sudah ada, lakukan UPDATE.
     if (!$dataExists) {
         // Insert data
-        $sql = "INSERT INTO about (title, descrip, img, date, status) 
-                VALUES ('$title', '$descrip', '$lis_img', '$today', '0')";
+        $sql = "INSERT INTO about (title, descrip, img, history_title, history, date, status) 
+                VALUES ('$title', '$descrip', '$lis_img', '$history_title', '$history', '$today', '0')";
         $exec = mysqli_query($con, $sql);
         if ($exec) {
             $_SESSION['msg'] = "Data berhasil ditambahkan.";
@@ -44,10 +46,12 @@ if (isset($_POST['save'])) {
     } else {
         // Update data
         $sql = "UPDATE about SET 
-                    title   = '$title',
+                    title = '$title',
                     descrip = '$descrip',
-                    img     = '$lis_img',
-                    date    = '$today'
+                    img = '$lis_img',
+                    history_title = '$history_title',
+                    history = '$history',
+                    date = '$today'
                 WHERE id = '".$roww['id']."'";
         $exec = mysqli_query($con, $sql);
         if ($exec) {
@@ -61,7 +65,7 @@ if (isset($_POST['save'])) {
     // Redirect agar alert tidak muncul lagi setelah refresh
     header("Location: add-about.php");
     exit;
-}
+ }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,7 +132,7 @@ if (isset($_POST['save'])) {
                     <div class="col-md-12">
                         <label for="validationImage" class="form-label">Gambar</label><br>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="validationImage" name="lis_img" accept="image/png, image/jpeg, image/jpg">
+                            <input type="file" class="custom-file-input" id="validationImage" name="lis_img">
                             <label class="custom-file-label" for="validationImage">Pilih Gambar</label>
                             <div class="invalid-feedback">
                                 Mohon unggah gambar (jpg/jpeg/png).
@@ -140,9 +144,31 @@ if (isset($_POST['save'])) {
                             if (file_exists($imagePath)) {
                                 echo '<br><img src="' . htmlspecialchars($imagePath) . '?v=' . time() . '" 
                                            alt="Current Image" style="width: 200px; margin-top: 10px;">';
+                                echo '<br><a href="add-about.php?delete_image=1" class="btn btn-danger btn-sm" style="margin-top: 10px;">Hapus Gambar</a>';
                             }
                         }
                         ?>
+                    </div>
+                    <!-- Judul Sejarah -->
+                    <div class="col-md-12">
+                        <label for="validationHistoryTitle" class="form-label">Sejarah</label>
+                        <input type="text" name="history_title" class="form-control" id="validationHistoryTitle"
+                               value="<?php echo ($dataExists) ? htmlspecialchars($roww['history_title']) : ''; ?>"
+                               placeholder="Sejarah..." required>
+                        <div class="invalid-feedback">
+                            Mohon isi
+                        </div>
+                    </div>
+                    <!-- Isi Sejarah -->
+                    <div class="col-md-12">
+                        <label for="validationHistory" class="form-label">Isi Sejarah</label>
+                        <textarea name="history" class="form-control textarea" 
+                                  id="validationHistory" rows="8" required><?php 
+                            echo ($dataExists) ? htmlspecialchars($roww['history']) : ''; 
+                        ?></textarea>
+                        <div class="invalid-feedback">
+                            Mohon isi sejarah.
+                        </div>
                     </div>
                     <!-- Tombol Aksi -->
                     <div style="padding-top: 3%;" class="col-12">
@@ -163,9 +189,19 @@ if (isset($_POST['save'])) {
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
 <script>
   $(function() {
-    // Inisialisasi Summernote
+    // Inisialisasi Summernote dengan opsi font family dan font size
     $('.textarea').summernote({
-      height: 200
+        height: 200,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear', 'fontname']], // Menambahkan dropdown font family
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
     });
     // Ketika form disubmit, copy isi Summernote ke <textarea> 
     // dan lakukan pengecekan kosong
@@ -207,21 +243,25 @@ if (isset($_POST['save'])) {
 </script>
 <script>
 document.getElementById("validationImage").addEventListener("change", function () {
-    var file = this.files[0];
-    if (file) {
-        var fileName = file.name;
-        var fileExt = fileName.split('.').pop().toLowerCase();
-        var validExt = ["jpg", "jpeg", "png"];
-        if (!validExt.includes(fileExt)) {
-            this.value = ""; // Reset input file
-            this.nextElementSibling.innerText = "Pilih Gambar";
-        } else {
-            this.nextElementSibling.innerText = fileName;
-        }
-    } else {
-        this.nextElementSibling.innerText = "Tidak ada gambar yang dipilih";
-    }
+    var fileName = this.files[0] ? this.files[0].name : "Tidak ada gambar yang dipilih";
+    this.nextElementSibling.innerText = fileName;
 });
 </script>
 </body>
 </html>
+
+<?php
+// Handle image deletion
+if (isset($_GET['delete_image']) && $dataExists && !empty($roww['img'])) {
+    $imagePath = "images/about/" . $roww['img'];
+    if (file_exists($imagePath)) {
+        unlink($imagePath); // Hapus file gambar
+    }
+    // Update database untuk menghapus referensi gambar
+    $sql = "UPDATE about SET img = '' WHERE id = '" . $roww['id'] . "'";
+    mysqli_query($con, $sql);
+    // Redirect untuk menghindari pengulangan tindakan
+    header("Location: add-about.php");
+    exit;
+}
+?>

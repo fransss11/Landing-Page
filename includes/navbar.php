@@ -18,7 +18,7 @@ $logo = isset($info_row['logo']) && !empty($info_row['logo']) ? "admin/images/lo
 ?>
 
 <div class="container-fluid position-relative p-0">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0">
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0">
         <a href="index.php" class="navbar-brand p-0">
             <!-- Menggunakan logo yang diambil dari database -->
             <img src="<?php echo $logo; ?>" alt="Logo">
@@ -49,3 +49,23 @@ $logo = isset($info_row['logo']) && !empty($info_row['logo']) ? "admin/images/lo
         </div>
     </nav>
 </div>
+
+<script>
+    let lastScrollTop = 0;
+    const navbar = document.getElementById('navbar');
+    const scrollThreshold = 200; // Batas tinggi scroll sebelum navbar disembunyikan
+
+    navbar.style.transition = 'top 0.3s';
+
+    window.addEventListener('scroll', function () {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+            // Scroll ke bawah dan melewati batas - sembunyikan navbar
+            navbar.style.top = '-100px';
+        } else {
+            // Scroll ke atas atau belum melewati batas - tampilkan navbar
+            navbar.style.top = '0';
+        }
+        lastScrollTop = scrollTop;
+    });
+</script>

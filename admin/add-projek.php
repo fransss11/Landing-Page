@@ -240,9 +240,19 @@ if (isset($_POST['publise'])) {
 <!-- SCRIPT VALIDASI BOOTSTRAP -->
 <script>
     $(document).ready(function() {
-      $('.textarea').summernote({
+        $('.textarea').summernote({
         height: 200,
         paragraph: false,  // Matikan paragraf otomatis
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'italic', 'underline', 'clear', 'fontname']],
+          ['fontsize', ['fontsize']], // Menambahkan dropdown ukuran font
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']],
+          ['insert', ['link', 'picture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ],
         callbacks: {
           onChange: function(contents, $editable) {
             // Sesuaikan callback sesuai kebutuhan
