@@ -91,7 +91,7 @@ $conn->close();
                                 <div class="card-body">
                                     <h3 id="judul-berita" class="wow fadeInUp" data-wow-delay="0.5s"><?php echo $berita['title']; ?></h3>
                                     <p class="text-muted wow fadeInUp" data-wow-delay="0.6s"><i class="fa fa-calendar-alt text-primary"></i> <span id="tanggal-berita"><?php echo formatTanggalIndonesia($berita['date']); ?></span></p>
-                                    <p id="konten-berita" class="wow fadeInUp" data-wow-delay="0.7s"><?php echo nl2br(htmlspecialchars($berita['descrip'])); ?></p>
+                                    <p id="konten-berita" class="wow fadeInUp" data-wow-delay="0.7s"><?php echo nl2br($berita['descrip']); ?></p>
                                     <a href="berita.php" class="btn btn-primary wow fadeInUp" data-wow-delay="0.8s">Kembali ke Berita</a>
                                 </div>
                             </div>

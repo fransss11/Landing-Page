@@ -149,6 +149,12 @@ function formatTanggalIndonesia($tanggal) {
     <!-- AOS Stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
 </head>
 <body>
     <div class="bckg">
