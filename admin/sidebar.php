@@ -76,6 +76,20 @@ $logo = (!empty($info_row['logo']))
                         <p>Lihat Layanan</p>
                     </a>
                 </li>
+                <!-- Kegiatan Section -->
+                <li class="nav-header">Kegiatan</li>
+                <li class="nav-item">
+                    <a href="add-kegiatan.php" class="nav-link <?php echo ($current_page == 'add-kegiatan.php') ? 'active' : ''; ?>">
+                        <i class="fas fa-calendar-alt nav-icon"></i>
+                        <p>Tambah Kegiatan</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="view-kegiatan.php" class="nav-link <?php echo ($current_page == 'view-kegiatan.php') ? 'active' : ''; ?>">
+                        <i class="fas fa-calendar-alt nav-icon"></i>
+                        <p>Lihat Kegiatan</p>
+                    </a>
+                </li>
                 <!-- Blog Section -->
                 <li class="nav-header">Berita</li>
                 <li class="nav-item">

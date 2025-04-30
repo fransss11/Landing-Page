@@ -19,7 +19,7 @@ function formatTanggalIndonesia($tanggal) {
     return "$hari, $tanggalNum $bulan $tahun $jam";
 }
 // Fetch data dari tabel 'services'
-$sql = "SELECT title, descrip, img, date FROM services WHERE id = $id";
+$sql = "SELECT title, descrip, img, date, price FROM services WHERE id = $id";
 $result = $conn->query($sql);
 $serviceDetail = $result->fetch_assoc();
 if ($serviceDetail) {
@@ -129,8 +129,14 @@ $conn->close();
                                     <i class="fa fa-calendar-alt text-primary"></i> 
                                     <span id="detail-tanggal-service"></span>
                                 </p>
+                                <p class="text-primary font-weight-bold">Harga: Rp <span id="detail-harga-service"></span></p>
                                 <p id="detail-konten-service"></p>
-                                <a href="service.php" class="detail-service-back-btn">Kembali Ke Layanan</a>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="service.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Kembali Ke Layanan</a>
+                                    <?php if (!empty($social['whatsapp'])): ?>
+                                        <a href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">Hubungi Kami</a>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -144,9 +150,13 @@ $conn->close();
                 const serviceDetail = <?php echo json_encode($serviceDetail); ?>;
                 if (serviceDetail) {
                     document.getElementById("detail-judul-service").innerText = serviceDetail.title;
-                    document.getElementById("detail-tanggal-service").innerText = serviceDetail.date; // Tanggal sudah dalam format Indonesia
-                    document.getElementById("detail-gambar-service").src = "admin/images/services/" + serviceDetail.img;
-                    // Gunakan innerHTML agar bisa mendukung format HTML dalam deskripsi
+                    document.getElementById("detail-tanggal-service").innerText = serviceDetail.date;
+                    document.getElementById("detail-harga-service").innerText = parseFloat(serviceDetail.price).toLocaleString('id-ID', { minimumFractionDigits: 2 });
+                    if (serviceDetail.img) {
+                        document.getElementById("detail-gambar-service").src = "admin/images/services/" + serviceDetail.img;
+                    } else {
+                        document.getElementById("detail-gambar-service").src = "assets/icons/default-service-icon.png";
+                    }
                     document.getElementById("detail-konten-service").innerHTML = serviceDetail.descrip;
                 } else {
                     document.getElementById("detail-service-container").innerHTML = `<h3 class="text-danger">Service not found!</h3>`;

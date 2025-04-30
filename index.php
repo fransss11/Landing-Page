@@ -105,6 +105,26 @@ if ($result->num_rows > 0) {
         $beritaList[] = $row;
     }
 }
+
+
+// Fetch link YouTube dari tabel info
+$sql       = "SELECT profile FROM info WHERE id_info='1'";
+$videoRes  = $conn->query($sql);
+$video     = $videoRes ? $videoRes->fetch_assoc() : null;
+$embedUrl = '';
+if (!empty($video['profile'])) {
+    $url = trim($video['profile']);
+    // coba ambil video ID dari berbagai macam format
+    if (preg_match('/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([A-Za-z0-9_-]+)/', $url, $m)) {
+        $videoId  = $m[1];
+        $embedUrl = 'https://www.youtube.com/embed/' . $videoId;
+    }
+    // jika ternyata sudah embed atau format lain, fallback ke apa yang diinput
+    else {
+        $embedUrl = $url;
+    }
+}
+
 $conn->close();
 
 function formatTanggalIndonesia($tanggal) {
@@ -191,6 +211,26 @@ function formatTanggalIndonesia($tanggal) {
             </div>
         </div>
         <!-- Client Reviews Section End -->
+        <?php if ($embedUrl): ?>
+        <div class="container-fluid video-section py-5 bg-light" data-aos="fade-up">
+            <div class="container" style="max-width: 900px; margin: 0 auto;">
+                <div class="section-title mb-4 text-center">
+                    <h1 class="display-3 mb-3">Video Profil</h1>
+                </div>
+                <div class="embed-responsive embed-responsive-16by9" style="margin: 0 auto;">
+                    <iframe
+                        class="embed-responsive-item"
+                        src="<?php echo htmlspecialchars($embedUrl); ?>"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        style="min-height: 500px; width: 100%;"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+        <!-- Video Profil End -->
         <!-- About Start -->
         <div class="container-fluid about bg-light py-5">
             <div class="container py-5">
@@ -265,15 +305,22 @@ function formatTanggalIndonesia($tanggal) {
                         <div class="col-md-6 col-lg-4 col-xl-3" data-aos="fade-up" data-aos-delay="500">
                             <div class="service-item rounded">
                                 <div class="service-img rounded-top">
-                                    <img src="admin/images/services/<?php echo $service['img']; ?>" 
-                                        class="img-fluid rounded-top w-100" 
-                                        alt="<?php echo htmlspecialchars($service['title']); ?>">
+                                    <?php if (!empty($service['img'])): ?>
+                                        <img src="admin/images/services/<?php echo $service['img']; ?>" 
+                                            class="img-fluid rounded-top w-100" 
+                                            alt="<?php echo $service['title']; ?>" loading="lazy">
+                                    <?php else: ?>
+                                        <img src="img/default-service-icon.png" 
+                                            class="img-fluid rounded-top w-100" 
+                                            alt="Default Icon" loading="lazy">
+                                    <?php endif; ?>
                                 </div>
                                 <div class="service-content rounded-bottom bg-light p-4 d-flex flex-column">
                                     <h5 class="mb-4"><?php echo htmlspecialchars($service['title']); ?></h5>
                                     <p class="mb-4 short-description">
                                         <?php
                                         $short = strip_tags($service['descrip']);
+                                        $short = str_replace('&nbsp;', ' ', $short);
                                         if (strlen($short) > 200) {
                                             $shortCut = substr($short, 0, 200);
                                             $short = substr($shortCut, 0, strrpos($shortCut, ' ')) . '...';
@@ -282,9 +329,14 @@ function formatTanggalIndonesia($tanggal) {
                                         ?>
                                     </p>
                                     <div class="mt-auto text-center">
-                                        <p class="text-muted mb-2">
-                                            <small><?php echo formatTanggalIndonesia($service['date']); ?></small>
-                                        </p>
+                                        <ul class="price-list mb-4">
+                                            <li class="d-flex justify-content-between">
+                                                <small>
+                                                <span>Harga:</span>
+                                                <span class="text-primary font-weight-bold">Rp <?php echo number_format($service['price'], 2, ',', '.'); ?></span>
+                                                </small>
+                                            </li>
+                                        </ul>
                                         <!-- Tombol Detail dapat diaktifkan kembali bila diperlukan -->
                                         <!-- <a href="detail_service.php?id=<?php echo $service['id']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">
                                             Detail

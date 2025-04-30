@@ -5,7 +5,7 @@ header("Pragma: no-cache");
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-date_default_timezone_set('Asia/Kolkata');
+date_default_timezone_set('Asia/Jakarta');
 $today = date("Y-m-d H:i:s");
 // Cek apakah parameter 'edit' ada di URL dan valid
 $edit = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
@@ -51,8 +51,8 @@ if (isset($_POST['publise'])) {
     // INSERT (tambah data baru)
     if ($edit == 0) {
         $insertdata = mysqli_query($con, 
-            "INSERT INTO services(title, descrip, img, date) 
-             VALUES('$title', '$descrip', '$lis_img', '$today')");
+            "INSERT INTO services(title, descrip, img, price, date) 
+             VALUES('$title', '$descrip', '$lis_img', '" . mysqli_real_escape_string($con, $_POST['price']) . "', '$today')");
         if ($insertdata) {
             $_SESSION['msg'] = "Berhasil Diposting";
             $_SESSION['msgClass'] = "alert-success";
@@ -71,6 +71,7 @@ if (isset($_POST['publise'])) {
                 title='$title', 
                 descrip='$descrip', 
                 img='$lis_img', 
+                price='" . mysqli_real_escape_string($con, $_POST['price']) . "', 
                 date='$today' 
              WHERE id=" . $edit);
         if ($insertdata) {
@@ -84,6 +85,19 @@ if (isset($_POST['publise'])) {
         header("Location: add-services.php?edit=" . $edit);
         exit;
     }
+}
+// Tambahkan logika untuk menghapus gambar jika diminta
+if (isset($_POST['delete_img']) && $edit > 0) {
+    $imagePath = "images/services/" . $roww['img'];
+    if (file_exists($imagePath)) {
+        unlink($imagePath); // Hapus file gambar
+    }
+    $roww['img'] = ''; // Set gambar menjadi kosong di database
+    mysqli_query($con, "UPDATE services SET img='' WHERE id=" . $edit);
+    $_SESSION['msg'] = "Gambar berhasil dihapus.";
+    $_SESSION['msgClass'] = "alert-success";
+    header("Location: add-services.php?edit=" . $edit);
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -203,7 +217,7 @@ if (isset($_POST['publise'])) {
                     id="fileUpload"
                     class="form-control"
                     accept="image/*"
-                    <?php echo empty($roww["img"]) ? 'required' : ''; ?>
+                    <?php echo empty($roww["img"]) ?: ''; ?>
                   >
                   <div class="invalid-feedback">
                     Silakan unggah gambar.
@@ -223,6 +237,31 @@ if (isset($_POST['publise'])) {
                   }
                   ?>
                 </div>
+                <!-- Tambahkan input untuk harga layanan -->
+                <div class="form-group">
+                    <label for="price">Harga <span class="text-danger">*</span></label>
+                    <input 
+                        type="number" 
+                        name="price" 
+                        id="price" 
+                        class="form-control" 
+                        placeholder="Masukkan harga layanan" 
+                        value="<?php echo isset($roww['price']) ? htmlspecialchars($roww['price']) : ''; ?>" 
+                        step="0.01" 
+                        required
+                    >
+                    <div class="invalid-feedback">
+                        Silakan masukkan harga layanan.
+                    </div>
+                </div>
+                <!-- Tambahkan tombol hapus gambar jika gambar sudah ada -->
+                <?php if (!empty($roww['img'])): ?>
+                  <form method="post" style="display:inline;">
+                    <button type="submit" name="delete_img" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus gambar ini?');">
+                      Hapus Gambar
+                    </button>
+                  </form>
+                <?php endif; ?>
               </div>
               <!-- Tombol Kirim -->
               <div class="card-header">

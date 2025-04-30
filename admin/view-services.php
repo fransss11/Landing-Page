@@ -161,6 +161,7 @@ if (isset($_GET['delete_id'])) {
                                         <th>Judul</th>
                                         <th>Deskripsi</th>
                                         <th>Tanggal</th>
+                                        <th>Harga</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -206,7 +207,12 @@ if (isset($_GET['delete_id'])) {
                 { 
                     data: 'img', 
                     render: function(data, type, row) {
-                        return '<img src="images/services/' + data + '" alt="Gambar Layanan">';
+                        // Tambahkan logika untuk menangani gambar kosong di kolom gambar
+                        if (data) {
+                            return '<img src="images/services/' + data + '" alt="Gambar Layanan">';
+                        } else {
+                            return '<span class="text-muted">Tidak ada gambar</span>';
+                        }
                     }
                 },
                 { data: 'title' },
@@ -219,6 +225,7 @@ if (isset($_GET['delete_id'])) {
                     }
                 },
                 { data: 'date' },
+                { data: 'price' },
                 { data: 'aksi' }
             ]
         });

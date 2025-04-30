@@ -14,7 +14,7 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-    $baseQuery  = "SELECT id, title, descrip, img, date FROM services";
+    $baseQuery  = "SELECT id, title, descrip,price, img, date FROM services";
     $totalQuery = "SELECT COUNT(id) as total FROM services";
     $where = "";
     if (!empty($searchValue)) {
@@ -38,7 +38,8 @@ if ($action == 'fetch_services') {
             0 => 'id',
             1 => 'title',
             2 => 'descrip',
-            3 => 'date'
+            3 => 'price',
+            4 => 'date'
         );
         if (isset($columns[$orderColumnIndex])) {
             $orderColumn = $columns[$orderColumnIndex];
@@ -390,6 +391,76 @@ if ($action == 'fetch_services') {
                             <i class="fas fa-edit"></i>
                         </a>
                         <a href="view-projek.php?delete_id=' . $id . '" class="btn btn-danger" onclick="return confirm(\'Apakah Anda yakin?\')">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>';
+        $row['no']  = $no++;  // Set nomor baris
+        $row['aksi'] = $actions;  // Menambahkan tombol aksi
+        $data[] = $row;
+    }
+    // Menyiapkan respons akhir yang akan dikirimkan ke DataTables
+    $response = array(
+        "draw"            => $draw,
+        "recordsTotal"    => $totalRecords,
+        "recordsFiltered" => $totalRecords,
+        "data"            => $data
+    );
+    echo json_encode($response);
+    exit;
+}   elseif ($action == 'fetch_kegiatan') {
+    // =======================
+    //        Kegiatan
+    // =======================
+    $draw        = isset($_GET['draw']) ? intval($_GET['draw']) : 0;
+    $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
+    $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
+    $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
+    $baseQuery  = "SELECT * FROM kegiatan";
+    $totalQuery = "SELECT COUNT(id) as total FROM kegiatan";
+    // Siapkan klausa WHERE untuk filter pencarian
+    $where = "";
+    if (!empty($searchValue)) {
+        $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
+        $where = " WHERE nama_kegiatan LIKE '%$searchValueEsc%' 
+                   OR deskripsi LIKE '%$searchValueEsc%' 
+                   OR url LIKE '%$searchValueEsc%'";
+    }
+    // Ambil jumlah total data
+    $totalDataQuery = $totalQuery . $where;
+    $resultTotal    = mysqli_query($con, $totalDataQuery);
+    $rowTotal       = mysqli_fetch_assoc($resultTotal);
+    $totalRecords   = $rowTotal['total'];
+    // Pengaturan default sorting berdasarkan 'id' DESC
+    $orderColumn = "id"; // Default ke 'id'
+    $orderDir    = "DESC"; // Default DESC
+    // Cek apakah ada parameter sorting dari DataTables, dan ubah urutannya
+    if (isset($_GET['order'][0]['column']) && isset($_GET['order'][0]['dir'])) {
+        $orderColumnIndex = intval($_GET['order'][0]['column']);
+        $orderDir = ($_GET['order'][0]['dir'] === 'asc') ? 'ASC' : 'DESC';
+        // Kolom yang diizinkan untuk sorting
+        $columns = array(
+            0 => 'nama_kegiatan',
+            1 => 'deskripsi',
+            2 => 'url'
+        );
+        // Jika indeks kolom yang diminta ada dalam peta, ubah kolom pengurutan
+        if (isset($columns[$orderColumnIndex])) {
+            $orderColumn = $columns[$orderColumnIndex];
+        }
+    }
+    // Bangun query untuk mengambil data dengan pengurutan yang dinamis
+    $dataQuery = $baseQuery . $where . " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
+    $resultData = mysqli_query($con, $dataQuery);
+    // Siapkan data untuk DataTables
+    $data = array();
+    $no   = $start + 1; // Untuk menampilkan nomor baris yang benar
+    while ($row = mysqli_fetch_assoc($resultData)) {
+        $id = $row['id'];
+        $actions = '<div class="btn-group btn-group-sm">
+                        <a href="add-kegiatan.php?edit=' . $id . '" class="btn btn-info" onclick="return confirm(\'Apakah Anda yakin?\')">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="view-kegiatan.php?delete_id=' . $id . '" class="btn btn-danger" onclick="return confirm(\'Apakah Anda yakin?\')">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>';

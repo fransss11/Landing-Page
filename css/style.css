@@ -1998,7 +1998,7 @@ body {
             padding: 12px 25px;
             background-color:rgb(183, 183, 183);
             color: white;
-            font-size: 16px;
+            font-size: 12px;
             border-radius: 20px;
         }
 
@@ -2230,7 +2230,7 @@ tr:hover {
     background-repeat: no-repeat;
 }
 .container-fluid.client-reviews-section {
-    background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/6062704.jpg');
+    background: linear-gradient(49deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url(../admin/images/6062704.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -2265,8 +2265,8 @@ tr:hover {
     background-position: center;
     background-repeat: no-repeat;
 }
-.container-fluid.projek {
-    background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/12065079_4861716.jpg');
+.container-fluid.video-section {
+    background: linear-gradient(196deg, rgb(184 119 254 / 68%), rgb(216 152 255)), url(../admin/images/32867182.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

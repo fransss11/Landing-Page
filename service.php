@@ -10,7 +10,7 @@ if ($result->num_rows > 0) {
     }
 }
 // Fetch data from the 'testimonials' table
-$sql = "SELECT title, designation, descrip, img, date FROM testimonials";
+$sql = "SELECT title, designation, descrip,img, date FROM testimonials";
 $result = $conn->query($sql);
 $testimonials = array();
 if ($result->num_rows > 0) {
@@ -18,6 +18,9 @@ if ($result->num_rows > 0) {
         $testimonials[] = $row;
     }
 }
+$sql = "SELECT whatsapp FROM social";
+$result = $conn->query($sql);
+$social = $result->fetch_assoc();
 $conn->close();
 function formatTanggalIndonesia($tanggal) {
     $bulanIndo = [
@@ -101,15 +104,22 @@ function formatTanggalIndonesia($tanggal) {
                         <div class="col-md-6 col-lg-4 col-xl-3" data-aos="zoom-in" data-aos-delay="300">
                             <div class="service-item rounded">
                                 <div class="service-img rounded-top">
-                                    <img src="admin/images/services/<?php echo $service['img']; ?>" 
-                                        class="img-fluid rounded-top w-100" 
-                                        alt="<?php echo $service['title']; ?>" loading="lazy">
+                                    <?php if (!empty($service['img'])): ?>
+                                        <img src="admin/images/services/<?php echo $service['img']; ?>" 
+                                            class="img-fluid rounded-top w-100" 
+                                            alt="<?php echo $service['title']; ?>" loading="lazy">
+                                    <?php else: ?>
+                                        <img src="img/default-service-icon.png" 
+                                            class="img-fluid rounded-top w-100" 
+                                            alt="Default Icon" loading="lazy">
+                                    <?php endif; ?>
                                 </div>
                                 <div class="service-content rounded-bottom bg-light p-4 d-flex flex-column">
                                     <h5 class="mb-4"><?php echo $service['title']; ?></h5>
                                     <p class="mb-4 short-description">
                                         <?php 
                                         $short = strip_tags($service['descrip']);
+                                        $short = str_replace('&nbsp;', ' ', $short);
                                         if (strlen($short) > 200) {
                                             $shortCut = substr($short, 0, 200);
                                             $short = substr($shortCut, 0, strrpos($shortCut, ' ')) . '...';
@@ -118,12 +128,20 @@ function formatTanggalIndonesia($tanggal) {
                                         ?>
                                     </p>
                                     <div class="mt-auto text-center">
-                                        <p class="text-muted mb-2">
-                                            <small><?php echo formatTanggalIndonesia($service['date']); ?></small>
-                                        </p>
-                                        <a href="detail_service.php?id=<?php echo $service['id']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">
-                                            Detail
-                                        </a>
+                                        <ul class="price-list mb-4">
+                                            <li class="d-flex justify-content-between">
+                                                <small>
+                                                <span>Harga:</span>
+                                                <span class="text-primary font-weight-bold">Rp <?php echo number_format($service['price'], 2, ',', '.'); ?></span>
+                                                </small>
+                                            </li>
+                                        </ul>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="detail_service.php?id=<?php echo $service['id']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">Detail</a>
+                                            <?php if (!empty($social['whatsapp'])): ?>
+                                                <a href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">Hubungi Kami</a>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

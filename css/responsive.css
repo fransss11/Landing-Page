@@ -41,6 +41,7 @@
     opacity: 1;
     transform: translateY(20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
+    padding-bottom: 20px;
 }
 .service-item:hover .service-content h5,
 .service-item:hover .service-content p,

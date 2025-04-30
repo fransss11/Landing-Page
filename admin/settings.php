@@ -16,7 +16,7 @@ $info_result = mysqli_query($con, "SELECT * FROM info WHERE id_info='1'");
 if (!$info_result) {
     die("Error fetching info: " . mysqli_error($con));
 }
-
+$info_row = mysqli_fetch_array($info_result);
 $social_result = mysqli_query($con, "SELECT * FROM social WHERE id='1'");
 if (!$social_result) {
     die("Error fetching social data: " . mysqli_error($con));
@@ -26,7 +26,7 @@ $social_row = mysqli_fetch_array($social_result);
 if (isset($_POST['update'])) {
     extract($_POST);
     // Update data ke tabel info
-    $update_info = mysqli_query($con, "UPDATE info SET lokasi='$address', gmail='$email', maps_url='$map' WHERE id_info='1'");
+    $update_info = mysqli_query($con, "UPDATE info SET lokasi='$address', gmail='$email', maps_url='$map', profile   = '$profile' WHERE id_info='1'");
     if (!$update_info) {
         die("Error updating info: " . mysqli_error($con));
     }
@@ -175,6 +175,17 @@ if (isset($_POST['update'])) {
                                         <input name="phone" value="<?php echo $social_row['phone']; ?>" type="text" class="form-control" placeholder="Masukkan Nomor Telepon">
                                     </div>
                                 </div>
+                                <div class="form-group">
+  <label>Link Video YouTube</label>
+  <input 
+    name="profile" 
+    type="text" 
+    class="form-control" 
+    placeholder="Masukkan link YouTube" 
+    value="<?php echo htmlspecialchars($info_row['profile']); ?>"
+  >
+</div>
+
                             </div>
                         </div>
                         <div class="col-md-12">
