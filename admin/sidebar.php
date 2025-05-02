@@ -189,13 +189,13 @@ $logo = (!empty($info_row['logo']))
                 <li class="nav-header">Artikel</li>
                 <li class="nav-item">
                     <a href="add-artikel.php" class="nav-link <?php echo ($current_page == 'add-artikel.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-project-diagram nav-icon"></i>
+                        <i class="fas fa-newspaper nav-icon"></i>
                         <p>Tambah Artikel</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="view-artikel.php" class="nav-link <?php echo ($current_page == 'view-artikel.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-project-diagram nav-icon"></i>
+                        <i class="fas fa-newspaper nav-icon"></i>
                         <p>Lihat Artikel</p>
                     </a>
                 </li>

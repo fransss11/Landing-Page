@@ -155,7 +155,7 @@ $conn->close();
                     if (serviceDetail.img) {
                         document.getElementById("detail-gambar-service").src = "admin/images/services/" + serviceDetail.img;
                     } else {
-                        document.getElementById("detail-gambar-service").src = "assets/icons/default-service-icon.png";
+                        document.getElementById("detail-gambar-service").src = "img/default-service-icon.png";
                     }
                     document.getElementById("detail-konten-service").innerHTML = serviceDetail.descrip;
                 } else {

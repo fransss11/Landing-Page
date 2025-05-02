@@ -349,7 +349,7 @@ if ($action == 'fetch_services') {
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
-        $where = " WHERE judul LIKE '%$searchValueEsc%' 
+        $where = " WHERE mitra LIKE '%$searchValueEsc%' 
                    OR tahun LIKE '%$searchValueEsc%' 
                    OR deskrip LIKE '%$searchValueEsc%' 
                    OR upload LIKE '%$searchValueEsc%'";
@@ -368,7 +368,7 @@ if ($action == 'fetch_services') {
         $orderDir = ($_GET['order'][0]['dir'] === 'asc') ? 'ASC' : 'DESC';
         // Kolom yang diizinkan untuk sorting
         $columns = array(
-            0 => 'judul',
+            0 => 'mitra',
             1 => 'tahun',
             2 => 'deskrip',
             3 => 'upload'

@@ -174,6 +174,18 @@ function formatTanggalIndonesia($tanggal) {
         body {
             overflow-x: hidden;
         }
+        .reviewer-name {
+            min-height: 150px;
+        }
+        .client-reviews{
+            height: 400px;
+        }
+        .client-reviews .single-review {
+            height: 400px;
+        }
+        .client-reviews .reviewer-thumb img {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
