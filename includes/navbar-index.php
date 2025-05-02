@@ -31,6 +31,7 @@ $logo = isset($info_row['logo']) && !empty($info_row['logo']) ? "admin/images/lo
                         <a href="team.php" class="dropdown-item <?php echo getCurrentPage() == 'team.php' ? 'active' : ''; ?>">Tim Kami</a>
                         <a href="projek.php" class="dropdown-item <?php echo getCurrentPage() == 'projek.php' ? 'active' : ''; ?>">Projek Kami</a>
                         <a href="testimoni.php" class="dropdown-item <?php echo getCurrentPage() == 'testimoni.php' ? 'active' : ''; ?>">Testimoni</a>
+                        <a href="artikel.php" class="dropdown-item <?php echo getCurrentPage() == 'artikel.php' ? 'active' : ''; ?>">Artikel</a>
                     </div>
                 </div>
                 <a href="galery.php" class="nav-item nav-link <?php echo getCurrentPage() == 'galery.php' ? 'active' : ''; ?>">Galeri</a>

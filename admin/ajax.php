@@ -477,6 +477,84 @@ if ($action == 'fetch_services') {
     );
     echo json_encode($response);
     exit;
+} elseif ($action == 'fetch_articles') {
+    // =======================
+    //        ARTIKEL
+    // =======================
+    $draw        = isset($_GET['draw']) ? intval($_GET['draw']) : 0;
+    $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
+    $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
+    $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
+    $baseQuery   = "SELECT id, title, content, img, author, created_at FROM articles";
+    $totalQuery  = "SELECT COUNT(id) as total FROM articles";
+    $where       = "";
+
+    // Filter pencarian
+    if (!empty($searchValue)) {
+        $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
+        $where = " WHERE title LIKE '%$searchValueEsc%' 
+                   OR content LIKE '%$searchValueEsc%' 
+                   OR author LIKE '%$searchValueEsc%'";
+    }
+
+    // Hitung total data
+    $totalDataQuery = $totalQuery . $where;
+    $resultTotal    = mysqli_query($con, $totalDataQuery);
+    if (!$resultTotal) {
+        echo json_encode(["error" => "Database error: " . mysqli_error($con)]);
+        exit;
+    }
+
+    $rowTotal       = mysqli_fetch_assoc($resultTotal);
+    $totalRecords   = $rowTotal['total'];
+
+    $orderColumn = "id";
+    $orderDir    = "DESC";
+    if (isset($_GET['order'][0]['column']) && isset($_GET['order'][0]['dir'])) {
+        $orderColumnIndex = intval($_GET['order'][0]['column']);
+        $orderDir = ($_GET['order'][0]['dir'] === 'asc') ? 'ASC' : 'DESC';
+        $columns = array(
+            0 => 'img',
+            1 => 'title',
+            2 => 'content',
+            3 => 'created_at',
+            4 => 'author'
+        );
+        if (isset($columns[$orderColumnIndex])) {
+            $orderColumn = $columns[$orderColumnIndex];
+        }
+    }
+
+    $dataQuery = $baseQuery . $where . " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
+    $resultData = mysqli_query($con, $dataQuery);
+    if (!$resultData) {
+        echo json_encode(["error" => "Database error: " . mysqli_error($con)]);
+        exit;
+    }
+
+    $data = array();
+    while ($row = mysqli_fetch_assoc($resultData)) {
+        $id = $row['id'];
+        $actions = '<div class="btn-group">
+                        <a href="add-artikel.php?edit=' . $id . '" class="btn btn-info">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="view-artikel.php?delete_id=' . $id . '" onclick="return confirm(\'Apakah Anda yakin?\')" class="btn btn-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>';
+        $row['aksi'] = $actions;
+        $data[] = $row;
+    }
+
+    $response = array(
+        "draw"            => $draw,
+        "recordsTotal"    => $totalRecords,
+        "recordsFiltered" => $totalRecords,
+        "data"            => $data
+    );
+    echo json_encode($response);
+    exit;
 } else {
     echo json_encode(["error" => "Aksi tidak valid"]);
     exit;

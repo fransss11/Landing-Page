@@ -176,6 +176,7 @@ $info = $result->fetch_assoc();
                     <a href="team.php"><i class="fas fa-angle-right me-2"></i> Tim Kami</a>
                     <a href="projek.php"><i class="fas fa-angle-right me-2"></i> Projek Kami</a>
                     <a href="testimoni.php"><i class="fas fa-angle-right me-2"></i> Testimoni</a>
+                    <a href="artikel.php"><i class="fas fa-angle-right me-2"></i>Artikel</a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">

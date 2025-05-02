@@ -1,0 +1,369 @@
+<?php
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+error_reporting(0);
+include 'conn.php';
+include 'auth.php';
+date_default_timezone_set('Asia/Jakarta');
+$today = date("Y-m-d H:i:s");
+// Cek apakah parameter 'edit' ada di URL dan valid
+$edit = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
+// Ambil data jika mode edit
+if ($edit > 0) {
+    $resultt = mysqli_query($con, "SELECT * FROM articles WHERE id = '$edit'");
+    $roww = mysqli_fetch_array($resultt);
+} else {
+    $roww = []; // mode insert, inisialisasi agar tidak error
+}
+if (isset($_POST['publise'])) {
+    // Sanitasi input menggunakan mysqli_real_escape_string
+    $title   = mysqli_real_escape_string($con, $_POST['title']);
+    // Mengambil konten dari Summernote
+    $descrip = $_POST['descrip'];
+    // Menghapus tag <p> tapi mempertahankan tag HTML lainnya
+    $descrip = preg_replace('/<p[^>]*>(.*?)<\/p>/is', '$1', $descrip);
+    // Sanitasi input untuk mencegah XSS
+    $descrip = mysqli_real_escape_string($con, $descrip);
+    $author  = mysqli_real_escape_string($con, $_POST['author']);
+    // Tangani unggahan file
+    if (!empty($_FILES['lis_img']['name'])) {
+        // Validasi ukuran file (maksimum 500KB)
+        $maxFileSize = 500 * 1024; // 500KB dalam byte
+        if ($_FILES['lis_img']['size'] > $maxFileSize) {
+            $_SESSION['msg'] = "Ukuran file harus kurang dari 500KB.";
+            $_SESSION['msgClass'] = "alert-danger";
+            header("Location: add-artikel.php?edit=" . $edit);
+            exit;
+        }
+        // Buat nama file unik
+        $newFileName = rand() . '_' . $_FILES['lis_img']['name'];
+        $tempFile    = $_FILES['lis_img']['tmp_name'];
+        $folder      = "images/artikel/" . $newFileName;
+        // Jika file ada, pindahkan ke folder tujuan
+        if (!empty($tempFile)) {
+            move_uploaded_file($tempFile, $folder);
+        }
+        $lis_img = $newFileName;
+    } else {
+        // Gunakan gambar lama jika ada
+        $lis_img = isset($roww["img"]) ? $roww["img"] : '';
+    }
+    // INSERT (tambah data baru)
+    if ($edit == 0) {
+        $insertdata = mysqli_query($con, 
+            "INSERT INTO articles(title, content, img, author, created_at) 
+             VALUES('$title', '$descrip', '$lis_img', '$author', '$today')");
+        if ($insertdata) {
+            $_SESSION['msg'] = "Artikel berhasil diposting.";
+            $_SESSION['msgClass'] = "alert-success";
+        } else {
+            $_SESSION['msg'] = "Terjadi kesalahan saat memposting artikel.";
+            $_SESSION['msgClass'] = "alert-danger";
+        }
+        // Redirect ke halaman add-artikel.php tanpa parameter edit
+        header("Location: add-artikel.php");
+        exit;
+    }
+    // UPDATE (perbarui data)
+    else {
+        $insertdata = mysqli_query($con, 
+            "UPDATE articles SET 
+                title='$title', 
+                content='$descrip', 
+                img='$lis_img', 
+                author='$author', 
+                created_at='$today' 
+             WHERE id=" . $edit);
+        if ($insertdata) {
+            $_SESSION['msg'] = "Artikel berhasil diperbarui.";
+            $_SESSION['msgClass'] = "alert-success";
+        } else {
+            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui artikel.";
+            $_SESSION['msgClass'] = "alert-danger";
+        }
+        // Redirect ke halaman edit dengan parameter edit sehingga data tetap muncul
+        header("Location: add-artikel.php?edit=" . $edit);
+        exit;
+    }
+}
+// Tambahkan logika untuk menghapus gambar jika diminta
+if (isset($_POST['delete_img']) && $edit > 0) {
+    $imagePath = "images/artikel/" . $roww['img'];
+    if (file_exists($imagePath)) {
+        unlink($imagePath); // Hapus file gambar
+    }
+    $roww['img'] = ''; // Set gambar menjadi kosong di database
+    mysqli_query($con, "UPDATE articles SET img='' WHERE id=" . $edit);
+    $_SESSION['msg'] = "Gambar berhasil dihapus.";
+    $_SESSION['msgClass'] = "alert-success";
+    header("Location: add-artikel.php?edit=" . $edit);
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php include "title.php"; ?>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style (AdminLTE) -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- Summernote -->
+  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+  <?php include '../includes/logo.php'; ?>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+  <!-- Navbar -->
+  <?php include "topbar.php"; ?>
+  <!-- Main Sidebar Container -->
+  <?php include "sidebar.php"; ?>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1><?php echo ($edit > 0) ? 'Perbarui Artikel' : 'Tambah Artikel'; ?></h1>
+          </div>
+          <div class="col-sm-6">
+            <a href="view-artikel.php" class="btn btn-success">
+              <i class="fa fa-eye" aria-hidden="true"></i> Lihat Artikel
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Konten Utama -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-8">
+          <!-- Tampilkan pesan jika ada (menggunakan session) -->
+          <?php if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])): ?>
+            <div style="max-width: 600px; margin: 0 auto;">
+              <div class="alert <?php echo $_SESSION['msgClass']; ?> alert-dismissible fade show" role="alert">
+                <?php 
+                  echo $_SESSION['msg'];
+                  // Hapus session agar pesan tidak muncul lagi setelah refresh
+                  unset($_SESSION['msg']); 
+                  unset($_SESSION['msgClass']);
+                ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Tutup">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          <?php endif; ?>
+          <!-- Form dengan validasi -->
+          <form id="articleForm" action="" method="post" enctype="multipart/form-data" 
+                class="needs-validation" novalidate>
+            <div class="card card-outline card-info">
+              <!-- Judul -->
+              <div class="card-header">
+                <div class="form-group">
+                  <label>Judul <span class="text-danger">*</span></label>
+                  <input 
+                    name="title" 
+                    value="<?php echo isset($roww["title"]) ? htmlspecialchars($roww["title"]) : ''; ?>" 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Judul ..." 
+                    maxlength="100" 
+                    required
+                  >
+                  <div class="invalid-feedback">
+                    Silahkan masukkan judul
+                  </div>
+                </div>
+              </div>
+              <!-- Deskripsi Lengkap (Summernote) -->
+              <div class="card-body pad">
+                <div class="form-group">
+                  <label>Konten Lengkap <span class="text-danger">*</span></label>
+                  <textarea 
+                    name="descrip" 
+                    class="form-control textarea" 
+                    placeholder="Masukkan konten lengkap di sini" 
+                    rows="8" 
+                    maxlength="10000" 
+                    required
+                  ><?php echo isset($roww["content"]) ? htmlspecialchars($roww["content"]) : ''; ?></textarea>
+                  <div class="invalid-feedback">
+                    Silakan masukkan konten lengkap.
+                  </div>
+                </div>
+              </div>
+              <!-- Unggah Gambar -->
+              <div class="card-header">
+                <div class="form-group">
+                  <label for="exampleInputFile">
+                    Pilih Gambar
+                    <?php 
+                      // Wajib upload jika data baru atau belum ada gambar
+                      if(empty($roww["img"])){ 
+                        echo '<span class="text-danger">*</span>'; 
+                      }
+                      ?>
+                      <p style="color:red;">Maksimal 500 KB</p>
+                  </label>                  
+                  <input 
+                    name="lis_img" 
+                    type="file" 
+                    id="fileUpload"
+                    class="form-control"
+                    accept="image/*"
+                    <?php echo empty($roww["img"]) ?: ''; ?>
+                  >
+                  <div class="invalid-feedback">
+                    Silakan unggah gambar.
+                  </div>
+                  <!-- Kotak pesan untuk kesalahan ukuran file -->
+                  <div id="fileError" class="alert alert-danger" style="display: none;">
+                      Ukuran file harus kurang dari 500KB.
+                  </div>
+                  <?php 
+                  if (!empty($roww["img"])) {
+                    $imagePath = "images/artikel/" . $roww["img"];
+                    if(file_exists($imagePath)) {
+                      echo '<br><img src="' . htmlspecialchars($imagePath) . '" alt="Gambar Saat Ini" style="width:150px; margin-top:10px;">';
+                    } else {
+                      echo '<br><p>File gambar tidak ditemukan</p>';
+                    }
+                  }
+                  ?>
+                </div>
+                <!-- Tambahkan tombol hapus gambar jika gambar sudah ada -->
+                <?php if (!empty($roww['img'])): ?>
+                  <form method="post" style="display:inline;">
+                    <button type="submit" name="delete_img" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus gambar ini?');">
+                      Hapus Gambar
+                    </button>
+                  </form>
+                <?php endif; ?>
+              </div>
+              <!-- Penulis -->
+              <div class="card-header">
+                <div class="form-group">
+                  <label>Penulis <span class="text-danger">*</span></label>
+                  <input 
+                    name="author" 
+                    value="<?php echo isset($roww["author"]) ? htmlspecialchars($roww["author"]) : ''; ?>" 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Nama Penulis ..." 
+                    maxlength="100" 
+                    required
+                  >
+                  <div class="invalid-feedback">
+                    Silahkan masukkan nama penulis
+                  </div>
+                </div>
+              </div>
+              <!-- Tombol Kirim -->
+              <div class="card-header">
+                <div class="form-group">
+                  <button type="submit" name="publise" class="btn btn-primary btn-lg">
+                    <?php echo ($edit) ? 'Perbarui' : 'Tambahkan'; ?>
+                  </button>
+                  <a href="view-artikel.php" class="btn btn-danger btn-lg">Kembali</a>
+                </div>
+              </div>
+            </div><!-- /.card -->
+          </form>
+        </div><!-- /.col-md-8 -->
+      </div><!-- /.row -->
+    </section>
+  </div>
+  <?php include "footer.php"; ?>
+</div>
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
+<script>
+    $(document).ready(function() {
+      $('.textarea').summernote({
+        height: 200,
+        paragraph: false,  // Matikan paragraf otomatis
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'italic', 'underline', 'clear', 'fontname']],
+          ['fontsize', ['fontsize']], // Menambahkan dropdown ukuran font
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']],
+          ['insert', ['link', 'picture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        callbacks: {
+          onChange: function(contents, $editable) {
+            // Sesuaikan callback sesuai kebutuhan
+          }
+        }
+      });
+      // Validasi unggahan file saat file dipilih
+      $('#fileUpload').on('change', function() {
+          var fileInput = this;
+          var fileSize = fileInput.files[0] ? fileInput.files[0].size : 0;
+          var maxFileSize = 500 * 1024; // 500KB 
+          if (fileSize > maxFileSize) {
+              $('#fileError').show();
+              $(fileInput).val(''); // Reset input file
+          } else {
+              $('#fileError').hide();
+          }
+      });
+    // Validasi manual saat form dikirim
+    $('#articleForm').on('submit', function(event) {
+      var form = this;
+      var isValid = true; // Flag untuk validasi
+      // Validasi ukuran unggahan file (maksimum 500KB)
+      var fileInput = $('#fileUpload')[0];
+      var fileSize = fileInput.files[0] ? fileInput.files[0].size : 0;
+      var maxFileSize = 500 * 1024; // 500KB
+      if (fileSize > maxFileSize) {
+        isValid = false;
+        // Tampilkan pesan kesalahan di dalam kotak pesan
+        $('#fileError').show();
+      } else {
+        // Sembunyikan pesan kesalahan jika ukuran file valid
+        $('#fileError').hide();
+      }
+      // Sinkronkan isi Summernote ke textarea sebelum validasi
+      var summernoteContent = $('.textarea').summernote('code');
+      $('textarea[name="descrip"]').val(summernoteContent);
+      // Cek jika Summernote kosong
+      if ($('.textarea').summernote('isEmpty') || 
+          summernoteContent.trim() === "" || 
+          summernoteContent === "<p><br></p>") {
+        isValid = false;
+        $('.note-editor').addClass('is-invalid'); // Tambahkan class error
+      } else {
+        $('.note-editor').removeClass('is-invalid'); // Hapus class error jika valid
+      }
+      // Jalankan validasi Bootstrap (untuk input lainnya)
+      if (!form.checkValidity()) {
+        isValid = false;
+      }
+      // Jika ada yang tidak valid, cegah submit
+      if (!isValid) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      // Tambahkan class Bootstrap agar field ditandai sebagai error
+      form.classList.add('was-validated');
+    });
+  });
+</script>
+</body>
+</html>

@@ -2271,4 +2271,10 @@ tr:hover {
     background-position: center;
     background-repeat: no-repeat;
 }
+.container-fluid.article {
+    background: linear-gradient(196deg, rgb(184 119 254 / 68%), rgb(216 152 255)), url('../admin/images/18952606_60656342.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 /* end background tambahan */
