@@ -55,6 +55,22 @@ $conn->close();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
+    <style>
+        th {
+            background-color: #ffffff;
+        }
+        tbody {
+            background-color:rgba(221, 221, 221, 0.89);
+        }
+        #selected-year-message {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
     <div class="bckg">

@@ -13,7 +13,7 @@ if ($result->num_rows > 0) {
 }
 
 // Fetch data from the 'services' table
-$sql = "SELECT * FROM services ORDER BY id DESC LIMIT 3";
+$sql = "SELECT * FROM services ORDER BY id DESC LIMIT 4";
 $result = $conn->query($sql);
 $services = array();
 if ($result->num_rows > 0) {
@@ -175,16 +175,52 @@ function formatTanggalIndonesia($tanggal) {
             overflow-x: hidden;
         }
         .reviewer-name {
-            min-height: 150px;
+            min-height: auto;
         }
         .client-reviews{
-            height: 400px;
+            height: 100%;
+        }
+        .single-review{
+            max-width: 100%;
         }
         .client-reviews .single-review {
-            height: 400px;
+            height: auto;
+            width: 309px;
         }
         .client-reviews .reviewer-thumb img {
             width: 100%;
+        }
+        .mb-3 {
+            background: #ffffffba;
+            border-radius: 20px;
+        }
+        .text-white {
+            background: #ffffffba;
+            border-radius: 8px;
+        }
+        .sub-title {    
+            background-color: #eeeeeec7;
+            border-radius: 20px;
+        }
+        .service .service-item .service-img {
+                width: auto;
+                height: auto;
+            }
+        .service .service-item .service-img img {
+            width: auto;
+            height: auto;
+        }
+        .team .team-item .team-content {
+            height: auto;
+        }
+        .card {
+            width: 100%;
+        }
+        .card-title {
+            min-height: auto;
+        }
+        .row {
+            justify-content: space-around;
         }
     </style>
 </head>
@@ -204,7 +240,7 @@ function formatTanggalIndonesia($tanggal) {
             <div class="row">
                 <div class="col-lg-12">
                     <a href="klien.php">
-                        <h1 class="text-center text-white">Klien Kami</h1>
+                        <h1 class="text-center" style="background: #ffffffba; border-radius: 20px; ">Klien Kami</h1>
                     </a>
                     <div class="client-reviews">
                         <?php foreach ($clients as $index => $client) : ?>
@@ -223,13 +259,14 @@ function formatTanggalIndonesia($tanggal) {
             </div>
         </div>
         <!-- Client Reviews Section End -->
+        <!-- Video Profil Start -->
         <?php if ($embedUrl): ?>
         <div class="container-fluid video-section py-5 bg-light" data-aos="fade-up">
             <div class="container" style="max-width: 900px; margin: 0 auto;">
                 <div class="section-title mb-4 text-center">
                     <h1 class="display-3 mb-3">Video Profil</h1>
                 </div>
-                <div class="embed-responsive embed-responsive-16by9" style="margin: 0 auto;">
+                <div class="embed-responsive embed-responsive-16by9" style="margin: 0 auto;" data-aos="fade-right" data-aos-delay="200">
                     <iframe
                         class="embed-responsive-item"
                         src="<?php echo htmlspecialchars($embedUrl); ?>"
@@ -246,7 +283,7 @@ function formatTanggalIndonesia($tanggal) {
         <!-- About Start -->
         <div class="container-fluid about bg-light py-5">
             <div class="container py-5">
-                <div class="row g-5 align-items-center">
+                <div class="row g-5 align-items-center" style="background: #ffffffba; border-radius: 20px;">
                     <?php if (!empty($about['img']) && file_exists("admin/images/about/" . $about['img'])): ?>
                         <div class="col-lg-5" data-aos="fade-right" data-aos-delay="500">
                             <div class="about-img pb-5 ps-5">
@@ -255,26 +292,26 @@ function formatTanggalIndonesia($tanggal) {
                         </div>
                         <div class="col-lg-7" data-aos="fade-left" data-aos-delay="400">
                             <div class="section-title text-start mb-5">
-                                <h4 class="display-3 mb-4">Tentang Kami</h4>
+                                <h4 class="display-3 mb-4 text-center">Tentang Kami</h4>
                                 <?php 
-                                $description = strip_tags($about['descrip']);
+                                $description = strip_tags($about['deskripsi_pendek']);
                                 $words = explode(' ', $description);
-                                if (count($words) > 50) {
-                                    $description = implode(' ', array_slice($words, 0, 50)) . '...';
+                                if (count($words) > 100) {
+                                    $description = implode(' ', array_slice($words, 0, 100)) .'.';
                                 }
                                 echo '<p>' . $description . '</p>'; 
                                 ?>
                             </div>
                         </div>
                     <?php else: ?>
-                        <div class="col-lg-12 text-center" data-aos="fade-down" data-aos-delay="400">
-                            <div class="section-title mb-5">
-                                <h4 class="display-3 mb-4">Tentang Kami</h4>
+                        <div class="col-lg-12" data-aos="fade-down" data-aos-delay="400" >
+                            <div class="section-title text-start mb-5">
+                                <h4 class="display-3 mb-4 text-center">Tentang Kami</h4>
                                 <?php 
-                                $description = strip_tags($about['descrip']);
+                                $description = strip_tags($about['deskripsi_pendek']);
                                 $words = explode(' ', $description);
-                                if (count($words) > 50) {
-                                    $description = implode(' ', array_slice($words, 0, 50)) . '...';
+                                if (count($words) > 100) {
+                                    $description = implode(' ', array_slice($words, 0, 100)) .'.';
                                 }
                                 echo '<p>' . $description . '</p>'; 
                                 ?>
@@ -283,15 +320,15 @@ function formatTanggalIndonesia($tanggal) {
                     <?php endif; ?>
                 </div>
                 <!-- Sejarah Section -->
-                <div class="row g-5 align-items-center mt-2">
+                <div class="row g-5 align-items-center mt-2" style="background: #ffffffba; border-radius: 20px;">
                     <div class="col-lg-12" data-aos="fade-up" data-aos-delay="500">
                         <div class="section-title text-start mb-5">
                             <h4 class="display-3 mb-4 text-center"><?php echo $about['history_title']; ?></h4>
                             <?php 
-                            $history = strip_tags($about['history']);
+                            $history = strip_tags($about['sejarah_pendek']);
                             $words = explode(' ', $history);
-                            if (count($words) > 100) {
-                                $history = implode(' ', array_slice($words, 0, 100)) . '...';
+                            if (count($words) > 200) {
+                                $history = implode(' ', array_slice($words, 0, 200)) .'.';
                             }
                             echo '<p>' . $history . '</p>'; 
                             ?>
@@ -299,7 +336,7 @@ function formatTanggalIndonesia($tanggal) {
                     </div>
                 </div>
                 <div class="mt-auto text-center">
-                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Selengkapnya</a>
+                    <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset; margin-top: 8px;" href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -340,7 +377,7 @@ function formatTanggalIndonesia($tanggal) {
                                         echo htmlspecialchars($short);
                                         ?>
                                     </p>
-                                    <div class="mt-auto text-center">
+                                    <!-- <div class="mt-auto text-center">
                                         <ul class="price-list mb-4">
                                             <li class="d-flex justify-content-between">
                                                 <small>
@@ -349,11 +386,11 @@ function formatTanggalIndonesia($tanggal) {
                                                 </small>
                                             </li>
                                         </ul>
-                                        <!-- Tombol Detail dapat diaktifkan kembali bila diperlukan -->
-                                        <!-- <a href="detail_service.php?id=<?php echo $service['id']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">
+                                        Tombol Detail dapat diaktifkan kembali bila diperlukan
+                                        <a href="detail_service.php?id=<?php echo $service['id']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">
                                             Detail
-                                        </a> -->
-                                    </div>
+                                        </a>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -361,7 +398,7 @@ function formatTanggalIndonesia($tanggal) {
                     <div class="col-12 text-center" data-aos="fade-up" data-aos-delay="200">
                     </div>
                     <div class="mt-auto text-center">
-                        <a href="service.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Layanan</a>
+                        <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="service.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Layanan</a>
                     </div>
                 </div>
             </div>
@@ -383,7 +420,7 @@ function formatTanggalIndonesia($tanggal) {
                     ?>
                     <div class="col-md-6 col-lg-6 col-xl-3" data-aos="zoom-in-up" data-aos-delay="400">
                         <div class="team-item rounded h-100 d-flex flex-column">
-                            <div class="team-img rounded-top">
+                            <div class="team-img rounded-top" style="background-color:rgba(255, 255, 255, 0.93);">
                                 <img src="admin/images/team/<?php echo htmlspecialchars($team['img']); ?>"
                                     class="img-fluid rounded-top w-100"
                                     alt="<?php echo htmlspecialchars($team['title']); ?>"
@@ -408,7 +445,7 @@ function formatTanggalIndonesia($tanggal) {
                             </div>
                             <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4 d-flex flex-column justify-content-between flex-grow-1">
                                 <h5 class="team-title"><?php echo htmlspecialchars($team['title']); ?></h5>
-                                <p class="team-designation mb-0"><?php echo htmlspecialchars($team['designation']); ?></p>
+                                <p class="team-designation mb-0" style="background: #ffffffbf;"><?php echo htmlspecialchars($team['designation']); ?></p>
                                 <!-- <p class="team-description mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p> -->
                             </div>
                         </div>
@@ -416,7 +453,7 @@ function formatTanggalIndonesia($tanggal) {
                     <?php endforeach; ?>
                 </div>
                 <!-- Pagination untuk bagian Tim -->
-                <div class="mt-4 text-center">
+                <!-- <div class="mt-4 text-center">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
                             <?php if($currentPage > 1): ?>
@@ -440,10 +477,10 @@ function formatTanggalIndonesia($tanggal) {
                             <?php endif; ?>
                         </ul>
                     </nav>
-                </div>
+                </div> -->
             </div>
             <div class="mt-auto text-center">
-                <a href="team.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Tim</a>
+                <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="team.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Tim</a>
             </div>
         </div>
         <!-- Team End -->
@@ -456,7 +493,7 @@ function formatTanggalIndonesia($tanggal) {
             </div>
             <div class="row g-4" id="berita-container"></div>
             <div class="mt-auto text-center" style="padding-top: 20px;">
-                <a href="berita.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Berita</a>
+                <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="berita.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Berita</a>
             </div>
         </div>
         <!-- Script untuk Daftar Berita -->
@@ -508,7 +545,12 @@ function formatTanggalIndonesia($tanggal) {
                             <div class="testimonial-item">
                                 <div class="testimonial-inner p-5">
                                     <div class="testimonial-inner-img mb-4">
-                                        <img src="admin/images/testimonial/<?php echo $testimonial['img']; ?>" class="img-fluid rounded-circle" alt="<?php echo htmlspecialchars($testimonial['title']); ?>">
+                                        <?php if (!empty($testimonial['img'])): ?>
+                                            <img src="admin/images/testimonial/<?php echo $testimonial['img']; ?>"
+                                                alt="<?php echo htmlspecialchars($testimonial['title']); ?>" class="img-fluid rounded-circle">
+                                        <?php else: ?>
+                                            <img src="img/user.png" alt="Default Icon" class="img-fluid rounded-circle">
+                                        <?php endif; ?>
                                     </div>
                                     <div class="text-center">
                                         <h5 class="mb-2"><?php echo htmlspecialchars($testimonial['title']); ?></h5>
@@ -522,7 +564,7 @@ function formatTanggalIndonesia($tanggal) {
                     </div>
                     <!-- Berikan Testimoni Start -->
                     <div class="container-fluid py-5 text-center">
-                        <a href="testimoni.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Berikan Testimoni</a>
+                        <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="testimoni.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Berikan Testimoni</a>
                     </div>
                     <!-- Berikan Testimoni End -->
                 </div>

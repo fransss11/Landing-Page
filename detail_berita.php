@@ -60,6 +60,20 @@ $conn->close();
             font-size: 1rem;
         }
     }
+    .text-white {
+        background-color: #ffffffba !important;
+        border-radius: 8px;
+    }
+    .sub-title{
+        background-color: #ffffffba !important;
+        border-radius: 8px;
+    }
+    .card-img-top {
+        width: auto;
+        height: auto;
+        margin-top: auto;
+        max-height: 49vh;
+    }
 </style>
 </head>
 <body>
@@ -81,9 +95,13 @@ $conn->close();
         <!-- Header End -->
         <!-- Detail Berita Start -->
         <div class="container py-5">
-            <h1 class="text-center mb-4">Detail Berita</h1>
+            <div class="section-title mb-5">
+                <div class="sub-style">
+                    <h1 class="sub-title px-3 mb-0">Detail Berita</h1>
+                </div>
+            </div>
             <div class="row">
-                <div class="col-lg-8 mx-auto">
+                <div class="col-lg-8 mx-auto" style="width: 100%;">
                     <div id="berita-container">
                         <?php if ($berita): ?>
                             <div class="card shadow-lg animated-content">
@@ -92,7 +110,7 @@ $conn->close();
                                     <h3 id="judul-berita" class="wow fadeInUp" data-wow-delay="0.5s"><?php echo $berita['title']; ?></h3>
                                     <p class="text-muted wow fadeInUp" data-wow-delay="0.6s"><i class="fa fa-calendar-alt text-primary"></i> <span id="tanggal-berita"><?php echo formatTanggalIndonesia($berita['date']); ?></span></p>
                                     <p id="konten-berita" class="wow fadeInUp" data-wow-delay="0.7s"><?php echo nl2br($berita['descrip']); ?></p>
-                                    <a href="berita.php" class="btn btn-primary wow fadeInUp" data-wow-delay="0.8s">Kembali ke Berita</a>
+                                    <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="berita.php" class="btn btn-primary wow fadeInUp" data-wow-delay="0.8s">Kembali ke Berita</a>
                                 </div>
                             </div>
                         <?php else: ?>

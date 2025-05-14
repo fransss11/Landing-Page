@@ -51,6 +51,10 @@ function formatTanggalIndonesia($tanggal) {
     <style>
         .hidden { opacity: 0; transition: opacity .5s ease; }
         .visible { opacity: 1; }
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -83,7 +87,7 @@ function formatTanggalIndonesia($tanggal) {
                                 <?php endif; ?>
                             </div>
                             <div class="p-4">
-                                <h2 class="mb-3"><?= htmlspecialchars($article['title']); ?></h2>
+                                <h1 class="mb-3"><?= htmlspecialchars($article['title']); ?></h1>
                                 <small class="text-muted"><?= formatTanggalIndonesia($article['created_at']); ?>
                                     <?php if (!empty($article['author'])): ?>
                                         – Penulis: <?= htmlspecialchars($article['author']); ?>

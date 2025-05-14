@@ -80,6 +80,17 @@ foreach ($sidebarArticles as $a) {
         .hidden { opacity: 0; transition: opacity .5s ease; }
         .visible { opacity: 1; }
         .pagination { justify-content: center; }
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .sub-title{
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .row {
+            justify-content: space-around;
+        }
     </style>
 </head>
 <body>

@@ -29,6 +29,15 @@ $about = $result->fetch_assoc();
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
+    <style>
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .row {
+            justify-content: space-around;
+        }
+    </style>
 </head>
 <body>
     <div class="bckg">
@@ -49,7 +58,7 @@ $about = $result->fetch_assoc();
         <!-- Header End -->
         <!-- About Start -->
         <div class="container-fluid about bg-light py-5">
-            <div class="container py-5">
+            <div class="container py-5" style="background: #ffffffba; border-radius: 20px; ">
                 <div class="row g-5 align-items-center">
                     <?php if (!empty($about['img']) && file_exists("admin/images/about/" . $about['img'])): ?>
                         <div class="col-lg-5" data-aos="fade-up" data-aos-delay="500">
@@ -77,7 +86,7 @@ $about = $result->fetch_assoc();
                     <div class="col-lg-12" data-aos="fade-up" data-aos-delay="500">
                         <div class="section-title mb-5">
                             <h4 class="display-3 mb-4 text-center"><?php echo $about['history_title']; ?></h4>
-                            <p class="text-center"><?php echo $about['history']; ?></p>
+                            <p class="text-center text-justify"><?php echo $about['history']; ?></p>
                         </div>
                     </div>
                 </div>

@@ -1307,11 +1307,12 @@
 .team .team-item .team-content {
     color: var(--bs-primary);
     transition: 0.5s;
-    height: 180px;
+    /* height: 180px; */
+    background-color: #bdbdbd;
 }
 
 .team .team-item .team-content h5 {
-    color: #ffffff;
+    /* color: #ffffff; */
     transition: 0.5s;
 }
 

@@ -19,11 +19,18 @@ function formatTanggalIndonesia($tanggal) {
     return "$hari, $tanggalNum $bulan $tahun $jam";
 }
 // Fetch data dari tabel 'services'
-$sql = "SELECT title, descrip, img, date, price FROM services WHERE id = $id";
+$sql = "SELECT title, descrip, img, date FROM services WHERE id = $id";
 $result = $conn->query($sql);
 $serviceDetail = $result->fetch_assoc();
 if ($serviceDetail) {
     $serviceDetail['date'] = formatTanggalIndonesia($serviceDetail['date']); // Ubah format tanggal
+}
+// Fetch data dari tabel 'service_categories' berdasarkan `core` (service_id)
+$categories = [];
+$sqlCategories = "SELECT name, description, price FROM service_categories WHERE core = $id";
+$resultCategories = $conn->query($sqlCategories);
+while ($row = $resultCategories->fetch_assoc()) {
+    $categories[] = $row;
 }
 $conn->close();
 ?>
@@ -67,7 +74,7 @@ $conn->close();
         }
         .btn-primary:hover {
             transform: translateY(-3px);
-            background-color: #0056b3;
+            background-color:rgb(255, 255, 255);
         } 
         /* Responsive style untuk mobile */
         @media (max-width: 768px) {
@@ -95,6 +102,33 @@ $conn->close();
                 margin-top: 20px;
             }
         }
+        .detail-service-content {
+            background: #f1f1f1;
+        }
+        .text-muted {
+            color: #750000 !important;
+        }
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .sub-title{
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .fa-globe:before {
+            color: #005aff;
+        }
+        .detail-service-img img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .card-img-top {
+            margin-top: auto;
+        }
+        .list-group-item {
+            border: 3px solid rgb(0 0 0);
+        }
     </style>
 </head>
 <body>
@@ -117,7 +151,7 @@ $conn->close();
         <!-- Detail Service Start -->
         <div class="container detail-service-container">
             <div class="row">
-                <div class="col-lg-8 mx-auto">
+                <div class="col-lg-8 mx-auto" style="width: 100%;">
                     <div id="detail-service-container">
                         <div class="card detail-service-card">
                             <div class="detail-service-img">
@@ -129,12 +163,28 @@ $conn->close();
                                     <i class="fa fa-calendar-alt text-primary"></i> 
                                     <span id="detail-tanggal-service"></span>
                                 </p>
-                                <p class="text-primary font-weight-bold">Harga: Rp <span id="detail-harga-service"></span></p>
                                 <p id="detail-konten-service"></p>
+                                <!-- Tampilkan kategori layanan -->
+                                <?php if (!empty($categories)): ?>
+                                    <div class="mt-4">
+                                        <h3>Jenis Layanan :</h3>
+                                        <ul class="list-group">
+                                            <?php foreach ($categories as $category): ?>
+                                                <li class="list-group-item">
+                                                    <i class="fas fa-globe me-4 animate__animated animate__rotateIn service-icon" style="font-size: 27px;"> <?php echo htmlspecialchars($category['name']); ?></i>
+                                                    <p><?php echo $category['description']; // Render HTML tags safely ?></p>
+                                                    <?php if (!is_null($category['price'])): ?>
+                                                        <p style="font-size: 23px; color:red; font-family: Lato;"><strong>Harga:</strong> Rp <?php echo number_format($category['price'], 2, ',', '.'); ?></p>
+                                                    <?php endif; ?>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                <?php endif; ?>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="service.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Kembali Ke Layanan</a>
+                                    <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="service.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Kembali Ke Layanan</a>
                                     <?php if (!empty($social['whatsapp'])): ?>
-                                        <a href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">Hubungi Kami</a>
+                                        <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">Hubungi Kami</a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -151,7 +201,6 @@ $conn->close();
                 if (serviceDetail) {
                     document.getElementById("detail-judul-service").innerText = serviceDetail.title;
                     document.getElementById("detail-tanggal-service").innerText = serviceDetail.date;
-                    document.getElementById("detail-harga-service").innerText = parseFloat(serviceDetail.price).toLocaleString('id-ID', { minimumFractionDigits: 2 });
                     if (serviceDetail.img) {
                         document.getElementById("detail-gambar-service").src = "admin/images/services/" + serviceDetail.img;
                     } else {
@@ -164,21 +213,18 @@ $conn->close();
             });
         </script>
         <!-- Detail Service End -->
-        <!-- Footer Start -->
         <?php include 'includes/footer.php'; ?>
-        <!-- Footer End -->
-        <!-- Copyright Start -->
         <?php include 'includes/copyright.php'; ?>
-        <!-- Copyright End -->
-        <!-- Back to Top -->
         <?php include 'includes/back_to_top.php'; ?>
-        <!-- Back to Top End -->
     </div>
-    <!-- JavaScript Libraries -->
+    <!-- JS Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="libr/wow/wow.min.js"></script>
-    <!-- Template Javascript -->
+    <script src="libr/easing/easing.min.js"></script>
+    <script src="libr/waypoints/waypoints.min.js"></script>
+    <script src="libr/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="js/main.js"></script>
     <!-- Inisialisasi WOW.js -->
     <script>

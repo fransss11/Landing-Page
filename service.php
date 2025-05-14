@@ -1,7 +1,7 @@
 <?php
 include 'database.php';
 // Fetch data from the 'services' table
-$sql = "SELECT * FROM services ORDER BY id DESC";
+$sql = "SELECT * FROM services ORDER BY id ASC";
 $result = $conn->query($sql);
 $services = [];
 if ($result->num_rows > 0) {
@@ -33,7 +33,7 @@ function formatTanggalIndonesia($tanggal) {
     $tanggalNum= date('j', $dateObj);
     $bulan     = $bulanIndo[date('n', $dateObj)-1];
     $tahun     = date('Y', $dateObj);
-    return "$hari, $tanggalNum $bulan $tahun";
+    return "{$hari}, {$tanggalNum} {$bulan} {$tahun}";
 }
 ?>
 <!DOCTYPE html>
@@ -43,7 +43,7 @@ function formatTanggalIndonesia($tanggal) {
     <title>Lisa Mitra Mandiri</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&amp;family=Playfair+Display:wght@400;500;600&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Libraries & Styles -->
@@ -55,9 +55,139 @@ function formatTanggalIndonesia($tanggal) {
     <link href="css/responsive.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
     <style>
-      /* tambahan spacing untuk list */
-      .service-list li { font-size: 1rem; }
-      .service-list li i { font-size: 0.75rem; vertical-align: middle; }
+        /* Layout styling */
+        .service-item {
+            background-color: #f4f4f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+        }
+
+        .service-img {
+            position: relative;
+            overflow: hidden;
+            height: 400px; /* Set a fixed height or adjust based on your needs */
+        }
+
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the container properly */
+            transition: transform 0.3s ease;
+        }
+
+        .service-img:hover img {
+            transform: scale(1.1); /* Increased scale effect for the hover */
+        }
+
+
+        .service-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .service-description {
+            font-size: 1rem;
+            color: #000000;
+            margin-bottom: 15px;
+        }
+
+        .service-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .service-actions a {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .service-actions a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling for the services list */
+        .service-list {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .service .service-item {
+            width: 70%;
+        }
+        /* .service-list .service-item {
+            width: 22%;
+        } */
+
+        .service-list .service-item img {
+            object-fit: cover;
+        }
+        .service .service-item .service-img {
+            position: relative;
+            width: auto;
+            height: auto;
+            /* width: 100%;
+            height: 300px; */
+            overflow: hidden;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f8f88b;
+        }
+        .service .service-item .service-img img {
+            width: auto;
+            height: auto;
+            /* width: 100%;
+            height: 100%; */
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .service-list .service-item {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .service-list .service-item {
+                width: 100%;
+            }
+        }
+        .service .service-item .service-content {
+            background-color: #f2d7d3;
+        }
+        .service-item .btn-primary {
+            color: black;
+        }
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .sub-title{
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .btn.btn-primaryy:hover{
+            box-shadow: inset 1500px 0 0 0 black !important;
+            color:rgb(255, 255, 255) !important;
+        }
     </style>
 </head>
 <body>
@@ -82,91 +212,35 @@ function formatTanggalIndonesia($tanggal) {
                     </div>
                 </div>
 
-                <!-- Tampilkan 1 Service Pertama -->
-                <?php if (!empty($services)): ?>
-                <?php $first = $services[0]; ?>
-                <div class="row mb-5 justify-content-center" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="col-md-6 col-lg-4" style="width: 100%;">
-                        <div class="service-item rounded">
-                            <div class="service-img rounded-top">
-                                <?php if (!empty($first['img'])): ?>
-                                <img src="admin/images/services/<?php echo $first['img']; ?>"
-                                     class="img-fluid rounded-top w-100"
-                                     alt="<?php echo $first['title']; ?>" loading="lazy">
+                <!-- Display all services in a single row -->
+                <div class="service-list">
+                    <?php foreach ($services as $svc): ?>
+                        <div class="service-item">
+                            <div class="service-img">
+                                <?php if (!empty($svc['img'])): ?>
+                                    <img src="admin/images/services/<?php echo $svc['img']; ?>"
+                                         alt="<?php echo $svc['title']; ?>" class="img-fluid">
                                 <?php else: ?>
-                                <img src="img/default-service-icon.png"
-                                     class="img-fluid rounded-top w-100"
-                                     alt="Default Icon" loading="lazy">
+                                    <img src="img/default-service-icon.png" alt="Default Icon" class="img-fluid">
                                 <?php endif; ?>
                             </div>
-                            <div class="service-content rounded-bottom bg-light p-4 d-flex flex-column">
-                                <h5 class="mb-4"><?php echo $first['title']; ?></h5>
-                                <p class="mb-4">
-                                  <?php
-                                  // potong deskripsi jika terlalu panjang
-                                  $short = strip_tags($first['descrip']);
-                                  $short = str_replace('&nbsp;', ' ', $short);
-                                  if (strlen($short) > 200) {
-                                      $cut = substr($short, 0, 200);
-                                      $short = substr($cut, 0, strrpos($cut, ' ')) . '...';
-                                  }
-                                  echo htmlspecialchars($short);
-                                  ?>
-                                </p>
-                                <div class="mt-auto text-center">
-                                    <ul class="price-list mb-4">
-                                        <li class="d-flex justify-content-between">
-                                            <small>
-                                              <span>Harga:</span>
-                                              <span class="text-primary font-weight-bold">
-                                                Rp <?php echo number_format($first['price'], 2, ',', '.'); ?>
-                                              </span>
-                                            </small>
-                                        </li>
-                                    </ul>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <a href="detail_service.php?id=<?php echo $first['id']; ?>"
-                                           class="btn btn-primary rounded-pill text-white py-2 px-4">
-                                           Detail
-                                        </a>
-                                        <?php if (!empty($social['whatsapp'])): ?>
-                                        <a href="https://wa.me/<?php echo $social['whatsapp']; ?>"
-                                           class="btn btn-primary rounded-pill text-white py-2 px-4">
-                                           Hubungi Kami
-                                        </a>
-                                        <?php endif; ?>
-                                    </div>
+                            <div class="service-content">
+                                <h3 style="font-family: 'Franklin Gothic Medium'; font-size: 40px;"><?php echo $svc['title']; ?></h3>
+                                <div class="service-description">
+                                    <?php
+                                    // Display the description with HTML tags
+                                    echo $svc['descrip'];
+                                    ?>
                                 </div>
+                                <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset; width: 100%; background-color: #00ff2938;" href="detail_service.php?id=<?php echo $svc['id']; ?>" class="btn btn-primaryy">Detail</a>
                             </div>
                         </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endif; ?>
-
-                <!-- Daftar Layanan di Bawah -->
-                <div class="row">
-                    <div class="col-12">
-                        <div>
-                            <h1>Layanan Lainnya :</h1>
-                        </div>
-                        <ul class="list-unstyled service-list">
-                            <?php foreach ($services as $i => $svc): ?>
-                                <?php if ($i === 0) continue; ?>
-                                <li class="mb-3">
-                                    <i style="font-size: 20px;" class="fas fa-globe text-danger me-4 animate__animated animate__rotateIn service-icon"></i>
-                                    <a href="detail_service.php?id=<?php echo $svc['id']; ?>"
-                                    class="text-primary">
-                                    <?php echo ($i + 1) . '. ' . $svc['title']; ?>
-                                    </a>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                </div>
-
             </div>
         </div>
         <!-- Services End -->
+
         <!-- Footer -->
         <?php include 'includes/footer.php'; ?>
         <?php include 'includes/copyright.php'; ?>
@@ -182,23 +256,5 @@ function formatTanggalIndonesia($tanggal) {
     <script src="libr/owlcarousel/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="js/main.js"></script>
-    <script>
-      AOS.init();
-      // Reveal on scroll for testimonial
-      function revealOnScroll() {
-          var els = document.querySelectorAll('.hidden, .visible');
-          var winH = window.innerHeight;
-          els.forEach(function(el) {
-            var top = el.getBoundingClientRect().top;
-            if (top < winH - 150) el.classList.add('visible'), el.classList.remove('hidden');
-            else el.classList.add('hidden'), el.classList.remove('visible');
-          });
-          if (window.scrollY === 0) {
-            els.forEach(el => el.classList.add('hidden'));
-          }
-      }
-      window.addEventListener('scroll', revealOnScroll);
-      window.addEventListener('load', revealOnScroll);
-    </script>
 </body>
 </html>

@@ -74,6 +74,14 @@ $conn->close();
         .pagination a:hover {
             background-color: #ddd;
         }
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .sub-title{
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>

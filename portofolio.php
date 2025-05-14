@@ -56,19 +56,20 @@ $conn->close();
         <!-- Portofolio Start -->
         <div class="container-fluid about bg-light py-5">
             <div class="container py-5">
-                    <div class="section-title mb-5 text-center" style="background: linear-gradient(135deg,rgba(107, 17, 203, 0.35), #2575fc); padding: 20px; border-radius: 10px; color: white;">
-                        <h1 class="display-4 font-weight-bold" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Proposal Kami</h1>
-                    </div>
+                <div class="section-title mb-5 text-center" style="background: linear-gradient(135deg,rgba(107, 17, 203, 0.35), #2575fc); padding: 20px; border-radius: 10px; color: white;">
+                    <h1 class="display-4 font-weight-bold" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Proposal Kami</h1>
+                </div>
                     <?php foreach ($portfolios as $portfolio): ?>
                         <?php if (!empty($portfolio['pdf'])): ?>
                             <?php $file = $portfolio['pdf']; ?>
                             <div class="portfolio-item">
-                            <p class="pdf-title" style="margin-bottom: 10px; font-size: 20px; text-transform: uppercase;"><?php echo $portfolio['name']; ?></p>
+                                <p class="pdf-title" style="margin-bottom: 10px; font-size: 20px; text-transform: uppercase;background-color: #eeeeeec7;border-radius: 7px;"><?php echo $portfolio['name']; ?></p>
                                 <iframe src="pdf/<?php echo $file; ?>" 
                                         style="width:100%; height:600px;" data-aos="fade-up" data-aos-delay="500" frameborder="0"></iframe>
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
+
             </div>
         </div>
         <!-- Portofolio End -->

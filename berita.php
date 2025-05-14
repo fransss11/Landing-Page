@@ -1,7 +1,7 @@
 <?php
 include 'database.php';
 // Fetch data from the 'blog' table
-$sql = "SELECT id, title, category, descrip, img, date, url FROM blog";
+$sql = "SELECT id, title, category, descrip, img, date, url FROM blog ORDER BY id DESC";
 $result = $conn->query($sql);
 $beritaList = array();
 if ($result->num_rows > 0) {
@@ -32,6 +32,25 @@ $conn->close();
     <link href="css/responsive.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
+    <style>
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .sub-title{
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .card {
+            width: 100%;
+        }
+        .card-title {
+            min-height: auto;
+        }
+        .btn.btn-primary:hover{
+            box-shadow: inset 500px 0 0 0 rgb(255, 255, 255) !important;
+        }
+    </style>
 </head>
 <body>
     <div class="bckg">
@@ -87,7 +106,7 @@ $conn->close();
                                     </p>
                                     <h5 class="card-category">${berita.category}</h5>
                                     <p class="card-text">${short}</p>
-                                    <a href="detail_berita.php?id=${berita.id}" class="btn btn-primary">Detail</a>
+                                    <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset; background-color: #00ff78b5; width: 100%;" href="detail_berita.php?id=${berita.id}" class="btn btn-primary">Detail</a>
                                 </div>
                             </div>
                         </div>

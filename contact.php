@@ -1,7 +1,7 @@
 <?php
 include 'database.php';
 // Fetch data from the 'info' table
-$sql = "SELECT lokasi, gmail, maps_url FROM info ORDER BY id_info DESC LIMIT 1";
+$sql = "SELECT * FROM info ORDER BY id_info DESC LIMIT 1";
 $result = $conn->query($sql);
 $info = $result->fetch_assoc();
 $maps_url = $info['maps_url'];
@@ -34,6 +34,24 @@ $social = $result->fetch_assoc();
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
+    <style>
+        .contact .section-title .sub-title {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .btn.btn-lightt {
+            box-shadow: inset rgb(0 0 0) -19px 20px 11px 14px;
+            font-size: 24px;
+        }
+        .btn.btn-lightt:hover {
+            box-shadow: inset 300px 0 0 0 var(--bs-primary);
+            color: var(--bs-light) !important;
+        }
+    </style>
 </head>
 <body>
     <div class="bckg">
@@ -63,20 +81,22 @@ $social = $result->fetch_assoc();
                 </div>
                 <div class="row g-4 align-items-center">
                     <!-- Contact Info Section -->
-                    <div class="col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="500" style="padding-top: 90px;">
+                    <div class="col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="500" style="padding-top: 90px;background-color: #eeeeeec7;border-radius: 20px;">
                         <div class="bg-transparent rounded">
                             <div class="d-flex flex-column align-items-center text-center mb-4">
                                 <a href="<?php echo $info['lokasi']; ?>" class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;">
                                     <i class="fa fa-map-marker-alt fa-2x text-primary"></i>
                                 </a>
-                                <a href="<?php echo $info['lokasi']; ?>" class="mb-0 text-white"><h4 class="text-dark">Lokasi</h4></a>
+                                <a href="<?php echo $info['lokasi']; ?>" class="mb-0 text-white">
+                                    <h4 class="text-dark">Jl. Bendul Merisi IX/1-A Surabaya</h4>
+                                </a>
                             </div>
                             <div class="d-flex flex-column align-items-center text-center">
                                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;">
                                     <i class="fa fa-envelope-open fa-2x text-primary"></i>
                                 </a>
                                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" class="mb-0 text-white">
-                                    <h4 class="text-dark">Email</h4>
+                                    <h4 class="text-dark"><?php echo $info['gmail']; ?></h4>
                                 </a>
                             </div>
                             <div class="d-flex flex-column align-items-center text-center mb-4">
@@ -90,21 +110,21 @@ $social = $result->fetch_assoc();
                     </div>
                     <!-- Map and Social Media Section -->
                     <div class="col-lg-8 col-md-6 col-12 text-center" data-aos="fade-up" data-aos-delay="500">
-                        <div class="d-flex justify-content-center mb-4 flex-wrap">
+                        <div class="d-flex justify-content-center mb-4 flex-wrap" style="padding-top: 10px;background-color: #eeeeeec7;border-radius: 20px;">
                             <?php if (!empty($social['facebook'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="<?php echo $social['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
+                                <a style="color: #005fff; background-color:rgba(93, 0, 255, 0.78);" class="btn btn-lg-square btn-lightt rounded-circle mx-2 mb-2" href="<?php echo $social['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
                             <?php endif; ?>
                             <?php if (!empty($social['twitter'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="<?php echo $social['twitter']; ?>"><i class="fab fa-twitter"></i></a>
+                                <a style="color: #005fff; background-color: rgba(93, 0, 255, 0.78);" class="btn btn-lg-square btn-lightt rounded-circle mx-2 mb-2" href="<?php echo $social['twitter']; ?>"><i class="fab fa-twitter"></i></a>
                             <?php endif; ?>
                             <?php if (!empty($social['instagram'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="<?php echo $social['instagram']; ?>"><i class="fab fa-instagram"></i></a>
+                                <a style="color: #ff1f00; background-color: rgba(93, 0, 255, 0.78);" class="btn btn-lg-square btn-lightt rounded-circle mx-2 mb-2" href="<?php echo $social['instagram']; ?>"><i class="fab fa-instagram"></i></a>
                             <?php endif; ?>
                             <?php if (!empty($social['linkedin'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="<?php echo $social['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
+                                <a style="color:rgb(255, 255, 255); background-color: rgba(93, 0, 255, 0.78);" class="btn btn-lg-square btn-lightt rounded-circle mx-2 mb-2" href="<?php echo $social['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
                             <?php endif; ?>
                             <?php if (!empty($social['whatsapp'])): ?>
-                                <a class="btn btn-lg-square btn-light rounded-circle mx-2 mb-2" href="https://wa.me/<?php echo $social['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
+                                <a style="color: #00ff7b; background-color: rgba(93, 0, 255, 0.78);" class="btn btn-lg-square btn-lightt rounded-circle mx-2 mb-2" href="https://wa.me/<?php echo $social['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
                             <?php endif; ?>
                         </div>
                         <div class="rounded h-100">

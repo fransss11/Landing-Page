@@ -35,6 +35,20 @@ $conn->close();
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
+    <style>
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .sub-title{
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .kategori-header:hover {
+            color:rgb(187, 0, 255);
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="bckg">
@@ -56,24 +70,24 @@ $conn->close();
         <!-- Gallery Start -->
         <div class="container-fluid about team py-5">
             <div class="container py-5">
-                <div class="section-title mb-1">
+                <div class="section-title mb-5">
                     <div class="sub-style">
-                        <h1 class="sub-title px-3 mb-0">Galeri Kami</h1>
+                        <h1 class="sub-title px-9 mb-0">Galeri Kami</h1>
                     </div>
                 </div>
                 <!-- Petunjuk penggunaan galeri -->
-                <div class="text-center mb-4" data-aos="fade-right" data-aos-delay="500">
-                    <p class="text-mutedd" style="font-size: 16px;">
+                <div class="text-center mb-4" data-aos="fade-up" data-aos-delay="500">
+                    <p class="text-mutedd" style="font-size: 18px;background-color: #eeeeeec7; border-radius: 20px;">
                         Klik pada <strong>nama kegiatan</strong> untuk membuka atau menutup gambar berdasarkan kegiatan, atau klik tombol <strong>"Lihat Semua Gambar"</strong> untuk membuka/menutup semua gambar sekaligus.
                     </p>
                 </div>
                 <!-- Tombol Lihat Semua Gambar (posisi diperbaiki) -->
-                <div class="text-center mb-4" data-aos="fade-right" style=" margin-top: 2%;">
-                    <button class="btn btn-primary" id="lihat-semua" style="margin-right: 80%;">Lihat Semua Gambar</button>
+                <div class="text-center mb-4" data-aos="fade-up" style=" margin-top: 2%;">
+                    <button style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" class="btn btn-primary" id="lihat-semua" style="color: black;">Lihat Semua Gambar</button>
                 </div>
                 <?php foreach ($images as $kategori => $kategori_images): ?>
-                    <div class="row text-center mb-4" data-aos="fade-left" data-aos-delay="500">
-                        <h3 class="kategori-header" style="background: #7c0ef59c; cursor:pointer; border-radius: 25px; width: 500px; " data-kategori="<?= htmlspecialchars($kategori); ?>">
+                    <div class="row text-center mb-4" data-aos="fade-down" data-aos-delay="500">
+                        <h3 class="kategori-header" style="background:rgba(232, 232, 232, 0.87); cursor:pointer; border-radius: 25px; width: 500px; " data-kategori="<?= htmlspecialchars($kategori); ?>">
                             <?= htmlspecialchars($kategori); ?>
                         </h3>
                     </div>
@@ -123,7 +137,7 @@ $conn->close();
                 const kategori = this.getAttribute('data-kategori');
                 const konten = document.getElementById('kategori-' + kategori);
                 const items = konten.querySelectorAll('.col-md-3');
-                const itemsPerPage = 5;
+                const itemsPerPage = 8;
                 let currentPage = 1;
 
                 function renderPage(page) {
@@ -142,6 +156,7 @@ $conn->close();
                         pagination = document.createElement('div');
                         pagination.className = 'pagination';
                         pagination.style.marginTop = '20px';
+                        pagination.style.paddingBottom = '10px';
                         pagination.style.textAlign = 'center';
                         konten.appendChild(pagination);
 

@@ -102,7 +102,7 @@ $missingUrl = array_filter($kegiatan, function($k) {
     <div class="container-fluid team bg-light">
         <!-- Kegiatan Section -->
         <div class="container py-5" id="kegiatan">
-            <h1 class="text-center mb-4">Kegiatan Kami</h1>
+            <h1 style="background-color: #eeeeeec7; border-radius: 20px;" class="text-center mb-4">Kegiatan Kami</h1>
             <div class="row">
                 <?php if (count($kegiatan) > 0): ?>
                     <?php foreach ($kegiatan as $k): ?>
@@ -142,7 +142,7 @@ $missingUrl = array_filter($kegiatan, function($k) {
 
         <!-- Form Testimoni Start -->
         <div class="container py-5" id="testimoni">
-            <h1 class="text-center mb-4">Berikan Testimoni Anda</h1>
+            <h1 style="background-color: #eeeeeec7; border-radius: 20px;" class="text-center mb-4">Berikan Testimoni Anda Untuk Website Ini</h1>
 
             <?php if (!empty($msg)): ?>
                 <div class="alert <?= $msgClass ?>" role="alert">
@@ -170,8 +170,8 @@ $missingUrl = array_filter($kegiatan, function($k) {
                     <label for="image" class="form-label">Unggah Gambar (Opsional, Maksimal 500KB)</label>
                     <input type="file" class="form-control" id="image" name="image" accept="image/*">
                 </div>
-                <button type="submit" class="btn btn-primary">Kirim Testimoni</button>
-                <a href="service.php#testimoni" class="btn btn-secondary">Batal</a>
+                <button style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" type="submit" class="btn btn-primary">Kirim Testimoni</button>
+                <a href="index.php#testimoni" class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>
