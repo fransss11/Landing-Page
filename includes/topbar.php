@@ -13,7 +13,7 @@ $social = $result->fetch_assoc();
 ?>
 
 <div class="container-fluid bg-dark px-5 d-none d-lg-block">
-    <div class="row gx-0 align-items-center" style="height: 45px;">
+    <div class="row gx-0 align-items-center" style="height: 100%;">
         <div class="col-lg-8 text-center text-lg-start mb-lg-0">
             <div class="d-flex flex-wrap">
                 <?php if (!empty($info['lokasi'])): ?>
@@ -39,19 +39,19 @@ $social = $result->fetch_assoc();
         <div class="col-lg-4 text-center text-lg-end">
             <div class="d-flex align-items-center justify-content-end">
                 <?php if (!empty($social['facebook'])): ?>
-                    <a href="<?php echo $social['facebook']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-3 hover-effect"><i class="fab fa-facebook-f"></i></a>
+                    <a style="color: #005fff;" href="<?php echo $social['facebook']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-3 hover-effect"><i class="fab fa-facebook-f"></i></a>
                 <?php endif; ?>
                 <?php if (!empty($social['twitter'])): ?>
-                    <a href="<?php echo $social['twitter']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-3 hover-effect"><i class="fab fa-twitter"></i></a>
+                    <a style="color: #005fff;" href="<?php echo $social['twitter']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-3 hover-effect"><i class="fab fa-twitter"></i></a>
                 <?php endif; ?>
                 <?php if (!empty($social['instagram'])): ?>
-                    <a href="<?php echo $social['instagram']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-3 hover-effect"><i class="fab fa-instagram"></i></a>
+                    <a style="color: #ff1f00;" href="<?php echo $social['instagram']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-3 hover-effect"><i class="fab fa-instagram"></i></a>
                 <?php endif; ?>
                 <?php if (!empty($social['linkedin'])): ?>
-                    <a href="<?php echo $social['linkedin']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-3 hover-effect"><i class="fab fa-linkedin-in"></i></a>
+                    <a style="color:rgb(255, 255, 255);" href="<?php echo $social['linkedin']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-3 hover-effect"><i class="fab fa-linkedin-in"></i></a>
                 <?php endif; ?>
                 <?php if (!empty($social['whatsapp'])): ?>
-                    <a href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-0 hover-effect"><i class="fab fa-whatsapp"></i></a>
+                    <a style="color: #00ff7b;" href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-light btn-square border rounded-circle nav-fill me-0 hover-effect"><i class="fab fa-whatsapp"></i></a>
                 <?php endif; ?>
             </div>
         </div>
@@ -67,6 +67,29 @@ $social = $result->fetch_assoc();
     /* Hover effect for the anchor tag */
     .hover-effect:hover {
         transform: scale(1.3); /* Slightly increase the size */
+    }
+    @media (min-width: 992px) {
+        .d-lg-block{
+            height: 70px;
+        }
+    }
+    .fa-map-marker-alt:before{
+        color:rgb(0, 255, 89);
+    }
+    .fa-phone-alt:before {
+        color: rgb(0 229 255);
+    }
+    .fa-phone:before{
+        color: rgb(0 229 255);
+    }
+    .fa-envelope:before{
+        color:rgb(255, 0, 0);
+    }
+    .fa-envelope-open:before{
+        color:rgb(255, 0, 0);
+    }
+    .btn.btn-light {
+        box-shadow: rgb(0 0 0) -16px 14px 13px 0px inset;
     }
 </style>
 

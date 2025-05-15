@@ -1,6 +1,6 @@
 <?php
-include 'database.php';
-// Fetch data from the 'services' table
+include 'database.php';    // koneksi $conn
+// Ambil semua layanan
 $sql = "SELECT * FROM services ORDER BY id ASC";
 $result = $conn->query($sql);
 $services = [];
@@ -9,32 +9,7 @@ if ($result->num_rows > 0) {
         $services[] = $row;
     }
 }
-// Fetch data from the 'testimonials' table
-$sql = "SELECT title, designation, descrip, img, date FROM testimonials";
-$result = $conn->query($sql);
-$testimonials = [];
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $testimonials[] = $row;
-    }
-}
-// Fetch WhatsApp number
-$sql = "SELECT whatsapp FROM social";
-$result = $conn->query($sql);
-$social = $result->fetch_assoc();
 $conn->close();
-
-function formatTanggalIndonesia($tanggal) {
-    $bulanIndo = ["Januari","Februari","Maret","April","Mei","Juni",
-                  "Juli","Agustus","September","Oktober","November","Desember"];
-    $hariIndo  = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-    $dateObj   = strtotime($tanggal);
-    $hari      = $hariIndo[date('w', $dateObj)];
-    $tanggalNum= date('j', $dateObj);
-    $bulan     = $bulanIndo[date('n', $dateObj)-1];
-    $tahun     = date('Y', $dateObj);
-    return "{$hari}, {$tanggalNum} {$bulan} {$tahun}";
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +29,7 @@ function formatTanggalIndonesia($tanggal) {
     <link href="css/style.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
-    <style>
+    <!-- <style>
         /* Layout styling */
         .service-item {
             background-color: #f4f4f9;
@@ -188,6 +163,84 @@ function formatTanggalIndonesia($tanggal) {
             box-shadow: inset 1500px 0 0 0 black !important;
             color:rgb(255, 255, 255) !important;
         }
+    </style> -->
+    <style>
+        .service-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            /* margin-bottom: 60px; */
+        }
+        .service-item {
+            flex: 0 1 22%;      /* 4 kolom di desktop */
+            text-align: center;
+        }
+        .service-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color:rgb(255, 255, 255);
+            transition: color .2s;
+            background-color:rgba(50, 50, 50, 0.6);
+            border-radius: 10px;
+            height: 90px;
+            max-height: 100%;
+        }
+        .service-item a:hover .service-title {
+            color:rgb(0, 255, 123);
+        }
+        /* Kontainer gambar */
+        .service-img {
+        width: 350px !important;       /* lebar tetap */
+        height: 350px !important;      /* tinggi tetap */
+        margin: 0 auto;     /* center */
+        overflow: hidden;
+        border-radius: 10px;
+        background: #f4f4f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform .3s;
+        }
+        .service-img img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transition: transform .3s;
+        }
+        .service-img:hover img {
+        transform: scale(1.1);
+        }
+
+        .service .service-item .service-img img {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+        }
+        /* Responsif */
+        @media (max-width: 992px) {
+        .service-item { flex: 0 1 30%; }
+        }
+        @media (max-width: 768px) {
+        .service-item { flex: 0 1 45%; }
+        }
+        @media (max-width: 480px) {
+        .service-item { flex: 0 1 90%; }
+        .service-img { width: 100%; height: auto; aspect-ratio: 1; }
+        }
+        .py-5 {
+            padding-bottom: 2rem !important;
+        }
+        .text-white {
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
+        .sub-title{
+            background-color: #ffffffba !important;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -215,16 +268,21 @@ function formatTanggalIndonesia($tanggal) {
                 <!-- Display all services in a single row -->
                 <div class="service-list">
                     <?php foreach ($services as $svc): ?>
-                        <div class="service-item">
+                        <div class="service-item" data-aos="fade-up">
+                            <a href="detail_service.php?id=<?php echo $svc['id']; ?>" title="Lihat detail <?php echo htmlspecialchars($svc['title']); ?>">
+                            <div class="service-title">
+                                <?php echo htmlspecialchars($svc['title']); ?>
+                            </div>
                             <div class="service-img">
-                                <?php if (!empty($svc['img'])): ?>
-                                    <img src="admin/images/services/<?php echo $svc['img']; ?>"
+                                <?php if (!empty($svc['icon'])): ?>
+                                    <img src="admin/images/services/<?php echo $svc['icon']; ?>"
                                          alt="<?php echo $svc['title']; ?>" class="img-fluid">
                                 <?php else: ?>
                                     <img src="img/default-service-icon.png" alt="Default Icon" class="img-fluid">
                                 <?php endif; ?>
                             </div>
-                            <div class="service-content">
+                            </a>
+                            <!-- <div class="service-content">
                                 <h3 style="font-family: 'Franklin Gothic Medium'; font-size: 40px;"><?php echo $svc['title']; ?></h3>
                                 <div class="service-description">
                                     <?php
@@ -233,20 +291,18 @@ function formatTanggalIndonesia($tanggal) {
                                     ?>
                                 </div>
                                 <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset; width: 100%; background-color: #00ff2938;" href="detail_service.php?id=<?php echo $svc['id']; ?>" class="btn btn-primaryy">Detail</a>
-                            </div>
+                            </div> -->
                         </div>
                     <?php endforeach; ?>
                 </div>
             </div>
         </div>
         <!-- Services End -->
-
         <!-- Footer -->
         <?php include 'includes/footer.php'; ?>
         <?php include 'includes/copyright.php'; ?>
         <?php include 'includes/back_to_top.php'; ?>
     </div>
-
     <!-- JS Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -256,5 +312,8 @@ function formatTanggalIndonesia($tanggal) {
     <script src="libr/owlcarousel/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        AOS.init();
+    </script>
 </body>
 </html>

@@ -162,6 +162,7 @@ if (isset($_GET['delete_id'])) {
                    <th>Instagram</th>
                    <th>LinkedIn</th>
                    <th>WhatsApp</th>
+                   <th>Kategori</th>
                    <th>Aksi</th>
                  </tr>
                </thead>
@@ -192,11 +193,29 @@ if (isset($_GET['delete_id'])) {
   $(document).ready(function() {
     let table = new DataTable('#myTable', {
       language: {
-        search: "Cari :"
+          search: "Cari :",
+          lengthMenu: "Tampilkan _MENU_ data per halaman",
+          zeroRecords: "Tidak ada data ditemukan",
+          info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ data",
+          infoEmpty: "Tidak ada data tersedia",
+          infoFiltered: "(difilter dari total _MAX_ data)",
+          paginate: {
+              first: "Pertama",
+              last: "Terakhir",
+              next: "Berikutnya",
+              previous: "Sebelumnya"
+          }
       },
       serverSide: true,
-      ajax: 'ajax.php?action=fetch_teams',
-      lengthChange: false,
+      processing: true,
+      ajax: {
+          url: 'ajax.php?action=fetch_teams',
+          type: 'GET',
+          error: function(xhr, error, code) {
+              console.error("Error: ", error);
+              console.error("Response: ", xhr.responseText);
+          }
+      },
       order: [[0, 'desc']],
       columns: [
         { 
@@ -213,6 +232,7 @@ if (isset($_GET['delete_id'])) {
         { data: 'instagram' },
         { data: 'linkedin' },
         { data: 'whatsapp' },
+        { data: 'category' },
         { data: 'aksi' }
       ]
     });

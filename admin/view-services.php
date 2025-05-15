@@ -160,8 +160,9 @@ if (isset($_GET['delete_id'])) {
                                         <th>Gambar</th>
                                         <th>Judul</th>
                                         <th>Deskripsi</th>
+                                        <th>Deskripsi Singkat</th>
+                                        <th>Gambar Thumbnail</th>
                                         <th>Tanggal</th>
-                                        <th>Harga</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -197,12 +198,30 @@ if (isset($_GET['delete_id'])) {
         // Inisialisasi DataTables dengan server-side processing
         let table = new DataTable('#myTable', {
             language: {
-                search: "Cari :"
+                search: "Cari :",
+                lengthMenu: "Tampilkan _MENU_ data per halaman",
+                zeroRecords: "Tidak ada data ditemukan",
+                info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ data",
+                infoEmpty: "Tidak ada data tersedia",
+                infoFiltered: "(difilter dari total _MAX_ data)",
+                paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "Berikutnya",
+                    previous: "Sebelumnya"
+                }
             },
             serverSide: true,
-            ajax: 'ajax.php?action=fetch_services', // Mengambil data secara AJAX
+            processing: true,
+            ajax: {
+                url: 'ajax.php?action=fetch_services',
+                type: 'GET',
+                error: function(xhr, error, code) {
+                    console.error("Error: ", error);
+                    console.error("Response: ", xhr.responseText);
+                }
+            },
             order: [], // Nonaktifkan ordering default sehingga menggunakan ordering server (id DESC)
-            lengthChange: false,
             columns: [
                 { 
                     data: 'img', 
@@ -224,8 +243,26 @@ if (isset($_GET['delete_id'])) {
                         return (stripped.length > 100) ? stripped.substr(0, 100) + '...' : stripped;
                     }
                 },
+                {
+                    data: 'deskripsi',
+                    render: function(data, type, row) {
+                        // Hapus tag HTML dan batasi jumlah karakter
+                        let stripped = data.replace(/(<([^>]+)>)/gi, "");
+                        return (stripped.length > 100) ? stripped.substr(0, 100) + '...' : stripped;
+                    }
+                },
+                {
+                    data: 'icon', 
+                    render: function(data, type, row) {
+                        // Tambahkan logika untuk menangani icon kosong di kolom icon
+                        if (data) {
+                            return '<img src="images/services/' + data + '" alt="icon ">';
+                        } else {
+                            return '<span class="text-muted">Tidak ada icon</span>';
+                        }
+                    }
+                },
                 { data: 'date' },
-                { data: 'price' },
                 { data: 'aksi' }
             ]
         });

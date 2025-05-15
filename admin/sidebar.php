@@ -76,6 +76,18 @@ $logo = (!empty($info_row['logo']))
                         <p>Lihat Layanan</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="add-sub_layanan.php" class="nav-link <?php echo ($current_page == 'add-sub_layanan.php') ? 'active' : ''; ?>">
+                        <i class="fa fa-chart-bar nav-icon"></i>
+                        <p>Tambah Sub Layanan</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="view-sub_layanan.php" class="nav-link <?php echo ($current_page == 'view-sub_layanan.php') ? 'active' : ''; ?>">
+                        <i class="fa fa-chart-bar nav-icon"></i>
+                        <p>Lihat Sub Layanan</p>
+                    </a>
+                </li>
                 <!-- Kegiatan Section -->
                 <li class="nav-header">Kegiatan</li>
                 <li class="nav-item">

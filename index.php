@@ -354,8 +354,8 @@ function formatTanggalIndonesia($tanggal) {
                         <div class="col-md-6 col-lg-4 col-xl-3" data-aos="fade-up" data-aos-delay="500">
                             <div class="service-item rounded">
                                 <div class="service-img rounded-top">
-                                    <?php if (!empty($service['img'])): ?>
-                                        <img src="admin/images/services/<?php echo $service['img']; ?>" 
+                                    <?php if (!empty($service['icon'])): ?>
+                                        <img src="admin/images/services/<?php echo $service['icon']; ?>" 
                                             class="img-fluid rounded-top w-100" 
                                             alt="<?php echo $service['title']; ?>" loading="lazy">
                                     <?php else: ?>
@@ -366,7 +366,7 @@ function formatTanggalIndonesia($tanggal) {
                                 </div>
                                 <div class="service-content rounded-bottom bg-light p-4 d-flex flex-column">
                                     <h5 class="mb-4"><?php echo htmlspecialchars($service['title']); ?></h5>
-                                    <p class="mb-4 short-description">
+                                    <!-- <p class="mb-4 short-description">
                                         <?php
                                         $short = strip_tags($service['descrip']);
                                         $short = str_replace('&nbsp;', ' ', $short);
@@ -376,7 +376,7 @@ function formatTanggalIndonesia($tanggal) {
                                         }
                                         echo htmlspecialchars($short);
                                         ?>
-                                    </p>
+                                    </p> -->
                                     <!-- <div class="mt-auto text-center">
                                         <ul class="price-list mb-4">
                                             <li class="d-flex justify-content-between">

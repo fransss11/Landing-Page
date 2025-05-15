@@ -176,14 +176,14 @@ $resultAll = mysqli_query($con, $queryAll);
     <?php include '../includes/logo.php'; ?>
     <style>
         @media (max-width: 768px) {
-            .table-responsive {
-                margin-bottom: 20px;
-            }
-            .table td, .table th {
-                font-size: 14px;
-                white-space: nowrap;
-            }
-        }
+    .table-responsive {
+        margin-bottom: 20px;
+    }
+    .table td, .table th {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+}
     </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

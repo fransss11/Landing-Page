@@ -26,7 +26,7 @@ $social_row = mysqli_fetch_array($social_result);
 if (isset($_POST['update'])) {
     extract($_POST);
     // Update data ke tabel info
-    $update_info = mysqli_query($con, "UPDATE info SET lokasi='$address', gmail='$email', maps_url='$map', profile   = '$profile' WHERE id_info='1'");
+    $update_info = mysqli_query($con, "UPDATE info SET lokasi='$address', gmail='$email', maps_url='$map', nama_maps='$nama_map', profile   = '$profile' WHERE id_info='1'");
     if (!$update_info) {
         die("Error updating info: " . mysqli_error($con));
     }
@@ -131,6 +131,12 @@ if (isset($_POST['update'])) {
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
+                                        <label>Nama Lokasi</label>
+                                        <input name="nama_map" value="<?php echo $info_row['nama_maps']; ?>" type="text" class="form-control" placeholder="Masukkan Lokasi">
+                                    </div>
+                                </div>
+                                <div class="card-header">
+                                    <div class="form-group">
                                         <label>Lokasi</label>
                                         <textarea rows="5" name="address" class="form-control" placeholder="Masukkan address"><?php echo $info_row['lokasi']; ?></textarea>
                                     </div>
@@ -175,17 +181,18 @@ if (isset($_POST['update'])) {
                                         <input name="phone" value="<?php echo $social_row['phone']; ?>" type="text" class="form-control" placeholder="Masukkan Nomor Telepon">
                                     </div>
                                 </div>
-                                <div class="form-group">
-  <label>Link Video YouTube</label>
-  <input 
-    name="profile" 
-    type="text" 
-    class="form-control" 
-    placeholder="Masukkan link YouTube" 
-    value="<?php echo htmlspecialchars($info_row['profile']); ?>"
-  >
-</div>
-
+                                <div class="card-header">
+                                    <div class="form-group">
+                                        <label>Link Video YouTube</label>
+                                        <input 
+                                            name="profile" 
+                                            type="text" 
+                                            class="form-control" 
+                                            placeholder="Masukkan link YouTube" 
+                                            value="<?php echo htmlspecialchars($info_row['profile']); ?>"
+                                        >
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12">

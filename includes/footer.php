@@ -137,22 +137,22 @@ $info = $result->fetch_assoc();
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="footer-item d-flex flex-column">
                     <h4 class="text-white mb-4">Lisa Mitra Mandiri</h4>
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-share fa-2x text-white me-2"></i>
+                    <div style="color: black;" class="d-flex align-items-center">
+                        <i class="fas fa-share fa-2x me-2"></i>
                         <?php if (!empty($social['facebook'])): ?>
-                            <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href="<?php echo $social['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
+                            <a style="color: #005fff; background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
                         <?php endif; ?>
                         <?php if (!empty($social['twitter'])): ?>
-                            <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href="<?php echo $social['twitter']; ?>"><i class="fab fa-twitter"></i></a>
+                            <a style="color: #005fff; background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['twitter']; ?>"><i class="fab fa-twitter"></i></a>
                         <?php endif; ?>
                         <?php if (!empty($social['instagram'])): ?>
-                            <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href="<?php echo $social['instagram']; ?>"><i class="fab fa-instagram"></i></a>
+                            <a style="color: #ff1f00; background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['instagram']; ?>"><i class="fab fa-instagram"></i></a>
                         <?php endif; ?>
                         <?php if (!empty($social['linkedin'])): ?>
-                            <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href="<?php echo $social['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
+                            <a style="color:rgb(255, 255, 255); background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
                             <?php endif; ?>
                         <?php if (!empty($social['whatsapp'])): ?>
-                            <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href="https://wa.me/<?php echo $social['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
+                            <a style="color: #00ff7b; background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="https://wa.me/<?php echo $social['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -183,12 +183,12 @@ $info = $result->fetch_assoc();
                 <div class="footer-item d-flex flex-column">
                     <h4 class="mb-4 text-white">Info Kontak</h4>
                     <?php if (!empty($info['lokasi'])): ?>
-                        <a href="<?php echo $info['lokasi']; ?>"><i class="fa fa-map-marker-alt me-2"></i>Lokasi</a>
+                        <a href="<?php echo $info['lokasi']; ?>"><i class="fa fa-map-marker-alt me-2"></i><?php echo $info['nama_maps']; ?></a>
                     <?php endif; ?>
                     <?php if (!empty($info['gmail'])): ?>
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" 
                     target="_blank">
-                    <i class="fas fa-envelope me-2"></i>Email</a>
+                    <i class="fas fa-envelope me-2"></i><?php echo $info['gmail']; ?></a>
                     <?php endif; ?>
                     <?php if (!empty($social['phone'])): ?>
                         <a><i class="fas fa-phone me-2"></i><?php echo $social['phone']; ?></a>
@@ -196,8 +196,10 @@ $info = $result->fetch_assoc();
                     <!-- <a href="admin/index.php"><i class="fas fa-user-shield me-2"></i>admin</a> -->
                 </div>
                 <br></br>
-                <div class="footer-item d-flex flex-column">
-                    <h4 class="mb-4 text-white">Jam Kerja</h4>
+                <div class="footer-item d-flex flex-column" style="background-color:rgba(60, 60, 60, 0.5); border-radius: 10px; padding: 4px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); width: 275px;">
+                    <h4 style="font-size: 20px;" class="mb-4 text-white">
+                        <i class="fas fa-clock me-2"></i> Layanan Operasional
+                    </h4>
                     <?php
                     // Fetch data from the 'jam_kerja' table
                     $query_jam_kerja = "SELECT deskripsi, waktu FROM jam_kerja";
@@ -205,26 +207,38 @@ $info = $result->fetch_assoc();
 
                     if (mysqli_num_rows($result_jam_kerja) > 0):
                         while ($row_jam_kerja = mysqli_fetch_assoc($result_jam_kerja)):
+                            // Only show the paragraph if deskripsi exists and is not empty
+                            if (!empty($row_jam_kerja['deskripsi'])):
                     ?>
-                        <p style="color: white; font-size: 20px;"><?php echo htmlspecialchars_decode($row_jam_kerja['deskripsi']); ?></p>
-                        <p style="color: white;"><?php echo htmlspecialchars($row_jam_kerja['waktu']); ?></p>
+                            <p style="color: white; font-size: 18px; font-weight: 500; margin-bottom: 5px;">
+                                <i class="fas fa-calendar-day me-2"></i><?php echo htmlspecialchars_decode($row_jam_kerja['deskripsi']); ?>
+                            </p>
+                    <?php 
+                            endif;
+                            // Display time if it exists
+                            if (!empty($row_jam_kerja['waktu'])):
+                    ?>
+                            <p style="color: #ffd700; margin-bottom: 15px; padding-left: 25px;">
+                                <i class="fas fa-hourglass-half me-2"></i><?php echo htmlspecialchars($row_jam_kerja['waktu']); ?>
+                            </p>
                     <?php
+                            endif;
                         endwhile;
                     else:
                     ?>
                         <p style="color: white;">Data jam kerja tidak tersedia.</p>
                     <?php endif; ?>
-                    <table style="width: auto" class="table text-center text-white">
+                    <table style="width: 100%" class="table text-center text-white mt-2">
                         <thead>
-                            <tr>
+                            <tr style="background-color:rgba(0, 123, 255, 0.7);">
                                 <th>Pengunjung Hari Ini</th>
                                 <th>Total Pengunjung</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td style="color: rgb(42, 42, 42);"><?php echo $today_visitors; ?> Orang</td>
-                                <td style="color: rgb(42, 42, 42);"><?php echo $total_visitors; ?> Orang</td>
+                            <tr style="background-color:rgba(255, 255, 255, 0.8);">
+                                <td style="color: rgb(42, 42, 42); font-weight: bold;"><?php echo $today_visitors; ?> Orang</td>
+                                <td style="color: rgb(42, 42, 42); font-weight: bold;"><?php echo $total_visitors; ?> Orang</td>
                             </tr>
                         </tbody>
                     </table>
@@ -233,6 +247,11 @@ $info = $result->fetch_assoc();
         </div>
     </div>
 </div>
+<style>
+    .btn.btn-primary {
+        box-shadow: rgb(0 0 0) -16px 14px 13px 0px inset;
+    }
+</style>
 
 <?php
 $conn->close();

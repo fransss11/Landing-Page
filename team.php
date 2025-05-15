@@ -52,10 +52,10 @@ usort($filteredTeam, function($a, $b) {
         }
     }
     // If same priority, sort alphabetically by id
-    if ($pa === $pb) {
-        return strcmp($a['id'], $b['id']);
-    }
-    return $pa - $pb;
+    // if ($pa === $pb) {
+    //     return strcmp($a['id'], $b['id']);
+    // }
+    // return $pa - $pb;
 });
 
 // Pagination settings

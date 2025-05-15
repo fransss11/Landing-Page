@@ -308,6 +308,8 @@
     display: inline-block;
     text-transform: uppercase;
     color: #000000de;
+    background-color: #eeeeeec7;
+    border-radius: 20px;
 }
 
 .sub-title::before {
@@ -1248,7 +1250,7 @@
     justify-content: center;
     height: 350px; /* Set a fixed height for the image container */
     overflow: hidden;
-    background-color: #f8f8f8; /* Optional: Add a background color */
+    background-color: #51478a; /* Optional: Add a background color */
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -1653,6 +1655,8 @@
     display: inline-block;
     text-transform: uppercase;
     color: var(--bs-primary);
+    background-color: #eeeeeec7;
+    border-radius: 20px;
 }
 
 .contact .section-title .sub-title::before {
@@ -1997,8 +2001,8 @@ body {
             z-index: 10;
             margin-top: 10px;
             padding: 12px 25px;
-            background-color:rgb(183, 183, 183);
-            color: white;
+            background-color:rgb(244 244 244);
+            color: rgb(0, 0, 0);
             font-size: 16px;
             border-radius: 20px;
         }
@@ -2145,6 +2149,8 @@ body {
     font-weight: bold;
     color: #000000;
     margin-bottom: 30px;
+    background-color: #eeeeeec7;
+    border-radius: 15px;
 }
 
 /* Table Styling */
@@ -2218,7 +2224,7 @@ tr:hover {
     transition: background 0.3s, color 0.3s;
 }
 .kategori-header:hover {
-    color:rgb(255, 255, 255);
+    color:rgb(187, 0, 255);
     cursor: pointer;
 }
 /* end tambahan galeri */

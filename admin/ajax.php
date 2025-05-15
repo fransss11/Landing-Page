@@ -14,13 +14,14 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-    $baseQuery  = "SELECT id, title, descrip,price, img, date FROM services";
+    $baseQuery  = "SELECT id, title, descrip, deskripsi, img, icon, date FROM services";
     $totalQuery = "SELECT COUNT(id) as total FROM services";
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
         $where = " WHERE title LIKE '%$searchValueEsc%' 
-                   OR descrip LIKE '%$searchValueEsc%'";
+                   OR descrip LIKE '%$searchValueEsc%'
+                   OR deskripsi LIKE '%$searchValueEsc%'";
     }
     $totalDataQuery = $totalQuery . $where;
     $resultTotal    = mysqli_query($con, $totalDataQuery);
@@ -38,8 +39,10 @@ if ($action == 'fetch_services') {
             0 => 'id',
             1 => 'title',
             2 => 'descrip',
-            3 => 'price',
-            4 => 'date'
+            3 => 'deskripsi',
+            4 => 'img',
+            5 => 'icon',
+            6 => 'date'
         );
         if (isset($columns[$orderColumnIndex])) {
             $orderColumn = $columns[$orderColumnIndex];
@@ -55,6 +58,71 @@ if ($action == 'fetch_services') {
                             <i class="fas fa-edit"></i>
                         </a>
                         <a href="view-services.php?delete_id=' . $id . '" onclick="return confirm(\'Apakah Anda yakin?\')" class="btn btn-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>';
+        $row['aksi'] = $actions;
+        $data[] = $row;
+    }
+    $response = array(
+        "draw"            => $draw,
+        "recordsTotal"    => $totalRecords,
+        "recordsFiltered" => $totalRecords,
+        "data"            => $data
+    );
+    echo json_encode($response);
+    exit;
+} elseif ($action == 'fetch_service_categories') {
+    // =======================
+    //        KATEGORI
+    // =======================
+    $draw        = isset($_GET['draw']) ? intval($_GET['draw']) : 0;
+    $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
+    $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
+    $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
+    $baseQuery  = "SELECT id, name, description, price, created_at FROM service_categories";
+    $totalQuery = "SELECT COUNT(id) as total FROM service_categories";
+    $where = "";
+    if (!empty($searchValue)) {
+        $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
+        $where = " WHERE name LIKE '%$searchValueEsc%' 
+                   OR description LIKE '%$searchValueEsc%' 
+                   OR price LIKE '%$searchValueEsc%'";
+    }
+    $totalDataQuery = $totalQuery . $where;
+    $resultTotal    = mysqli_query($con, $totalDataQuery);
+    $rowTotal       = mysqli_fetch_assoc($resultTotal);
+    $totalRecords   = $rowTotal['total'];
+    // Urutan default (tanpa sorting dari DataTables)
+    $orderColumn = "id";
+    $orderDir    = "DESC";
+    // Jika ada parameter order dari DataTables, gunakan
+    if (isset($_GET['order'][0]['column']) && isset($_GET['order'][0]['dir'])) {
+        $orderColumnIndex = intval($_GET['order'][0]['column']);
+        $orderDir = ($_GET['order'][0]['dir'] === 'asc') ? 'ASC' : 'DESC';
+        // Peta indeks kolom ke nama kolom database (sesuaikan urutan dengan definisi kolom DataTables)
+        $columns = array(
+            0 => 'id',
+            1 => 'name',
+            2 => 'description',
+            3 => 'price',
+            4 => 'created_at'
+        );
+        if (isset($columns[$orderColumnIndex])) {
+            $orderColumn = $columns[$orderColumnIndex];
+        }
+    }
+    // Ambil data dengan query yang sudah disiapkan
+    $dataQuery = $baseQuery . $where . " ORDER BY $orderColumn $orderDir LIMIT $start, $length";
+    $resultData = mysqli_query($con, $dataQuery);
+    $data = array();
+    while ($row = mysqli_fetch_assoc($resultData)) {
+        $id = $row['id'];
+        $actions = '<div class="btn-group">
+                        <a href="add-sub_layanan.php?edit=' . $id . '" class="btn btn-info">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="view-sub_layanan.php?delete_id=' . $id . '" onclick="return confirm(\'Apakah Anda yakin?\')" class="btn btn-danger">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>';
@@ -276,7 +344,8 @@ if ($action == 'fetch_services') {
                    OR twitter LIKE '%$searchValueEsc%' 
                    OR instagram LIKE '%$searchValueEsc%' 
                    OR linkedin LIKE '%$searchValueEsc%' 
-                   OR whatsapp LIKE '%$searchValueEsc%'";
+                   OR whatsapp LIKE '%$searchValueEsc%'
+                   OR category LIKE '%$searchValueEsc%'";
     }
     // Ambil jumlah total data
     $totalDataQuery = $totalQuery . $where;
@@ -299,7 +368,8 @@ if ($action == 'fetch_services') {
             4 => 'twitter',
             5 => 'instagram',
             6 => 'linkedin',
-            7 => 'whatsapp'
+            7 => 'whatsapp',
+            8 => 'category'
         );
         // Jika indeks kolom yang diminta ada dalam peta, ubah kolom pengurutan
         if (isset($columns[$orderColumnIndex])) {

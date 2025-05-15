@@ -177,11 +177,29 @@ if (isset($_GET['delete_id'])) {
 <script>
   let table = new DataTable('#myTable', {
     language: {
-      search: "Cari :"
+        search: "Cari :",
+        lengthMenu: "Tampilkan _MENU_ data per halaman",
+        zeroRecords: "Tidak ada data ditemukan",
+        info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ data",
+        infoEmpty: "Tidak ada data tersedia",
+        infoFiltered: "(difilter dari total _MAX_ data)",
+        paginate: {
+            first: "Pertama",
+            last: "Terakhir",
+            next: "Berikutnya",
+            previous: "Sebelumnya"
+        }
     },
     serverSide: true,
-    ajax: 'ajax.php?action=fetch_projek',
-    lengthChange: true,
+    processing: true,
+    ajax: {
+        url: 'ajax.php?action=fetch_projek',
+        type: 'GET',
+        error: function(xhr, error, code) {
+            console.error("Error: ", error);
+            console.error("Response: ", xhr.responseText);
+        }
+    },
     pageLength: 10,
     searching: true,
     order: [],

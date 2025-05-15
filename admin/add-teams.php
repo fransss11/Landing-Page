@@ -16,7 +16,8 @@ if ($edit > 0) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title       = mysqli_real_escape_string($con, $_POST['title']);
     $designation = mysqli_real_escape_string($con, $_POST['designation']);
-    $descrip     = mysqli_real_escape_string($con, $_POST['Deskripsi']);
+    $category    = mysqli_real_escape_string($con, $_POST['category']);
+    $descrip     = mysqli_real_escape_string($con, $_POST['descrip']);
     $facebook    = mysqli_real_escape_string($con, $_POST['facebook']);
     $twitter     = mysqli_real_escape_string($con, $_POST['twitter']);
     $instagram   = mysqli_real_escape_string($con, $_POST['instagram']);
@@ -39,15 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if ($edit > 0) {
         // Mode update
-        $query = "UPDATE teams SET title=?, designation=?, descrip=?, img=?, facebook=?, twitter=?, instagram=?, linkedin=?, whatsapp=?, url=?, date=? WHERE id=?";
+        $query = "UPDATE teams SET title=?, designation=?, descrip=?, img=?, facebook=?, twitter=?, instagram=?, linkedin=?, whatsapp=?, url=?, category=?, date=? WHERE id=?";
         $stmt = mysqli_prepare($con, $query);
-        mysqli_stmt_bind_param($stmt, "sssssssssssi", $title, $designation, $descrip, $lis_img, $facebook, $twitter, $instagram, $linkedin, $whatsapp, $url, $today, $edit);
+        mysqli_stmt_bind_param($stmt, "ssssssssssssi", $title, $designation, $descrip, $lis_img, $facebook, $twitter, $instagram, $linkedin, $whatsapp, $url, $category, $today, $edit);
     } else {
         // Mode insert
-        $query = "INSERT INTO teams (title, designation, descrip, img, facebook, twitter, instagram, linkedin, whatsapp, url, date, status) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')";
+        $query = "INSERT INTO teams (title, designation, descrip, img, facebook, twitter, instagram, linkedin, whatsapp, url, category, date, status) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')";
         $stmt = mysqli_prepare($con, $query);
-        mysqli_stmt_bind_param($stmt, "sssssssssss", $title, $designation, $descrip, $lis_img, $facebook, $twitter, $instagram, $linkedin, $whatsapp, $url, $today);
+        mysqli_stmt_bind_param($stmt, "ssssssssssss", $title, $designation, $descrip, $lis_img, $facebook, $twitter, $instagram, $linkedin, $whatsapp, $url, $category, $today);
     }
     if (mysqli_stmt_execute($stmt)) {
         $_SESSION['msg'] = ($edit > 0) ? "Berhasil Diperbarui" : "Berhasil Diposting";
@@ -146,17 +147,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                 </div>
                             </div>
-                            <!-- Description -->
-                            <!-- <div class="card-body pad">
-                                <label>Deskripsi</label>
-                                <div class="mb-3">
-                                    <textarea name="Deskripsi" class="textarea" placeholder="Deskripsi" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo isset($roww["descrip"]) ? htmlspecialchars($roww["descrip"]) : ''; ?></textarea>
+                            <!-- Category -->
+                            <div class="card-header">
+                                <div class="form-group">
+                                    <label for="validationCategory">Pilih Kategori <span class="text-danger">*</span></label>
+                                    <select name="category" id="validationCategory" class="form-control" required>
+                                        <option value="Internal" <?php echo isset($roww["category"]) && $roww["category"] == 'Internal' ? 'selected' : ''; ?>>Internal</option>
+                                        <option value="Auditor" <?php echo isset($roww["category"]) && $roww["category"] == 'Auditor' ? 'selected' : ''; ?>>Auditor</option>
+                                        <option value="Assesor Associate" <?php echo isset($roww["category"]) && $roww["category"] == 'Assesor Associate' ? 'selected' : ''; ?>>Assesor Associate</option>
+                                    </select>
                                     <div class="invalid-feedback">
-                                        Silahkan masukkan deskripsi.
+                                        Silakan pilih kategori.
                                     </div>
                                 </div>
-                            </div> -->
-                            <!-- Social Media -->
+                            </div>
                             <div class="card-header">
                                 <div class="form-group">
                                     <label>Facebook</label>

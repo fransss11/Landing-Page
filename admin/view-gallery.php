@@ -193,8 +193,19 @@ $result = mysqli_query($con, $query);
   $(document).ready(function() {
     $('#myTable').DataTable({
       language: {
-        search: "Cari :"
-      }
+        search: "Cari :",
+        lengthMenu: "Tampilkan _MENU_ data per halaman",
+        zeroRecords: "Tidak ada data ditemukan",
+        info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ data",
+        infoEmpty: "Tidak ada data tersedia",
+        infoFiltered: "(difilter dari total _MAX_ data)",
+        paginate: {
+            first: "Pertama",
+            last: "Terakhir",
+            next: "Berikutnya",
+            previous: "Sebelumnya"
+        }
+    }
     });
   });
 </script>

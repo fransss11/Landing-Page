@@ -67,7 +67,7 @@ if (isset($_POST['save'])) {
     <?php include "sidebar.php"; ?>
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>Edit Jam Kerja</h1>
+            <h1>Edit Jam Operasional</h1>
         </section>
         <section class="content">
             <div class="container">
@@ -90,7 +90,7 @@ if (isset($_POST['save'])) {
                     <div class="col-md-12">
                         <label for="validationDeskripsi" class="form-label">Deskripsi</label>
                         <!-- Menggunakan textarea biasa tanpa inisialisasi Summernote -->
-                        <textarea name="deskripsi" class="form-control" id="validationDeskripsi" rows="4" required><?php 
+                        <textarea name="deskripsi" class="form-control" id="validationDeskripsi" rows="4"><?php 
                             echo ($dataExists) ? htmlspecialchars($row['deskripsi']) : ''; 
                         ?></textarea>
                         <div class="invalid-feedback">
