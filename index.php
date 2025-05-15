@@ -108,7 +108,7 @@ if ($result->num_rows > 0) {
 
 
 // Fetch link YouTube dari tabel info
-$sql       = "SELECT profile FROM info WHERE id_info='1'";
+$sql       = "SELECT profile, sapaan FROM info WHERE id_info='1'";
 $videoRes  = $conn->query($sql);
 $video     = $videoRes ? $videoRes->fetch_assoc() : null;
 $embedUrl = '';
@@ -222,6 +222,10 @@ function formatTanggalIndonesia($tanggal) {
         .row {
             justify-content: space-around;
         }
+        /* b, strong {
+            background-color:rgba(255, 255, 255, 0.75);
+            border-radius: 10px;
+        } */
     </style>
 </head>
 <body>
@@ -238,22 +242,13 @@ function formatTanggalIndonesia($tanggal) {
         <!-- Client Reviews Section -->
         <div class="container-fluid client-reviews-section py-5" data-aos="fade-up" data-aos-delay="200">
             <div class="row">
-                <div class="col-lg-12">
-                    <a href="klien.php">
-                        <h1 class="text-center" style="background: #ffffffba; border-radius: 20px; ">Klien Kami</h1>
-                    </a>
-                    <div class="client-reviews">
-                        <?php foreach ($clients as $index => $client) : ?>
-                            <div class="single-review" id="review-<?php echo $index; ?>" style="display: <?php echo $index < 4 ? 'block' : 'none'; ?>;" 
-                                data-aos="<?php echo $index % 2 == 0 ? 'fade-left' : 'fade-right'; ?>" data-aos-delay="<?php echo ($index % 2 == 0 ? 200 : 400); ?>">
-                                <h5 class="reviewer-name"><?php echo htmlspecialchars($client['klien']); ?></h5>
-                                <div class="reviewer-thumb">
-                                    <img class="avatar-lg radius-200" 
-                                        src="admin/images/partnership/<?php echo htmlspecialchars($client['gambar']); ?>" 
-                                        alt="Gambar <?php echo htmlspecialchars($client['klien']); ?>">
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
+                <div class="col-lg-11">
+                    <!-- <a href="klien.php">
+                        <h1 class="text-center" style="background: #ffffffba; border-radius: 20px; ">Selamat Datang di Website Kami</h1>
+                    </a> -->
+                    <!-- Tambahan: tampilkan sapaan -->
+                    <div class="sapaan-content my-4" style="background:rgba(255, 255, 255, 0.76); border-radius: 10px;">
+                        <?= $info_row['sapaan']; ?>
                     </div>
                 </div>
             </div>
@@ -404,6 +399,30 @@ function formatTanggalIndonesia($tanggal) {
             </div>
         </div>
         <!-- Services End -->
+        <!-- Client Reviews Section -->
+        <div class="container-fluid client-reviews-section py-5" data-aos="fade-up" data-aos-delay="200">
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="klien.php">
+                        <h1 class="text-center" style="background: #ffffffba; border-radius: 20px; ">Klien Kami</h1>
+                    </a>
+                    <div class="client-reviews">
+                        <?php foreach ($clients as $index => $client) : ?>
+                            <div class="single-review" id="review-<?php echo $index; ?>" style="display: <?php echo $index < 4 ? 'block' : 'none'; ?>;" 
+                                data-aos="<?php echo $index % 2 == 0 ? 'fade-left' : 'fade-right'; ?>" data-aos-delay="<?php echo ($index % 2 == 0 ? 200 : 400); ?>">
+                                <h5 class="reviewer-name"><?php echo htmlspecialchars($client['klien']); ?></h5>
+                                <div class="reviewer-thumb">
+                                    <img class="avatar-lg radius-200" 
+                                        src="admin/images/partnership/<?php echo htmlspecialchars($client['gambar']); ?>" 
+                                        alt="Gambar <?php echo htmlspecialchars($client['klien']); ?>">
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Client Reviews Section End -->
         <!-- Team Start -->
         <div class="container-fluid team py-5">
             <div class="container py-5">

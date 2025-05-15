@@ -103,10 +103,10 @@ if (empty($activity_imgs)) {
 
 <style>
 #activityCarousel .carousel-item img {
-    object-fit: cover; /* Ensure the entire image is visible */
+    object-fit: contain; /* Ensure the entire image is visible */
     width: 100%;
     height: auto;
-    max-height: 77.5vh; /* Limit height for better visibility */
+    max-height: auto; /* Limit height for better visibility */
 }
 
 /* Margin adjustments for specific screen widths */
@@ -131,14 +131,14 @@ if (empty($activity_imgs)) {
 /* Adjustments for smaller screens */
 @media (max-width: 768px) {
     #activityCarousel .carousel-item img {
-        max-height: 50vh; /* Reduce height for tablets */
+        /* max-height: 50vh; Reduce height for tablets */
         margin-top: auto;
     }
 }
 
 @media (max-width: 576px) {
     #activityCarousel .carousel-item img {
-        max-height: 26vh; /* Further reduce height for mobile */
+        /* max-height: 26vh; Further reduce height for mobile */
         margin-top: auto;
     }
 }

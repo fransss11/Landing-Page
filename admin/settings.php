@@ -25,8 +25,8 @@ $social_row = mysqli_fetch_array($social_result);
 // Proses form update jika tombol "update" ditekan
 if (isset($_POST['update'])) {
     extract($_POST);
-    // Update data ke tabel info
-    $update_info = mysqli_query($con, "UPDATE info SET lokasi='$address', gmail='$email', maps_url='$map', nama_maps='$nama_map', profile   = '$profile' WHERE id_info='1'");
+    // Update data ke tabel info, termasuk sapaan
+    $update_info = mysqli_query($con, "UPDATE info SET lokasi='$address', gmail='$email', maps_url='$map', nama_maps='$nama_map', profile='$profile', sapaan='$sapaan' WHERE id_info='1'");
     if (!$update_info) {
         die("Error updating info: " . mysqli_error($con));
     }
@@ -36,10 +36,10 @@ if (isset($_POST['update'])) {
         die("Error updating social data: " . mysqli_error($con));
     }
     // Upload logo jika ada
-    if ($_FILES['logo']['name'] != '') {
-        $logo = rand() . $_FILES['logo']['name'];  // Nama file logo akan digenerate secara acak
+    if (!empty($_FILES['logo']['name'])) {
+        $logo = rand() . $_FILES['logo']['name'];
         $tempname = $_FILES['logo']['tmp_name'];
-        $folder = "images/logo/" . $logo;  // Tentukan folder penyimpanan logo
+        $folder = "images/logo/" . $logo;
         if (move_uploaded_file($tempname, $folder)) {
             mysqli_query($con, "UPDATE info SET logo='$logo' WHERE id_info='1'");
         } else {
@@ -60,7 +60,7 @@ if (isset($_POST['update'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <?php include "title.php"; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Sertakan CSS Bootstrap -->
+    <!-- Sertakan CSS Bootstrap & Summernote -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -68,10 +68,7 @@ if (isset($_POST['update'])) {
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <?php include '../includes/logo.php'; ?>
     <style>
-        img.logo {
-            width: 100%;
-            height: auto;
-        }
+        img.logo { width: 100%; height: auto; }
     </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -79,40 +76,35 @@ if (isset($_POST['update'])) {
         <?php include "topbar.php"; ?>
         <?php include "sidebar.php"; ?>
         <div class="content-wrapper">
-            <!-- Tempatkan message box di sini -->
-            <?php
-            if (isset($_SESSION['message'])) {
-                echo '<div class="container mt-3">
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            ' . $_SESSION['message'] . '
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                      </div>';
-                unset($_SESSION['message']);
-            }
-            ?>
+            <?php if (isset($_SESSION['message'])): ?>
+                <div class="container mt-3">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?= $_SESSION['message']; ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <?php unset($_SESSION['message']); ?>
+            <?php endif; ?>
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1>Pengaturan</h1>
-                        </div>
+                        <div class="col-sm-6"><h1>Pengaturan</h1></div>
                     </div>
                 </div>
             </section>
             <section class="content">
                 <form action="" method="post" enctype="multipart/form-data">
-                    <!-- Konten form settings seperti sebelumnya -->
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card card-outline card-info">
+                                <!-- Logo, Email, Map, Nama Lokasi, Sapaan -->
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Logo</label>
                                         <?php if ($info_row['logo']): ?>
-                                            <img src="images/logo/<?php echo $info_row['logo']; ?>" alt="Logo" class="logo"><br><br>
+                                            <img src="images/logo/<?= $info_row['logo']; ?>" alt="Logo" class="logo"><br><br>
                                         <?php endif; ?>
                                         <input name="logo" type="file" class="form-control" accept="image/png, image/jpeg, image/jpg">
                                     </div>
@@ -120,89 +112,72 @@ if (isset($_POST['update'])) {
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Email Perusahaan</label>
-                                        <input name="email" value="<?php echo $info_row['gmail']; ?>" type="text" class="form-control" placeholder="Masukkan email">
+                                        <input name="email" value="<?= $info_row['gmail']; ?>" type="text" class="form-control" placeholder="Masukkan email">
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Map (Iframe Code)</label>
-                                        <textarea rows="5" name="map" class="form-control" placeholder="Masukkan iframe code"><?php echo $info_row['maps_url']; ?></textarea>
+                                        <textarea rows="5" name="map" class="form-control" placeholder="Masukkan iframe code"><?= $info_row['maps_url']; ?></textarea>
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Nama Lokasi</label>
-                                        <input name="nama_map" value="<?php echo $info_row['nama_maps']; ?>" type="text" class="form-control" placeholder="Masukkan Lokasi">
+                                        <input name="nama_map" value="<?= $info_row['nama_maps']; ?>" type="text" class="form-control" placeholder="Masukkan Lokasi">
                                     </div>
                                 </div>
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Lokasi</label>
-                                        <textarea rows="5" name="address" class="form-control" placeholder="Masukkan address"><?php echo $info_row['lokasi']; ?></textarea>
+                                        <textarea rows="5" name="address" class="form-control" placeholder="Masukkan address"><?= $info_row['lokasi']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="card-header">
+                                    <div class="form-group">
+                                        <label>Sapaan Pada Beranda</label>
+                                        <textarea name="sapaan" class="textarea form-control" rows="5" placeholder="Masukkan sapaan"><?= htmlspecialchars($info_row['sapaan']); ?></textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card card-outline card-info">
-                                <div class="card-header">
-                                    <div class="form-group">
-                                        <label>Link Facebook</label>
-                                        <input name="facebook" value="<?php echo $social_row['facebook']; ?>" type="text" class="form-control" placeholder="Masukkan Link Facebook">
-                                    </div>
-                                </div>
-                                <div class="card-header">
-                                    <div class="form-group">
-                                        <label>Link Twitter</label>
-                                        <input name="twitter" value="<?php echo $social_row['twitter']; ?>" type="text" class="form-control" placeholder="Masukkan Link Twitter">
-                                    </div>
-                                </div>
-                                <div class="card-header">
-                                    <div class="form-group">
-                                        <label>Link Instagram</label>
-                                        <input name="instagram" value="<?php echo $social_row['instagram']; ?>" type="text" class="form-control" placeholder="Masukkan Link Instagram">
-                                    </div>
-                                </div>
-                                <div class="card-header">
-                                    <div class="form-group">
-                                        <label>Link LinkedIn</label>
-                                        <input name="linkedin" value="<?php echo $social_row['linkedin']; ?>" type="text" class="form-control" placeholder="Masukkan Link LinkedIn">
-                                    </div>
-                                </div>
-                                <div class="card-header">
-                                    <div class="form-group">
-                                        <label>Whatsapp</label>
-                                        <input name="whatsapp" value="<?php echo $social_row['whatsapp']; ?>" type="text" class="form-control" placeholder="Masukkan Nomor Whatsapp">
-                                    </div>
-                                </div>
-                                <div class="card-header">
-                                    <div class="form-group">
-                                        <label>Telepon</label>
-                                        <input name="phone" value="<?php echo $social_row['phone']; ?>" type="text" class="form-control" placeholder="Masukkan Nomor Telepon">
-                                    </div>
-                                </div>
-                                <div class="card-header">
-                                    <div class="form-group">
-                                        <label>Link Video YouTube</label>
-                                        <input 
-                                            name="profile" 
-                                            type="text" 
-                                            class="form-control" 
-                                            placeholder="Masukkan link YouTube" 
-                                            value="<?php echo htmlspecialchars($info_row['profile']); ?>"
-                                        >
-                                    </div>
-                                </div>
+                                <!-- Social Links & YouTube -->
+                                <div class="card-header"><div class="form-group">
+                                    <label>Link Facebook</label>
+                                    <input name="facebook" value="<?= $social_row['facebook']; ?>" type="text" class="form-control" placeholder="Masukkan Link Facebook">
+                                </div></div>
+                                <div class="card-header"><div class="form-group">
+                                    <label>Link Twitter</label>
+                                    <input name="twitter" value="<?= $social_row['twitter']; ?>" type="text" class="form-control" placeholder="Masukkan Link Twitter">
+                                </div></div>
+                                <div class="card-header"><div class="form-group">
+                                    <label>Link Instagram</label>
+                                    <input name="instagram" value="<?= $social_row['instagram']; ?>" type="text" class="form-control" placeholder="Masukkan Link Instagram">
+                                </div></div>
+                                <div class="card-header"><div class="form-group">
+                                    <label>Link LinkedIn</label>
+                                    <input name="linkedin" value="<?= $social_row['linkedin']; ?>" type="text" class="form-control" placeholder="Masukkan Link LinkedIn">
+                                </div></div>
+                                <div class="card-header"><div class="form-group">
+                                    <label>Whatsapp</label>
+                                    <input name="whatsapp" value="<?= $social_row['whatsapp']; ?>" type="text" class="form-control" placeholder="Masukkan Nomor Whatsapp">
+                                </div></div>
+                                <div class="card-header"><div class="form-group">
+                                    <label>Telepon</label>
+                                    <input name="phone" value="<?= $social_row['phone']; ?>" type="text" class="form-control" placeholder="Masukkan Nomor Telepon">
+                                </div></div>
+                                <div class="card-header"><div class="form-group">
+                                    <label>Link Video YouTube</label>
+                                    <input name="profile" type="text" class="form-control" placeholder="Masukkan link YouTube" value="<?= htmlspecialchars($info_row['profile']); ?>">
+                                </div></div>
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="card-header">
-                                <div class="form-group">
-                                    <center>
-                                    <button type="submit" name="update" class="btn btn-warning btn-lg">Update</button>
-                                    <button type="reset" class="btn btn-danger btn-lg">Reset</button>
-                                    </center>
-                                </div>
+                            <div class="card-header text-center">
+                                <button type="submit" name="update" class="btn btn-warning btn-lg">Update</button>
+                                <button type="reset" class="btn btn-danger btn-lg">Reset</button>
                             </div>
                         </div>
                     </div>
@@ -212,16 +187,32 @@ if (isset($_POST['update'])) {
         <?php include "footer.php"; ?>
         <aside class="control-sidebar control-sidebar-dark"></aside>
     </div>
-    <!-- Sertakan JS Bootstrap dan dependencies-nya -->
+    <!-- JS Bootstrap & Summernote -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="dist/js/adminlte.min.js"></script>
-    <script src="dist/js/demo.js"></script>
     <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <script>
         $(function() {
-            $('.textarea').summernote()
-        })
+            $('.textarea').summernote({
+                height: 150,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear', 'fontname']],
+                    ['fontsize', ['fontsize']], // Menambahkan dropdown ukuran font
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                fontSizes: [
+                    '8', '9', '10', '11', '12', '14',
+                    '16', '18', '20', '22', '24', '26',
+                    '28', '30', '32', '36', '48', '64'
+                ]
+            });
+        });
     </script>
 </body>
 </html>
