@@ -27,6 +27,18 @@ if (isset($_POST['update'])) {
     extract($_POST);
     // Update data ke tabel info, termasuk sapaan
     $update_info = mysqli_query($con, "UPDATE info SET lokasi='$address', gmail='$email', maps_url='$map', nama_maps='$nama_map', profile='$profile', sapaan='$sapaan' WHERE id_info='1'");
+    // Hapus logo lama jika diminta
+    if (!empty($_POST['delete_logo']) && $info_row['logo']) {
+        $old = "images/logo/" . $info_row['logo'];
+        if (file_exists($old)) unlink($old);
+        mysqli_query($con, "UPDATE info SET logo = NULL WHERE id_info = '1'");
+    }
+    // Hapus gambar info lama jika diminta
+    if (!empty($_POST['delete_gambar']) && !empty($info_row['gambar'])) {
+        $old2 = "images/info/" . $info_row['gambar'];
+        if (file_exists($old2)) unlink($old2);
+        mysqli_query($con, "UPDATE info SET gambar = NULL WHERE id_info = '1'");
+    }
     if (!$update_info) {
         die("Error updating info: " . mysqli_error($con));
     }
@@ -35,15 +47,28 @@ if (isset($_POST['update'])) {
     if (!$update_social) {
         die("Error updating social data: " . mysqli_error($con));
     }
-    // Upload logo jika ada
+    // Upload logo baru jika ada
     if (!empty($_FILES['logo']['name'])) {
-        $logo = rand() . $_FILES['logo']['name'];
-        $tempname = $_FILES['logo']['tmp_name'];
-        $folder = "images/logo/" . $logo;
-        if (move_uploaded_file($tempname, $folder)) {
-            mysqli_query($con, "UPDATE info SET logo='$logo' WHERE id_info='1'");
+        $logoName   = rand() . '_' . basename($_FILES['logo']['name']);
+        $logoTmp    = $_FILES['logo']['tmp_name'];
+        $logoFolder = "images/logo/" . $logoName;
+        if (move_uploaded_file($logoTmp, $logoFolder)) {
+            mysqli_query($con, "UPDATE info SET logo = '$logoName' WHERE id_info = '1'");
         } else {
             $_SESSION['message'] = "Failed to upload logo";
+            header("Location: settings.php");
+            exit;
+        }
+    }
+    // Upload gambar info baru jika ada
+    if (!empty($_FILES['gambar']['name'])) {
+        $imgName   = rand() . '_' . basename($_FILES['gambar']['name']);
+        $imgTmp    = $_FILES['gambar']['tmp_name'];
+        $imgFolder = "images/info/" . $imgName;
+        if (move_uploaded_file($imgTmp, $imgFolder)) {
+            mysqli_query($con, "UPDATE info SET gambar = '$imgName' WHERE id_info = '1'");
+        } else {
+            $_SESSION['message'] = "Failed to upload gambar";
             header("Location: settings.php");
             exit;
         }
@@ -172,6 +197,15 @@ if (isset($_POST['update'])) {
                                     <label>Link Video YouTube</label>
                                     <input name="profile" type="text" class="form-control" placeholder="Masukkan link YouTube" value="<?= htmlspecialchars($info_row['profile']); ?>">
                                 </div></div>
+                                <!-- Gambar Info -->
+                                <div class="card-header">
+                                    <label>Gambar Info</label><br>
+                                    <?php if (!empty($info_row['gambar'])): ?>
+                                        <img src="images/info/<?= $info_row['gambar']; ?>" class="logo mb-2"><br>
+                                        <label><input type="checkbox" name="delete_gambar" value="1"> Hapus Gambar Info</label>
+                                    <?php endif; ?>
+                                    <input type="file" name="gambar" class="form-control-file mt-2" accept="image/*">
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -195,7 +229,7 @@ if (isset($_POST['update'])) {
     <script>
         $(function() {
             $('.textarea').summernote({
-                height: 150,
+                height: 550,
                 toolbar: [
                     ['style', ['style']],
                     ['font', ['bold', 'italic', 'underline', 'clear', 'fontname']],
@@ -209,7 +243,7 @@ if (isset($_POST['update'])) {
                 fontSizes: [
                     '8', '9', '10', '11', '12', '14',
                     '16', '18', '20', '22', '24', '26',
-                    '28', '30', '32', '36', '48', '64'
+                    '28', '30', '32', '36','40', '48', '64'
                 ]
             });
         });

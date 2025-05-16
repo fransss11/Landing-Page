@@ -164,7 +164,7 @@ function formatTanggalIndonesia($tanggal) {
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style.css?v=20251505" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
     <!-- AOS Stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -226,6 +226,19 @@ function formatTanggalIndonesia($tanggal) {
             background-color:rgba(255, 255, 255, 0.75);
             border-radius: 10px;
         } */
+        .carousel-control-next-icon {
+            background-color: black;
+            margin-left: auto;
+        }
+        .carousel-control-prev-icon {
+            background-color: black;
+            margin-right: auto;
+        }
+        .carousel-indicators [data-bs-target]{
+            width: 30px;
+            height: 6px;
+            background-color: #000000;
+        }
     </style>
 </head>
 <body>
@@ -240,18 +253,38 @@ function formatTanggalIndonesia($tanggal) {
         <?php include 'includes/navbar-index.php'; ?>
         <!-- Navbar End -->
         <!-- Client Reviews Section -->
-        <div class="container-fluid client-reviews-section py-5" data-aos="fade-up" data-aos-delay="200">
-            <div class="row">
-                <div class="col-lg-11">
-                    <!-- <a href="klien.php">
+        <div class="container-fluid" data-aos="fade-up" data-aos-delay="200" style="padding-bottom: 2px; padding-top: 50px;">
+            <div class="row g-5 align-items-center" style="background: #ffffffba; border-radius: 20px;">
+                <?php if (!empty($info_row['gambar']) && file_exists("admin/images/info/" . $info_row['gambar'])): ?>
+                    <div class="col-lg-5" data-aos="fade-up" data-aos-delay="500">
+                        <div>
+                            <img src="admin/images/info/<?php echo htmlspecialchars($info_row['gambar']); ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
+                        </div>
+                    </div>
+                    <div class="col-lg-7" data-aos="fade-down" data-aos-delay="400">
+                        <div class="section-title text-start mb-5">
+                            <p class="mb-4"><?= $info_row['sapaan']; ?></p>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="col-lg-12 text-center" data-aos="fade-down" data-aos-delay="400">
+                        <div class="section-title mb-5">
+                            <p class="mb-4"><?= $info_row['sapaan']; ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <!-- <div class="row">
+                <div class="col-lg-9">
+                    <a href="klien.php">
                         <h1 class="text-center" style="background: #ffffffba; border-radius: 20px; ">Selamat Datang di Website Kami</h1>
-                    </a> -->
-                    <!-- Tambahan: tampilkan sapaan -->
-                    <div class="sapaan-content my-4" style="background:rgba(255, 255, 255, 0.76); border-radius: 10px;">
+                    </a>
+                    Tambahan: tampilkan sapaan
+                    <div class="sapaan-content my-4" style="background:rgba(255, 255, 255, 0.76); border-radius: 10px; height: 100%;">
                         <?= $info_row['sapaan']; ?>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <!-- Client Reviews Section End -->
         <!-- Video Profil Start -->
@@ -281,7 +314,8 @@ function formatTanggalIndonesia($tanggal) {
                 <div class="row g-5 align-items-center" style="background: #ffffffba; border-radius: 20px;">
                     <?php if (!empty($about['img']) && file_exists("admin/images/about/" . $about['img'])): ?>
                         <div class="col-lg-5" data-aos="fade-right" data-aos-delay="500">
-                            <div class="about-img pb-5 ps-5">
+                            <!-- <div class="about-img pb-5 ps-5"> -->
+                            <div>
                                 <img src="admin/images/about/<?php echo htmlspecialchars($about['img']); ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
                             </div>
                         </div>
