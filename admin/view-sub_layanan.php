@@ -159,7 +159,8 @@ if (isset($_GET['delete_id'])) {
                                     <tr>
                                         <th>Nama</th>
                                         <th>Deskripsi</th>
-                                        <th>Harga</th>
+                                        <th>Harga Offline</th>
+                                        <th>Harga Online</th>
                                         <th>Tanggal Dibuat</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -231,7 +232,14 @@ if (isset($_GET['delete_id'])) {
                     }
                 },
                 { 
-                    data: 'price', 
+                    data: 'offline_price', 
+                    render: function(data, type, row) {
+                        // Format harga menjadi mata uang
+                        return data ? 'Rp ' + parseFloat(data).toLocaleString('id-ID', { minimumFractionDigits: 2 }) : '-';
+                    }
+                },
+                { 
+                    data: 'online_price', 
                     render: function(data, type, row) {
                         // Format harga menjadi mata uang
                         return data ? 'Rp ' + parseFloat(data).toLocaleString('id-ID', { minimumFractionDigits: 2 }) : '-';

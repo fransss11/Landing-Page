@@ -3,63 +3,73 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 error_reporting(0);
+
 include 'conn.php';
 include 'auth.php';
 date_default_timezone_set('Asia/Jakarta');
 $today = date("Y-m-d H:i:s");
 
-// Cek apakah parameter 'edit' ada di URL dan valid
+// Mode edit?
 $edit = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
 
-// Fetch titles from the `services` table
+// Ambil daftar layanan untuk select box
 $serviceTitles = [];
-$result = mysqli_query($con, "SELECT id, title FROM services");
-while ($row = mysqli_fetch_assoc($result)) {
+$res = mysqli_query($con, "SELECT id, title FROM services");
+while ($row = mysqli_fetch_assoc($res)) {
     $serviceTitles[] = $row;
 }
 
-// Jika dalam mode edit, ambil data dari database
+// Jika edit, ambil data kategori
 $categoryData = [];
 if ($edit > 0) {
-    $query = "SELECT * FROM service_categories WHERE id = $edit";
-    $result = mysqli_query($con, $query);
-    $categoryData = mysqli_fetch_assoc($result);
+    $q = "SELECT * FROM service_categories WHERE id = $edit";
+    $r = mysqli_query($con, $q);
+    $categoryData = mysqli_fetch_assoc($r);
 }
 
-// Handle form submission for service categories
+// Handle form submit
 if (isset($_POST['add_category'])) {
-    $serviceId = intval($_POST['service_id']);
-    $name = mysqli_real_escape_string($con, $_POST['name']);
-    $description = mysqli_real_escape_string($con, $_POST['description']);
-    $price = !empty($_POST['price']) ? floatval($_POST['price']) : null;
+    $serviceId     = intval($_POST['service_id']);
+    $name          = mysqli_real_escape_string($con, $_POST['name']);
+    $description   = mysqli_real_escape_string($con, $_POST['description']);
+    $offline_price = ($_POST['offline_price'] !== '') ? floatval($_POST['offline_price']) : null;
+    $online_price  = ($_POST['online_price']  !== '') ? floatval($_POST['online_price'])  : null;
 
     if ($edit > 0) {
-        // Update data jika dalam mode edit
-        $updateQuery = "UPDATE service_categories 
-                        SET name = '$name', description = '$description', price = '$price', core = '$serviceId' 
-                        WHERE id = $edit";
-        $updateResult = mysqli_query($con, $updateQuery);
-        if ($updateResult) {
-            $_SESSION['msg'] = "Kategori layanan berhasil diperbarui.";
-            $_SESSION['msgClass'] = "alert-success";
-        } else {
-            $_SESSION['msg'] = "Terjadi kesalahan saat memperbarui kategori layanan.";
-            $_SESSION['msgClass'] = "alert-danger";
-        }
+        // Update
+        $upd = sprintf(
+            "UPDATE service_categories 
+             SET name='%s', description='%s',
+                 offline_price=%s, online_price=%s,
+                 core='%d'
+             WHERE id=%d",
+            $name,
+            $description,
+            ($offline_price  !== null ? $offline_price  : "NULL"),
+            ($online_price   !== null ? $online_price   : "NULL"),
+            $serviceId,
+            $edit
+        );
+        $ok = mysqli_query($con, $upd);
+        $_SESSION['msg']      = $ok ? "Kategori berhasil diperbarui." : "Error saat memperbarui.";
+        $_SESSION['msgClass'] = $ok ? "alert-success" : "alert-danger";
         header("Location: add-sub_layanan.php?edit=$edit");
         exit;
     } else {
-        // Insert data baru jika tidak dalam mode edit
-        $insertQuery = "INSERT INTO service_categories (name, description, price, core, created_at) 
-                        VALUES ('$name', '$description', '$price', '$serviceId', NOW())";
-        $insertResult = mysqli_query($con, $insertQuery);
-        if ($insertResult) {
-            $_SESSION['msg'] = "Kategori layanan berhasil ditambahkan.";
-            $_SESSION['msgClass'] = "alert-success";
-        } else {
-            $_SESSION['msg'] = "Terjadi kesalahan saat menambahkan kategori layanan.";
-            $_SESSION['msgClass'] = "alert-danger";
-        }
+        // Insert baru
+        $ins = sprintf(
+            "INSERT INTO service_categories 
+             (name, description, offline_price, online_price, core, created_at)
+             VALUES ('%s','%s',%s,%s,'%d',NOW())",
+            $name,
+            $description,
+            ($offline_price  !== null ? $offline_price  : "NULL"),
+            ($online_price   !== null ? $online_price   : "NULL"),
+            $serviceId
+        );
+        $ok = mysqli_query($con, $ins);
+        $_SESSION['msg']      = $ok ? "Kategori berhasil ditambahkan." : "Error saat menambahkan.";
+        $_SESSION['msgClass'] = $ok ? "alert-success" : "alert-danger";
         header("Location: add-sub_layanan.php");
         exit;
     }
@@ -178,23 +188,21 @@ if (isset($_POST['add_category'])) {
                     Silakan masukkan deskripsi.
                   </div>
                 </div>
-              </div>
-              <!-- Harga -->
-              <div class="card-header">
+                <!-- Harga Offline -->
                 <div class="form-group">
-                  <label>Harga</label>
-                  <input 
-                    name="price" 
-                    type="number" 
-                    step="0.01" 
-                    class="form-control" 
-                    placeholder="Harga ..." 
-                    value="<?php echo isset($categoryData['price']) ? htmlspecialchars($categoryData['price']) : ''; ?>"
-                    required
-                  >
-                  <div class="invalid-feedback">
-                    Silakan masukkan harga.
-                  </div>
+                  <label>Harga Offline <span class="text-danger">*</span></label>
+                  <input name="offline_price" type="number" step="0.01" class="form-control"
+                          value="<?= htmlspecialchars($categoryData['offline_price'] ?? ''); ?>"
+                          placeholder="Harga Offline ...">
+                  <div class="invalid-feedback">Silakan masukkan harga offline.</div>
+                </div>
+                <!-- Harga Online -->
+                <div class="form-group">
+                  <label>Harga Online <span class="text-danger">*</span></label>
+                  <input name="online_price" type="number" step="0.01" class="form-control"
+                          value="<?= htmlspecialchars($categoryData['online_price'] ?? ''); ?>"
+                          placeholder="Harga Online ...">
+                  <div class="invalid-feedback">Silakan masukkan harga online.</div>
                 </div>
               </div>
               <!-- Tombol Kirim -->

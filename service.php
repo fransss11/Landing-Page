@@ -241,6 +241,9 @@ $conn->close();
             background-color: #ffffffba !important;
             border-radius: 8px;
         }
+        .service-item:hover .service-img {
+            background-color: rgb(149 142 250 / 89%);
+        }
     </style>
 </head>
 <body>
@@ -298,11 +301,13 @@ $conn->close();
             </div>
         </div>
         <!-- Services End -->
+
         <!-- Footer -->
         <?php include 'includes/footer.php'; ?>
         <?php include 'includes/copyright.php'; ?>
         <?php include 'includes/back_to_top.php'; ?>
     </div>
+
     <!-- JS Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>

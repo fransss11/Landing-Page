@@ -80,14 +80,15 @@ if ($action == 'fetch_services') {
     $start       = isset($_GET['start']) ? intval($_GET['start']) : 0;
     $length      = isset($_GET['length']) ? intval($_GET['length']) : 10;
     $searchValue = isset($_GET['search']['value']) ? $_GET['search']['value'] : '';
-    $baseQuery  = "SELECT id, name, description, price, created_at FROM service_categories";
+    $baseQuery  = "SELECT id, name, description, offline_price, online_price, created_at FROM service_categories";
     $totalQuery = "SELECT COUNT(id) as total FROM service_categories";
     $where = "";
     if (!empty($searchValue)) {
         $searchValueEsc = mysqli_real_escape_string($con, $searchValue);
         $where = " WHERE name LIKE '%$searchValueEsc%' 
                    OR description LIKE '%$searchValueEsc%' 
-                   OR price LIKE '%$searchValueEsc%'";
+                   OR offline_price LIKE '%$searchValueEsc%'
+                   OR online_price LIKE '%$searchValueEsc%'";
     }
     $totalDataQuery = $totalQuery . $where;
     $resultTotal    = mysqli_query($con, $totalDataQuery);
@@ -105,8 +106,9 @@ if ($action == 'fetch_services') {
             0 => 'id',
             1 => 'name',
             2 => 'description',
-            3 => 'price',
-            4 => 'created_at'
+            3 => 'offline_price',
+            4 => 'online_price',
+            5 => 'created_at'
         );
         if (isset($columns[$orderColumnIndex])) {
             $orderColumn = $columns[$orderColumnIndex];

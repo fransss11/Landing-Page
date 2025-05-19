@@ -27,7 +27,7 @@ if ($serviceDetail) {
 }
 // Fetch data dari tabel 'service_categories' berdasarkan `core` (service_id)
 $categories = [];
-$sqlCategories = "SELECT name, description, price FROM service_categories WHERE core = $id";
+$sqlCategories = "SELECT * FROM service_categories WHERE core = $id";
 $resultCategories = $conn->query($sqlCategories);
 while ($row = $resultCategories->fetch_assoc()) {
     $categories[] = $row;
@@ -173,8 +173,13 @@ $conn->close();
                                                 <li class="list-group-item">
                                                     <i class="fas fa-globe me-4 animate__animated animate__rotateIn service-icon" style="font-size: 27px;"> <?php echo htmlspecialchars($category['name']); ?></i>
                                                     <p><?php echo $category['description']; // Render HTML tags safely ?></p>
-                                                    <?php if (!is_null($category['price'])): ?>
-                                                        <p style="font-size: 23px; color:red; font-family: Lato;"><strong>Harga:</strong> Rp <?php echo number_format($category['price'], 2, ',', '.'); ?></p>
+                                                    <?php if (!is_null($category['offline_price'])): ?>
+                                                        <p style="font-size:20px; color:red;"><i class="fas fa-money-bill-wave me-2"></i><strong>Harga Offline:</strong>
+                                                        Rp <?php echo number_format($category['offline_price'],2,',','.'); ?></p>
+                                                    <?php endif; ?>
+                                                    <?php if (!is_null($category['online_price'])): ?>
+                                                        <p style="font-size:20px; color:blue;"><i class="fas fa-tags me-2"></i><strong>Harga Online:</strong>
+                                                        Rp <?php echo number_format($category['online_price'],2,',','.'); ?></p>
                                                     <?php endif; ?>
                                                 </li>
                                             <?php endforeach; ?>

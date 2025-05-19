@@ -294,7 +294,7 @@ function formatTanggalIndonesia($tanggal) {
                 <div class="section-title mb-4 text-center">
                     <h1 class="display-3 mb-3">Video Profil</h1>
                 </div>
-                <div class="embed-responsive embed-responsive-16by9" style="margin: 0 auto;" data-aos="fade-right" data-aos-delay="200">
+                <div class="embed-responsive" style="margin: 0 auto;" data-aos="fade-right" data-aos-delay="200">
                     <iframe
                         class="embed-responsive-item"
                         src="<?php echo htmlspecialchars($embedUrl); ?>"
