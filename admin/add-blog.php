@@ -285,7 +285,6 @@ function compressImage($source, $destination, $quality)
           ['color', ['color']],
           ['para', ['ul', 'ol', 'paragraph']],
           ['height', ['height']],
-          ['insert', ['link', 'picture', 'video']],
           ['view', ['fullscreen', 'codeview', 'help']]
         ],
         callbacks: {

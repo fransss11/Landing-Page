@@ -149,8 +149,8 @@ if (isset($_GET['delete_id'])) {
               <thead>
                 <tr>
                   <th>Nama Kegiatan</th>
-                  <th>Deskripsi</th>
-                  <th>URL</th>
+                  <th>Deskripsi Singkat</th>
+                  <th>Link Google Form</th>
                   <th>Aksi</th>
                 </tr>
               </thead>

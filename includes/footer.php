@@ -183,7 +183,7 @@ $info = $result->fetch_assoc();
                 <div class="footer-item d-flex flex-column">
                     <h4 class="mb-4 text-white">Info Kontak</h4>
                     <?php if (!empty($info['lokasi'])): ?>
-                        <a href="<?php echo $info['lokasi']; ?>"><i class="fa fa-map-marker-alt me-2"></i><?php echo $info['nama_maps']; ?></a>
+                        <a href="<?php echo $info['lokasi']; ?>"><i class="fa fa-map-marker-alt me-2"></i><?php echo $social['nama_maps']; ?></a>
                     <?php endif; ?>
                     <?php if (!empty($info['gmail'])): ?>
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" 

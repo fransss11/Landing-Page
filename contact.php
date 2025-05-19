@@ -84,15 +84,15 @@ $social = $result->fetch_assoc();
                     <div class="col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="500" style="padding-top: 90px;background-color: #eeeeeec7;border-radius: 20px;">
                         <div class="bg-transparent rounded">
                             <div class="d-flex flex-column align-items-center text-center mb-4">
-                                <a href="<?php echo $info['lokasi']; ?>" class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;">
+                                <a href="<?php echo $info['lokasi']; ?>" class="bg-white d-flex align-items-center justify-content-center mb-2" style="width: 90px; height: 90px; border-radius: 50px;">
                                     <i class="fa fa-map-marker-alt fa-2x text-primary"></i>
                                 </a>
                                 <a href="<?php echo $info['lokasi']; ?>" class="mb-0 text-white">
-                                    <h4 class="text-dark">Jl. Bendul Merisi IX/1-A Surabaya</h4>
+                                    <h4><?php echo $social['nama_maps']; ?></h4>
                                 </a>
                             </div>
-                            <div class="d-flex flex-column align-items-center text-center">
-                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;">
+                            <div class="d-flex flex-column align-items-center text-center mb-4">
+                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" class="bg-white d-flex align-items-center justify-content-center mb-2" style="width: 90px; height: 90px; border-radius: 50px;">
                                     <i class="fa fa-envelope-open fa-2x text-primary"></i>
                                 </a>
                                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" class="mb-0 text-white">
@@ -100,11 +100,11 @@ $social = $result->fetch_assoc();
                                 </a>
                             </div>
                             <div class="d-flex flex-column align-items-center text-center mb-4">
-                                <div class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px;">
+                                <div class="bg-white d-flex align-items-center justify-content-center mb-2" style="width: 90px; height: 90px; border-radius: 50px;">
                                     <i class="fa fa-phone-alt fa-2x text-primary"></i>
                                 </div>
-                                <h4 class="text-dark">Telepon</h4>
-                                <p class="mb-0 text-white"><?php echo $social['phone']; ?></p>
+                                <!-- <h4 class="text-dark">Telepon</h4> -->
+                                <p style="font-size: 20px;" class="mb-0 text-white"><?php echo $social['phone']; ?></p>
                             </div>
                         </div>
                     </div>

@@ -43,7 +43,7 @@ if (isset($_POST['update'])) {
         die("Error updating info: " . mysqli_error($con));
     }
     // Update data ke tabel social
-    $update_social = mysqli_query($con, "UPDATE social SET facebook='$facebook', twitter='$twitter', instagram='$instagram', linkedin='$linkedin', whatsapp='$whatsapp', phone='$phone' WHERE id='1'");
+    $update_social = mysqli_query($con, "UPDATE social SET facebook='$facebook', twitter='$twitter', instagram='$instagram', linkedin='$linkedin', whatsapp='$whatsapp', phone='$phone', nama_maps='$nama_map' WHERE id='1'");
     if (!$update_social) {
         die("Error updating social data: " . mysqli_error($con));
     }
@@ -149,7 +149,7 @@ if (isset($_POST['update'])) {
                                 <div class="card-header">
                                     <div class="form-group">
                                         <label>Nama Lokasi</label>
-                                        <input name="nama_map" value="<?= $info_row['nama_maps']; ?>" type="text" class="form-control" placeholder="Masukkan Lokasi">
+                                        <input name="nama_map" value="<?= $social_row['nama_maps']; ?>" type="text" class="form-control" placeholder="Masukkan Lokasi">
                                     </div>
                                 </div>
                                 <div class="card-header">
@@ -199,10 +199,10 @@ if (isset($_POST['update'])) {
                                 </div></div>
                                 <!-- Gambar Info -->
                                 <div class="card-header">
-                                    <label>Gambar Info</label><br>
+                                    <label>Gambar Sapaan</label><br>
                                     <?php if (!empty($info_row['gambar'])): ?>
                                         <img src="images/info/<?= $info_row['gambar']; ?>" class="logo mb-2"><br>
-                                        <label><input type="checkbox" name="delete_gambar" value="1"> Hapus Gambar Info</label>
+                                        <label><input type="checkbox" name="delete_gambar" value="1"> Hapus Gambar Sapaan</label>
                                     <?php endif; ?>
                                     <input type="file" name="gambar" class="form-control-file mt-2" accept="image/*">
                                 </div>
@@ -237,7 +237,6 @@ if (isset($_POST['update'])) {
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['height', ['height']],
-                    ['insert', ['link', 'picture', 'video']],
                     ['view', ['fullscreen', 'codeview', 'help']]
                 ],
                 fontSizes: [

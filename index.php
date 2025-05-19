@@ -252,7 +252,7 @@ function formatTanggalIndonesia($tanggal) {
         <!-- Navbar & Hero Start -->
         <?php include 'includes/navbar-index.php'; ?>
         <!-- Navbar End -->
-        <!-- Client Reviews Section -->
+        <!-- Sapaan -->
         <div class="container-fluid" data-aos="fade-up" data-aos-delay="200" style="padding-bottom: 2px; padding-top: 50px;">
             <div class="row g-5 align-items-center" style="background: #ffffffba; border-radius: 20px;">
                 <?php if (!empty($info_row['gambar']) && file_exists("admin/images/info/" . $info_row['gambar'])): ?>
@@ -286,7 +286,7 @@ function formatTanggalIndonesia($tanggal) {
                 </div>
             </div> -->
         </div>
-        <!-- Client Reviews Section End -->
+        <!-- Sapaan End -->
         <!-- Video Profil Start -->
         <?php if ($embedUrl): ?>
         <div class="container-fluid video-section py-5 bg-light" data-aos="fade-up">
@@ -294,14 +294,12 @@ function formatTanggalIndonesia($tanggal) {
                 <div class="section-title mb-4 text-center">
                     <h1 class="display-3 mb-3">Video Profil</h1>
                 </div>
-                <div class="embed-responsive" style="margin: 0 auto;" data-aos="fade-right" data-aos-delay="200">
+                <div class="video-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; margin: 0 auto;" data-aos="fade-right" data-aos-delay="200">
                     <iframe
-                        class="embed-responsive-item"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
                         src="<?php echo htmlspecialchars($embedUrl); ?>"
-                        frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
-                        style="min-height: 500px; width: 100%;"
                     ></iframe>
                 </div>
             </div>

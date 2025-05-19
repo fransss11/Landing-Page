@@ -302,7 +302,6 @@ if (isset($_POST['delete_img']) && $edit > 0) {
           ['color', ['color']],
           ['para', ['ul', 'ol', 'paragraph']],
           ['height', ['height']],
-          ['insert', ['link', 'picture', 'video']],
           ['view', ['fullscreen', 'codeview', 'help']]
         ],
         callbacks: {

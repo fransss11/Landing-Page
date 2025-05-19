@@ -70,7 +70,7 @@ $social = $result->fetch_assoc();
     }
     @media (min-width: 992px) {
         .d-lg-block{
-            height: 70px;
+            height: auto;
         }
     }
     .fa-map-marker-alt:before{

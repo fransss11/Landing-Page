@@ -132,7 +132,7 @@ if (isset($_POST['publise'])) {
                                     </div>
                                 </div>
                                 <div class="card-body pad">
-                                    <label for="validationDeskripsi" class="form-label">Deskripsi</label>
+                                    <label for="validationDeskripsi" class="form-label">Deskripsi Singkat</label>
                                     <div class="mb-3">
                                         <textarea name="deskripsi" class="form-control" id="validationDeskripsi" 
                                                   placeholder="Deskripsi" rows="5" required><?php echo htmlspecialchars($roww["deskripsi"]); ?></textarea>
@@ -143,10 +143,10 @@ if (isset($_POST['publise'])) {
                                 </div>
                                 <div class="card-header">   
                                     <div class="form-group">
-                                        <label for="validationURL" class="form-label">URL</label>
+                                        <label for="validationURL" class="form-label">Link Google Form</label>
                                         <input name="url" type="url" class="form-control" id="validationURL"
                                                value="<?php echo htmlspecialchars($roww["url"]); ?>" 
-                                               placeholder="Masukkan URL (Opsional)">
+                                               placeholder="Masukkan Link Google Form..." required>
                                     </div>
                                 </div>
                                 <div class="card-header">

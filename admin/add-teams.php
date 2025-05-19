@@ -192,12 +192,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                             </div>
                             <!-- URL -->
-                            <div class="card-header">
+                            <!-- <div class="card-header">
                                 <div class="form-group">
                                     <label for="validationURL">Masukkan URL</label>
                                     <input name="url" value="<?php echo isset($roww["url"]) ? htmlspecialchars($roww["url"]) : ''; ?>" type="text" class="form-control" id="validationURL" placeholder="Masukkan URL...">
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- Image Upload -->
                             <div class="card-header">
                                 <div class="form-group">
