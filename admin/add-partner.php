@@ -1,7 +1,7 @@
 <?php
 include 'conn.php';
 include 'auth.php';
-date_default_timezone_set('Asia/Kolkata');
+date_default_timezone_set('Asia/Jakarta'); // Set zona waktu ke Jakarta
 $today = date("D d M Y"); // Format tanggal untuk MySQL
 // Inisialisasi variabel alert
 $msg = "";

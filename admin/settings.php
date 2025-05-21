@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 include 'conn.php';
 include 'auth.php';
 $a = 2;
-date_default_timezone_set('Asia/Kolkata');
+date_default_timezone_set('Asia/Jakarta');
 $today = date("D d M Y");
 // Cek koneksi ke database
 if (!$con) {

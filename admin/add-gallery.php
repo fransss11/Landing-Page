@@ -2,7 +2,7 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-date_default_timezone_set('Asia/Kolkata');
+date_default_timezone_set('Asia/Jakarta');
 $today = date("D d M Y");
 // Inisialisasi variabel alert
 $msg = "";

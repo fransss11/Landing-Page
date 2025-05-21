@@ -12,7 +12,7 @@ if (isset($_SESSION['msg'])) {
     $msg = "";
     $msgClass = "";
 }
-date_default_timezone_set('Asia/Kolkata');
+date_default_timezone_set('Asia/Jakarta');
 $today = date("D d M Y");
 $edit = isset($_GET['edit']) ? mysqli_real_escape_string($con, $_GET['edit']) : '';
 $roww = [];

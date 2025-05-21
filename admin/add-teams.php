@@ -2,7 +2,7 @@
 error_reporting(0);
 include 'conn.php';
 include 'auth.php';
-date_default_timezone_set('Asia/Kolkata');
+date_default_timezone_set('Asia/jakarta'); // Set zona waktu
 $today = date("Y-m-d H:i:s"); // Format tanggal standar
 // Cek apakah parameter 'edit' tersedia dan valid
 $edit = (isset($_GET['edit']) && intval($_GET['edit']) > 0) ? intval($_GET['edit']) : 0;

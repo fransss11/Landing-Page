@@ -164,7 +164,8 @@ function formatTanggalIndonesia($tanggal) {
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
-    <link href="css/style.css?v=20251505" rel="stylesheet">
+    <!-- <link href="css/style.css?v=20251505" rel="stylesheet"> -->
+    <link href="css/style.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
     <!-- AOS Stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -239,6 +240,85 @@ function formatTanggalIndonesia($tanggal) {
             height: 6px;
             background-color: #000000;
         }
+        .decorative-corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #0d6efd;
+            z-index: 1;
+        }
+        .top-left {
+            top: -5px;
+            left: -5px;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 5px 0 0 0;
+        }
+        .top-right {
+            top: -5px;
+            right: -5px;
+            border-left: none;
+            border-bottom: none;
+            border-radius: 0 5px 0 0;
+        }
+        .bottom-left {
+            bottom: -5px;
+            left: -5px;
+            border-right: none;
+            border-top: none;
+            border-radius: 0 0 0 5px;
+        }
+        .bottom-right {
+            bottom: -5px;
+            right: -5px;
+            border-left: none;
+            border-top: none;
+            border-radius: 0 0 5px 0;
+        }
+        .title-decoration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .line-left, .line-right {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0d6efd);
+            flex-grow: 1;
+            margin: 0 15px;
+        }
+        .line-right {
+            background: linear-gradient(90deg, #0d6efd, transparent);
+        }
+        .image-accent-border {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 70%;
+            height: 70%;
+            border: 3px solid #0d6efd;
+            border-radius: 10px;
+            z-index: -1;
+        }
+        .btn-shine {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(30deg);
+            z-index: 1;
+            animation: shine 3s infinite;
+        }
+        @keyframes shine {
+            0% {transform: translateX(-100%) rotate(30deg);}
+            100% {transform: translateX(100%) rotate(30deg);}
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset, 0 8px 20px rgba(0,0,0,0.3) !important;
+        }
     </style>
 </head>
 <body>
@@ -309,61 +389,99 @@ function formatTanggalIndonesia($tanggal) {
         <!-- About Start -->
         <div class="container-fluid about bg-light py-5">
             <div class="container py-5">
-                <div class="row g-5 align-items-center" style="background: #ffffffba; border-radius: 20px;">
+                <!-- About Section with enhanced styling -->
+                <div class="row g-5 align-items-center position-relative" style="background: #ffffffba; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    <!-- Decorative element -->
+                    <div class="decorative-corner top-left"></div>
+                    <div class="decorative-corner top-right"></div>
+                    
                     <?php if (!empty($about['img']) && file_exists("admin/images/about/" . $about['img'])): ?>
                         <div class="col-lg-5" data-aos="fade-right" data-aos-delay="500">
-                            <!-- <div class="about-img pb-5 ps-5"> -->
-                            <div>
-                                <img src="admin/images/about/<?php echo htmlspecialchars($about['img']); ?>" class="img-fluid rounded w-100" style="object-fit: cover;" alt="Image">
+                            <div class="position-relative">
+                                <img src="admin/images/about/<?php echo htmlspecialchars($about['img']); ?>" class="img-fluid rounded w-100" style="object-fit: cover; box-shadow: 5px 5px 15px rgba(0,0,0,0.2);" alt="Image">
+                                <div class="image-accent-border"></div>
                             </div>
                         </div>
                         <div class="col-lg-7" data-aos="fade-left" data-aos-delay="400">
                             <div class="section-title text-start mb-5">
-                                <h4 class="display-3 mb-4 text-center">Tentang Kami</h4>
-                                <?php 
-                                $description = strip_tags($about['deskripsi_pendek']);
-                                $words = explode(' ', $description);
-                                if (count($words) > 100) {
-                                    $description = implode(' ', array_slice($words, 0, 100)) .'.';
-                                }
-                                echo '<p>' . $description . '</p>'; 
-                                ?>
+                                <div class="title-decoration">
+                                    <span class="line-left"></span>
+                                    <h4 class="display-3 mb-4 text-center">Tentang Kami</h4>
+                                    <span class="line-right"></span>
+                                </div>
+                                <div class="about-content p-3" style="border-left: 4px solid #0d6efd; background-color: rgba(255,255,255,0.6); border-radius: 0 10px 10px 0;">
+                                    <?php 
+                                    $description = strip_tags($about['deskripsi_pendek']);
+                                    $words = explode(' ', $description);
+                                    if (count($words) > 100) {
+                                        $description = implode(' ', array_slice($words, 0, 100)) .'.';
+                                    }
+                                    echo '<p class="mb-0">' . $description . '</p>'; 
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     <?php else: ?>
                         <div class="col-lg-12" data-aos="fade-down" data-aos-delay="400" >
                             <div class="section-title text-start mb-5">
-                                <h4 class="display-3 mb-4 text-center">Tentang Kami</h4>
-                                <?php 
-                                $description = strip_tags($about['deskripsi_pendek']);
-                                $words = explode(' ', $description);
-                                if (count($words) > 100) {
-                                    $description = implode(' ', array_slice($words, 0, 100)) .'.';
-                                }
-                                echo '<p>' . $description . '</p>'; 
-                                ?>
+                                <div class="title-decoration">
+                                    <span class="line-left"></span>
+                                    <h4 class="display-3 mb-4 text-center">Tentang Kami</h4>
+                                    <span class="line-right"></span>
+                                </div>
+                                <div class="about-content p-3" style="border-left: 4px solid #0d6efd; background-color: rgba(255,255,255,0.6); border-radius: 0 10px 10px 0;">
+                                    <?php 
+                                    $description = strip_tags($about['deskripsi_pendek']);
+                                    $words = explode(' ', $description);
+                                    if (count($words) > 100) {
+                                        $description = implode(' ', array_slice($words, 0, 100)) .'.';
+                                    }
+                                    echo '<p class="mb-0">' . $description . '</p>'; 
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     <?php endif; ?>
+                    
+                    <!-- Decorative element -->
+                    <div class="decorative-corner bottom-left"></div>
+                    <div class="decorative-corner bottom-right"></div>
                 </div>
-                <!-- Sejarah Section -->
-                <div class="row g-5 align-items-center mt-2" style="background: #ffffffba; border-radius: 20px;">
+                <!-- Sejarah Section with enhanced styling -->
+                <div class="row g-5 align-items-center mt-4 position-relative" style="background: #ffffffba; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    <!-- Decorative element -->
+                    <div class="decorative-corner top-left"></div>
+                    <div class="decorative-corner top-right"></div>
+                    
                     <div class="col-lg-12" data-aos="fade-up" data-aos-delay="500">
                         <div class="section-title text-start mb-5">
-                            <h4 class="display-3 mb-4 text-center"><?php echo $about['history_title']; ?></h4>
-                            <?php 
-                            $history = strip_tags($about['sejarah_pendek']);
-                            $words = explode(' ', $history);
-                            if (count($words) > 200) {
-                                $history = implode(' ', array_slice($words, 0, 200)) .'.';
-                            }
-                            echo '<p>' . $history . '</p>'; 
-                            ?>
+                            <div class="title-decoration">
+                                <span class="line-left"></span>
+                                <h4 class="display-3 mb-4 text-center"><?php echo $about['history_title']; ?></h4>
+                                <span class="line-right"></span>
+                            </div>
+                            <div class="history-content p-3" style="border-left: 4px solid #0d6efd; background-color: rgba(255,255,255,0.6); border-radius: 0 10px 10px 0;">
+                                <?php 
+                                $history = strip_tags($about['sejarah_pendek']);
+                                $words = explode(' ', $history);
+                                if (count($words) > 200) {
+                                    $history = implode(' ', array_slice($words, 0, 200)) .'.';
+                                }
+                                echo '<p class="mb-0">' . $history . '</p>'; 
+                                ?>
+                            </div>
                         </div>
                     </div>
+                    
+                    <!-- Decorative element -->
+                    <div class="decorative-corner bottom-left"></div>
+                    <div class="decorative-corner bottom-right"></div>
                 </div>
-                <div class="mt-auto text-center">
-                    <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset; margin-top: 8px;" href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Selengkapnya</a>
+                <div class="mt-4 text-center">
+                    <a href="about.php" class="btn btn-primary rounded-pill text-white py-3 px-5" style="color: #000000; box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset, 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                        <span style="position: relative; z-index: 2;">Lihat Selengkapnya</span>
+                        <div class="btn-shine"></div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -424,9 +542,15 @@ function formatTanggalIndonesia($tanggal) {
                     <?php endforeach; ?>
                     <div class="col-12 text-center" data-aos="fade-up" data-aos-delay="200">
                     </div>
-                    <div class="mt-auto text-center">
-                        <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="service.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Layanan</a>
+                    <div class="mt-4 text-center">
+                        <a href="service.php" class="btn btn-primary rounded-pill text-white py-3 px-5" style="color: #000000; box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset, 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <span style="position: relative; z-index: 2;">Lihat Semua Layanan</span>
+                            <div class="btn-shine"></div>
+                        </a>
                     </div>
+                    <!-- <div class="mt-auto text-center">
+                        <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="service.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Layanan</a>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -530,9 +654,15 @@ function formatTanggalIndonesia($tanggal) {
                     </nav>
                 </div> -->
             </div>
-            <div class="mt-auto text-center">
-                <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="team.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Tim</a>
+            <div class="mt-4 text-center">
+                <a href="team.php" class="btn btn-primary rounded-pill text-white py-3 px-5" style="color: #000000; box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset, 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                    <span style="position: relative; z-index: 2;">Lihat Semua Tim</span>
+                    <div class="btn-shine"></div>
+                </a>
             </div>
+            <!-- <div class="mt-auto text-center">
+                <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="team.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Tim</a>
+            </div> -->
         </div>
         <!-- Team End -->
         <!-- Daftar Berita -->
@@ -543,9 +673,15 @@ function formatTanggalIndonesia($tanggal) {
                 </div>
             </div>
             <div class="row g-4" id="berita-container"></div>
-            <div class="mt-auto text-center" style="padding-top: 20px;">
-                <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="berita.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Berita</a>
+            <div class="mt-4 text-center">
+                <a href="berita.php" class="btn btn-primary rounded-pill text-white py-3 px-5" style="color: #000000; box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset, 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                    <span style="position: relative; z-index: 2;">Lihat Semua Berita</span>
+                    <div class="btn-shine"></div>
+                </a>
             </div>
+            <!-- <div class="mt-auto text-center" style="padding-top: 20px;">
+                <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="berita.php" class="btn btn-primary rounded-pill text-white py-3 px-5">Lihat Semua Berita</a>
+            </div> -->
         </div>
         <!-- Script untuk Daftar Berita -->
         <script>
@@ -614,9 +750,15 @@ function formatTanggalIndonesia($tanggal) {
                         <?php endforeach; ?>
                     </div>
                     <!-- Berikan Testimoni Start -->
-                    <div class="container-fluid py-5 text-center">
-                        <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="testimoni.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Berikan Testimoni</a>
+                    <div class="mt-4 text-center">
+                        <a href="testimoni.php" class="btn btn-primary rounded-pill text-white py-3 px-5" style="color: #000000; box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset, 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <span style="position: relative; z-index: 2;">Berikan Testimoni</span>
+                            <div class="btn-shine"></div>
+                        </a>
                     </div>
+                    <!-- <div class="container-fluid py-5 text-center">
+                        <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="testimoni.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Berikan Testimoni</a>
+                    </div> -->
                     <!-- Berikan Testimoni End -->
                 </div>
             </div>

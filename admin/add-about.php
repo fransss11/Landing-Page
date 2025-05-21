@@ -14,6 +14,8 @@ $dataExists = ($roww) ? true : false;
 // Inisialisasi nilai kolom baru
 $deskripsi_pendek_db = $dataExists ? $roww['deskripsi_pendek'] : '';
 $sejarah_pendek_db  = $dataExists ? $roww['sejarah_pendek']  : '';
+$visi_db = $dataExists ? $roww['visi'] : '';
+$misi_db = $dataExists ? $roww['misi'] : '';
 
 if (isset($_POST['save'])) {
     // Escape untuk titel & sub‐titel
@@ -31,6 +33,12 @@ if (isset($_POST['save'])) {
     $history_raw  = base64_decode($_POST['history']);
     $descrip      = mysqli_real_escape_string($con, $descrip_raw);
     $history      = mysqli_real_escape_string($con, $history_raw);
+    
+    // Decode dan escape untuk visi dan misi
+    $visi_raw = isset($_POST['visi']) ? base64_decode($_POST['visi']) : '';
+    $misi_raw = isset($_POST['misi']) ? base64_decode($_POST['misi']) : '';
+    $visi = mysqli_real_escape_string($con, $visi_raw);
+    $misi = mysqli_real_escape_string($con, $misi_raw);
 
     // Handle upload gambar
     $lis_img = $dataExists ? $roww['img'] : '';
@@ -56,14 +64,16 @@ if (isset($_POST['save'])) {
     // Siapkan SQL
     if (!$dataExists) {
         $sql = "INSERT INTO about
-                (title, deskripsi_pendek, descrip, img, history_title, sejarah_pendek, history, date, status)
+                (title, deskripsi_pendek, descrip, visi, misi, img, history_title, sejarah_pendek, history, date, status)
                 VALUES
-                ('$title','$deskripsi_pendek','$descrip','$lis_img','$history_title','$sejarah_pendek','$history','$today','0')";
+                ('$title','$deskripsi_pendek','$descrip','$visi','$misi','$lis_img','$history_title','$sejarah_pendek','$history','$today','0')";
     } else {
         $sql = "UPDATE about SET
                     title            = '$title',
                     deskripsi_pendek = '$deskripsi_pendek',
                     descrip          = '$descrip',
+                    visi             = '$visi',
+                    misi             = '$misi',
                     img              = '$lis_img',
                     history_title    = '$history_title',
                     sejarah_pendek   = '$sejarah_pendek',
@@ -138,6 +148,22 @@ if (isset($_POST['save'])) {
                         <textarea id="validationDescrip" class="form-control textarea"><?php if ($dataExists) echo $roww['descrip']; ?></textarea>
                         <div class="invalid-feedback">Mohon isi deskripsi.</div>
                     </div>
+                    
+                    <!-- Visi -->
+                    <div class="col-12">
+                        <label class="form-label">Visi</label>
+                        <input type="hidden" name="visi" value="">
+                        <textarea id="validationVisi" class="form-control textarea"><?php if ($dataExists) echo $roww['visi']; ?></textarea>
+                        <div class="invalid-feedback">Mohon isi visi.</div>
+                    </div>
+                    
+                    <!-- Misi -->
+                    <div class="col-12">
+                        <label class="form-label">Misi</label>
+                        <input type="hidden" name="misi" value="">
+                        <textarea id="validationMisi" class="form-control textarea"><?php if ($dataExists) echo $roww['misi']; ?></textarea>
+                        <div class="invalid-feedback">Mohon isi misi.</div>
+                    </div>
 
                     <!-- Gambar -->
                     <div class="col-md-12">
@@ -204,7 +230,7 @@ $(function () {
     // });
     // Inisialisasi Summernote
     $('.textarea').summernote({
-        height: 200,
+        height: 350,
         toolbar: [
             ['style', ['style']],
             ['font', ['bold', 'italic', 'underline', 'clear', 'fontname']],
@@ -215,7 +241,6 @@ $(function () {
             ['view', ['fullscreen', 'codeview', 'help']]
         ],
     });
-
     // Encode konten sebelum submit
     $('form.needs-validation').on('submit', function (e) {
         var encDes = btoa(unescape(encodeURIComponent($('#validationDescripPendek').summernote('code'))));
@@ -229,6 +254,13 @@ $(function () {
 
         var encHistory   = btoa(unescape(encodeURIComponent($('#validationHistory').summernote('code'))));
         $('input[name="history"]').val(encHistory);
+        
+        // Add encoding for visi and misi
+        var encVisi = btoa(unescape(encodeURIComponent($('#validationVisi').summernote('code'))));
+        $('input[name="visi"]').val(encVisi);
+        
+        var encMisi = btoa(unescape(encodeURIComponent($('#validationMisi').summernote('code'))));
+        $('input[name="misi"]').val(encMisi);
 
         if (!this.checkValidity()) {
             e.preventDefault(); e.stopPropagation();
