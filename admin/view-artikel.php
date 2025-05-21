@@ -229,9 +229,11 @@ if (isset($_GET['delete_id'])) {
                 },
                 { data: 'title' },
                 { 
-                    data: 'content', 
-                    render: function(data) {
-                        return data.length > 100 ? data.substr(0, 100) + '...' : data;
+                    data: 'content',
+                    render: function(data, type, row) {
+                        // Hapus tag HTML dan batasi jumlah karakter
+                        let stripped = data.replace(/(<([^>]+)>)/gi, "");
+                        return (stripped.length > 100) ? stripped.substr(0, 100) + '...' : stripped;
                     }
                 },
                 { data: 'created_at' },

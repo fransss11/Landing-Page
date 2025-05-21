@@ -45,8 +45,12 @@ $conn->close();
             border-radius: 8px;
         }
         .kategori-header:hover {
-            color:rgb(187, 0, 255);
+            color:rgb(255, 255, 255);
             cursor: pointer;
+            background-color: #000000 !important;
+        }
+        .client-card {
+            max-width: 100%;
         }
     </style>
 </head>
@@ -87,7 +91,7 @@ $conn->close();
                 </div>
                 <?php foreach ($images as $kategori => $kategori_images): ?>
                     <div class="row text-center mb-4" data-aos="fade-down" data-aos-delay="500">
-                        <h3 class="kategori-header" style="background:rgba(232, 232, 232, 0.87); cursor:pointer; border-radius: 25px; width: 500px; " data-kategori="<?= htmlspecialchars($kategori); ?>">
+                        <h3 class="kategori-header" style="background:rgb(255, 255, 255); cursor:pointer; border-radius: 25px; width: 100%; " data-kategori="<?= htmlspecialchars($kategori); ?>">
                             <?= htmlspecialchars($kategori); ?>
                         </h3>
                     </div>
@@ -158,6 +162,9 @@ $conn->close();
                         pagination.style.marginTop = '20px';
                         pagination.style.paddingBottom = '10px';
                         pagination.style.textAlign = 'center';
+                        pagination.style.display = 'flex';
+                        pagination.style.justifyContent = 'center';
+                        pagination.style.width = '100%';
                         konten.appendChild(pagination);
 
                         const totalPages = Math.ceil(items.length / itemsPerPage);

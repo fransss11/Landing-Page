@@ -11,7 +11,7 @@ if ($result->num_rows > 0) {
     }
 }
 // Define the specific order for categories
-$orderedCategories = ['Internal', 'Auditor', 'Asesor'];
+$orderedCategories = ['Internal', 'Auditor', 'Assesor Associate'];
 $activeCategories = [];
 foreach ($teamList as $member) {
     if (!empty($member['category']) && !in_array($member['category'], $activeCategories)) {
@@ -163,7 +163,7 @@ $conn->close();
                                 case 'auditor':
                                     $icon = '<i class="fas fa-clipboard-check mr-2"></i>';
                                     break;
-                                case 'asesor':
+                                case 'assesor associate':
                                     $icon = '<i class="fas fa-user-tie mr-2"></i>';
                                     break;
                                 default:

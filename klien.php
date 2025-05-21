@@ -82,6 +82,9 @@ $conn->close();
             background-color: #ffffffba !important;
             border-radius: 8px;
         }
+        .client-card p {
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>
