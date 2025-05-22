@@ -165,7 +165,7 @@ function formatTanggalIndonesia($tanggal) {
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <!-- <link href="css/style.css?v=20251505" rel="stylesheet"> -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style.css?<?php echo time(); ?>" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
     <!-- AOS Stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -183,6 +183,7 @@ function formatTanggalIndonesia($tanggal) {
         }
         .single-review{
             max-width: 100%;
+            min-height: auto;
         }
         .client-reviews .single-review {
             height: auto;
@@ -318,6 +319,9 @@ function formatTanggalIndonesia($tanggal) {
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset, 0 8px 20px rgba(0,0,0,0.3) !important;
+        }
+        .card-img-top {
+            height: auto;
         }
     </style>
 </head>
@@ -566,7 +570,7 @@ function formatTanggalIndonesia($tanggal) {
                         <?php foreach ($clients as $index => $client) : ?>
                             <div class="single-review" id="review-<?php echo $index; ?>" style="display: <?php echo $index < 4 ? 'block' : 'none'; ?>;" 
                                 data-aos="<?php echo $index % 2 == 0 ? 'fade-left' : 'fade-right'; ?>" data-aos-delay="<?php echo ($index % 2 == 0 ? 200 : 400); ?>">
-                                <h5 class="reviewer-name"><?php echo htmlspecialchars($client['klien']); ?></h5>
+                                <!-- <h5 class="reviewer-name"><?php echo htmlspecialchars($client['klien']); ?></h5> -->
                                 <div class="reviewer-thumb">
                                     <img class="avatar-lg radius-200" 
                                         src="admin/images/partnership/<?php echo htmlspecialchars($client['gambar']); ?>" 

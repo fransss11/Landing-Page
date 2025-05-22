@@ -76,6 +76,25 @@ if (isset($_GET['delete_id'])) {
     table.dataTable td.dt-type-date {
         text-align: center;
     }
+    .card-body {
+        overflow-x: auto;
+    }    
+    @media (max-width: 767px) {
+        .table th, .table td {
+            padding: 8px 5px;
+            font-size: 14px;
+        }
+        
+        .table img {
+            max-width: 80px;
+            height: auto;
+        }
+        
+        .btn-sm {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.75rem;
+        }
+    }
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -178,6 +197,8 @@ if (isset($_GET['delete_id'])) {
     },
     serverSide: true,
     processing: true,
+    responsive: true,
+    scrollX: true,
     ajax: {
         url: 'ajax.php?action=fetch_partner',
         type: 'GET',
@@ -192,7 +213,7 @@ if (isset($_GET['delete_id'])) {
       { data: 'no' },
       { data: 'klien' },
       { data: 'gambar', render: function(data, type, row) {
-            return '<img style="width:150px;" src="images/partnership/' + data + '">';
+            return '<img style="max-width:150px; width:200px;" src="images/partnership/' + data + '">';
         } 
       },
       { data: 'aksi' }

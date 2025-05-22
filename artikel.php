@@ -77,6 +77,14 @@ foreach ($sidebarArticles as $a) {
     <link href="css/responsive.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
     <style>
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        
         .hidden { opacity: 0; transition: opacity .5s ease; }
         .visible { opacity: 1; }
         .pagination { justify-content: center; }
@@ -90,6 +98,22 @@ foreach ($sidebarArticles as $a) {
         }
         .row {
             justify-content: space-around;
+        }
+        
+        @media (max-width: 768px) {
+            /* Mobile-specific adjustments */
+            .container, .container-fluid {
+                max-width: 100%;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+            .article-item {
+                max-width: 100%;
+            }
         }
     </style>
 </head>

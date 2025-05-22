@@ -48,6 +48,12 @@ $conn->close();
     <link href="css/style.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
     <style>
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+    }
+    
     @media (max-width: 768px) {
         .card-body {
             padding: 1rem;
@@ -55,9 +61,20 @@ $conn->close();
         .card-img-top {
             width: 100%;
             height: auto;
+            max-width: 100%;
         }
         p#konten-berita {
             font-size: 1rem;
+        }
+        /* Ensure all content stays within viewport */
+        .container {
+            max-width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
         }
     }
     .text-white {
@@ -72,7 +89,7 @@ $conn->close();
         width: auto;
         height: auto;
         margin-top: auto;
-        max-height: 49vh;
+        max-height: 100%;
     }
 </style>
 </head>

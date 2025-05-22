@@ -50,6 +50,9 @@ $conn->close();
         .btn.btn-primary:hover{
             box-shadow: inset 500px 0 0 0 rgb(255, 255, 255) !important;
         }
+        .card-img-top {
+            height: auto;
+        }
     </style>
 </head>
 <body>

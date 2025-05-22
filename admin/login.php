@@ -193,7 +193,12 @@ if (isset($_POST['submit'])) {
           </div>
         </div>
         <div class="input-group">
-          <input type="password" name="ad_pass" class="form-control" placeholder="Password" required>
+          <input type="password" name="ad_pass" class="form-control" id="password" placeholder="Password" required>
+          <div class="input-group-append">
+            <div class="input-group-text password-toggle" style="cursor: pointer; border-radius: 0 25px 25px 0 !important; border-left: none;">
+              <span class="fas fa-eye-slash" id="togglePassword"></span>
+            </div>
+          </div>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -241,6 +246,20 @@ if (isset($_POST['submit'])) {
       $(this).parent().removeClass('focused');
     });
   });
+  
+  // Toggle password visibility
+  const togglePassword = document.querySelector('#togglePassword');
+  const password = document.querySelector('#password');
+  
+  togglePassword.addEventListener('click', function (e) {
+    // Toggle the type attribute using
+    // getAttribute() and setAttribute() methods
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // Toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+    this.classList.toggle('fa-eye');
+});
 </script>
 </body>
 </html>

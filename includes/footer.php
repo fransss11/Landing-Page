@@ -140,19 +140,19 @@ $info = $result->fetch_assoc();
                     <div style="color: black;" class="d-flex align-items-center">
                         <i class="fas fa-share fa-2x me-2"></i>
                         <?php if (!empty($social['facebook'])): ?>
-                            <a style="color: #005fff; background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
+                            <a style="color: #005fff; background-color:rgba(93, 0, 255, 0.78);" target="_blank" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
                         <?php endif; ?>
                         <?php if (!empty($social['twitter'])): ?>
-                            <a style="color: #005fff; background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['twitter']; ?>"><i class="fab fa-twitter"></i></a>
+                            <a style="color: #005fff; background-color:rgba(93, 0, 255, 0.78);" target="_blank" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['twitter']; ?>"><i class="fab fa-twitter"></i></a>
                         <?php endif; ?>
                         <?php if (!empty($social['instagram'])): ?>
-                            <a style="color: #ff1f00; background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['instagram']; ?>"><i class="fab fa-instagram"></i></a>
+                            <a style="color: #ff1f00; background-color:rgba(93, 0, 255, 0.78);" target="_blank" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['instagram']; ?>"><i class="fab fa-instagram"></i></a>
                         <?php endif; ?>
                         <?php if (!empty($social['linkedin'])): ?>
-                            <a style="color:rgb(255, 255, 255); background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
+                            <a style="color:rgb(255, 255, 255); background-color:rgba(93, 0, 255, 0.78);" target="_blank" class="btn-square btn btn-primary rounded-circle mx-1" href="<?php echo $social['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
                             <?php endif; ?>
                         <?php if (!empty($social['whatsapp'])): ?>
-                            <a style="color: #00ff7b; background-color:rgba(93, 0, 255, 0.78);" class="btn-square btn btn-primary rounded-circle mx-1" href="https://wa.me/<?php echo $social['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
+                            <a style="color: #00ff7b; background-color:rgba(93, 0, 255, 0.78);" target="_blank" class="btn-square btn btn-primary rounded-circle mx-1" href="https://wa.me/<?php echo $social['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -183,7 +183,7 @@ $info = $result->fetch_assoc();
                 <div class="footer-item d-flex flex-column">
                     <h4 class="mb-4 text-white">Info Kontak</h4>
                     <?php if (!empty($info['lokasi'])): ?>
-                        <a href="<?php echo $info['lokasi']; ?>"><i class="fa fa-map-marker-alt me-2"></i><?php echo $social['nama_maps']; ?></a>
+                        <a href="<?php echo $info['lokasi']; ?>" target="_blank"><i class="fa fa-map-marker-alt me-2"></i><?php echo $social['nama_maps']; ?></a>
                     <?php endif; ?>
                     <?php if (!empty($info['gmail'])): ?>
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo urlencode($info['gmail']); ?>" 
