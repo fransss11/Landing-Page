@@ -132,13 +132,15 @@ if (isset($_POST['publise'])) {
                                     </div>
                                 </div>
                                 <div class="card-body pad">
-                                    <label for="validationDeskripsi" class="form-label">Deskripsi Singkat</label>
+                                    <label for="validationDeskripsi" class="form-label">Deskripsi Singkat Maksimal 50 Kata</label>
                                     <div class="mb-3">
                                         <textarea name="deskripsi" class="form-control" id="validationDeskripsi" 
-                                                  placeholder="Deskripsi" rows="5" required><?php echo htmlspecialchars($roww["deskripsi"]); ?></textarea>
+                                                placeholder="Deskripsi" rows="5" required oninput="countWords(this)"><?php echo htmlspecialchars($roww["deskripsi"]); ?></textarea>
                                         <div class="invalid-feedback">
                                             Harap masukkan deskripsi.
+                                            <span class="text-danger"> (Maksimal 50 kata)</span>
                                         </div>
+                                        <small id="wordCountInfo" class="form-text text-muted">0/50 kata</small>
                                     </div>
                                 </div>
                                 <div class="card-header">   
@@ -194,6 +196,23 @@ if (isset($_POST['publise'])) {
     $(function () {
         $('.textarea').summernote();
     });
+</script>
+<script>
+function countWords(textarea) {
+    const maxWords = 50;
+    let words = textarea.value.trim().split(/\s+/).filter(Boolean);
+    let wordCount = words.length;
+    if (wordCount > maxWords) {
+        textarea.value = words.slice(0, maxWords).join(" ");
+        wordCount = maxWords;
+    }
+    document.getElementById('wordCountInfo').innerText = wordCount + "/50 kata";
+}
+// Inisialisasi saat halaman dimuat (untuk edit)
+document.addEventListener("DOMContentLoaded", function() {
+    const textarea = document.getElementById('validationDeskripsi');
+    if (textarea) countWords(textarea);
+});
 </script>
 </body>
 </html>

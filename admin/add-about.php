@@ -138,7 +138,8 @@ if (isset($_POST['save'])) {
                     <div class="col-12">
                         <label class="form-label">Deskripsi Singkat Untuk Halaman Beranda</label>
                         <input type="hidden" name="deskripsi_pendek" value="">
-                        <textarea style="height: 200px;" id="validationDescripPendek" class="form-control textarea-pendek"><?php if ($dataExists) echo $roww['deskripsi_pendek']; ?></textarea>
+                        <textarea style="height: 200px;" id="validationDescripPendek" class="form-control textarea-pendek" oninput="countWordsPendek(this)" maxlength="1500"><?php if ($dataExists) echo $roww['deskripsi_pendek']; ?></textarea>
+                        <small id="wordCountPendek" class="form-text text-muted">0/100 kata</small>
                         <div class="invalid-feedback">Mohon isi deskripsi pendek.</div>
                     </div>
                     <!-- Deskripsi Tentang Kami -->
@@ -194,7 +195,8 @@ if (isset($_POST['save'])) {
                     <div class="col-12">
                         <label class="form-label">Sejarah Singkat Untuk Halaman Beranda</label>
                         <input type="hidden" name="sejarah_pendek" value="">
-                        <textarea style="height: 200px;" id="validationSejarahPendek" class="form-control textarea-pendek"><?php if ($dataExists) echo $roww['sejarah_pendek']; ?></textarea>
+                        <textarea style="height: 200px;" id="validationSejarahPendek" class="form-control textarea-pendek" oninput="countWordsSejarah(this)" maxlength="3000"><?php if ($dataExists) echo $roww['sejarah_pendek']; ?></textarea>
+                        <small id="wordCountSejarah" class="form-text text-muted">0/200 kata</small>
                         <div class="invalid-feedback">Mohon isi sejarah pendek.</div>
                     </div>
                     <!-- Isi Sejarah -->
@@ -273,6 +275,38 @@ $(function () {
 document.getElementById("validationImage").addEventListener("change", function () {
     var fileName = this.files[0] ? this.files[0].name : "Tidak ada gambar yang dipilih";
     this.nextElementSibling.innerText = fileName;
+});
+</script>
+<script>
+function countWordsPendek(textarea) {
+    const maxWords = 100;
+    let words = textarea.value.trim().split(/\s+/).filter(Boolean);
+    let wordCount = words.length;
+    if (wordCount > maxWords) {
+        textarea.value = words.slice(0, maxWords).join(" ");
+        wordCount = maxWords;
+    }
+    document.getElementById('wordCountPendek').innerText = wordCount + "/100 kata";
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const textarea = document.getElementById('validationDescripPendek');
+    if (textarea) countWordsPendek(textarea);
+});
+</script>
+<script>
+function countWordsSejarah(textarea) {
+    const maxWords = 200;
+    let words = textarea.value.trim().split(/\s+/).filter(Boolean);
+    let wordCount = words.length;
+    if (wordCount > maxWords) {
+        textarea.value = words.slice(0, maxWords).join(" ");
+        wordCount = maxWords;
+    }
+    document.getElementById('wordCountSejarah').innerText = wordCount + "/200 kata";
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const textarea = document.getElementById('validationSejarahPendek');
+    if (textarea) countWordsSejarah(textarea);
 });
 </script>
 </body>

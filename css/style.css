@@ -2237,7 +2237,7 @@ tr:hover {
     background-repeat: no-repeat;
 }
 .container-fluid.client-reviews-section {
-    background: linear-gradient(49deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url(../admin/images/6062704.jpg);
+    background: linear-gradient(49deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url(../admin/images/coba2.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -2267,7 +2267,7 @@ tr:hover {
     background-repeat: no-repeat;
 }
 .container-fluid.projek {
-    background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/12065079_4861716.jpg');
+    background: linear-gradient(161deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/coba1.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -2280,6 +2280,12 @@ tr:hover {
 }
 .container-fluid.article {
     background: linear-gradient(196deg, rgb(184 119 254 / 68%), rgb(216 152 255)), url('../admin/images/18952606_60656342.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container-fluid.testimoni {
+    background: linear-gradient(196deg, rgb(184 119 254 / 68%), rgb(216 152 255)), url('../admin/images/coba1.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

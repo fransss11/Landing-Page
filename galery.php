@@ -38,6 +38,12 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
     <style>
+        .container-fluid.galeri {
+            background: linear-gradient(310deg, rgb(48 48 48 / 70%), rgb(195 95 255)), url(admin/images/coba3.jpg) !important;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
         .text-white {
             background-color: #ffffffba !important;
             border-radius: 8px;
@@ -75,9 +81,10 @@ $conn->close();
             border: none;
             font-weight: 600;
             width: 100%;
-            display: block;
+            display: flex;
             text-align: center;
             font-size: 1.2rem;
+            justify-content: space-between;
         }
         
         .kategori-header:hover {
@@ -165,10 +172,11 @@ $conn->close();
         }
         
         .client-card {
+            background: -webkit-radial-gradient(50% 50%, circle closest-side, #76767670 0%, #77777799 100%) !important;
             transition: all 0.3s ease;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgb(0, 0, 0);
         }
         
         .client-card:hover {
@@ -289,7 +297,7 @@ $conn->close();
         ?>
         <!-- Header End -->
         <!-- Gallery Start -->
-        <div class="container-fluid about team py-5">
+        <div class="container-fluid galeri py-5">
             <div class="container py-5">
                 <div class="section-title mb-5">
                     <div class="sub-style">

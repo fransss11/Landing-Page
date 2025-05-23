@@ -34,9 +34,9 @@ if (isset($_POST['publise'])) {
     $comments    = mysqli_real_escape_string($con, $_POST['comments']);
     $lis_img = $roww["img"];
     if (!empty($_FILES['lis_img']['name'])) {
-        $maxFileSize = 500 * 1024; // 500KB
+        $maxFileSize = 10 * 1024 * 1024; // 10MB
         if ($_FILES['lis_img']['size'] > $maxFileSize) {
-            $_SESSION['msg'] = "Ukuran file harus kurang dari 500KB.";
+            $_SESSION['msg'] = "Ukuran file harus kurang dari 10MB.";
             $_SESSION['msgClass'] = "alert-danger bg-danger text-white";
             header("Location: add-testimonials.php" . ($edit ? "?edit=" . $edit : ""));
             exit;
@@ -171,7 +171,7 @@ function compressImage($source, $destination, $quality) {
                                         <label for="validationDesignation" class="form-label">Masukkan Jabatan</label>
                                         <input name="designation" type="text" class="form-control" id="validationDesignation"
                                                value="<?php echo htmlspecialchars($roww["designation"]); ?>" 
-                                               placeholder="Masukkan jabatan..." required>
+                                               placeholder="Masukkan jabatan...">
                                         <div class="invalid-feedback">
                                             Harap masukkan jabatan yang valid.
                                         </div>
@@ -191,16 +191,16 @@ function compressImage($source, $destination, $quality) {
                                     <div class="form-group">
                                         <label for="exampleInputFile">
                                             Pilih Gambar
-                                            <?php 
+                                            <!-- <?php 
                                             // Wajib upload jika data baru atau belum ada gambar
                                             if(empty($roww["img"])){ 
                                                 echo '<span class="text-danger">*</span>'; 
                                             }
-                                            ?>
-                                            <p style="color:red;">Maksimal 500 KB</p>
+                                            ?> -->
+                                            <p style="color:red;">Maksimal 10MB</p>
                                         </label>  
-                                        <input name="lis_img" type="file" class="form-control" id="imageUpload" accept="image/*" <?php echo empty($roww["img"]) ? 'required' : ''; ?>>
-                                        <div id="fileError" class="text-danger mt-1" style="display: none;">Ukuran file harus kurang dari 500KB.</div>
+                                        <input name="lis_img" type="file" class="form-control" id="imageUpload" accept="image/*" <?php echo empty($roww["img"]) ? : ''; ?>>
+                                        <div id="fileError" class="text-danger mt-1" style="display: none;">Ukuran file harus kurang dari 10MB.</div>
                                         <div id="fileSuccess" class="text-success mt-1" style="display: none;">✔ Ukuran file valid.</div>
                                     </div>
                                     <?php 
@@ -269,7 +269,7 @@ function compressImage($source, $destination, $quality) {
     $(document).ready(function(){
         $("#imageUpload").change(function(){
             let file = this.files[0];
-            if (file.size > 500 * 1024) {
+            if (file.size > 10 * 1024 * 1024) { // 10MB
                 $("#fileError").show();
                 $("#fileSuccess").hide();
                 $(this).val('');
