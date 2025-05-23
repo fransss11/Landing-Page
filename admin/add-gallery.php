@@ -63,9 +63,9 @@ if (isset($_POST['publise'])) {
           for ($i = 0; $i < $total_files; $i++) {
               if (!empty($_FILES['gambar']['name'][$i])) {
                   $image_size = $_FILES['gambar']['size'][$i];
-                  $max_size = 500 * 1024; // 500KB dalam bytes  
+                  $max_size = 5 * 1024 * 1024; // 5MB dalam bytes
                   if ($image_size > $max_size) {
-                      $_SESSION['msg'] = "Error: Satu atau lebih gambar melebihi batas 500KB.";
+                      $_SESSION['msg'] = "Error: Satu atau lebih gambar melebihi batas 5MB.";
                       $_SESSION['msgClass'] = "danger";
                       echo "<script>window.location.href = 'view-gallery.php';</script>";
                       exit;
@@ -169,7 +169,7 @@ function compressImage($source, $destination, $quality) {
                 <div class="card card-outline card-info">
                   <div class="card-header">
                     <div class="form-group">
-                      <label for="validationGalleryName">Masukkan Nama Galeri <span class="text-danger">*</span></label>
+                      <label for="validationGalleryName">Masukkan Nama Galeri</label>
                       <input type="text" name="nama" value="<?php echo isset($roww["galery"]) ? htmlspecialchars($roww["galery"]) : ''; ?>" class="form-control" id="validationGalleryName" placeholder="Masukkan ...">
                     </div>
                   </div>
@@ -201,7 +201,8 @@ function compressImage($source, $destination, $quality) {
                             echo '<span class="text-danger">*</span>'; 
                         }
                         ?>
-                        <p style="color:red;">Maksimal 500 KB</p>
+                        <p style="color:red;">Maksimal 5 MB</p>
+                        <p style="color:orange;">Maksimal 20 file per upload. Jika ingin upload lebih dari 20 file, silakan lakukan upload secara bertahap (20 file per proses).</p>
                     </label>
                       <?php 
                       if ($edit) {
@@ -216,7 +217,7 @@ function compressImage($source, $destination, $quality) {
                           <?php
                       }
                       ?>
-                    <div id="fileErrorBox" style="color: red; display: none;">Ukuran file harus kurang dari 500KB.</div>
+                    <div id="fileErrorBox" style="color: red; display: none;">Ukuran file harus kurang dari 5MB.</div>
                       <?php
                       if ($edit && isset($roww["foto"]) && !empty($roww["foto"])) {
                           $imagePath = "uploads/" . $roww["foto"];
@@ -282,13 +283,24 @@ function compressImage($source, $destination, $quality) {
 <script>
 document.getElementById('validationImages').addEventListener('change', function () {
     var files = this.files;
-    var maxSize = 500 * 1024; // 500KB dalam bytes
+    var maxSize = 5 * 1024 * 1024; // 5MB dalam bytes
+    var maxFiles = 20;
     var errorBox = document.getElementById('fileErrorBox');
     errorBox.style.display = 'none'; // Sembunyikan pesan error terlebih dahulu
+
+    // Validasi jumlah file
+    if (files.length > maxFiles) {
+        errorBox.style.display = 'block';
+        errorBox.innerHTML = "Error: Maksimal upload 20 file sekaligus. Silakan upload secara bertahap.";
+        this.value = ""; // Kosongkan input file agar pengguna harus memilih ulang
+        return;
+    }
+
+    // Validasi ukuran file
     for (var i = 0; i < files.length; i++) {
         if (files[i].size > maxSize) {
             errorBox.style.display = 'block';
-            errorBox.innerHTML = "Error: Salah satu atau lebih gambar melebihi batas 500KB.";
+            errorBox.innerHTML = "Error: Salah satu atau lebih gambar melebihi batas 5MB.";
             this.value = ""; // Kosongkan input file agar pengguna harus memilih ulang
             break;
         }

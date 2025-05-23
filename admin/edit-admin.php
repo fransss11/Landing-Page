@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                     <div class="card-header">
                                         <div class="form-group">
-                                            <label for="validationAdPassword">Password (Kosongkan jika tidak ingin mengubah)</label>
+                                            <label for="validationAdPassword">Password (Abaikan jika tidak ingin mengubah)</label>
                                             <!-- Input group dengan ikon mata untuk toggle password -->
                                             <div class="input-group">
                                                 <input name="ad_password" type="password" class="form-control" id="validationAdPassword" placeholder="Masukkan password baru..."
@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                     <div class="card-header">
                                         <div class="form-group">
-                                            <label for="validationAdImage">Gambar Profil (Maksimal 500KB)</label>
+                                            <label for="validationAdImage">Gambar Profil (Maksimal 10MB)</label>
                                             <div class="custom-file">
                                                 <input type="file" name="ad_image" class="custom-file-input" id="validationAdImage" accept="image/*">
                                                 <label class="custom-file-label" for="validationAdImage">Pilih gambar...</label>
@@ -228,8 +228,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             var fileInput = document.getElementById("validationAdImage"); // Input file
             if (file) {
                 var fileSize = file.size; // Ukuran file dalam byte
-                if (fileSize > 512000) { // 500KB = 512000 byte
-                    errorText.textContent = "Ukuran gambar terlalu besar! Maksimal 500KB.";
+                if (fileSize > 10485760) { // 10MB = 10485760 byte
+                    errorText.textContent = "Ukuran gambar terlalu besar! Maksimal 10MB.";
                     fileInput.value = ""; // Kosongkan input agar tidak bisa diunggah
                 } else {
                     errorText.textContent = ""; // Hapus pesan error jika ukuran sesuai
