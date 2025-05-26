@@ -54,6 +54,12 @@ $logo = (!empty($info_row['logo']))
                         <p>Lihat Jam Kerja</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="slider.php" class="nav-link <?php echo ($current_page == 'slider.php') ? 'active' : ''; ?>">
+                        <i class="fas fa-tv nav-icon"></i>
+                        <p>Gambar Kegiatan</p>
+                    </a>
+                </li>
                 <!-- About Section -->
                 <li class="nav-header">Tentang Kami</li>
                 <li class="nav-item">

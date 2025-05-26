@@ -183,13 +183,16 @@ $conn->close();
             margin-bottom: 12px;
             color:rgb(255, 255, 255);
             transition: color .2s;
-            background-color:rgba(50, 50, 50, 0.6);
+            background-color:rgb(0, 0, 0);
             border-radius: 10px;
             height: 90px;
             max-height: 100%;
+            display: flex;
+            align-items: center;
         }
         .service-item a:hover .service-title {
-            color:rgb(0, 255, 123);
+            color:rgb(10, 34, 22);
+            background-color:rgb(255, 255, 255);
         }
         /* Kontainer gambar */
         .service-img {

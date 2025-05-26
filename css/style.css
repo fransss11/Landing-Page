@@ -2249,7 +2249,7 @@ tr:hover {
     background-repeat: no-repeat;
 }
 .container-fluid.service {
-    background: linear-gradient(184deg, rgb(123 22 231 / 42%), rgb(216 152 255)), url('../admin/images/32867182.jpg');
+    background: linear-gradient(184deg, rgb(139 30 255 / 42%), rgb(216 152 255)), url('../admin/images/32867182.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -35,6 +35,148 @@ $conn->close();
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
+    <style>
+        .portfolio-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+            z-index: 1;
+        }
+        
+        .section-title h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #6b11cb, #2575fc);
+            border-radius: 10px;
+        }
+        
+        .section-title p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #666;
+        }
+        
+        .portfolio-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .portfolio-header {
+            background: linear-gradient(135deg, #6b11cb, #2575fc);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .portfolio-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+            opacity: 0.5;
+        }
+        
+        .pdf-title {
+            margin: 0;
+            font-size: 1.5rem;
+            color: white;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .portfolio-content {
+            padding: 15px;
+        }
+        
+        .pdf-frame {
+            width: 100%;
+            height: 550px;
+            border: none;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .portfolio-actions {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background: #f9f9f9;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, #6b11cb, #2575fc);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 500;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 17, 203, 0.3);
+        }
+        
+        .action-btn i {
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .section-title h1 {
+                font-size: 2.5rem;
+            }
+            
+            .pdf-frame {
+                height: 400px;
+            }
+            
+            .portfolio-actions {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                margin: 5px 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="bckg">
@@ -55,24 +197,42 @@ $conn->close();
         <!-- Header End -->
         <!-- Portofolio Start -->
         <div class="container-fluid about bg-light py-5">
-            <div class="container py-5">
-                <div class="section-title mb-5 text-center" style="background: linear-gradient(135deg,rgba(107, 17, 203, 0.35), #2575fc); padding: 20px; border-radius: 10px; color: white;">
-                    <h1 class="display-4 font-weight-bold" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Proposal Kami</h1>
+            <div class="container">
+                <div class="section-title mb-5 text-center" data-aos="fade-up">
+                    <h1 class="display-4">Proposal Kami</h1>
                 </div>
-                    <?php foreach ($portfolios as $portfolio): ?>
+                <div class="row">
+                    <?php foreach ($portfolios as $index => $portfolio): ?>
                         <?php if (!empty($portfolio['pdf'])): ?>
                             <?php $file = $portfolio['pdf']; ?>
-                            <div class="portfolio-item">
-                                <p class="pdf-title" style="margin-bottom: 10px; font-size: 20px; text-transform: uppercase;background-color: #eeeeeec7;border-radius: 7px;"><?php echo $portfolio['name']; ?></p>
-                                <iframe src="pdf/<?php echo $file; ?>" 
-                                        style="width:100%; height:600px;" data-aos="fade-up" data-aos-delay="500" frameborder="0"></iframe>
+                            <div class="col-12" data-aos="fade-up" data-aos-delay="<?php echo $index * 100; ?>">
+                                <div class="portfolio-item">
+                                    <div class="portfolio-header">
+                                        <h3 class="pdf-title">
+                                            <i class="far fa-file-pdf me-2"></i>
+                                            <?php echo $portfolio['name']; ?>
+                                        </h3>
+                                    </div>
+                                    <div class="portfolio-content">
+                                        <iframe src="pdf/<?php echo $file; ?>" class="pdf-frame" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="portfolio-actions">
+                                        <a href="pdf/<?php echo $file; ?>" class="action-btn" target="_blank">
+                                            <i class="fas fa-external-link-alt"></i> Buka di Tab Baru
+                                        </a>
+                                        <a href="pdf/<?php echo $file; ?>" class="action-btn" download>
+                                            <i class="fas fa-download"></i> Unduh PDF
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
-
+                </div>
             </div>
         </div>
         <!-- Portofolio End -->
+        
         <!-- Footer Start -->
         <?php include 'includes/footer.php'; ?>
         <!-- Footer End -->
@@ -92,7 +252,12 @@ $conn->close();
     <script src="libr/owlcarousel/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>
-        AOS.init();
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
     </script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>

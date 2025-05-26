@@ -12,18 +12,22 @@ $logo = isset($info_row['logo']) && !empty($info_row['logo'])
     ? "admin/images/logo/" . $info_row['logo']
     : "img/Logo LMM (Persigi Panjang Tanpa Alamat).png";
 
-// Scan folder kegiatan untuk semua file gambar aktivitas
-$activity_dir  = 'admin/images/kegiatan/';
-$files         = array_diff(scandir($activity_dir), ['.', '..']);
+// Ambil data gambar dari tabel slider berdasarkan urutan yang ditentukan
 $activity_imgs = [];
-foreach ($files as $f) {
-    if (preg_match('/\.(png|jpe?g|gif)$/i', $f)) {
-        $activity_imgs[] = $activity_dir . $f;
+$slider_result = mysqli_query($conn, "SELECT * FROM slider ORDER BY urutan ASC");
+if (!$slider_result) {
+    // Jika query error, tampilkan pesan error di konsol
+    echo "<!-- Error fetching slider: " . mysqli_error($conn) . " -->";
+} else {
+    // Ambil data gambar dari hasil query
+    while ($slider_row = mysqli_fetch_assoc($slider_result)) {
+        $activity_imgs[] = 'admin/gambar/kegiatan/' . $slider_row['gambar_beranda'];
     }
 }
-// Fallback jika tidak ada gambar aktivitas
+
+// Fallback jika tidak ada gambar di database
 if (empty($activity_imgs)) {
-    $activity_imgs[] = 'img/default_activity.png';
+    $activity_imgs[] = 'admin/gambar/kegiatan/default_activity.png';
 }
 ?>
 <!-- NAVBAR -->
@@ -85,7 +89,7 @@ if (empty($activity_imgs)) {
         <?php foreach ($activity_imgs as $i => $img): ?>
         <div class="carousel-item <?= $i===0?'active':'' ?>">
             <img src="<?= $img ?>"
-                 alt="Kegiatan <?= $i+1 ?>"
+                 alt="Gambar Beranda <?= $i+1 ?>"
                  class="d-block w-100">
         </div>
         <?php endforeach; ?>

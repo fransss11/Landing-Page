@@ -30,16 +30,30 @@ $about = $result->fetch_assoc();
     <link href="css/style.css" rel="stylesheet">
     <?php include 'includes/logo.php'; ?>
     <style>
+        /* Prevent horizontal scrolling on mobile */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        
         .text-white {
             background-color: #ffffffba !important;
             border-radius: 8px;
         }
         .row {
             justify-content: space-around;
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
         }
         /* --- Letters Box --- */
         .letters-row {
             display: flex; justify-content: center; align-items: center; gap: .5rem; margin-bottom: 2rem;
+            flex-wrap: wrap;
+            max-width: 100%;
         }
         .letters-row .letter {
             width: 60px; height: 60px;
@@ -156,6 +170,48 @@ $about = $result->fetch_assoc();
             border-radius: 50px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
+        /* Responsive adjustments for mobile */
+        @media (max-width: 768px) {
+            .letters-row .letter {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .vm-card, .history-card {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            
+            .container, .container-fluid {
+                padding-left: 15px;
+                padding-right: 15px;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+        }
+        /* Add this to your existing <style> section */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .bounce-animation {
+            animation-name: bounce;
+            animation-duration: 1.5s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            transform: translateY(0); /* Reset any existing transform */
+        }
+
+        /* Add some hover effect for extra interactivity */
+        .letter:hover {
+            animation-play-state: paused;
+            cursor: pointer;
+            filter: brightness(1.2);
+            transition: filter 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -209,10 +265,10 @@ $about = $result->fetch_assoc();
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
                         <?php if (!empty($about['visi'])): ?>
                             <div class="letters-row vision" style="transform: translateY(10px);">
-                                <div class="letter first" style="box-shadow: 0 5px 15px rgba(192, 57, 43, 0.3); transform: translateY(-5px);">V</div>
-                                <div class="letter" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); transform: translateY(2px);">I</div>
-                                <div class="letter" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); transform: translateY(-3px);">S</div>
-                                <div class="letter" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); transform: translateY(0px);">I</div>
+                                <div class="letter first bounce-animation" style="box-shadow: 0 5px 15px rgba(192, 57, 43, 0.3); animation-delay: 0s;">V</div>
+                                <div class="letter bounce-animation" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); animation-delay: 0.1s;">I</div>
+                                <div class="letter bounce-animation" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); animation-delay: 0.2s;">S</div>
+                                <div class="letter bounce-animation" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); animation-delay: 0.3s;">I</div>
                             </div>
                             <div class="vm-card" style="background: linear-gradient(135deg, #e0f7fa, #f5f5f5); border-left: 5px solid #c0392b; transform: translateZ(0); transition: all 0.3s ease;">
                                 <div class="icon-circle" style="background: linear-gradient(135deg, #c0392b, #e74c3c);">
@@ -229,10 +285,10 @@ $about = $result->fetch_assoc();
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="600">
                         <?php if (!empty($about['misi'])): ?>
                             <div class="letters-row mission" style="transform: translateY(10px);">
-                                <div class="letter first" style="box-shadow: 0 5px 15px rgba(192, 57, 43, 0.3); transform: translateY(-5px);">M</div>
-                                <div class="letter" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); transform: translateY(2px);">I</div>
-                                <div class="letter" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); transform: translateY(-3px);">S</div>
-                                <div class="letter" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); transform: translateY(0px);">I</div>
+                                <div class="letter first bounce-animation" style="box-shadow: 0 5px 15px rgba(192, 57, 43, 0.3); transform: translateY(-5px);">M</div>
+                                <div class="letter bounce-animation" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); transform: translateY(2px);">I</div>
+                                <div class="letter bounce-animation" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); transform: translateY(-3px);">S</div>
+                                <div class="letter bounce-animation" style="box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3); transform: translateY(0px);">I</div>
                             </div>
                             <div class="vm-card" style="background: linear-gradient(135deg, #e0f7fa, #f5f5f5); border-left: 5px solid #8e44ad; transform: translateZ(0); transition: all 0.3s ease;">
                                 <div class="icon-circle" style="background: linear-gradient(135deg, #8e44ad, #9b59b6);">

@@ -190,7 +190,7 @@ $conn->close();
                                 <div class="d-flex justify-content-center gap-2">
                                     <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="service.php" class="btn btn-primary rounded-pill text-white py-2 px-4">Kembali Ke Layanan</a>
                                     <?php if (!empty($social['whatsapp'])): ?>
-                                        <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4">Hubungi Kami</a>
+                                        <a style="color: #000000;box-shadow: rgb(0 0 0) 0px 0px 10px 1px inset;" href="https://wa.me/<?php echo $social['whatsapp']; ?>" class="btn btn-primary rounded-pill text-white py-2 px-4" target="_blank">Hubungi Kami</a>
                                     <?php endif; ?>
                                 </div>
                             </div>
