@@ -1,6 +1,7 @@
 <style>
   .back-to-top {
     animation: blue-purple-glow 0.8s infinite alternate;
+    left: 20px;
   }
 
   @keyframes blue-purple-glow {
@@ -13,3 +14,4 @@
   }
 </style>
 <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+<?php include 'chatbot.php'; ?>

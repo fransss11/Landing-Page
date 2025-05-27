@@ -82,7 +82,23 @@ if (isset($_POST['tambah'])) {
     $file = $_FILES['gambar']['name'];
     $tmp = $_FILES['gambar']['tmp_name'];
     $folder = "gambar/kegiatan/";
-
+    $size = $_FILES['gambar']['size'];
+    $type = $_FILES['gambar']['type'];
+    
+    // Validasi ukuran file (max 15MB)
+    if ($size > 15728640) {
+        $_SESSION['message'] = "Ukuran file terlalu besar (maksimal 15MB)";
+        header("Location: slider.php");
+        exit;
+    }
+    
+    // Validasi tipe file harus gambar
+    if (!preg_match('/^image\//', $type)) {
+        $_SESSION['message'] = "File harus berupa gambar";
+        header("Location: slider.php");
+        exit;
+    }
+    
     // Generate random filename to prevent duplicates
     $filename = rand() . '_' . $file;
     
@@ -136,6 +152,22 @@ if (isset($_POST['edit'])) {
     $file = $_FILES['gambar']['name'];
     $tmp = $_FILES['gambar']['tmp_name'];
     $folder = "gambar/kegiatan/";
+    $size = $_FILES['gambar']['size'];
+    $type = $_FILES['gambar']['type'];
+    
+    // Validasi ukuran file (max 15MB)
+    if ($size > 15728640) {
+        $_SESSION['message'] = "Ukuran file terlalu besar (maksimal 15MB)";
+        header("Location: slider.php?edit=$id");
+        exit;
+    }
+    
+    // Validasi tipe file harus gambar
+    if (!preg_match('/^image\//', $type)) {
+        $_SESSION['message'] = "File harus berupa gambar";
+        header("Location: slider.php?edit=$id");
+        exit;
+    }
     
     if ($file) {
         // Generate random filename
@@ -278,8 +310,8 @@ if (isset($_POST['edit'])) {
                                         </div>
                                         <div class="form-group">
                                             <label>Upload Gambar Baru</label>
-                                            <input type="file" name="gambar" class="form-control-file" required>
-                                            <small class="text-muted">Format: JPG, PNG, GIF. Ukuran maksimal: 2MB</small>
+                                            <input type="file" name="gambar" class="form-control-file" accept="image/jpeg,image/png,image/gif,image/jpg" required>
+                                            <small class="text-muted">Format: JPG, PNG, GIF. Ukuran maksimal: 15MB</small>
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" name="edit" class="btn btn-warning"><i class="fas fa-save"></i> Simpan Perubahan</button>
@@ -297,8 +329,8 @@ if (isset($_POST['edit'])) {
                                     <form method="post" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label>Upload Gambar</label>
-                                            <input type="file" name="gambar" class="form-control-file" required>
-                                            <small class="text-muted">Format: JPG, PNG, GIF. Ukuran maksimal: 2MB</small>
+                                            <input type="file" name="gambar" class="form-control-file" accept="image/jpeg,image/png,image/gif,image/jpg" required>
+                                            <small class="text-muted">Format: JPG, PNG, GIF. Ukuran maksimal: 15MB</small>
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" name="tambah" class="btn btn-success"><i class="fas fa-plus"></i> Tambah Gambar</button>

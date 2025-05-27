@@ -106,11 +106,50 @@ if (empty($activity_imgs)) {
 </div>
 
 <style>
+.carousel-control-prev, .carousel-control-next {
+    width: 40px; /* Increased width for better touchability */
+    height: 40px; /* Set specific height for a balanced look */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 50%; /* Circular buttons */
+    opacity: 0.7;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 15px; /* Add some margin from the edges */
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Darker on hover */
+    opacity: 1;
+}
+
+.carousel-control-next-icon {
+    background-color: #00000000;
+    margin-left: 0;
+}
+.carousel-control-prev-icon {
+    background-color: #00000000;
+    margin-right: 0;
+}
+/* Make the icons inside more visible */
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .carousel-control-prev, .carousel-control-next {
+        width: 35px;
+        height: 35px;
+        margin: 0 10px;
+    }
+}
 #activityCarousel .carousel-item img {
     object-fit: contain; /* Ensure the entire image is visible */
     width: 100%;
     height: auto;
-    max-height: auto; /* Limit height for better visibility */
+    max-height: 117vh; /* Limit height for better visibility */
+    background: #cf9bff;
 }
 
 /* Margin adjustments for specific screen widths */

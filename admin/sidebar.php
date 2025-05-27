@@ -60,6 +60,12 @@ $logo = (!empty($info_row['logo']))
                         <p>Gambar Kegiatan</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="view_chatbot.php" class="nav-link <?php echo ($current_page == 'view_chatbot.php') ? 'active' : ''; ?>">
+                        <i class="fas fa-comments nav-icon"></i>
+                        <p>Chatbot</p>
+                    </a>
+                </li>
                 <!-- About Section -->
                 <li class="nav-header">Tentang Kami</li>
                 <li class="nav-item">
