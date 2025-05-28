@@ -124,7 +124,7 @@ $conn->close();
   .chatbot-btn {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    right: 2px;
     z-index: 1000;
     background-color: #28a745;
     color: white;

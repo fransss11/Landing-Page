@@ -144,7 +144,7 @@ if (isset($_POST['save'])) {
                     </div>
                     <!-- Deskripsi Tentang Kami -->
                     <div class="col-12">
-                        <label class="form-label">Deskripsi dan Visi Misi</label>
+                        <label class="form-label">Deskripsi Lengkap</label>
                         <input type="hidden" name="descrip" value="">
                         <textarea id="validationDescrip" class="form-control textarea"><?php if ($dataExists) echo $roww['descrip']; ?></textarea>
                         <div class="invalid-feedback">Mohon isi deskripsi.</div>
@@ -199,9 +199,9 @@ if (isset($_POST['save'])) {
                         <small id="wordCountSejarah" class="form-text text-muted">0/200 kata</small>
                         <div class="invalid-feedback">Mohon isi sejarah pendek.</div>
                     </div>
-                    <!-- Isi Sejarah -->
+                    <!-- Sejarah Lengkap -->
                     <div class="col-12">
-                        <label class="form-label">Isi Sejarah</label>
+                        <label class="form-label">Sejarah Lengkap</label>
                         <input type="hidden" name="history" value="">
                         <textarea id="validationHistory" class="form-control textarea"><?php if ($dataExists) echo $roww['history']; ?></textarea>
                         <div class="invalid-feedback">Mohon isi sejarah.</div>

@@ -39,7 +39,7 @@ $conn->close();
     <?php include 'includes/logo.php'; ?>
     <style>
         .container-fluid.galeri {
-            background: linear-gradient(310deg, rgb(48 48 48 / 70%), rgb(195 95 255)), url(admin/images/coba3.jpg) !important;
+            background: linear-gradient(310deg, rgb(194 194 194 / 70%), rgb(195 95 255)), url(admin/images/coba3.jpg) !important;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

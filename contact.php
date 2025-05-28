@@ -51,6 +51,9 @@ $social = $result->fetch_assoc();
             box-shadow: inset 300px 0 0 0 var(--bs-primary);
             color: var(--bs-light) !important;
         }
+        h4, .h4 {
+            font-size: calc(1.275rem + 0.2vw);
+        }
     </style>
 </head>
 <body>
@@ -81,7 +84,7 @@ $social = $result->fetch_assoc();
                 </div>
                 <div class="row g-4 align-items-center">
                     <!-- Contact Info Section -->
-                    <div class="col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="500" style="padding-top: 90px;background-color: #eeeeeec7;border-radius: 20px;">
+                    <div class="col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="500" style="padding-top: 90px;background-color: #eeeeeec7;border-radius: 20px;height: 604px;">
                         <div class="bg-transparent rounded">
                             <div class="d-flex flex-column align-items-center text-center mb-4">
                                 <a href="<?php echo $info['lokasi']; ?>" target="_blank" class="bg-white d-flex align-items-center justify-content-center mb-2" style="width: 90px; height: 90px; border-radius: 50px;">
