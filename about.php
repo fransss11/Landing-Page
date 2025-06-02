@@ -333,14 +333,14 @@ $about = $result->fetch_assoc();
                                 <i class="fas fa-history"></i>
                             </div>
                             
-                            <div class="quote-marks position-absolute opacity-25" style="top: 20px; left: 20px; font-size: 4rem; color: #436b9b;">
+                            <div class="quote-marks position-absolute opacity-25" style="top: -6px; left: 2px; font-size: 4rem; color: #436b9b;">
                                 <i class="fas fa-quote-left"></i>
                             </div>
-                            <div class="quote-marks position-absolute opacity-25" style="bottom: 20px; right: 20px; font-size: 4rem; color: #436b9b;">
+                            <div class="quote-marks position-absolute opacity-25" style="bottom: 6px; right: 2px; font-size: 4rem; color: #436b9b;">
                                 <i class="fas fa-quote-right"></i>
                             </div>
                             
-                            <div class="text-dark text-justify px-md-4" style="line-height: 1.9; font-size: 1.05rem; position: relative; z-index: 2;">
+                            <div class="text-dark text-justify px-md-4" style="position: relative; z-index: 2;">
                                 <?php 
                                 // Preserve HTML formatting from database
                                 $historyText = $about['history'];

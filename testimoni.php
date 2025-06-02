@@ -240,7 +240,7 @@ $missingUrl = array_filter($kegiatan, function($k) {
 
             <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.3s">
                 <label for="kegiatanSelect" class="form-label">Pilih Kegiatan untuk Memberikan Testimoni</label>
-                <form id="kegiatanForm" method="GET" class="mt-3">
+                <form id="kegiatanForm" method="GET" class="mt-3 needs-validation" novalidate>
                     <select id="kegiatanSelect" name="kegiatan" class="form-select mb-4" required onchange="updateFormAction()">
                         <option value="" disabled selected>-- Pilih Kegiatan --</option>
                         <?php foreach ($kegiatan as $k): ?>
@@ -249,6 +249,7 @@ $missingUrl = array_filter($kegiatan, function($k) {
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    <div class="invalid-feedback">Mohon pilih kegiatan.</div>
                     <button type="submit" class="btn btn-testimoni">Berikan Testimoni Kegiatan</button>
                 </form>
             </div>

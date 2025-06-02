@@ -177,7 +177,7 @@ if (isset($_POST['save'])) {
                         <?php if ($dataExists && !empty($roww['img'])):
                             $imagePath = "images/about/" . $roww['img']; ?>
                             <br>
-                            <img src="<?php echo htmlspecialchars($imagePath); ?>?v=<?php echo time(); ?>" alt="Current Image" style="width:200px; margin-top:10px;">
+                            <img src="<?php echo htmlspecialchars($imagePath); ?>?v=<?php echo time(); ?>" alt="Current Image" style="width:500px; margin-top:10px; max-width: 100%;">
                             <br>
                             <a href="add-about.php?delete_image=1" class="btn btn-danger btn-sm" style="margin-top:10px;">Hapus Gambar</a>
                         <?php endif; ?>

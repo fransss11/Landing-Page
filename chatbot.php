@@ -18,7 +18,10 @@ $conn->close();
   <i class="fa fa-comments"></i>
 </div>
 <div class="chatbot-container" id="chatbot">
-  <div class="chatbot-header">Lisa Mitra Mandiri Chat</div>
+  <div class="chatbot-header">
+      Lisa Mitra Mandiri Chat
+      <button id="end-chat" class="end-chat-btn"><i class="fa fa-times"></i> Akhiri Chat</button>
+  </div>
   <div class="chatbot-body" id="chatbot-body">
     <div class="message bot-message">
         Selamat datang! Ada yang bisa saya bantu?
@@ -40,85 +43,117 @@ $conn->close();
     const chatbotData = <?php echo json_encode($chatbot_data); ?>;
     
     // Chatbot functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const chatbotBtn = document.querySelector('.chatbot-btn');
-        const chatbotContainer = document.querySelector('.chatbot-container');
-        const sendBtn = document.getElementById('chatbot-send');
-        const userInput = document.getElementById('chatbot-input');
-        const chatbotBody = document.getElementById('chatbot-body');
-        
-        // Toggle chatbot visibility
-        chatbotBtn.addEventListener('click', function() {
-            chatbotContainer.style.display = chatbotContainer.style.display === 'flex' ? 'none' : 'flex';
-        });
-        
-        // Send message function
-        function sendMessage() {
-            const message = userInput.value.trim();
-            if (message === '') return;
-            
-            // Add user message to chat
-            addMessage(message, 'user');
-            userInput.value = '';
-            
-            // Process the response
-            setTimeout(() => {
-                const response = processUserMessage(message);
-                addMessage(response, 'bot');
-            }, 600);
-        }
-        
-        // Send button click
-        sendBtn.addEventListener('click', sendMessage);
-        
-        // Enter key press
-        userInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-        
-        // Add message to chat
-        function addMessage(message, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message');
-            messageDiv.classList.add(sender + '-message');
-            messageDiv.textContent = message;
-            chatbotBody.appendChild(messageDiv);
-            
-            // Scroll to bottom
-            chatbotBody.scrollTop = chatbotBody.scrollHeight;
-        }
-        
-        // Process user message and find response
-        function processUserMessage(message) {
-            message = message.toLowerCase();
-            
-            // Default response if no match found
-            let response = "Maaf, saya tidak mengerti pertanyaan Anda. Silakan coba pertanyaan lain.";
-            
-            // Check for matches in chatbot data
-            for (let i = 0; i < chatbotData.length; i++) {
-                const pertanyaan = chatbotData[i].pertanyaan_chat.toLowerCase();
-                
-                if (message.includes(pertanyaan) || pertanyaan.includes(message)) {
-                    response = chatbotData[i].jawaban_chat;
-                    break;
-                }
-            }
-            
-            return response;
-        }
-        
-        // Close chatbot when clicking outside
-        document.addEventListener('click', function(event) {
-            if (chatbotContainer.style.display === 'flex') {
-                if (!chatbotContainer.contains(event.target) && event.target !== chatbotBtn && !chatbotBtn.contains(event.target)) {
-                    chatbotContainer.style.display = 'none';
-                }
-            }
-        });
+// Chatbot functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const chatbotBtn = document.querySelector('.chatbot-btn');
+    const chatbotContainer = document.querySelector('.chatbot-container');
+    const sendBtn = document.getElementById('chatbot-send');
+    const userInput = document.getElementById('chatbot-input');
+    const chatbotBody = document.getElementById('chatbot-body');
+    const endChatBtn = document.getElementById('end-chat');
+    
+    // Toggle chatbot visibility
+    chatbotBtn.addEventListener('click', function() {
+        chatbotContainer.style.display = chatbotContainer.style.display === 'flex' ? 'none' : 'flex';
     });
+    
+    // Load saved messages from localStorage
+    function loadChatHistory() {
+        const savedMessages = localStorage.getItem('chatbotMessages');
+        if (savedMessages) {
+            chatbotBody.innerHTML = savedMessages;
+        }
+        // Scroll to bottom
+        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+    }
+    
+    // Save messages to localStorage
+    function saveChatHistory() {
+        localStorage.setItem('chatbotMessages', chatbotBody.innerHTML);
+    }
+    
+    // Load chat history on page load
+    loadChatHistory();
+    
+    // Send message function
+    function sendMessage() {
+        const message = userInput.value.trim();
+        if (message === '') return;
+        
+        // Add user message to chat
+        addMessage(message, 'user');
+        userInput.value = '';
+        
+        // Process the response
+        setTimeout(() => {
+            const response = processUserMessage(message);
+            addMessage(response, 'bot');
+        }, 600);
+    }
+    
+    // Send button click
+    sendBtn.addEventListener('click', sendMessage);
+    
+    // Enter key press
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+    
+    // Add message to chat (KEEP ONLY THIS VERSION)
+    function addMessage(message, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.classList.add(sender + '-message');
+        messageDiv.textContent = message;
+        chatbotBody.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+        
+        // Save chat history
+        saveChatHistory();
+    }
+    
+    // End chat functionality
+    endChatBtn.addEventListener('click', function() {
+        // Clear the chat except for the welcome message
+        chatbotBody.innerHTML = '<div class="message bot-message">Selamat datang! Ada yang bisa saya bantu?</div>';
+        
+        // Save the cleared chat
+        saveChatHistory();
+    });
+    
+    // Process user message and find response
+    function processUserMessage(message) {
+        message = message.toLowerCase();
+        
+        // Default response if no match found
+        let response = "Maaf, saya tidak mengerti pertanyaan Anda. Silakan coba pertanyaan lain.";
+        
+        // Check for matches in chatbot data
+        for (let i = 0; i < chatbotData.length; i++) {
+            const pertanyaan = chatbotData[i].pertanyaan_chat.toLowerCase();
+            
+            if (message.includes(pertanyaan) || pertanyaan.includes(message)) {
+                response = chatbotData[i].jawaban_chat;
+                break;
+            }
+        }
+        
+        return response;
+    }
+    
+    // Close chatbot when clicking outside
+    document.addEventListener('click', function(event) {
+        if (chatbotContainer.style.display === 'flex') {
+            if (!chatbotContainer.contains(event.target) && event.target !== chatbotBtn && !chatbotBtn.contains(event.target)) {
+                chatbotContainer.style.display = 'none';
+            }
+        }
+    });
+});
 </script>
 <style>
   .chatbot-btn {
@@ -186,14 +221,32 @@ $conn->close();
   }
 
   .chatbot-header {
-    background-color: #28a745;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 16px;
-    border-radius: 15px 15px 0 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: #28a745;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 15px 15px 0 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .end-chat-btn {
+      background-color: transparent;
+      border: 1px solid white;
+      color: white;
+      border-radius: 15px;
+      padding: 3px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+  }
+
+  .end-chat-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
   }
 
   .chatbot-body {
