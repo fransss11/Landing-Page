@@ -323,6 +323,9 @@ function formatTanggalIndonesia($tanggal) {
         .card-img-top {
             height: auto;
         }
+        .owl-carousel .owl-dots {
+            display: none !important;
+        }
     </style>
 </head>
 <body>

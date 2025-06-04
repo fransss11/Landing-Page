@@ -161,7 +161,8 @@ $result = mysqli_query($con, $query);
                      echo "<td><img src='uploads/" . $row['foto'] . "' style='width:100px;'></td>";
                      echo "<td>" . htmlspecialchars($row['galery']) . "</td>";
                      echo "<td>" . htmlspecialchars($row['kat_gal']) . "</td>";
-                     echo "<td>" . htmlspecialchars($row['uploaded_on']) . "</td>";
+                     // Tampilkan hanya tanggal (tanpa jam)
+                     echo "<td>" . htmlspecialchars(date('Y-m-d', strtotime($row['uploaded_on']))) . "</td>";
                      echo "<td>
                              <div class='btn-group'>
                                <a href='add-gallery.php?edit=" . $id . "' class='btn btn-info' onclick='return confirm(\"Anda yakin?\")'>

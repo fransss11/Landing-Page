@@ -22,7 +22,7 @@
     background: 
       url("admin/images/logo/502247371Logo LMM Black list White.png") no-repeat center center,
       radial-gradient(circle closest-side, rgb(153, 0, 255), rgba(128, 0, 255, 0.6));
-    background-size: contain, cover;
+    background-size: 100vh, cover;
     background-position: center 36%, center center;
     background-attachment: fixed;
   }

@@ -2,7 +2,7 @@
 include 'database.php';
 
 // Fetch data from the 'teams' table with category field
-$sql = "SELECT title, designation, img, facebook, twitter, instagram, linkedin, whatsapp, category FROM teams";
+$sql = "SELECT title, designation, img, facebook, twitter, instagram, linkedin, whatsapp, url, category FROM teams";
 $result = $conn->query($sql);
 $teamList = [];
 if ($result->num_rows > 0) {
@@ -52,10 +52,10 @@ usort($filteredTeam, function($a, $b) {
         }
     }
     // If same priority, sort alphabetically by id
-    // if ($pa === $pb) {
-    //     return strcmp($a['id'], $b['id']);
-    // }
-    // return $pa - $pb;
+    if ($pa === $pb) {
+        return strcmp($a['id'], $b['id']);
+    }
+    return $pa - $pb;
 });
 
 // Pagination settings
@@ -108,6 +108,21 @@ $conn->close();
         }
         .team .team-item .team-content {
             height: auto;
+        }
+            .cursor-pointer {
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cursor-pointer:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Make sure social links work independently of the card click */
+        .team-icon a {
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
@@ -193,7 +208,10 @@ $conn->close();
                     <div class="col-md-6 col-lg-6 col-xl-3"
                         data-aos="<?php echo $index % 2 == 0 ? 'fade-up' : 'fade-down'; ?>"
                         data-aos-delay="<?php echo $index * 300; ?>">
-                        <div class="team-item rounded h-100 d-flex flex-column">
+                        <?php if (!empty($team['url'])): ?>
+                        <a href="<?php echo htmlspecialchars($team['url']); ?>" class="text-decoration-none" target="_blank">
+                        <?php endif; ?>
+                        <div class="team-item rounded h-100 d-flex flex-column <?php echo !empty($team['url']) ? 'cursor-pointer' : ''; ?>">
                             <div class="team-img rounded-top" style="background-color:rgba(255, 255, 255, 0.93);">
                                 <img src="admin/images/team/<?php echo htmlspecialchars($team['img']); ?>"
                                     class="img-fluid team-image"
@@ -201,19 +219,19 @@ $conn->close();
                                     style="width: 100%; height: 250px; object-fit: contain;">
                                 <div class="team-icon d-flex justify-content-center">
                                     <?php if (!empty($team['facebook'])): ?>
-                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['facebook']; ?>"><i class="fab fa-facebook-f"></i></a>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['facebook']; ?>" onclick="event.stopPropagation();"><i class="fab fa-facebook-f"></i></a>
                                     <?php endif; ?>
                                     <?php if (!empty($team['twitter'])): ?>
-                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['twitter']; ?>"><i class="fab fa-twitter"></i></a>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['twitter']; ?>" onclick="event.stopPropagation();"><i class="fab fa-twitter"></i></a>
                                     <?php endif; ?>
                                     <?php if (!empty($team['instagram'])): ?>
-                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['instagram']; ?>"><i class="fab fa-instagram"></i></a>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['instagram']; ?>" onclick="event.stopPropagation();"><i class="fab fa-instagram"></i></a>
                                     <?php endif; ?>
                                     <?php if (!empty($team['linkedin'])): ?>
-                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['linkedin']; ?>"><i class="fab fa-linkedin-in"></i></a>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="<?php echo $team['linkedin']; ?>" onclick="event.stopPropagation();"><i class="fab fa-linkedin-in"></i></a>
                                     <?php endif; ?>
                                     <?php if (!empty($team['whatsapp'])): ?>
-                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="https://wa.me/<?php echo $team['whatsapp']; ?>"><i class="fab fa-whatsapp"></i></a>
+                                        <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href="https://wa.me/<?php echo $team['whatsapp']; ?>" onclick="event.stopPropagation();"><i class="fab fa-whatsapp"></i></a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -223,6 +241,9 @@ $conn->close();
                                 <!-- <p class="team-description mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p> -->
                             </div>
                         </div>
+                        <?php if (!empty($team['url'])): ?>
+                        </a>
+                        <?php endif; ?>
                     </div>
                     <?php endforeach; ?>
                 </div>

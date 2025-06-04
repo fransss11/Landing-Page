@@ -1,9 +1,8 @@
 <?php
-error_reporting(0);
 include 'conn.php';
 include 'auth.php';
 date_default_timezone_set('Asia/Jakarta');
-$today = date("D d M Y");
+$today = date("D d M Y H:i:s");
 // Inisialisasi variabel alert
 $msg = "";
 $msgClass = "";
@@ -18,11 +17,12 @@ if ($edit) {
     $stmt->close();
 } else {
     // Nilai default untuk data baru
-    $roww = ['galery' => '', 'foto' => '', 'kategori' => ''];
+    $roww = ['galery' => '', 'foto' => '', 'kategori' => '', 'tanggal' => date('Y-m-d')];
 }
 if (isset($_POST['publise'])) {
     $nama = mysqli_real_escape_string($con, $_POST['nama']);
     $kategori_id = mysqli_real_escape_string($con, $_POST['kategori_gal']);
+    $tanggal = mysqli_real_escape_string($con, $_POST['tanggal']);
     // Ambil nama kategori berdasarkan id
     $stmt2 = $con->prepare("SELECT kat_gal FROM kategori_gal WHERE id = ?");
     $stmt2->bind_param("i", $kategori_id);
@@ -45,7 +45,7 @@ if (isset($_POST['publise'])) {
         } else {
             $gambar = $roww['foto'];
         }
-        $update = mysqli_query($con, "UPDATE media SET galery='$nama', foto='$gambar', kategori='$kategori', uploaded_on=NOW(), status='1' WHERE id='$edit'");
+        $update = mysqli_query($con, "UPDATE media SET galery='$nama', foto='$gambar', kategori='$kategori', uploaded_on='$tanggal', status='1' WHERE id='$edit'");
         if ($update) {
             $_SESSION['msg'] = "Berhasil Diperbarui";
             $_SESSION['msgClass'] = "success";
@@ -77,7 +77,7 @@ if (isset($_POST['publise'])) {
                   $file_extension = strtolower(pathinfo($folder, PATHINFO_EXTENSION));
                   if (in_array($file_extension, $valid_ext)) {
                       compressImage($tempname, $folder, 60);
-                      mysqli_query($con, "INSERT INTO media (galery, foto, kategori, uploaded_on, status) VALUES ('$nama', '$image_name', '$kategori', NOW(), '1')");
+                      mysqli_query($con, "INSERT INTO media (galery, foto, kategori, uploaded_on, status) VALUES ('$nama', '$image_name', '$kategori', '$tanggal', '1')");
                       $inserted = true;
                   }
               }
@@ -188,6 +188,15 @@ function compressImage($source, $destination, $quality) {
                       </select>
                       <div class="invalid-feedback">
                         Silahkan pilih kategori.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-header">
+                    <div class="form-group">
+                      <label for="validationDate">Tanggal <span class="text-danger">*</span></label>
+                      <input type="date" name="tanggal" value="<?php echo isset($roww['uploaded_on']) ? htmlspecialchars($roww['uploaded_on']) : date('Y-m-d'); ?>" class="form-control" id="validationDate" required>
+                      <div class="invalid-feedback">
+                        Silahkan pilih tanggal.
                       </div>
                     </div>
                   </div>

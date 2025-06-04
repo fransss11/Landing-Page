@@ -163,6 +163,7 @@ if (isset($_GET['delete_id'])) {
                    <th>LinkedIn</th>
                    <th>WhatsApp</th>
                    <th>Kategori</th>
+                   <th>Link HIMPSI</th>
                    <th>Aksi</th>
                  </tr>
                </thead>
@@ -233,6 +234,7 @@ if (isset($_GET['delete_id'])) {
         { data: 'linkedin' },
         { data: 'whatsapp' },
         { data: 'category' },
+        { data: 'url' },
         { data: 'aksi' }
       ]
     });

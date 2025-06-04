@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $img_size = $_FILES['lis_img']['size'];
         $img_ext  = strtolower(pathinfo($img_name, PATHINFO_EXTENSION));
         $valid_ext = ['png', 'jpeg', 'jpg', 'webp'];
-        if (in_array($img_ext, $valid_ext) && $img_size <= 512000) { // Maksimal 500KB
+        if (in_array($img_ext, $valid_ext) && $img_size <= 10485760) { // Maksimal 10MB
             $lis_img = rand() . '_' . $img_name;
             $folder = "images/team/" . $lis_img;
             move_uploaded_file($img_tmp, $folder);
@@ -192,16 +192,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                             </div>
                             <!-- URL -->
-                            <!-- <div class="card-header">
+                            <div class="card-header">
                                 <div class="form-group">
-                                    <label for="validationURL">Masukkan URL</label>
-                                    <input name="url" value="<?php echo isset($roww["url"]) ? htmlspecialchars($roww["url"]) : ''; ?>" type="text" class="form-control" id="validationURL" placeholder="Masukkan URL...">
+                                    <label for="validationURL">Masukkan Link HIMPSI</label>
+                                    <input name="url" value="<?php echo isset($roww["url"]) ? htmlspecialchars($roww["url"]) : ''; ?>" type="text" class="form-control" id="validationURL" placeholder="Masukkan Link...">
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Image Upload -->
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label for="validationImage">Pilih Gambar <span style="color:red;">(Maksimal 500KB, Hanya PNG, JPG, JPEG, WEBP)</span> <?php echo ($edit == 0 ? '<span class="text-danger">*</span>' : ''); ?></label>
+                                    <label for="validationImage">Pilih Gambar <span style="color:red;">(Maksimal 10MB, Hanya PNG, JPG, JPEG, WEBP)</span> <?php echo ($edit == 0 ? '<span class="text-danger">*</span>' : ''); ?></label>
                                     <input name="lis_img" type="file" id="validationImage" class="form-control" accept="image/*" <?php echo ($edit == 0 ? 'required' : ''); ?>>
                                     <small id="imageError" class="text-danger"></small>                              
                                     <?php 
@@ -270,8 +270,8 @@ document.getElementById("validationImage").addEventListener("change", function()
     var errorText = document.getElementById("imageError");
     if (file) {
         var fileSize = file.size;
-        if (fileSize > 512000) { // 500KB = 512000 byte
-            errorText.textContent = "Ukuran gambar tidak boleh lebih dari 500KB!";
+        if (fileSize > 10485760) { // 10MB
+            errorText.textContent = "Ukuran gambar tidak boleh lebih dari 10MB!";
             this.value = "";
         } else {
             errorText.textContent = "";
