@@ -156,7 +156,7 @@ if (isset($_GET['delete_id'])) {
                    <th>Gambar</th>
                    <th>Nama</th>
                    <th>Jabatan</th>
-                   <!-- <th>Deskripsi</th> -->
+                   <th>Deskripsi</th>
                    <th>Facebook</th>
                    <th>Twitter</th>
                    <th>Instagram</th>
@@ -227,7 +227,7 @@ if (isset($_GET['delete_id'])) {
         },
         { data: 'title' },
         { data: 'designation' },
-        // { data: 'descrip' },
+        { data: 'descrip' },
         { data: 'facebook' },
         { data: 'twitter' },
         { data: 'instagram' },

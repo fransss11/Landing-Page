@@ -2,7 +2,7 @@
 include 'database.php';
 
 // Fetch data from the 'teams' table with category field
-$sql = "SELECT title, designation, img, facebook, twitter, instagram, linkedin, whatsapp, url, category FROM teams";
+$sql = "SELECT title, designation, descrip, img, facebook, twitter, instagram, linkedin, whatsapp, url, category FROM teams";
 $result = $conn->query($sql);
 $teamList = [];
 if ($result->num_rows > 0) {
@@ -11,7 +11,7 @@ if ($result->num_rows > 0) {
     }
 }
 // Define the specific order for categories
-$orderedCategories = ['Internal', 'Auditor', 'Assesor Associate'];
+$orderedCategories = ['Internal', 'Auditor', 'Assesor Associate', 'Psikolog'];
 $activeCategories = [];
 foreach ($teamList as $member) {
     if (!empty($member['category']) && !in_array($member['category'], $activeCategories)) {
@@ -181,6 +181,9 @@ $conn->close();
                                 case 'assesor associate':
                                     $icon = '<i class="fas fa-user-tie mr-2"></i>';
                                     break;
+                                case 'psikolog':
+                                    $icon = '<i class="fas fa-brain mr-2"></i>';
+                                    break;
                                 default:
                                     $btnClass = 'btn-outline-primary';
                                     $icon = '<i class="fas fa-tag mr-2"></i>';
@@ -238,7 +241,7 @@ $conn->close();
                             <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4 d-flex flex-column justify-content-between flex-grow-1">
                                 <h5 class="team-title"><?php echo htmlspecialchars($team['title']); ?></h5>
                                 <p class="team-designation mb-0" style="background: #ffffffbf;"><?php echo htmlspecialchars($team['designation']); ?></p>
-                                <!-- <p class="team-description mb-0" style="font-style: italic;"><?php echo htmlspecialchars($team['descrip']); ?></p> -->
+                                <p class="team-description mb-0" style="font-style: italic; background: #ffffffbf;"><?php echo htmlspecialchars($team['descrip']); ?></p>
                             </div>
                         </div>
                         <?php if (!empty($team['url'])): ?>

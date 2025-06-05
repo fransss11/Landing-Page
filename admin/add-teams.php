@@ -147,6 +147,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                 </div>
                             </div>
+                            <!-- Description -->
+                            <div class="card-header">
+                                <div class="form-group">
+                                    <label for="validationDescription">No SIPP <span class="text-danger">*</span></label>
+                                    <input name="descrip" class="form-control " id="validationDescription" placeholder="Masukkan No SIPP..." value="<?php echo isset($roww["descrip"]) ? htmlspecialchars($roww["descrip"]) : ''; ?>">
+                                    <div class="invalid-feedback">
+                                        Silahkan masukkan No SIPP.
+                                    </div>
+                                </div>
+                            </div> 
                             <!-- Category -->
                             <div class="card-header">
                                 <div class="form-group">
@@ -155,6 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <option value="Internal" <?php echo isset($roww["category"]) && $roww["category"] == 'Internal' ? 'selected' : ''; ?>>Internal</option>
                                         <option value="Auditor" <?php echo isset($roww["category"]) && $roww["category"] == 'Auditor' ? 'selected' : ''; ?>>Auditor</option>
                                         <option value="Assesor Associate" <?php echo isset($roww["category"]) && $roww["category"] == 'Assesor Associate' ? 'selected' : ''; ?>>Assesor Associate</option>
+                                        <option value="Psikolog" <?php echo isset($roww["category"]) && $roww["category"] == 'Psikolog' ? 'selected' : ''; ?>>Psikolog</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Silakan pilih kategori.
